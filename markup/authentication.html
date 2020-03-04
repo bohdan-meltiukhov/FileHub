@@ -9,29 +9,36 @@
 <body>
 
 <div class="form-dialog">
-    <h2>Login</h2>
-    <hr>
-    <div class="row">
-        <label for="input-username">Username</label>
+    <header>
+        <h1>Login</h1>
+    </header>
 
-        <input type="text" id="input-username" placeholder="Email">
-        <p>Username can't be empty</p>
-    </div>
+    <main>
+        <div class="row">
+            <label for="input-username">Username</label>
 
-    <div class="row">
-        <label for="input-password">Password</label>
-
-        <input type="text" id="input-password" placeholder="Password">
-        <p>Password can't be empty and should contain letters and numbers</p>
-    </div>
-
-    <div class="row">
-        <div class="footer">
-            <button>Log In</button>
-            <a href="#">Don't have an account yet?</a>
+            <div class="input-block">
+                <input type="text" id="input-username" name="username" class="input" placeholder="Email">
+                <p>Username can't be empty</p>
+            </div>
         </div>
-    </div>
 
+        <div class="row">
+            <label for="input-password">Password</label>
+
+            <div class="input-block">
+                <input type="password" id="input-password" name="password" class="input" placeholder="Password">
+                <p>Password can't be empty and should contain letters and numbers</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="footer">
+                <button class="button">Log In</button>
+                <a href="registration.html" class="link">Don't have an account yet?</a>
+            </div>
+        </div>
+    </main>
 
 </div>
 

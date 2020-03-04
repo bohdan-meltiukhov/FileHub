@@ -1,39 +1,59 @@
 body {
-    font-family: /*14px/18px*/  Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     background: #eee;
     min-width: 920px;
 }
 
-a {
+.link {
     color: #66afe9;
     text-decoration: underline;
 }
 
+.link:hover {
+    text-decoration: none;
+}
+
+.button {
+    height: 31px;
+    border: 1px solid #2f6da4;
+    border-radius: 4px;
+    background-color: #337ab7;
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+    padding: 0 12px;
+}
+
+.button:hover {
+    background-color: #154772;
+    border-color: #1b3e5e;
+}
+
+/*.input:focus {
+
+}*/
+
 .form-dialog {
     box-sizing: border-box;
     margin: 100px auto 0;
-    width: 928px;
-    /*height: 522px;*/
+    width: 464px;
     background-color: #fff;
-    border: 4px solid #999;
-    border-radius: 15px;
-    padding: 34px 40px 15px 40px;
-    font-size: 29px;
-    letter-spacing: -0.02em;
-    box-shadow: 0 0 30px grey;
+    border: 2px solid #999;
+    border-radius: 8px;
+    padding: 18px 20px 10px 20px;
+    font-size: 14px;
+    box-shadow: 0 0 15px grey;
 }
 
-.form-dialog h2 {
-    font-size: 45px;
-}
-
-.form-dialog hr {
-    border: 1px solid #999;
-    margin-top: 21px;
+.form-dialog h1 {
+    font-size: 22px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #999;
+    margin-bottom: 12px;
 }
 
 .form-dialog .row {
-    margin: 23px 0 24px 0;
+    margin-bottom: 10px;
 }
 
 .form-dialog .row:after {
@@ -44,55 +64,52 @@ a {
 
 .form-dialog .row label {
     float: left;
-    margin-top: 15px;
+    margin-top: 8px;
+    width: 30%;
+}
+
+.form-dialog .row .input-block {
+    float: right;
+    width: 60%;
 }
 
 .form-dialog .row input {
-    float: right;
     box-sizing: border-box;
-    width: 504px;
-    height: 54px;
-    border: 2px solid #ccc;
-    border-radius: 9px;
-    padding: 27px 10px 15px 12px ;
+    width: 100%;
+    height: 27px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px 5px 7px 6px;
+    margin-bottom: 6px;
 }
 
-.form-dialog .row ::placeholder{
-    font-size: 27px;
+.form-dialog .row input:focus {
+    border: 2px solid #59CBEE;
+}
+
+.form-dialog .row ::placeholder {
+    font-size: 13px;
     letter-spacing: 0.01em;
 }
 
 .form-dialog .row p {
-    float: right;
-    width: 504px;
-    margin-top: 9px;
-    font-size: 25px;
-    letter-spacing: -0.02em;
+    width: 100%;
+    font-size: 12px;
     color: #f00;
-    line-height: 38px;
+    line-height: 19px;
 }
 
 .form-dialog .footer {
     float: right;
-    width: 504px;
+    width: 252px;
 }
 
-.form-dialog .footer button {
+.form-dialog .footer .button {
     float: left;
-    /*width: 126px;*/
-    height: 62px;
-    border: 2px solid #2f6da4;
-    border-radius: 8px;
-    background-color: #337ab7;
-    color: #fff;
-    font-size: 28px;
-    letter-spacing: -0.02em;
-    padding: 0 24px;
 }
 
 .form-dialog .footer a {
     float: right;
-    margin-top: 16px;
-    font-size: 25px;
-    letter-spacing: -0.018em;
+    margin-top: 9px;
+    font-size: 12px;
 }

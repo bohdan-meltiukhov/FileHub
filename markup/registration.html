@@ -9,37 +9,45 @@
 <body>
 
 <div class="form-dialog">
-    <h2>Registration</h2>
-    <hr>
-    <div class="row">
-        <label for="input-username">Username</label>
+    <header>
+        <h1>Registration</h1>
+    </header>
 
-        <input type="text" id="input-username" placeholder="Email">
-        <p>Username can't be empty</p>
-    </div>
+    <main>
+        <div class="row">
+            <label for="input-username">Username</label>
 
-    <div class="row">
-        <label for="input-password">Password</label>
-
-        <input type="text" id="input-password" placeholder="Password">
-        <p>Password can't be empty and should contain letters and numbers</p>
-    </div>
-
-    <div class="row">
-        <label for="input-confirm-password">Confirm Password</label>
-
-        <input type="text" id="input-confirm-password" placeholder="Confirm password">
-        <p>Passwords do not match</p>
-    </div>
-
-    <div class="row">
-        <div class="footer">
-            <button>Register</button>
-            <a href="#">Already have an account?</a>
+            <div class="input-block">
+                <input type="text" id="input-username" placeholder="Email">
+                <p>Username can't be empty</p>
+            </div>
         </div>
-    </div>
 
+        <div class="row">
+            <label for="input-password">Password</label>
 
+            <div class="input-block">
+                <input type="password" id="input-password" placeholder="Password">
+                <p>Password can't be empty and should contain letters and numbers</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <label for="input-confirm-password">Confirm Password</label>
+
+            <div class="input-block">
+                <input type="password" id="input-confirm-password" placeholder="Confirm password">
+                <p>Passwords do not match</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="footer">
+                <button class="button">Register</button>
+                <a href="authentication.html" class="link">Already have an account?</a>
+            </div>
+        </div>
+    </main>
 </div>
 
 </body>

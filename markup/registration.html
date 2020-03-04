@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Authentication</title>
+    <title>Registration</title>
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
 <div class="form-dialog">
-    <h2>Login</h2>
+    <h2>Registration</h2>
     <hr>
     <div class="row">
         <label for="input-username">Username</label>
@@ -26,9 +26,16 @@
     </div>
 
     <div class="row">
+        <label for="input-confirm-password">Confirm Password</label>
+
+        <input type="text" id="input-confirm-password" placeholder="Confirm password">
+        <p>Passwords do not match</p>
+    </div>
+
+    <div class="row">
         <div class="footer">
-            <button>Log In</button>
-            <a href="#">Don't have an account yet?</a>
+            <button>Register</button>
+            <a href="#">Already have an account?</a>
         </div>
     </div>
 

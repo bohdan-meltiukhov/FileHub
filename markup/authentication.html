@@ -3,44 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Authentication</title>
+
+    <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<div class="form-dialog">
-    <header>
+<form class="form-dialog">
+    <header class="header form-header">
         <h1>Login</h1>
+        <span class="glyphicon glyphicon-user"></span>
     </header>
 
     <main>
         <div class="row">
-            <label for="input-username">Username</label>
+            <label for="input-username" class="input-label">Username</label>
 
             <div class="input-block">
-                <input type="text" id="input-username" name="username" class="input" placeholder="Email">
-                <p>Username can't be empty</p>
+                <input type="text" id="input-username" name="username" class="form-input" placeholder="Email">
+                <span class="error-message">Username can't be empty</span>
             </div>
         </div>
 
         <div class="row">
-            <label for="input-password">Password</label>
+            <label for="input-password" class="input-label">Password</label>
 
             <div class="input-block">
-                <input type="password" id="input-password" name="password" class="input" placeholder="Password">
-                <p>Password can't be empty and should contain letters and numbers</p>
+                <input type="password" id="input-password" name="password" class="form-input" placeholder="Password">
+                <span class="error-message">Password can't be empty and should contain letters and numbers</span>
             </div>
         </div>
 
         <div class="row">
-            <div class="footer">
-                <button class="button">Log In</button>
-                <a href="registration.html" class="link">Don't have an account yet?</a>
+            <div class="form-footer">
+                <button type="submit" class="button">Log In</button>
+                <a href="registration.html" class="form-link">Don't have an account yet?</a>
             </div>
         </div>
     </main>
 
-</div>
+</form>
 
 </body>
 </html>

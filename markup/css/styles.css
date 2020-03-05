@@ -4,13 +4,13 @@ body {
     min-width: 920px;
 }
 
-.link {
+a {
     color: #66afe9;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
-.link:hover {
-    text-decoration: none;
+a:hover {
+    text-decoration: underline;
 }
 
 .button {
@@ -29,10 +29,6 @@ body {
     border-color: #1b3e5e;
 }
 
-/*.input:focus {
-
-}*/
-
 .form-dialog {
     box-sizing: border-box;
     margin: 100px auto 0;
@@ -42,14 +38,30 @@ body {
     border-radius: 8px;
     padding: 18px 20px 10px 20px;
     font-size: 14px;
-    box-shadow: 0 0 15px grey;
+    box-shadow: 0 0 15px #808080;
 }
 
-.form-dialog h1 {
+.header {
     font-size: 22px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #999;
+    border-bottom: 2px solid #999;
     margin-bottom: 12px;
+}
+
+.form-dialog .form-header:after {
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.form-dialog .form-header h1 {
+    float: left;
+}
+
+.form-dialog .form-header .glyphicon-user {
+    float: right;
+    font-size: 24px;
+    top: -2px;
 }
 
 .form-dialog .row {
@@ -62,7 +74,7 @@ body {
     content: "";
 }
 
-.form-dialog .row label {
+.form-dialog .row .input-label {
     float: left;
     margin-top: 8px;
     width: 30%;
@@ -73,7 +85,7 @@ body {
     width: 60%;
 }
 
-.form-dialog .row input {
+.form-dialog .row .form-input {
     box-sizing: border-box;
     width: 100%;
     height: 27px;
@@ -83,8 +95,9 @@ body {
     margin-bottom: 6px;
 }
 
-.form-dialog .row input:focus {
-    border: 2px solid #59CBEE;
+.form-dialog .row .form-input:focus {
+    border: 2px solid #59cbee;
+    box-shadow: 0 0 10px #59cbee;
 }
 
 .form-dialog .row ::placeholder {
@@ -92,24 +105,164 @@ body {
     letter-spacing: 0.01em;
 }
 
-.form-dialog .row p {
+.form-dialog .row .error-message {
     width: 100%;
     font-size: 12px;
     color: #f00;
     line-height: 19px;
 }
 
-.form-dialog .footer {
+.form-dialog .form-footer {
     float: right;
     width: 252px;
 }
 
-.form-dialog .footer .button {
+.form-dialog .form-footer .button {
     float: left;
 }
 
-.form-dialog .footer a {
+.form-dialog .form-footer .form-link {
     float: right;
     margin-top: 9px;
     font-size: 12px;
+}
+
+.content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    margin: 80px auto 0;
+    width: 904px;
+    height: 720px;
+    background-color: #fff;
+    border: 2px solid #999;
+    border-radius: 8px;
+    padding: 18px 20px;
+    font-size: 13px;
+    box-shadow: 0 0 15px grey;
+}
+
+.content .logo {
+    position: absolute;
+    left: 0;
+    top: -70px;
+}
+
+.content .menu {
+    position: absolute;
+    right: 14px;
+    top: -36px;
+    letter-spacing: 0.03em;
+}
+
+.content .menu .glyphicon {
+    font-size: 16px;
+}
+
+.content .menu li {
+    display: inline;
+    padding: 0 10px;
+    border-left: 1px solid #000;
+}
+
+.content .menu li:first-child {
+    border-style: none;
+}
+
+.content .header {
+    margin-bottom: 17px;
+}
+
+.files {
+    width: 100%;
+}
+
+.files tr {
+    height: 53px;
+    border-bottom: 1px solid #999;
+}
+
+.files tr:hover {
+    background-color: #f4f4f4;
+}
+
+.files thead th {
+
+    vertical-align: middle;
+    padding-left: 12px;
+}
+
+.files thead .upper-directory {
+    width: 22px;
+}
+
+.files thead .upper-directory .glyphicon-folder-open {
+    font-size: 20px;
+}
+
+.files thead .current-directory .directory-name {
+    float: left;
+    font-size: 24px;
+}
+
+.files thead .current-directory .function-buttons {
+    float: right;
+}
+
+.files td {
+    vertical-align: middle;
+    padding-top: 2px;
+    padding-left: 12px;
+}
+
+.files td.arrow {
+    width: 22px;
+}
+
+.files td.file-icon {
+    width: 22px;
+    font-size: 20px;
+}
+
+.files td.filename {
+    color: #66afe9;
+    width: 600px;
+    letter-spacing: 0.05em;
+}
+
+.files td.count {
+    padding-top: 0;
+    letter-spacing: 0.04em;
+}
+
+.files td.cell-actions {
+    font-size: 20px;
+    padding-top: 8px;
+    padding-left: 54px;
+    opacity: 0;
+}
+
+.files td.cell-actions .glyphicon-upload {
+    color: #6ebd4b;
+}
+
+.files td.cell-actions .glyphicon-remove-circle {
+    color: #d01f31;
+}
+
+.files tbody tr:hover td.cell-actions {
+    opacity: 1;
+}
+
+.footer {
+    border-top: 2px solid #999;
+    height: 34px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    font-size: 13px;
+    padding-bottom: 4px;
+    letter-spacing: 0.04em;
 }

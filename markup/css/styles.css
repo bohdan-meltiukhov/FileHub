@@ -14,14 +14,13 @@ a:hover {
 }
 
 .button {
-    height: 31px;
     border: 1px solid #2f6da4;
     border-radius: 4px;
     background-color: #337ab7;
     color: #fff;
     font-size: 14px;
     letter-spacing: -0.01em;
-    padding: 0 12px;
+    padding: 6px 12px;
 }
 
 .button:hover {
@@ -141,7 +140,7 @@ a:hover {
     border-radius: 8px;
     padding: 18px 20px;
     font-size: 13px;
-    box-shadow: 0 0 15px grey;
+    box-shadow: 0 0 15px #808080;
 }
 
 .content .logo {
@@ -180,7 +179,6 @@ a:hover {
 }
 
 .files tr {
-    height: 53px;
     border-bottom: 1px solid #999;
 }
 
@@ -189,9 +187,7 @@ a:hover {
 }
 
 .files thead th {
-
-    vertical-align: middle;
-    padding-left: 12px;
+    padding: 10px 0 10px 12px;
 }
 
 .files thead .upper-directory {
@@ -202,19 +198,20 @@ a:hover {
     font-size: 20px;
 }
 
-.files thead .current-directory .directory-name {
-    float: left;
-    font-size: 24px;
+.files thead .current-directory {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.files thead .current-directory .function-buttons {
-    float: right;
+.files thead .current-directory .directory-name {
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .files td {
     vertical-align: middle;
-    padding-top: 2px;
-    padding-left: 12px;
+    padding: 15px 0 15px 12px;
 }
 
 .files td.arrow {

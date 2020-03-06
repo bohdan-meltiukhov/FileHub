@@ -10,90 +10,54 @@
 </head>
 <body>
 
-<div class="content">
-    <img src="images/logo.png" class="logo">
+<div class="application-box content">
+    <img src="images/logo.png" class="logo" alt="logo">
 
     <ul class="menu">
         <li><span class="glyphicon glyphicon-user"></span> John Doe</li>
-        <li>Log Out <span class="glyphicon glyphicon-log-out"></span></li>
+        <li><a href="authentication.html">Log Out <span class="glyphicon glyphicon-log-out"></span></a></li>
     </ul>
 
-    <div>
-        <header class="header">
-            <h1>File Explorer</h1>
-        </header>
+    <header class="header">
+        <h1>File Explorer</h1>
+    </header>
 
-        <main>
-            <table class="files">
-                <thead>
-                <tr>
-                    <th class="upper-directory">
-                        <span class="glyphicon glyphicon-folder-open"></span>
-                    </th>
-                    <th colspan="4">
-                        <div class="current-directory">
-                            <span class="directory-name">/ Root</span>
-                            <div class="function-buttons">
-                                <button class="button"><span class="glyphicon glyphicon-upload"></span> Upload File
-                                </button>
-                            </div>
+    <main class="file-list">
+        <table class="files">
+            <thead>
+            <tr>
+                <th class="icon-cell">
+                    <span class="glyphicon glyphicon-folder-open"></span>
+                </th>
+                <th colspan="3">
+                    <div class="current-directory">
+                        <span class="directory-name">/ Root</span>
+                        <div class="function-buttons">
+                            <button class="button"><span class="glyphicon glyphicon-upload"></span> Upload File
+                            </button>
                         </div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="arrow">
-                        <span class="glyphicon glyphicon-menu-right"></span>
-                    </td>
-                    <td class="file-icon"><span class="glyphicon glyphicon-folder-open"></span></td>
-                    <td class="filename">Documents</td>
-                    <td class="count">2 items</td>
-                    <td class="cell-actions">
-                        <span class="glyphicon glyphicon-upload"></span>
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="arrow">
-                        <span class="glyphicon glyphicon-menu-right"></span>
-                    </td>
-                    <td class="file-icon"><span class="glyphicon glyphicon-folder-open"></span></td>
-                    <td class="filename">Images</td>
-                    <td class="count">2 items</td>
-                    <td class="cell-actions">
-                        <span class="glyphicon glyphicon-upload"></span>
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="arrow">
-                        <span class="glyphicon glyphicon-menu-right"></span>
-                    </td>
-                    <td class="file-icon"><span class="glyphicon glyphicon-folder-open"></span></td>
-                    <td class="filename">Video</td>
-                    <td class="count">2 items</td>
-                    <td class="cell-actions">
-                        <span class="glyphicon glyphicon-upload"></span>
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="arrow">
-                        <span class="glyphicon glyphicon-menu-right"></span>
-                    </td>
-                    <td class="file-icon"><span class="glyphicon glyphicon-folder-open"></span></td>
-                    <td class="filename">Music</td>
-                    <td class="count">2 items</td>
-                    <td class="cell-actions">
-                        <span class="glyphicon glyphicon-upload"></span>
-                        <span class="glyphicon glyphicon-remove-circle"></span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </main>
-    </div>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="icon-cell">
+                    <span class="glyphicon glyphicon-menu-right"></span>
+                </td>
+                <td class="filename"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;
+                    <a href="#">Documents</a>
+                </td>
+                <td class="count">2 items</td>
+                <td class="cell-actions">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </main>
 
     <footer class="footer">
         Copyright © 2020 <a href="https://www.teamdev.com/" target="_blank">TeamDev</a>. All rights reserved.

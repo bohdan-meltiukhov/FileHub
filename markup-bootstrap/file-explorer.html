@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>File Explorer</title>
+
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="css/styles.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <script src="js/tooltips.js"></script>
+</head>
+<body>
+
+<div class="application-box">
+    <img src="images/logo.png" class="logo" alt="logo">
+
+    <ul class="menu">
+        <li><span class="glyphicon glyphicon-user"></span> John Doe</li>
+        <li><a href="authentication.html">Log Out <span class="glyphicon glyphicon-log-out"></span></a></li>
+    </ul>
+
+    <header class="header">
+        <a href="#"><h1>File Explorer</h1></a>
+    </header>
+
+    <main class="file-list">
+        <div class="current-directory">
+            <span class="glyphicon glyphicon-folder-open folder-icon"></span>
+            <span class="directory-name">/ Root</span>
+            <div class="function-buttons">
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-plus"></span> Create folder
+                </button>
+                <button type="button" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-upload"></span> Upload File
+                </button>
+            </div>
+        </div>
+
+        <table class="table table-hover files">
+            <tr>
+                <td class="icon-cell">
+                    <span class="glyphicon glyphicon-menu-right"></span>
+                </td>
+                <td class="filename">
+                    <span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;
+                    <span class="name" data-toggle="tooltip" data-placement="top" title="Documents"><a href="#">Documents</a></span>
+                    <input type="text" name="new-name" class="form-control" value="Documents">
+                </td>
+                <td class="count">2 items</td>
+                <td class="cell-actions">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="icon-cell">
+                    <span class="glyphicon glyphicon-menu-right"></span>
+                </td>
+                <td class="filename">
+                    <span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;
+                    <span class="name" data-toggle="tooltip" data-placement="top" title="Images"><a href="#">Images</a></span>
+                    <input type="text" name="new-name" class="form-control" value="Images">
+                </td>
+                <td class="count">215 items</td>
+                <td class="cell-actions">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="icon-cell">
+                </td>
+                <td class="filename">
+                    <span class="glyphicon glyphicon-music"></span>&nbsp;&nbsp;
+                    <span class="name" data-toggle="tooltip" data-placement="top" title="hello.mp3">hello.mp3</span>
+                    <input type="text" name="new-name" class="form-control" value="hello.mp3">
+                </td>
+                <td class="count">15 MB</td>
+                <td class="cell-actions">
+                    <span class="glyphicon glyphicon-download"></span>
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="icon-cell">
+                </td>
+                <td class="filename">
+                    <span class="glyphicon glyphicon-film"></span>&nbsp;&nbsp;
+                    <span class="name" data-toggle="tooltip" data-placement="top" title="film.avi">film.avi</span>
+                    <input type="text" name="new-name" class="form-control" value="film.avi">
+                </td>
+                <td class="count">1.3 GB</td>
+                <td class="cell-actions">
+                    <span class="glyphicon glyphicon-download"></span>
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </td>
+            </tr>
+        </table>
+    </main>
+
+    <footer class="footer">
+        Copyright &copy; 2020 <a href="https://www.teamdev.com/" target="_blank">TeamDev</a>. All rights reserved.
+    </footer>
+</div>
+
+</body>
+</html>

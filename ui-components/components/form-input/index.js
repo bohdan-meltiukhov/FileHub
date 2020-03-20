@@ -2,12 +2,16 @@ import Component from "../component.js";
 
 export default class FormInput extends Component {
 
-    /** Default values for the label, the placeholder and the help text. */
-    _labelText = 'Label';
-    _placeholder = 'Placeholder';
-    _type = 'text';
-    _helpText = 'Help text';
-    _helpTextDisplayed = false;
+    constructor(container, {labelText = 'Label', placeholder = 'Placeholder', type = 'text'}) {
+        super(container);
+
+        this._labelText = labelText;
+        this._placeholder = placeholder;
+        this._type = type;
+        this._helpText = '';
+
+        this.render();
+    }
 
     markup() {
         return `
@@ -16,38 +20,33 @@ export default class FormInput extends Component {
     
                 <div class="input-block">
                     <input type="${this._type}" name="username" class="input" placeholder="${this._placeholder}">
-                    <span class="error-message">${this._helpTextDisplayed ? this._helpText : ''}</span>
+                    <span class="error-message">${this._helpText}</span>
                 </div>
             </div>
         `;
     }
 
-    checkLogin() {
-        const login = this.rootContainer.querySelector('.input').value;
-        return login !== '';
-    }
-
-    displayHelpText() {
-        this._helpTextDisplayed = true;
-    }
-
-    hideHelpText() {
-        this._helpTextDisplayed = false;
+    get inputValue() {
+        return this.rootElement.querySelector('.input').value;
     }
 
     set labelText(value) {
         this._labelText = value;
+        this.rootElement.querySelector('.input-label').innerText = value;
     }
 
     set placeholder(value) {
         this._placeholder = value;
+        this.rootElement.querySelector('.input').placeholder = value;
     }
 
     set type(value) {
         this._type = value;
+        this.rootElement.querySelector('.input').type = value;
     }
 
     set helpText(value) {
         this._helpText = value;
+        this.rootElement.querySelector('.error-message').innerText = value;
     }
 }

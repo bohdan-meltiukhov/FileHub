@@ -4,12 +4,16 @@ export default class Component {
     }
 
     init(container) {
-        this.rootContainer = document.createElement('span');
-        container.append(this.rootContainer);
+        this._container = container;
     }
 
     render() {
-        this.rootContainer.innerHTML = this.markup();
+        const fakeElement = document.createElement('div');
+        fakeElement.innerHTML = this.markup();
+
+        this.rootElement = fakeElement.firstElementChild;
+        this._container.appendChild(this.rootElement);
+
         this.initNestedComponents();
         this.addEventListeners();
     }

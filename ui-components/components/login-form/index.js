@@ -11,7 +11,7 @@ export default class LoginForm extends Component {
 
     markup() {
         return `
-            <div class="application-box form-dialog">
+            <form class="application-box form-dialog">
                 <img src="images/logo.png" class="logo" alt="logo">
             
                 <div class="form-header"></div>
@@ -24,59 +24,62 @@ export default class LoginForm extends Component {
                     <div class="login-form-footer"></div>
                 </main>
             
-            </div>
+            </form>
         `;
     }
 
 
     initNestedComponents() {
-        const loginInputContainer = this.rootContainer.querySelector('.login-input');
-        this.loginInput = new FormInput(loginInputContainer);
-        this.loginInput.labelText = 'Username';
-        this.loginInput.placeholder = 'Email';
-        this.loginInput.type = 'text';
-        this.loginInput.helpText = 'Username can\'t be empty';
-        this.loginInput.render();
+        const loginInputContainer = this.rootElement.querySelector('.login-input');
+        this.loginInput = new FormInput(loginInputContainer, {
+            labelText: 'Username',
+            placeholder: 'Email',
+            type: 'text'
+        });
 
-        const passwordInputContainer = this.rootContainer.querySelector('.password-input');
-        this.passwordInput = new FormInput(passwordInputContainer);
-        this.passwordInput.labelText = 'Password';
-        this.passwordInput.placeholder = 'Password';
-        this.passwordInput.type = 'password';
-        this.passwordInput.helpText = 'Password can\'t be empty and should contain letters and numbers';
-        this.passwordInput.render();
+        const passwordInputContainer = this.rootElement.querySelector('.password-input');
+        this.passwordInput = new FormInput(passwordInputContainer, {
+            labelText: 'Password',
+            placeholder: 'Password',
+            type: 'password'
+        });
 
-        const footerContainer = this.rootContainer.querySelector('.login-form-footer');
-        this.formFooter = new FormFooter(footerContainer);
-        this.formFooter.buttonText = 'Log In';
-        this.formFooter.linkText = 'Don\'t have an account yet?';
-        this.formFooter.linkDirection = 'registration.html';
-        this.formFooter.render();
+        const footerContainer = this.rootElement.querySelector('.login-form-footer');
+        this.formFooter = new FormFooter(footerContainer, {
+            buttonText: 'Log In',
+            linkText: 'Don\'t have an account yet?',
+            linkDirection: 'registration.html'
+        });
 
-        const headerContainer = this.rootContainer.querySelector('.form-header');
-        this.header = new FormHeader(headerContainer);
-        this.header.header = 'Login';
-        this.header.render();
+        const headerContainer = this.rootElement.querySelector('.form-header');
+        this.header = new FormHeader(headerContainer, {
+            text: 'Login'
+        });
     }
 
     checkInputs() {
-        if (this.loginInput.checkLogin()) {
-            this.loginInput.hideHelpText();
+        if (this.loginInput.inputValue !== '') {
+            this.loginInput.helpText = '';
         } else {
-            this.loginInput.displayHelpText();
+            this.loginInput.helpText = 'Username can\'t be empty';
         }
-        this.loginInput.render();
 
-        if (this.passwordInput.checkLogin()) {
-            this.passwordInput.hideHelpText();
+        if (this.passwordInput.inputValue !== '') {
+            this.passwordInput.helpText = '';
         } else {
-            this.passwordInput.displayHelpText();
+            this.passwordInput.helpText = 'Password can\'t be empty';
         }
-        this.passwordInput.render();
     }
 
     addEventListeners() {
-        const button = this.rootContainer.querySelector('.button');
-        button.addEventListener('click', this.checkInputs.bind(this));
+        const button = this.rootElement.querySelector('.button');
+        button.addEventListener('click', () => this.checkInputs());
+
+        this.formFooter.addButtonClickHandler(() => this.checkInputs());
+
+        this.rootElement.addEventListener('submit', (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+        });
     }
 }

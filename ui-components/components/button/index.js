@@ -2,7 +2,14 @@ import Component from "../component.js";
 
 export default class Button extends Component {
 
-    _buttonText = 'Submit';
+    _clickHandlers = [];
+
+    constructor(container, {buttonText = 'Submit'}) {
+        super(container);
+
+        this._buttonText = buttonText;
+        this.render();
+    }
 
     markup() {
         return `
@@ -10,7 +17,19 @@ export default class Button extends Component {
         `;
     }
 
+    addClickHandler(handler) {
+        this._clickHandlers.push(handler);
+    }
+
+
+    addEventListeners() {
+        this.rootElement.addEventListener('click', () => {
+            this._clickHandlers.forEach((handler) => handler());
+        });
+    }
+
     set buttonText(value) {
         this._buttonText = value;
+        this.rootElement.querySelector('.button').innerText = value;
     }
 }

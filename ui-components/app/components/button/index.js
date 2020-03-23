@@ -4,7 +4,7 @@ export default class Button extends Component {
 
     _clickHandlers = [];
 
-    constructor(container, {buttonText = 'Submit'}) {
+    constructor(container, {buttonText = 'Submit'} = {}) {
         super(container);
 
         this._buttonText = buttonText;
@@ -30,6 +30,6 @@ export default class Button extends Component {
 
     set buttonText(value) {
         this._buttonText = value;
-        this.rootElement.querySelector('.button').innerText = value;
+        this.rootElement.innerText = value;
     }
 }

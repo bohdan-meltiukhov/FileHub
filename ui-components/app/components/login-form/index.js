@@ -5,14 +5,16 @@ import FormHeader from "../form-header";
 
 export default class LoginForm extends Component {
 
-    constructor(...args) {
-        super(...args);
+    constructor(container) {
+        super(container);
+
+        this.render();
     }
 
     markup() {
         return `
             <form class="application-box form-dialog">
-                <img src="images/logo.png" class="logo" alt="logo">
+                <img src="app/images/logo.png" class="logo" alt="logo">
             
                 <div class="form-header"></div>
             
@@ -72,9 +74,6 @@ export default class LoginForm extends Component {
     }
 
     addEventListeners() {
-        const button = this.rootElement.querySelector('.button');
-        button.addEventListener('click', () => this.checkInputs());
-
         this.formFooter.addButtonClickHandler(() => this.checkInputs());
 
         this.rootElement.addEventListener('submit', (event) => {

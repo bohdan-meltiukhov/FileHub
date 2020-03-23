@@ -7,7 +7,7 @@ export default class FormFooter extends Component {
         buttonText = 'Submit',
         linkText = 'Take me to another page',
         linkDirection = '#'
-    }) {
+    } = {}) {
         super(container);
 
         this._buttonText = buttonText;

@@ -2,7 +2,7 @@ import Component from "../component.js";
 
 export default class FormHeader extends Component {
 
-    constructor(container, {text = 'Header'}) {
+    constructor(container, {text = 'Header'} = {}) {
         super(container);
 
         this._text = text;

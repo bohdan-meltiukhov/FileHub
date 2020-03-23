@@ -2,7 +2,7 @@ import Component from "../component.js";
 
 export default class FormInput extends Component {
 
-    constructor(container, {labelText = 'Label', placeholder = 'Placeholder', type = 'text'}) {
+    constructor(container, {labelText = 'Label', placeholder = 'Placeholder', type = 'text'} = {}) {
         super(container);
 
         this._labelText = labelText;

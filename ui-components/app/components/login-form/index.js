@@ -50,7 +50,7 @@ export default class LoginForm extends Component {
         this.formFooter = new FormFooter(footerContainer, {
             buttonText: 'Log In',
             linkText: 'Don\'t have an account yet?',
-            linkDirection: 'registration.html'
+            linkDirection: '#/registration'
         });
 
         const headerContainer = this.rootElement.querySelector('.form-header');

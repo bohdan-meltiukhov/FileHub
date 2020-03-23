@@ -1,5 +1,7 @@
 import Component from "../component.js";
 import LoginForm from "../login-form";
+import RegistrationForm from "../registration-form";
+import Router from "../../../router.js";
 
 export default class Application extends Component {
 
@@ -16,5 +18,15 @@ export default class Application extends Component {
     initNestedComponents() {
         const loginFormContainer = this.rootElement;
         this.loginForm = new LoginForm(loginFormContainer);
+
+        const pageMapping = {
+            '/authentication': LoginForm,
+            '/registration': RegistrationForm
+        }
+
+        const router = new Router(this.rootElement, pageMapping);
+
+        router.defaultLocation = '/authentication';
+        this.router = router;
     }
 }

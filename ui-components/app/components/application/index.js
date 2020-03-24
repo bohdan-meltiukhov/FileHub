@@ -16,13 +16,10 @@ export default class Application extends Component {
     }
 
     initNestedComponents() {
-        const loginFormContainer = this.rootElement;
-        this.loginForm = new LoginForm(loginFormContainer);
-
         const pageMapping = {
             '/authentication': LoginForm,
             '/registration': RegistrationForm
-        }
+        };
 
         const router = new Router(this.rootElement, pageMapping);
 

@@ -21,7 +21,6 @@ export default class Button extends Component {
         this._clickHandlers.push(handler);
     }
 
-
     addEventListeners() {
         this.rootElement.addEventListener('click', () => {
             this._clickHandlers.forEach((handler) => handler());

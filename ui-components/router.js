@@ -9,6 +9,9 @@ export default class Router {
     }
 
     init() {
+        const initialHash = window.location.hash.slice(1);
+        this.loadPage(initialHash);
+
         window.addEventListener('hashchange', () => {
             const hash = window.location.hash.slice(1);
             this._hashChangeHandlers.forEach(handler => handler(hash));

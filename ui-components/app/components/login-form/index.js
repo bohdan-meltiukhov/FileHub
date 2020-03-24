@@ -30,7 +30,6 @@ export default class LoginForm extends Component {
         `;
     }
 
-
     initNestedComponents() {
         const loginInputContainer = this.rootElement.querySelector('.login-input');
         this.loginInput = new FormInput(loginInputContainer, {

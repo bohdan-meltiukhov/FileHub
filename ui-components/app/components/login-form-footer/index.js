@@ -2,7 +2,6 @@ import Component from "../component.js";
 import Button from "../button";
 
 export default class FormFooter extends Component {
-
     constructor(container, {
         buttonText = 'Submit',
         linkText = 'Take me to another page',

@@ -4,18 +4,23 @@ import FormInput from '../form-input';
 import FormFooter from '../login-form-footer';
 
 /**
- *Hi.
+ * A component for registration forms.
  */
 export default class RegistrationForm extends Component {
+  /**
+   * Creates an instance of the registration form component with set container.
+   *
+   * @param {Element} container - The parent element for the registration form component.
+   */
   constructor(container) {
     super(container);
     this.render();
   }
 
   /**
-   *Hello.
+   * Provides an HTML representation of teh registration form component.
    *
-   * @returns {string} Something
+   * @returns {string} An HTML code that represents the registration form component.
    */
   markup() {
     return `
@@ -37,6 +42,9 @@ export default class RegistrationForm extends Component {
         `;
   }
 
+  /**
+   * Initialises all the child components for the registration form component.
+   */
   initNestedComponents() {
     const headerContainer = this.rootElement.querySelector('.form-header');
     this.header = new FormHeader(headerContainer, {
@@ -72,6 +80,9 @@ export default class RegistrationForm extends Component {
     });
   }
 
+  /**
+   * Verifies that values from the form inputs meet the requirements.
+   */
   checkInputs() {
     const login = this.loginInput.inputValue;
     if (login.length <= 4 && !/[A-Za-z0-9]+$/.test(login)) {
@@ -106,6 +117,9 @@ export default class RegistrationForm extends Component {
     }
   }
 
+  /**
+   * Adds button onclick handlers and prevents default behavior of the form.
+   */
   addEventListeners() {
     this.formFooter.addButtonClickHandler(() => this.checkInputs());
 

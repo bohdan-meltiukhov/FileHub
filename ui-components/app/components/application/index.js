@@ -4,22 +4,20 @@ import RegistrationForm from '../registration-form';
 import Router from '../../../router.js';
 
 /**
- * The main component on any page that defines routing between different pages.
+ * The component for the web application.
  */
 export default class Application extends Component {
   /**
    * Creates an instance of the application component with set container.
    *
-   * @param {Element} container - A parent element for the application component.
+   * @param {Element} container - The parent element for the application component.
    */
   constructor(container) {
     super(container);
   }
 
   /**
-   * Provides an HTML markup for the application component.
-   *
-   * @returns {string} A <div> element that represents the application component.
+   * @inheritdoc
    */
   markup() {
     return `
@@ -28,7 +26,7 @@ export default class Application extends Component {
   }
 
   /**
-   * Initialises a router and defines all the possible routes.
+   * @inheritdoc
    */
   initNestedComponents() {
     const pageMapping = {

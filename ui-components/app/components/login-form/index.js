@@ -4,7 +4,7 @@ import FormFooter from '../login-form-footer';
 import FormHeader from '../form-header';
 
 /**
- * A component for authentication forms.
+ * The component for the authentication form.
  */
 export default class LoginForm extends Component {
   /**
@@ -19,9 +19,7 @@ export default class LoginForm extends Component {
   }
 
   /**
-   * Provides an HTML representation of the login form component.
-   *
-   * @returns {string} - An HTML code that represents the login form component.
+   * @inheritdoc
    */
   markup() {
     return `
@@ -43,7 +41,7 @@ export default class LoginForm extends Component {
   }
 
   /**
-   * Initialises all the children components of the login form component with set properties.
+   * @inheritdoc
    */
   initNestedComponents() {
     const loginInputContainer = this.rootElement.querySelector('.login-input');
@@ -69,7 +67,7 @@ export default class LoginForm extends Component {
 
     const headerContainer = this.rootElement.querySelector('.form-header');
     this.header = new FormHeader(headerContainer, {
-      text: 'Login',
+      headerText: 'Login',
     });
   }
 
@@ -91,7 +89,7 @@ export default class LoginForm extends Component {
   }
 
   /**
-   * Adds button onclick handlers and prevents default behavior of the form.
+   * @inheritdoc
    */
   addEventListeners() {
     this.formFooter.addButtonClickHandler(() => this.checkInputs());

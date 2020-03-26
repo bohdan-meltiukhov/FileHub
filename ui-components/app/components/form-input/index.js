@@ -5,12 +5,19 @@ import Component from '../component.js';
  */
 export default class FormInput extends Component {
   /**
+   * The object for providing the initial form input configurations via the constructor.
+   *
+   * @typedef {object} Parameters
+   * @property {string} labelText - The text for the input label.
+   * @property {string} placeholder - The input placeholder value.
+   * @property {string} - The type of the input.
+   */
+
+  /**
    * Creates an instance of the form input component with set container and properties.
    *
    * @param {Element} container - The parent element for the current form input.
-   * @param {string} labelText - The text for te input label.
-   * @param {string} placeholder - The input placeholder value.
-   * @param {string} type - The type of the input.
+   * @param {Parameters} parameters - The initial form input parameters.
    */
   constructor(container, {
     labelText = 'Label',
@@ -28,9 +35,7 @@ export default class FormInput extends Component {
   }
 
   /**
-   * Provides an HTML representation of the form input component.
-   *
-   * @returns {string} - An HTML code that represents the form input component.
+   * @inheritdoc
    */
   markup() {
     return `

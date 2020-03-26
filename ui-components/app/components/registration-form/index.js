@@ -2,9 +2,10 @@ import Component from '../component.js';
 import FormHeader from '../form-header';
 import FormInput from '../form-input';
 import FormFooter from '../login-form-footer';
+import Validator from '../validator.js';
 
 /**
- * A component for registration forms.
+ * The component for the registration form.
  */
 export default class RegistrationForm extends Component {
   /**
@@ -18,9 +19,7 @@ export default class RegistrationForm extends Component {
   }
 
   /**
-   * Provides an HTML representation of teh registration form component.
-   *
-   * @returns {string} An HTML code that represents the registration form component.
+   * @inheritdoc
    */
   markup() {
     return `
@@ -43,12 +42,12 @@ export default class RegistrationForm extends Component {
   }
 
   /**
-   * Initialises all the child components for the registration form component.
+   * @inheritdoc
    */
   initNestedComponents() {
     const headerContainer = this.rootElement.querySelector('.form-header');
     this.header = new FormHeader(headerContainer, {
-      text: 'Registration',
+      headerText: 'Registration',
     });
 
     const loginInputContainer = this.rootElement.querySelector('.login-input');
@@ -83,45 +82,41 @@ export default class RegistrationForm extends Component {
   /**
    * Verifies that values from the form inputs meet the requirements.
    */
-  checkInputs() {
-    const login = this.loginInput.inputValue;
-    if (login.length <= 4 && !/[A-Za-z0-9]+$/.test(login)) {
-      this.loginInput.helpText = 'The username should have more than 4 characters and can contain ' +
-        'only latin letters and digits';
-    } else if (login.length <= 4) {
-      this.loginInput.helpText = 'The username should have more than 4 characters';
-    } else if (!/[A-Za-z0-9]+$/.test(login)) {
-      this.loginInput.helpText = 'The username can contain only latin letters and digits';
-    } else {
-      this.loginInput.helpText = '';
-    }
+  verifyForm() {
+    const validator = new Validator();
 
-    const password = this.passwordInput.inputValue;
-    if (password.length < 8 && /[0-9]+.*[a-z]+.*[A-Z]+.*$/.test(password)) {
-      this.passwordInput.helpText = 'The password should have 8 or more characters and contain at least ' +
-        'one digit, one lowercase letter, and one uppercase letter';
-    } else if (password.length < 8) {
-      this.passwordInput.helpText = 'The password should have 8 or more characters';
-    } else if (/[0-9]+.*[a-z]+.*[A-Z]+.*$/.test(password)) {
-      this.passwordInput.helpText = 'The password should contain at least one digit, one lowercase letter, ' +
-        'and one uppercase letter';
-    } else {
-      this.passwordInput.helpText = '';
-    }
+    const usernameProperties = {
+      inputName: 'username',
+      minLength: 5,
+      regExp: /^[A-Za-z0-9]+$/,
+      regExpDescription: 'contain only latin letters and digits',
+    };
 
-    const confirmPassword = this.confirmPasswordInput.inputValue;
-    if (confirmPassword !== password) {
-      this.confirmPasswordInput.helpText = 'The passwords do not match';
-    } else {
-      this.confirmPasswordInput.helpText = '';
-    }
+    validator.validate(this.loginInput, usernameProperties);
+
+    const passwordProperties = {
+      inputName: 'password',
+      minLength: 8,
+      regExp: /^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/,
+      regExpDescription: 'contain at least one digit, one lowercase letter, and one uppercase letter',
+    };
+
+    validator.validate(this.passwordInput, passwordProperties);
+
+    const confirmPasswordProperties = {
+      inputName: 'second password',
+      equals: this.passwordInput.inputValue,
+      equalsDescription: 'be equal to the first password',
+    };
+
+    validator.validate(this.confirmPasswordInput, confirmPasswordProperties);
   }
 
   /**
-   * Adds button onclick handlers and prevents default behavior of the form.
+   * @inheritdoc
    */
   addEventListeners() {
-    this.formFooter.addButtonClickHandler(() => this.checkInputs());
+    this.formFooter.addButtonClickHandler(() => this.verifyForm());
 
     this.rootElement.addEventListener('submit', (event) => {
       event.preventDefault();

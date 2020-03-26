@@ -10,7 +10,6 @@ export default class Component {
    * @param {Element} container - A parent element for the current component.
    */
   constructor(container) {
-    console.log(container);
     this.init(container);
   }
 
@@ -38,7 +37,10 @@ export default class Component {
   }
 
   /**
-   * An abstract method for creating an HTML markup for the current component.
+   * Provides an HTML representation of the current component.
+   *
+   * @returns {string} An HTML code that represents the current component.
+   * @abstract
    */
   markup() {
   }

@@ -13,10 +13,17 @@ export default class Button extends Component {
   _clickHandlers = [];
 
   /**
+   * The object for providing the initial button configurations via the constructor.
+   *
+   * @typedef {object} Parameters
+   * @property {string} buttonText - The text to be displayed inside the button.
+   */
+
+  /**
    * Creates an instance of the button component with set container and button text.
    *
-   * @param {Element} container - A parent element for the current component.
-   * @param {string} buttonText - A text to be displayed inside the button.
+   * @param {Element} container - The parent element for the current component.
+   * @param {Parameters} parameters - The initial button configurations.
    */
   constructor(container, {buttonText = 'Submit'} = {}) {
     super(container);
@@ -25,11 +32,7 @@ export default class Button extends Component {
     this.render();
   }
 
-  /**
-   * Generates an HTML representation of a button component.
-   *
-   * @returns {string} - The HTML code to be displayed on the page.
-   */
+  /** @inheritdoc */
   markup() {
     return `
             <button class="button">${this._buttonText}</button>
@@ -37,16 +40,14 @@ export default class Button extends Component {
   }
 
   /**
-   * Adds a handler to the button click event.
-   *
-   * @param {Function} handler - A function to be called when the button is pressed.
+   * @inheritdoc
    */
   addClickHandler(handler) {
     this._clickHandlers.push(handler);
   }
 
   /**
-   * Calls each function from the {@link _clickHandlers} array when the button is pressed.
+   * @inheritdoc
    */
   addEventListeners() {
     this.rootElement.addEventListener('click', () => {

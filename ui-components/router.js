@@ -1,5 +1,4 @@
 export default class Router {
-
   _hashChangeHandlers = [];
 
   constructor(rootElement, pageMapping, defaultLocation) {
@@ -18,6 +17,11 @@ export default class Router {
     this.loadPage(initialHash);
 
     window.addEventListener('hashchange', () => {
+      if (window.location.hash === '') {
+        window.location.hash = `#${this._defaultLocation}`;
+        return;
+      }
+
       const hash = window.location.hash.slice(1);
       this._hashChangeHandlers.forEach((handler) => handler(hash));
       this.loadPage(hash);
@@ -33,12 +37,4 @@ export default class Router {
     this._rootElement.innerHTML = '';
     new Page(this._rootElement);
   }
-
-  // set defaultLocation(location) {
-  //   this._defaultLocation = location;
-  //
-  //   if (window.location.hash === '') {
-  //     window.location.hash = `#${location}`;
-  //   }
-  // }
 }

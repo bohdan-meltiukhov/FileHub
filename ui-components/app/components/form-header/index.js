@@ -5,27 +5,32 @@ import Component from '../component.js';
  */
 export default class FormHeader extends Component {
   /**
+   * The object for providing the initial header configurations via the constructor.
+   *
+   * @typedef {object} Parameters
+   * @property {string} headerText - The text to be displayed in the header.
+   */
+
+  /**
    * Creates an instance of the form header component with set container and header text.
    *
-   * @param {Element} container - A parent element for the current form header component.
-   * @param {string} text - The text to be displayed in the header.
+   * @param {Element} container - The parent element for the current form header component.
+   * @param {Parameters} parameters - The initial header configurations.
    */
-  constructor(container, {text = 'Header'} = {}) {
+  constructor(container, {headerText = 'Header'} = {}) {
     super(container);
 
-    this._text = text;
+    this._headerText = headerText;
     this.render();
   }
 
   /**
-   * Provides an HTML representation of the form header element.
-   *
-   * @returns {string} - An HTML code that represents the header component.
+   * @inheritdoc
    */
   markup() {
     return `
             <header class="header">
-                <h1>${this._text}</h1>
+                <h1>${this._headerText}</h1>
                 <span class="glyphicon glyphicon-user"></span>
             </header>
         `;
@@ -37,7 +42,7 @@ export default class FormHeader extends Component {
    * @param {string} value - The new text to be displayed in the header.
    */
   set text(value) {
-    this._text = value;
+    this._headerText = value;
     this.rootElement.querySelector('h1').innerText = value;
   }
 }

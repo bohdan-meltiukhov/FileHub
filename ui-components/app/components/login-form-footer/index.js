@@ -6,12 +6,19 @@ import Button from '../button';
  */
 export default class FormFooter extends Component {
   /**
+   * The object for providing the initial form footer configurations via the constructor.
+   *
+   * @typedef {object} Parameters
+   * @property {string} buttonText - The text to be displayed inside the submit button.
+   * @property {string} linkText - The text of the form link.
+   * @property {string} linkDirection - The href value of the form link.
+   */
+
+  /**
    * Creates an instance of the form footer with set container and properties.
    *
    * @param {Element} container - The parent element for the form footer component.
-   * @param {string} buttonText - The text to be displayed inside the submit button.
-   * @param {string} linkText - The text of the form link.
-   * @param {string} linkDirection - The href value of the form link.
+   * @param {Parameters} parameters - The initial form footer configurations.
    */
   constructor(container, {
     buttonText = 'Submit',
@@ -28,9 +35,7 @@ export default class FormFooter extends Component {
   }
 
   /**
-   * Provides an HTML representation of the form footer component.
-   *
-   * @returns {string} - An HTML code that represents the form footer component.
+   * @inheritdoc
    */
   markup() {
     return `
@@ -44,7 +49,7 @@ export default class FormFooter extends Component {
   }
 
   /**
-   * Initialises the form button with set button text.
+   * @inheritdoc
    */
   initNestedComponents() {
     const buttonContainer = this.rootElement.querySelector('.submit-button');

@@ -2,6 +2,7 @@ import Component from '../component.js';
 import FormInput from '../form-input';
 import FormFooter from '../login-form-footer';
 import FormHeader from '../form-header';
+import Validator from '../validator.js';
 
 /**
  * The component for the authentication form.
@@ -74,25 +75,25 @@ export default class LoginForm extends Component {
   /**
    * Verifies that values from the form inputs meet the requirements.
    */
-  checkInputs() {
-    if (this.loginInput.inputValue !== '') {
-      this.loginInput.helpText = '';
-    } else {
-      this.loginInput.helpText = 'Username can\'t be empty';
-    }
+  validateForm() {
+    const validator = new Validator();
 
-    if (this.passwordInput.inputValue !== '') {
-      this.passwordInput.helpText = '';
-    } else {
-      this.passwordInput.helpText = 'Password can\'t be empty';
-    }
+    validator.validate(this.loginInput, {
+      inputName: 'username',
+      minLength: 1,
+    });
+
+    validator.validate(this.passwordInput, {
+      inputName: 'password',
+      minLength: 1,
+    });
   }
 
   /**
    * @inheritdoc
    */
   addEventListeners() {
-    this.formFooter.addButtonClickHandler(() => this.checkInputs());
+    this.formFooter.addButtonClickHandler(() => this.validateForm());
 
     this.rootElement.addEventListener('submit', (event) => {
       event.preventDefault();

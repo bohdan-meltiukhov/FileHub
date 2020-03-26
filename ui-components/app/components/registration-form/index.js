@@ -82,7 +82,7 @@ export default class RegistrationForm extends Component {
   /**
    * Verifies that values from the form inputs meet the requirements.
    */
-  verifyForm() {
+  validateForm() {
     const validator = new Validator();
 
     const usernameProperties = {
@@ -116,7 +116,7 @@ export default class RegistrationForm extends Component {
    * @inheritdoc
    */
   addEventListeners() {
-    this.formFooter.addButtonClickHandler(() => this.verifyForm());
+    this.formFooter.addButtonClickHandler(() => this.validateForm());
 
     this.rootElement.addEventListener('submit', (event) => {
       event.preventDefault();

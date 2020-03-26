@@ -19,12 +19,12 @@ test('should check inputs.', (assert) => {
     const loginHelpText = form.querySelector('.login-input .error-message');
 
     loginInput.value = 'name@example.com';
-    element.checkInputs();
+    element.validateForm();
     assert.strictEqual(loginHelpText.innerText, '', 'The login form should remove the help text when the ' +
         'username is not empty.');
 
     loginInput.value = '';
-    element.checkInputs();
+    element.validateForm();
     assert.strictEqual(loginHelpText.innerText, 'Username can\'t be empty', 'The login form should show the help ' +
         'text when the username is empty.');
 
@@ -32,12 +32,12 @@ test('should check inputs.', (assert) => {
     const passwordHelpText = form.querySelector('.password-input .error-message');
 
     passwordInput.value = 'ddnchd683whid';
-    element.checkInputs();
+    element.validateForm();
     assert.strictEqual(passwordHelpText.innerText, '', 'The password form should remove the help text when the ' +
         'username is not empty.');
 
     passwordInput.value = '';
-    element.checkInputs();
+    element.validateForm();
     assert.strictEqual(passwordHelpText.innerText, 'Password can\'t be empty', 'The password form should show the help ' +
         'text when the username is empty.')
 });

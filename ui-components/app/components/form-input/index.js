@@ -60,6 +60,15 @@ export default class FormInput extends Component {
   }
 
   /**
+   * Shows whether there is any error message in the help text.
+   *
+   * @returns {boolean} True in case the help text field is empty.
+   */
+  inputValid() {
+    return this._helpText === '';
+  }
+
+  /**
    * Assigns the provided value to the input label text and changes the inner text of the label.
    *
    * @param {string} value - The new label text.

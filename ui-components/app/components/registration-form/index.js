@@ -3,6 +3,8 @@ import FormHeader from '../form-header';
 import FormInput from '../form-input';
 import FormFooter from '../login-form-footer';
 import Validator from '../validator.js';
+import APIService from '../../services/api-service';
+import UserCredentials from '../../models/user-credentials';
 
 /**
  * The component for the registration form.
@@ -110,6 +112,21 @@ export default class RegistrationForm extends Component {
     };
 
     validator.validate(this.confirmPasswordInput, confirmPasswordProperties);
+
+    if (!(this.loginInput.inputValid() && this.passwordInput.inputValid() && this.confirmPasswordInput.inputValid())) {
+      return;
+    }
+
+    const apiService = new APIService();
+
+    const credentials = new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue);
+
+    apiService
+        .login(credentials)
+        .then(window.location.hash = '#/authentication')
+        .catch((error) => {
+          console.log(error);
+        });
   }
 
   /**

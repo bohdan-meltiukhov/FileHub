@@ -2,6 +2,7 @@ import Component from '../component.js';
 import LoginForm from '../login-form';
 import RegistrationForm from '../registration-form';
 import Router from '../../../router.js';
+import FileExplorer from '../file-explorer';
 
 /**
  * The component for the web application.
@@ -32,6 +33,7 @@ export default class Application extends Component {
     const pageMapping = {
       '/authentication': LoginForm,
       '/registration': RegistrationForm,
+      '/file-explorer': FileExplorer,
     };
 
     const routerProperties = {

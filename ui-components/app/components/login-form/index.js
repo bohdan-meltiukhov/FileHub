@@ -3,6 +3,8 @@ import FormInput from '../form-input';
 import FormFooter from '../login-form-footer';
 import FormHeader from '../form-header';
 import Validator from '../validator.js';
+import APIService from '../../services/api-service';
+import UserCredentials from '../../models/user-credentials';
 
 /**
  * The component for the authentication form.
@@ -87,6 +89,20 @@ export default class LoginForm extends Component {
       inputName: 'password',
       minLength: 1,
     });
+
+    if (!(this.loginInput.inputValid() && this.passwordInput.inputValid())) {
+      return;
+    }
+
+    const apiService = new APIService();
+
+    const credentials = new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue);
+
+    apiService.login(credentials)
+        .then(window.location.hash = '#/file-explorer')
+        .catch((error) => {
+          console.log(error);
+        });
   }
 
   /**

@@ -34,7 +34,14 @@ export default class Application extends Component {
       '/registration': RegistrationForm,
     };
 
-    const router = new Router(this.rootElement, pageMapping, '/authentication');
+    const routerProperties = {
+      rootElement: this.rootElement,
+      pageMapping: pageMapping,
+      defaultLocation: '/authentication',
+      window: window,
+    };
+
+    const router = new Router(routerProperties);
 
     this.router = router;
   }

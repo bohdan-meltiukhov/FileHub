@@ -24,7 +24,7 @@ export default class LoginForm extends Component {
    */
   markup() {
     return `
-            <form class="application-box form-dialog">
+            <form class="application-box form-dialog" data-test="login-form">
                 <img src="app/images/logo.png" class="logo" alt="logo">
             
                 <div class="form-header"></div>

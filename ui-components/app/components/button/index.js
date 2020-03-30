@@ -29,7 +29,6 @@ export default class Button extends Component {
     }
 
     set buttonText(value) {
-        this._buttonText = value;
         this.rootElement.innerText = value;
     }
 }

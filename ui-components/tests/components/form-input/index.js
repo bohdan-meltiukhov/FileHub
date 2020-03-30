@@ -28,9 +28,9 @@ test('should display the provided properties.', (assert) => {
     const placeholder = 'Enter password';
     const type = 'password';
     new FormInput(fixture, {
-        labelText: labelText,
-        placeholder: placeholder,
-        type: type
+        labelText,
+        placeholder,
+        type
     });
     const formInput = fixture.firstElementChild;
 
@@ -48,6 +48,7 @@ test('should change the properties.', (assert) => {
     const placeholder = 'New placeholder';
     const type = 'text';
     const helpText = 'Help text';
+
     const element = new FormInput(fixture, {
         labelText: 'Old label',
         placeholder: 'Old placeholder',

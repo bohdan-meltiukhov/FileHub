@@ -19,7 +19,6 @@ export default class FormHeader extends Component {
     }
 
     set text(value) {
-        this._text = value;
         this.rootElement.querySelector('h1').innerText = value;
     }
 }

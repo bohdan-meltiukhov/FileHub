@@ -18,7 +18,7 @@ test('should have the default text.', (assert) => {
 
 test('should display the provided text.', (assert) => {
     const text = 'OK';
-    new FormHeader(fixture, {text: text});
+    new FormHeader(fixture, {text});
     const header = fixture.firstElementChild;
     assert.strictEqual(header.innerText, text, 'The header should display the provided text.')
 });

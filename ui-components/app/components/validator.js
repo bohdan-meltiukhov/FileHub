@@ -1,52 +1,44 @@
-import FormInput from './form-input';
+import ValidationRule from './validation-rules/validation-rule.js';
 
 /**
- * Validates fields in form inputs.
+ * Validates that form inputs follow the provided rules.
  */
 export default class Validator {
   /**
-   * @typedef {object} ValidationProperties
-   * @property {string} inputName - The name of the input.
-   * @property {number} minLength - The minimum length of the input value.
-   * @property {RegExp} regExp - The regular expression that should match the input value.
-   * @property {string} regExpDescription - The description of the provided regular expression.
-   * @property {string} equals - The exact string that the input value should match.
-   * @property {string} equalsDescription - The description of the provided equals value.
+   * Checks the provided value to follow the required validation rules and returns the error message in case any
+   * of the rules is broken.
+   *
+   * @param {string} inputName - The name of the input.
+   * @param {string} value - The value to check.
+   * @param {ValidationRule[]} validationRules - The validation rules to check.
+   * @returns {string} The message that should be displayed in the help text below the input.
    */
+  validate(inputName, value, validationRules) {
+    const errorMessages = [];
+    validationRules.forEach((rule) => {
+      const errorMessage = rule.apply(value);
+      if (errorMessage) {
+        errorMessages.push(errorMessage);
+      }
+    });
+
+    if (!errorMessages.length) {
+      return '';
+    }
+
+    return this._generate(inputName, errorMessages);
+  }
 
   /**
-   * Checks the input value and sets the corresponding help text.
+   * Generates the help text message from the provided error messages.
    *
-   * @param {FormInput} formInput - The form input to validate.
-   * @param {ValidationProperties} properties - The validation properties.
+   * @param {string} inputName - The name of the corresponding form input.
+   * @param {string[]} errorMessages - An array of error messages from different validation rules.
+   * @returns {string} The generated help text.
+   * @private
    */
-  validate(formInput, properties) {
-    const inputValue = formInput.inputValue;
-    const errorMessages = [];
-    let anyErrorFound = false;
-
-    if (properties.minLength && inputValue.length < properties.minLength) {
-      errorMessages.push(`have ${properties.minLength} or more characters`);
-      anyErrorFound = true;
-    }
-
-    if (properties.regExp && !properties.regExp.test(inputValue)) {
-      errorMessages.push(properties.regExpDescription);
-      anyErrorFound = true;
-    }
-
-    if (properties.equals !== undefined && inputValue !== properties.equals) {
-      errorMessages.push(properties.equalsDescription);
-      anyErrorFound = true;
-    }
-
-    if (!anyErrorFound) {
-      formInput.helpText = '';
-      return;
-    }
-
-    let helpText = `The ${properties.inputName} should `;
-
+  _generate(inputName, errorMessages) {
+    let helpText = `The ${inputName} should `;
     for (let i = 0; i < errorMessages.length - 1; i++) {
       helpText += errorMessages[i] + ', ';
     }
@@ -60,6 +52,6 @@ export default class Validator {
       helpText += lastMessage;
     }
 
-    formInput.helpText = helpText;
+    return helpText;
   }
 }

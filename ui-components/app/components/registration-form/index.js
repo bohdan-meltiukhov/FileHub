@@ -3,8 +3,9 @@ import FormHeader from '../form-header';
 import FormInput from '../form-input';
 import FormFooter from '../login-form-footer';
 import Validator from '../validator.js';
-import APIService from '../../services/api-service';
-import UserCredentials from '../../models/user-credentials';
+import MinLengthValidationRule from '../validation-rules/min-length-validation-rule.js';
+import RegExpValidationRule from '../validation-rules/regexp-validation-rule.js';
+import EqualValidationRule from '../validation-rules/equal-validation-rule.js';
 
 /**
  * The component for the registration form.
@@ -87,46 +88,20 @@ export default class RegistrationForm extends Component {
   validateForm() {
     const validator = new Validator();
 
-    const usernameProperties = {
-      inputName: 'username',
-      minLength: 5,
-      regExp: /^[A-Za-z0-9]+$/,
-      regExpDescription: 'contain only latin letters and digits',
-    };
+    this.loginInput.helpText = validator.validate('username', this.loginInput.inputValue, [
+      new MinLengthValidationRule(5, 'have 5 or more characters'),
+      new RegExpValidationRule(/^[A-Za-z0-9]+$/, 'contain only latin letters and digits'),
+    ]);
 
-    validator.validate(this.loginInput, usernameProperties);
+    this.passwordInput.helpText = validator.validate('password', this.passwordInput.inputValue, [
+      new MinLengthValidationRule(8, 'have 8 or more characters'),
+      new RegExpValidationRule(/^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/, 'contain at least one digit, one lowercase ' +
+        'letter, and one uppercase letter'),
+    ]);
 
-    const passwordProperties = {
-      inputName: 'password',
-      minLength: 8,
-      regExp: /^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/,
-      regExpDescription: 'contain at least one digit, one lowercase letter, and one uppercase letter',
-    };
-
-    validator.validate(this.passwordInput, passwordProperties);
-
-    const confirmPasswordProperties = {
-      inputName: 'second password',
-      equals: this.passwordInput.inputValue,
-      equalsDescription: 'be equal to the first password',
-    };
-
-    validator.validate(this.confirmPasswordInput, confirmPasswordProperties);
-
-    if (!(this.loginInput.inputValid() && this.passwordInput.inputValid() && this.confirmPasswordInput.inputValid())) {
-      return;
-    }
-
-    const apiService = new APIService();
-
-    const credentials = new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue);
-
-    apiService
-        .login(credentials)
-        .then(window.location.hash = '#/authentication')
-        .catch((error) => {
-          console.log(error);
-        });
+    this.confirmPasswordInput.helpText = validator.validate('second password',
+      this.confirmPasswordInput.inputValue,
+      [new EqualValidationRule(this.passwordInput.inputValue, 'be equal to the first password')]);
   }
 
   /**

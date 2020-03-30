@@ -3,8 +3,7 @@ import FormInput from '../form-input';
 import FormFooter from '../login-form-footer';
 import FormHeader from '../form-header';
 import Validator from '../validator.js';
-import APIService from '../../services/api-service';
-import UserCredentials from '../../models/user-credentials';
+import MinLengthValidationRule from '../validation-rules/min-length-validation-rule.js';
 
 /**
  * The component for the authentication form.
@@ -80,29 +79,11 @@ export default class LoginForm extends Component {
   validateForm() {
     const validator = new Validator();
 
-    validator.validate(this.loginInput, {
-      inputName: 'username',
-      minLength: 1,
-    });
+    this.loginInput.helpText = validator.validate('username', this.loginInput.inputValue,
+      [new MinLengthValidationRule(1, 'not be empty')]);
 
-    validator.validate(this.passwordInput, {
-      inputName: 'password',
-      minLength: 1,
-    });
-
-    if (!(this.loginInput.inputValid() && this.passwordInput.inputValid())) {
-      return;
-    }
-
-    const apiService = new APIService();
-
-    const credentials = new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue);
-
-    apiService.login(credentials)
-        .then(window.location.hash = '#/file-explorer')
-        .catch((error) => {
-          console.log(error);
-        });
+    this.passwordInput.helpText = validator.validate('password', this.passwordInput.inputValue,
+      [new MinLengthValidationRule(1, 'not be empty')]);
   }
 
   /**

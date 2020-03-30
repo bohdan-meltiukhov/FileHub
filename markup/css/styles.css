@@ -77,7 +77,7 @@ a:hover {
     width: 30%;
 }
 
-.form-dialog .row .input-block {
+.form-dialog .row .right-column {
     float: right;
     width: 60%;
 }
@@ -105,12 +105,7 @@ a:hover {
     line-height: 19px;
 }
 
-.form-dialog .form-footer {
-    float: right;
-    width: 60%;
-}
-
-.form-dialog .form-footer .form-link {
+.form-dialog .right-column .form-link {
     float: right;
     margin-top: 9px;
 }
@@ -129,6 +124,7 @@ a:hover {
 
 .application-box .menu .glyphicon {
     font-size: 16px;
+    margin: 0 4px;
 }
 
 .application-box .menu li {
@@ -184,6 +180,10 @@ a:hover {
     font-weight: bold;
     display: inline-block;
     vertical-align: middle;
+    width: 500px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .current-directory .function-buttons {
@@ -196,19 +196,19 @@ a:hover {
     padding: 2px 12px 7px;
 }
 
-.files tbody td.filename .name {
+.files tbody td.cell-filename .name {
     display: inline;
 }
 
-.files tbody tr.editing td.filename .name {
+.files tbody tr.editing td.cell-filename .name {
     display: none;
 }
 
-.files tbody td.filename .input {
+.files tbody td.cell-filename .input {
     display: none;
 }
 
-.files tbody tr.editing td.filename .input {
+.files tbody tr.editing td.cell-filename .input {
     height: 20px;
     width: 300px;
     display: inline-block;
@@ -220,11 +220,11 @@ a:hover {
     padding: 13px 10px;
 }
 
-.files .icon-cell {
+.files .cell-icon {
     width: 22px;
 }
 
-.files td.filename {
+.files td.cell-filename {
     display: block;
     text-align: left;
     overflow: hidden;
@@ -232,7 +232,7 @@ a:hover {
     white-space: nowrap;
 }
 
-.files td.count {
+.files td.cell-count {
     width: 80px;
 }
 

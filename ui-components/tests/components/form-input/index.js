@@ -25,7 +25,7 @@ test('should have the default properties.', (assert) => {
 
 test('should display the provided properties.', (assert) => {
     const labelText = 'Password';
-    const placeholder = 'Password';
+    const placeholder = 'Enter password';
     const type = 'password';
     new FormInput(fixture, {
         labelText: labelText,

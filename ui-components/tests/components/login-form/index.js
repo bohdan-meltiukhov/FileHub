@@ -12,7 +12,6 @@ module('The LoginForm test', {
 
 test('should check inputs.', (assert) => {
     const element = new LoginForm(fixture);
-    element.render();
     const form = fixture.firstElementChild;
 
     const loginInput = form.querySelector('.login-input .input');

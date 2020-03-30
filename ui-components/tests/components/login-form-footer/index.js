@@ -20,18 +20,18 @@ test('should have the default properties.', (assert) => {
     const link = footer.querySelector('.form-link');
     assert.strictEqual(link.innerText, 'Take me to another page', 'The footer should have the default link text.');
 
-    assert.ok(link.href.endsWith('#'), 'The footer should have the default link direction.');
+    assert.ok(link.href.endsWith('#'), 'The footer should have the default link URL.');
 });
 
 test('should display the provided properties.', (assert) => {
     const buttonText = 'OK';
     const linkText = 'Don\'t have an account yet?';
-    const linkDirection = 'registration.html';
+    const linkUrl = 'registration.html';
 
     new FormFooter(fixture, {
-        buttonText: buttonText,
-        linkText: linkText,
-        linkDirection: linkDirection
+        buttonText,
+        linkText,
+        linkUrl
     });
     const footer = fixture.firstElementChild;
 
@@ -41,18 +41,18 @@ test('should display the provided properties.', (assert) => {
     const link = footer.querySelector('.form-link');
     assert.strictEqual(link.innerText, linkText, 'The footer should display the provided link text.');
 
-    assert.ok(link.href.endsWith(linkDirection), 'The footer should have the provided link direction.');
+    assert.ok(link.href.endsWith(linkUrl), 'The footer should have the provided link URL.');
 });
 
 test('should change the properties.', (assert) => {
     const buttonText = 'New button text';
     const linkText = 'New link text';
-    const linkDirection = 'new-direction.html';
+    const linkUrl = 'new-url.html';
 
     const element = new FormFooter(fixture, {
         buttonText: 'Old button text',
         linkText: 'Old link text',
-        linkDirection: 'old-direction.html'
+        linkUrl: 'old-url.html'
     });
     const footer = fixture.firstElementChild;
 
@@ -64,6 +64,6 @@ test('should change the properties.', (assert) => {
     element.linkText = linkText;
     assert.strictEqual(link.innerText, linkText, 'The footer should change the link text.');
 
-    element.linkDirection = linkDirection;
-    assert.ok(link.href.endsWith(linkDirection), 'The footer should change the link direction.');
+    element.linkDirection = linkUrl;
+    assert.ok(link.href.endsWith(linkUrl), 'The footer should change the link direction.');
 });

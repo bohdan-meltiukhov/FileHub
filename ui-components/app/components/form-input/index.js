@@ -8,7 +8,6 @@ export default class FormInput extends Component {
         this._labelText = labelText;
         this._placeholder = placeholder;
         this._type = type;
-        this._helpText = '';
 
         this.render();
     }
@@ -20,7 +19,7 @@ export default class FormInput extends Component {
     
                 <div class="input-block">
                     <input type="${this._type}" name="username" class="input" placeholder="${this._placeholder}">
-                    <span class="error-message">${this._helpText}</span>
+                    <span class="error-message"></span>
                 </div>
             </div>
         `;
@@ -31,22 +30,18 @@ export default class FormInput extends Component {
     }
 
     set labelText(value) {
-        this._labelText = value;
         this.rootElement.querySelector('.input-label').innerText = value;
     }
 
     set placeholder(value) {
-        this._placeholder = value;
         this.rootElement.querySelector('.input').placeholder = value;
     }
 
     set type(value) {
-        this._type = value;
         this.rootElement.querySelector('.input').type = value;
     }
 
     set helpText(value) {
-        this._helpText = value;
         this.rootElement.querySelector('.error-message').innerText = value;
     }
 }

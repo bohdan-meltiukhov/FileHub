@@ -6,13 +6,13 @@ export default class FormFooter extends Component {
     constructor(container, {
         buttonText = 'Submit',
         linkText = 'Take me to another page',
-        linkDirection = '#'
+        linkUrl = '#'
     } = {}) {
         super(container);
 
         this._buttonText = buttonText;
         this._linkText = linkText;
-        this._linkDirection = linkDirection;
+        this._linkUrl = linkUrl;
 
         this.render();
     }
@@ -23,7 +23,7 @@ export default class FormFooter extends Component {
             <div class="row">
                 <div class="form-footer">
                     <span class="submit-button"></span>
-                    <a href="${this._linkDirection}" class="form-link">${this._linkText}</a>
+                    <a href="${this._linkUrl}" class="form-link">${this._linkText}</a>
                 </div>
             </div>
         `;
@@ -41,17 +41,14 @@ export default class FormFooter extends Component {
     }
 
     set buttonText(value) {
-        this._buttonText = value;
         this.button.buttonText = value;
     }
 
     set linkText(value) {
-        this._linkText = value;
         this.rootElement.querySelector('.form-link').innerText = value;
     }
 
     set linkDirection(value) {
-        this._linkDirection = value;
         this.rootElement.querySelector('.form-link').href = value;
     }
 }

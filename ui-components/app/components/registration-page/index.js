@@ -1,16 +1,16 @@
 import Component from '../component.js';
-import LoginForm from '../login-form';
+import RegistrationForm from '../registration-form';
 import APIService from '../../services/api-service';
 import UserCredentials from '../../models/user-credentials';
 
 /**
- * The component for the login page.
+ * The component for teh registration page.
  */
-export default class LoginPage extends Component {
+export default class RegistrationPage extends Component {
   /**
-   * Creates an instance of the login page component with set container.
+   * Creates an instance of the registration page with set container.
    *
-   * @param {Element} container - The parent element for the login page.
+   * @param {Element} container - The parent element for the registration page.
    */
   constructor(container) {
     super(container);
@@ -18,21 +18,17 @@ export default class LoginPage extends Component {
     this.render();
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** @inheritdoc */
   markup() {
     return `
-      <div class="login-page"></div>
+      <div class="registration-page"></div>
     `;
   }
 
-  /**
-   * @inheritdoc
-   */
+  /** @inheritdoc */
   initNestedComponents() {
     const formContainer = this.rootElement;
-    this.loginForm = new LoginForm(formContainer);
+    this.registrationForm = new RegistrationForm(formContainer);
   }
 
   /**
@@ -40,9 +36,9 @@ export default class LoginPage extends Component {
    */
   verifyForm() {
     const apiService = new APIService();
-    apiService.login(new UserCredentials(this.loginForm.username, this.loginForm.password))
+    apiService.register(new UserCredentials(this.registrationForm.username, this.registrationForm.password))
       .then(() => {
-        window.location.hash = '#/file-explorer';
+        window.location.hash = '#/authentication';
       })
       .catch((error) => {
         console.log(error);
@@ -53,6 +49,6 @@ export default class LoginPage extends Component {
    * Sets a function that should be called when the login form is submitted with verified values.
    */
   addEventListeners() {
-    this.loginForm.onSubmit(() => this.verifyForm());
+    this.registrationForm.onSubmit(() => this.verifyForm());
   }
 }

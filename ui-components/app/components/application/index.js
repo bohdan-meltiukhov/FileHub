@@ -1,8 +1,8 @@
 import Component from '../component.js';
-import RegistrationForm from '../registration-form';
 import Router from '../../../router.js';
 import FileExplorer from '../file-explorer';
 import LoginPage from '../login-page';
+import RegistrationPage from '../registration-page';
 
 /**
  * The component for the web application.
@@ -32,7 +32,7 @@ export default class Application extends Component {
   initNestedComponents() {
     const pageMapping = {
       '/authentication': LoginPage,
-      '/registration': RegistrationForm,
+      '/registration': RegistrationPage,
       '/file-explorer': FileExplorer,
     };
 

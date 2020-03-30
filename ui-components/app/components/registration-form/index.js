@@ -88,20 +88,27 @@ export default class RegistrationForm extends Component {
   validateForm() {
     const validator = new Validator();
 
-    this.loginInput.helpText = validator.validate('username', this.loginInput.inputValue, [
+    const loginHelpText = validator.validate('username', this.loginInput.inputValue, [
       new MinLengthValidationRule(5, 'have 5 or more characters'),
       new RegExpValidationRule(/^[A-Za-z0-9]+$/, 'contain only latin letters and digits'),
     ]);
+    this.loginInput.helpText = loginHelpText;
 
-    this.passwordInput.helpText = validator.validate('password', this.passwordInput.inputValue, [
+    const passwordHelpText = validator.validate('password', this.passwordInput.inputValue, [
       new MinLengthValidationRule(8, 'have 8 or more characters'),
       new RegExpValidationRule(/^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/, 'contain at least one digit, one lowercase ' +
         'letter, and one uppercase letter'),
     ]);
+    this.passwordInput.helpText = passwordHelpText;
 
-    this.confirmPasswordInput.helpText = validator.validate('second password',
+    const confirmPasswordHelpText = validator.validate('second password',
       this.confirmPasswordInput.inputValue,
       [new EqualValidationRule(this.passwordInput.inputValue, 'be equal to the first password')]);
+    this.confirmPasswordInput.helpText = confirmPasswordHelpText;
+
+    if (loginHelpText === '' && passwordHelpText === '' && confirmPasswordHelpText === '') {
+      this._onSubmit();
+    }
   }
 
   /**
@@ -114,5 +121,32 @@ export default class RegistrationForm extends Component {
       event.preventDefault();
       event.stopPropagation();
     });
+  }
+
+  /**
+   * Saves the callback that should be called in case the form is verified and the fields are verified.
+   *
+   * @param {Function} callback - The function that should be called when the form is submitted with verified values.
+   */
+  onSubmit(callback) {
+    this._onSubmit = callback;
+  }
+
+  /**
+   * Provides the entered value of the username.
+   *
+   * @returns {string} The provided username.
+   */
+  get username() {
+    return this.loginInput.inputValue;
+  }
+
+  /**
+   * Provides the entered value of the password.
+   *
+   * @returns {string} The provided password.
+   */
+  get password() {
+    return this.passwordInput.inputValue;
   }
 }

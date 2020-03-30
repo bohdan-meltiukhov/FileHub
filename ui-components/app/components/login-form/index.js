@@ -79,11 +79,17 @@ export default class LoginForm extends Component {
   validateForm() {
     const validator = new Validator();
 
-    this.loginInput.helpText = validator.validate('username', this.loginInput.inputValue,
+    const loginHelpText = validator.validate('username', this.loginInput.inputValue,
       [new MinLengthValidationRule(1, 'not be empty')]);
+    this.loginInput.helpText = loginHelpText;
 
-    this.passwordInput.helpText = validator.validate('password', this.passwordInput.inputValue,
+    const passwordHelpText = validator.validate('password', this.passwordInput.inputValue,
       [new MinLengthValidationRule(1, 'not be empty')]);
+    this.passwordInput.helpText = passwordHelpText;
+
+    if (loginHelpText === '' && passwordHelpText === '') {
+      this._onSubmit();
+    }
   }
 
   /**
@@ -96,5 +102,32 @@ export default class LoginForm extends Component {
       event.preventDefault();
       event.stopPropagation();
     });
+  }
+
+  /**
+   * Saves the callback that should be called in case the form is verified and the fields are verified.
+   *
+   * @param {Function} callback - The function that should be called when the form is submitted with verified values.
+   */
+  onSubmit(callback) {
+    this._onSubmit = callback;
+  }
+
+  /**
+   * Provides the entered value of the username.
+   *
+   * @returns {string} The provided username.
+   */
+  get username() {
+    return this.loginInput.inputValue;
+  }
+
+  /**
+   * Provides the entered value of the password.
+   *
+   * @returns {string} The provided password.
+   */
+  get password() {
+    return this.passwordInput.inputValue;
   }
 }

@@ -18,14 +18,14 @@
     </ul>
 
     <header class="header">
-        <h1><a href="#" title="Go to the root directory">File Explorer</a></h1>
+        <h1><a href="file-explorer.html" title="Go to the root directory">File Explorer</a></h1>
     </header>
 
     <main class="file-list">
         <div class="current-directory">
             <span class="glyphicon glyphicon-folder-open folder-icon"></span>
             <span class="directory-name" title="Root"><strong>/ Root</strong></span>
-            <div class="function-buttons">
+            <div class="action-buttons">
                 <button class="button" title="Create folder">
                     <span class="glyphicon glyphicon-plus"></span> Create folder
                 </button>
@@ -35,15 +35,17 @@
             </div>
         </div>
 
-        <table class="files">
+        <table class="table">
             <tr>
                 <td class="cell-icon">
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </td>
                 <td class="cell-filename">
-                    <span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;
-                    <span class="name"><a href="#" title="Documents">Documents</a></span>
-                    <input type="text" name="new-name" class="input" value="Documents">
+                    <span class="glyphicon glyphicon-folder-close"></span>
+                    <span class="name"><a href="inner-page.html" title="Documents">Documents</a></span>
+                    <label>
+                        <input type="text" name="new-name" class="input" value="Documents">
+                    </label>
                 </td>
                 <td class="cell-count">2 items</td>
                 <td class="cell-actions">
@@ -57,9 +59,11 @@
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </td>
                 <td class="cell-filename">
-                    <span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;
-                    <span class="name"><a href="#" title="Images">Images</a></span>
-                    <input type="text" name="new-name" class="input" value="Images">
+                    <span class="glyphicon glyphicon-folder-close"></span>
+                    <span class="name"><a href="inner-page.html" title="Images">Images</a></span>
+                    <label>
+                        <input type="text" name="new-name" class="input" value="Images">
+                    </label>
                 </td>
                 <td class="cell-count">215 items</td>
                 <td class="cell-actions">
@@ -72,8 +76,11 @@
                 <td class="cell-icon">
                 </td>
                 <td class="cell-filename">
-                    <span class="glyphicon glyphicon-music"></span>&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-music"></span>
                     <span class="name">hello.mp3</span>
+                    <label>
+                        <input type="text" name="new-name" class="input" value="hello.mp3">
+                    </label>
                 </td>
                 <td class="cell-count">15 MB</td>
                 <td class="cell-actions">
@@ -86,8 +93,11 @@
                 <td class="cell-icon">
                 </td>
                 <td class="cell-filename">
-                    <span class="glyphicon glyphicon-film"></span>&nbsp;&nbsp;
+                    <span class="glyphicon glyphicon-film"></span>
                     <span class="name">film.avi</span>
+                    <label>
+                        <input type="text" name="new-name" class="input" value="film.avi">
+                    </label>
                 </td>
                 <td class="cell-count">1.3 GB</td>
                 <td class="cell-actions">
@@ -99,7 +109,7 @@
     </main>
 
     <footer class="footer">
-        Copyright &copy; 2020 <a href="https://www.teamdev.com/" target="_blank" title="TeamDev">TeamDev</a>. All rights reserved.
+        <p>Copyright &copy; 2020 <a href="https://www.teamdev.com/" target="_blank" title="TeamDev">TeamDev</a>. All rights reserved.</p>
     </footer>
 </div>
 

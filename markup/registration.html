@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<form class="application-box form-dialog">
+<div class="application-box form-box">
     <img src="images/logo.png" class="logo" alt="logo">
 
     <header class="header">
@@ -18,41 +18,44 @@
     </header>
 
     <main>
-        <div class="row">
-            <label for="input-username" class="input-label">Username</label>
+        <form>
+            <div class="row">
+                <label for="input-username" class="input-label">Username</label>
 
-            <div class="right-column">
-                <input type="text" id="input-username" name="username" class="input" placeholder="Email">
-                <span class="error-message">Username can't be empty</span>
+                <div class="right-column">
+                    <input type="text" id="input-username" name="username" class="input" placeholder="Email">
+                    <span class="error-message">Username can't be empty</span>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <label for="input-password" class="input-label">Password</label>
+            <div class="row">
+                <label for="input-password" class="input-label">Password</label>
 
-            <div class="right-column">
-                <input type="password" id="input-password" name="password" class="input" placeholder="Password">
-                <span class="error-message">Password can't be empty and should contain letters and numbers</span>
+                <div class="right-column">
+                    <input type="password" id="input-password" name="password" class="input" placeholder="Password">
+                    <span class="error-message">Password can't be empty and should contain letters and numbers</span>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <label for="input-confirm-password" class="input-label">Confirm Password</label>
+            <div class="row">
+                <label for="input-confirm-password" class="input-label">Confirm Password</label>
 
-            <div class="right-column">
-                <input type="password" id="input-confirm-password" name="confirm-password" class="input" placeholder="Confirm password">
-                <span class="error-message">Passwords do not match</span>
+                <div class="right-column">
+                    <input type="password" id="input-confirm-password" name="confirm-password" class="input"
+                           placeholder="Confirm password">
+                    <span class="error-message">Passwords do not match</span>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="right-column">
-                <button type="submit" class="button" title="Register">Register</button>
-                <a href="authentication.html" class="form-link" title="Log in">Already have an account?</a>
+            <div class="row">
+                <div class="right-column">
+                    <button type="submit" class="button" title="Register">Register</button>
+                    <a href="authentication.html" class="form-link" title="Log in">Already have an account?</a>
+                </div>
             </div>
-        </div>
+        </form>
     </main>
-</form>
+</div>
 
 </body>
 </html>

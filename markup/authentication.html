@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<form class="application-box form-dialog">
+<div class="application-box form-box">
     <img src="images/logo.png" class="logo" alt="logo">
 
     <header class="header">
@@ -18,33 +18,34 @@
     </header>
 
     <main>
-        <div class="row">
-            <label for="input-username" class="input-label">Username</label>
+        <form>
+            <div class="row">
+                <label for="input-username" class="input-label">Username</label>
 
-            <div class="right-column">
-                <input type="text" id="input-username" name="username" class="input" placeholder="Email">
-                <span class="error-message">Username can't be empty</span>
+                <div class="right-column">
+                    <input type="text" id="input-username" name="username" class="input" placeholder="Email">
+                    <span class="error-message">Username can't be empty</span>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <label for="input-password" class="input-label">Password</label>
+            <div class="row">
+                <label for="input-password" class="input-label">Password</label>
 
-            <div class="right-column">
-                <input type="password" id="input-password" name="password" class="input" placeholder="Password">
-                <span class="error-message">Password can't be empty and should contain letters and numbers</span>
+                <div class="right-column">
+                    <input type="password" id="input-password" name="password" class="input" placeholder="Password">
+                    <span class="error-message">Password can't be empty and should contain letters and numbers</span>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="right-column">
-                <button type="submit" class="button" title="Log in">Log In</button>
-                <a href="registration.html" class="form-link" title="Register">Don't have an account yet?</a>
+            <div class="row">
+                <div class="right-column">
+                    <button type="submit" class="button" title="Log in">Log In</button>
+                    <a href="registration.html" class="form-link" title="Register">Don't have an account yet?</a>
+                </div>
             </div>
-        </div>
+        </form>
     </main>
-
-</form>
+</div>
 
 </body>
 </html>

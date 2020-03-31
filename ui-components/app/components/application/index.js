@@ -2,6 +2,7 @@ import Component from '../component.js';
 import LoginForm from '../login-form';
 import RegistrationForm from '../registration-form';
 import Router from '../../../router.js';
+import NotFoundPage from '../not-found';
 
 /**
  * The component for the web application.
@@ -36,9 +37,10 @@ export default class Application extends Component {
 
     const routerProperties = {
       rootElement: this.rootElement,
-      pageMapping: pageMapping,
+      pageMapping,
       defaultLocation: '/authentication',
-      window: window,
+      notFoundPage: NotFoundPage,
+      window,
     };
 
     const router = new Router(routerProperties);

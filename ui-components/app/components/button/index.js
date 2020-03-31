@@ -41,6 +41,8 @@ export default class Button extends Component {
 
   /**
    * Adds a function that should be called when the button is pressed.
+   *
+   * @param {Function} handler - The function that should be called when the button is pressed.
    */
   addClickHandler(handler) {
     this._clickHandlers.push(handler);

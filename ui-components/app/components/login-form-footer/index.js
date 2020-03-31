@@ -59,7 +59,7 @@ export default class FormFooter extends Component {
   }
 
   /**
-   * Provides a new button click handler to the button.
+   * Adds a new button click handler.
    *
    * @param {Function} handler - The function to be called when the form button is pressed.
    */

@@ -9,6 +9,7 @@ export default class FormHeader extends Component {
    *
    * @typedef {object} Parameters
    * @property {string} headerText - The text to be displayed in the header.
+   * @property {boolean} withIcon - Shows whether the header should display the user icon on the right or not.
    */
 
   /**
@@ -17,10 +18,11 @@ export default class FormHeader extends Component {
    * @param {Element} container - The parent element for the current form header component.
    * @param {Parameters} parameters - The initial header configurations.
    */
-  constructor(container, {headerText = 'Header'} = {}) {
+  constructor(container, {headerText = 'Header', withIcon = false} = {}) {
     super(container);
 
     this._headerText = headerText;
+    this._withIcon = withIcon;
     this.render();
   }
 
@@ -34,6 +36,16 @@ export default class FormHeader extends Component {
                 <span class="glyphicon glyphicon-user"></span>
             </header>
         `;
+  }
+
+  /** @inheritdoc */
+  initNestedComponents() {
+    this.icon = this.rootElement.querySelector('.glyphicon');
+    if (this._withIcon) {
+      this.icon.style.display = 'block';
+    } else {
+      this.icon.style.display = 'none';
+    }
   }
 
   /**

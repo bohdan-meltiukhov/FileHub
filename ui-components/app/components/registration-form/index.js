@@ -48,6 +48,7 @@ export default class RegistrationForm extends Component {
     const headerContainer = this.rootElement.querySelector('.form-header');
     this.header = new FormHeader(headerContainer, {
       headerText: 'Registration',
+      withIcon: true,
     });
 
     const loginInputContainer = this.rootElement.querySelector('.login-input');

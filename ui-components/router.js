@@ -55,9 +55,10 @@ export default class Router {
    * @param {string} hash - The hash of the required page.
    */
   loadPage(hash) {
+    this._rootElement.innerHTML = '';
+
     if (Object.keys(this._pageMapping).includes(hash)) {
       const Page = this._pageMapping[hash];
-      this._rootElement.innerHTML = '';
       new Page(this._rootElement);
     } else {
       new this._notFoundPage(this._rootElement);

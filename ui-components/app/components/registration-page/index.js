@@ -2,6 +2,8 @@ import Component from '../component.js';
 import RegistrationForm from '../registration-form';
 import APIService from '../../services/api-service';
 import UserCredentials from '../../models/user-credentials';
+import ValidationError from '../../models/errors/validation-error';
+import GeneralServerError from '../../models/errors/general-server-error';
 
 /**
  * The component for teh registration page.
@@ -41,7 +43,23 @@ export default class RegistrationPage extends Component {
         window.location.hash = '#/authentication';
       })
       .catch((error) => {
-        console.log(error);
+        if (error instanceof ValidationError) {
+          switch (error.field) {
+          case 'username':
+            this.registrationForm.usernameError = error.message;
+            break;
+          case 'password':
+            this.registrationForm.passwordError = error.message;
+            break;
+          default:
+            alert(error.message);
+          }
+        } else if (error instanceof GeneralServerError) {
+          alert(`Internal server error: ${error.message}`);
+        } else {
+          alert('Unknown error. See the console for more details.');
+          console.log(error);
+        }
       });
   }
 

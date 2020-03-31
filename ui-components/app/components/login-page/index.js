@@ -2,6 +2,8 @@ import Component from '../component.js';
 import LoginForm from '../login-form';
 import APIService from '../../services/api-service';
 import UserCredentials from '../../models/user-credentials';
+import AuthorizationError from '../../models/errors/authorization-error';
+import GeneralServerError from '../../models/errors/general-server-error';
 
 /**
  * The component for the login page.
@@ -45,7 +47,14 @@ export default class LoginPage extends Component {
         window.location.hash = '#/file-explorer';
       })
       .catch((error) => {
-        console.log(error);
+        if (error instanceof AuthorizationError) {
+          alert(`Authorization error: ${error.message}`);
+        } else if (error instanceof GeneralServerError) {
+          alert(`Internal server error: ${error.message}`);
+        } else {
+          alert('Unknown error. See the console for more details.');
+          console.log(error);
+        }
       });
   }
 

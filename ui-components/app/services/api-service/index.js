@@ -1,4 +1,6 @@
 import UserCredentials from '../../models/user-credentials';
+import ValidationError from '../../models/errors/validation-error';
+import AuthorizationError from '../../models/errors/authorization-error';
 
 /**
  * The class for sending requests and receiving responses from backend.
@@ -12,7 +14,11 @@ export default class APIService {
    */
   login(userCredentials) {
     return new Promise(((resolve, reject) => {
-      resolve();
+      if (userCredentials.username === 'admin' && userCredentials.password === '1234') {
+        resolve();
+      } else {
+        reject(new AuthorizationError('The username or password is incorrect'));
+      }
     }));
   }
 
@@ -24,7 +30,11 @@ export default class APIService {
    */
   register(userCredentials) {
     return new Promise(((resolve, reject) => {
-      resolve();
+      if (userCredentials.username === 'admin') {
+        reject(new ValidationError('username', 'The username is already taken.'));
+      } else {
+        resolve();
+      }
     }));
   }
 }

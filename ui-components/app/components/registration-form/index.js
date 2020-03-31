@@ -149,4 +149,22 @@ export default class RegistrationForm extends Component {
   get password() {
     return this.passwordInput.inputValue;
   }
+
+  /**
+   * Sets the help text for the username input.
+   *
+   * @param {string} message - The message to be displayed in the username help text.
+   */
+  set usernameError(message) {
+    this.loginInput.helpText = message;
+  }
+
+  /**
+   * Sets the help text for the password input.
+   *
+   * @param {string} message - The message to be displayed in the password help text.
+   */
+  set passwordError(message) {
+    this.passwordInput.helpText = message;
+  }
 }

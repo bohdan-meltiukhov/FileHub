@@ -4,6 +4,7 @@ import APIService from '../../services/api-service';
 import UserCredentials from '../../models/user-credentials';
 import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
+import ServerValidationError from '../../models/errors/server-validation-error';
 
 /**
  * The component for the login page.
@@ -39,15 +40,19 @@ export default class LoginPage extends Component {
 
   /**
    * Checks if the provided username and password can be accepted by the API service.
+   *
+   * @param {UserCredentials} userCredentials - The provided credentials.
    */
-  verifyForm() {
+  verifyForm(userCredentials) {
     const apiService = new APIService();
-    apiService.login(new UserCredentials(this.loginForm.username, this.loginForm.password))
+    apiService.logIn(userCredentials)
       .then(() => {
         window.location.hash = '#/file-explorer';
       })
       .catch((error) => {
-        if (error instanceof AuthorizationError) {
+        if (error instanceof ServerValidationError) {
+          this.loginForm.showValidationErrors(error.errorCases);
+        } else if (error instanceof AuthorizationError) {
           alert(`Authorization error: ${error.message}`);
         } else if (error instanceof GeneralServerError) {
           alert(`Internal server error: ${error.message}`);
@@ -62,6 +67,6 @@ export default class LoginPage extends Component {
    * Sets a function that should be called when the login form is submitted with verified values.
    */
   addEventListeners() {
-    this.loginForm.onSubmit(() => this.verifyForm());
+    this.loginForm.onSubmit((userCredentials) => this.verifyForm(userCredentials));
   }
 }

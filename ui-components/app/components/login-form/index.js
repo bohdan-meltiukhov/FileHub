@@ -4,6 +4,8 @@ import FormFooter from '../login-form-footer';
 import FormHeader from '../form-header';
 import Validator from '../validator.js';
 import MinLengthValidationRule from '../validation-rules/min-length-validation-rule.js';
+import UserCredentials from '../../models/user-credentials';
+import ValidationErrorCase from '../../models/errors/validation-error-case';
 
 /**
  * The component for the authentication form.
@@ -77,19 +79,24 @@ export default class LoginForm extends Component {
    * Verifies that values from the form inputs meet the requirements.
    */
   validateForm() {
+    this.loginInput.helpText = '';
+    this.passwordInput.helpText = '';
+
     const validator = new Validator();
 
-    const loginHelpText = validator.validate('username', this.loginInput.inputValue,
+    validator.addField('username', this.loginInput.inputValue,
       [new MinLengthValidationRule(1, 'not be empty')]);
-    this.loginInput.helpText = loginHelpText;
 
-    const passwordHelpText = validator.validate('password', this.passwordInput.inputValue,
+    validator.addField('password', this.passwordInput.inputValue,
       [new MinLengthValidationRule(1, 'not be empty')]);
-    this.passwordInput.helpText = passwordHelpText;
 
-    if (loginHelpText === '' && passwordHelpText === '') {
-      this._onSubmit();
-    }
+    validator.validate()
+      .then(() => {
+        this._onSubmit(new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue));
+      })
+      .catch((errors) => {
+        this.showValidationErrors(errors);
+      });
   }
 
   /**
@@ -114,20 +121,22 @@ export default class LoginForm extends Component {
   }
 
   /**
-   * Provides the entered value of the username.
+   * Displays the provided validation errors on the form.
    *
-   * @returns {string} The provided username.
+   * @param {ValidationErrorCase[]} errors - The array of errors to display.
    */
-  get username() {
-    return this.loginInput.inputValue;
-  }
-
-  /**
-   * Provides the entered value of the password.
-   *
-   * @returns {string} The provided password.
-   */
-  get password() {
-    return this.passwordInput.inputValue;
+  showValidationErrors(errors) {
+    errors.forEach((error) => {
+      switch (error.field) {
+      case 'username':
+        this.loginInput.helpText = error.message;
+        break;
+      case 'password':
+        this.passwordInput.helpText = error.message;
+        break;
+      default:
+        console.log(error.message);
+      }
+    });
   }
 }

@@ -1,6 +1,7 @@
 import UserCredentials from '../../models/user-credentials';
-import ValidationError from '../../models/errors/validation-error';
+import ValidationErrorCase from '../../models/errors/validation-error-case';
 import AuthorizationError from '../../models/errors/authorization-error';
+import ServerValidationError from '../../models/errors/server-validation-error';
 
 /**
  * The class for sending requests and receiving responses from backend.
@@ -12,7 +13,7 @@ export default class APIService {
    * @param {UserCredentials} userCredentials - The provided username and password.
    * @returns {Promise} The promise that resolves when a response from teh server is received..
    */
-  login(userCredentials) {
+  logIn(userCredentials) {
     return new Promise(((resolve, reject) => {
       if (userCredentials.username === 'admin' && userCredentials.password === '1234') {
         resolve();
@@ -31,7 +32,8 @@ export default class APIService {
   register(userCredentials) {
     return new Promise(((resolve, reject) => {
       if (userCredentials.username === 'admin') {
-        reject(new ValidationError('username', 'The username is already taken.'));
+        const errorCase = new ValidationErrorCase('username', 'The username is already taken.')
+        reject(new ServerValidationError([errorCase]));
       } else {
         resolve();
       }

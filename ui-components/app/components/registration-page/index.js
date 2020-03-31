@@ -2,7 +2,7 @@ import Component from '../component.js';
 import RegistrationForm from '../registration-form';
 import APIService from '../../services/api-service';
 import UserCredentials from '../../models/user-credentials';
-import ValidationError from '../../models/errors/validation-error';
+import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 
 /**
@@ -35,25 +35,18 @@ export default class RegistrationPage extends Component {
 
   /**
    * Checks if the provided username and password can be accepted by the API service.
+   *
+   * @param {UserCredentials} userCredentials - The provided credentials.
    */
-  verifyForm() {
+  verifyForm(userCredentials) {
     const apiService = new APIService();
-    apiService.register(new UserCredentials(this.registrationForm.username, this.registrationForm.password))
+    apiService.register(userCredentials)
       .then(() => {
         window.location.hash = '#/authentication';
       })
       .catch((error) => {
-        if (error instanceof ValidationError) {
-          switch (error.field) {
-          case 'username':
-            this.registrationForm.usernameError = error.message;
-            break;
-          case 'password':
-            this.registrationForm.passwordError = error.message;
-            break;
-          default:
-            alert(error.message);
-          }
+        if (error instanceof ServerValidationError) {
+          this.registrationForm.showValidationErrors(error.errorCases);
         } else if (error instanceof GeneralServerError) {
           alert(`Internal server error: ${error.message}`);
         } else {
@@ -67,6 +60,6 @@ export default class RegistrationPage extends Component {
    * Sets a function that should be called when the login form is submitted with verified values.
    */
   addEventListeners() {
-    this.registrationForm.onSubmit(() => this.verifyForm());
+    this.registrationForm.onSubmit((userCredentials) => this.verifyForm(userCredentials));
   }
 }

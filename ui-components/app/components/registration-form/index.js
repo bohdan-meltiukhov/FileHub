@@ -6,6 +6,8 @@ import Validator from '../validator.js';
 import MinLengthValidationRule from '../validation-rules/min-length-validation-rule.js';
 import RegExpValidationRule from '../validation-rules/regexp-validation-rule.js';
 import EqualValidationRule from '../validation-rules/equal-validation-rule.js';
+import ValidationErrorCase from '../../models/errors/validation-error-case';
+import UserCredentials from '../../models/user-credentials';
 
 /**
  * The component for the registration form.
@@ -86,29 +88,34 @@ export default class RegistrationForm extends Component {
    * Verifies that values from the form inputs meet the requirements.
    */
   validateForm() {
+    this.loginInput.helpText = '';
+    this.passwordInput.helpText = '';
+    this.confirmPasswordInput.helpText = '';
+
     const validator = new Validator();
 
-    const loginHelpText = validator.validate('username', this.loginInput.inputValue, [
+    validator.addField('username', this.loginInput.inputValue, [
       new MinLengthValidationRule(5, 'have 5 or more characters'),
       new RegExpValidationRule(/^[A-Za-z0-9]+$/, 'contain only latin letters and digits'),
     ]);
-    this.loginInput.helpText = loginHelpText;
 
-    const passwordHelpText = validator.validate('password', this.passwordInput.inputValue, [
+    validator.addField('password', this.passwordInput.inputValue, [
       new MinLengthValidationRule(8, 'have 8 or more characters'),
       new RegExpValidationRule(/^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/, 'contain at least one digit, one lowercase ' +
         'letter, and one uppercase letter'),
     ]);
-    this.passwordInput.helpText = passwordHelpText;
 
-    const confirmPasswordHelpText = validator.validate('second password',
+    validator.addField('second password',
       this.confirmPasswordInput.inputValue,
       [new EqualValidationRule(this.passwordInput.inputValue, 'be equal to the first password')]);
-    this.confirmPasswordInput.helpText = confirmPasswordHelpText;
 
-    if (loginHelpText === '' && passwordHelpText === '' && confirmPasswordHelpText === '') {
-      this._onSubmit();
-    }
+    validator.validate()
+      .then(() => {
+        this._onSubmit(new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue));
+      })
+      .catch((errors) => {
+        this.showValidationErrors(errors);
+      });
   }
 
   /**
@@ -133,38 +140,25 @@ export default class RegistrationForm extends Component {
   }
 
   /**
-   * Provides the entered value of the username.
+   * Displays the provided validation errors on the form.
    *
-   * @returns {string} The provided username.
+   * @param {ValidationErrorCase[]} errors - The array of errors to display.
    */
-  get username() {
-    return this.loginInput.inputValue;
-  }
-
-  /**
-   * Provides the entered value of the password.
-   *
-   * @returns {string} The provided password.
-   */
-  get password() {
-    return this.passwordInput.inputValue;
-  }
-
-  /**
-   * Sets the help text for the username input.
-   *
-   * @param {string} message - The message to be displayed in the username help text.
-   */
-  set usernameError(message) {
-    this.loginInput.helpText = message;
-  }
-
-  /**
-   * Sets the help text for the password input.
-   *
-   * @param {string} message - The message to be displayed in the password help text.
-   */
-  set passwordError(message) {
-    this.passwordInput.helpText = message;
+  showValidationErrors(errors) {
+    errors.forEach((error) => {
+      switch (error.field) {
+      case 'username':
+        this.loginInput.helpText = error.message;
+        break;
+      case 'password':
+        this.passwordInput.helpText = error.message;
+        break;
+      case 'second password':
+        this.confirmPasswordInput.helpText = error.message;
+        break;
+      default:
+        console.log(error.message);
+      }
+    });
   }
 }

@@ -14,19 +14,24 @@
 
     <ul class="menu">
         <li><span class="glyphicon glyphicon-user"></span>John Doe</li>
-        <li><a href="authentication.html" title="Log out">Log Out<span class="glyphicon glyphicon-log-out"></span></a></li>
+        <li><a href="authentication.html" title="Log out">Log Out<span class="glyphicon glyphicon-log-out"></span></a>
+        </li>
     </ul>
 
     <header class="header">
-        <h1><a href="file-explorer.html" title="Go to the root directory">File Explorer</a></h1>
+        <h1><a href="file-explorer.html" title="File Explorer">File Explorer</a></h1>
     </header>
 
     <main class="file-list">
         <div class="current-directory">
-            <a href="file-explorer.html" title="Go up one directory">
-                <span class="glyphicon glyphicon-level-up folder-icon"></span>
-            </a>
-            <span class="directory-name" title="Documents"><strong>/ Documents</strong></span>
+            <div>
+                <div class="folder-icon">
+                    <a href="file-explorer.html" title="Go up one directory">
+                        <span class="glyphicon glyphicon-level-up"></span>
+                    </a>
+                </div>
+                <span class="directory-name" title="Documents"><strong>/ Documents</strong></span>
+            </div>
             <div class="action-buttons">
                 <button class="button" title="Create folder">
                     <span class="glyphicon glyphicon-plus"></span> Create folder
@@ -45,9 +50,7 @@
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-folder-close"></span>
                     <span class="name"><a href="inner-page.html" title="Images">Images</a></span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="Images">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="Images">
                 </td>
                 <td class="cell-count">20 items</td>
                 <td class="cell-actions">
@@ -63,9 +66,7 @@
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-folder-close"></span>
                     <span class="name"><a href="inner-page.html" title="Videos">Videos</a></span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="Videos">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="Videos">
                 </td>
                 <td class="cell-count">9 items</td>
                 <td class="cell-actions">
@@ -81,9 +82,7 @@
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-folder-close"></span>
                     <span class="name"><a href="inner-page.html" title="Books">Books</a></span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="Books">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="Books">
                 </td>
                 <td class="cell-count">17 items</td>
                 <td class="cell-actions">
@@ -99,9 +98,7 @@
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-folder-close"></span>
                     <span class="name"><a href="inner-page.html" title="Videos">Videos</a></span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="Videos">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="Videos">
                 </td>
                 <td class="cell-count">9 items</td>
                 <td class="cell-actions">
@@ -117,9 +114,7 @@
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-folder-close"></span>
                     <span class="name"><a href="inner-page.html" title="Spreadsheets">Spreadsheets</a></span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="Spreadsheets">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="Spreadsheets">
                 </td>
                 <td class="cell-count">29 items</td>
                 <td class="cell-actions">
@@ -128,16 +123,14 @@
                 </td>
             </tr>
 
-            <tr>
+            <tr class="editing">
                 <td class="cell-icon">
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </td>
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-folder-close"></span>
                     <span class="name"><a href="inner-page.html" title="Music">Music</a></span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="Music">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="Music">
                 </td>
                 <td class="cell-count">215 items</td>
                 <td class="cell-actions">
@@ -147,14 +140,11 @@
             </tr>
 
             <tr>
-                <td class="cell-icon">
-                </td>
+                <td class="cell-icon">&nbsp;</td>
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-music"></span>
                     <span class="name">hello.mp3</span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="hello.mp3">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="hello.mp3">
                 </td>
                 <td class="cell-count">15 MB</td>
                 <td class="cell-actions">
@@ -164,14 +154,11 @@
             </tr>
 
             <tr>
-                <td class="cell-icon">
-                </td>
+                <td class="cell-icon">&nbsp;</td>
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-film"></span>
                     <span class="name">film.avi</span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="film.avi">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="film.avi">
                 </td>
                 <td class="cell-count">1.3 GB</td>
                 <td class="cell-actions">
@@ -181,14 +168,11 @@
             </tr>
 
             <tr>
-                <td class="cell-icon">
-                </td>
+                <td class="cell-icon">&nbsp;</td>
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-picture"></span>
                     <span class="name">selfie.jpg</span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="selfie.jpg">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="selfie.jpg">
                 </td>
                 <td class="cell-count">1 MB</td>
                 <td class="cell-actions">
@@ -198,14 +182,11 @@
             </tr>
 
             <tr>
-                <td class="cell-icon">
-                </td>
+                <td class="cell-icon">&nbsp;</td>
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-list-alt"></span>
                     <span class="name">vacation_schedule.xls</span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="vacation_schedule.xls">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="vacation_schedule.xls">
                 </td>
                 <td class="cell-count">12 KB</td>
                 <td class="cell-actions">
@@ -215,14 +196,11 @@
             </tr>
 
             <tr>
-                <td class="cell-icon">
-                </td>
+                <td class="cell-icon">&nbsp;</td>
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-book"></span>
                     <span class="name">HTML_guidelines.pdg</span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="HTML_guidelines.pdf">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="HTML_guidelines.pdf">
                 </td>
                 <td class="cell-count">10 KB</td>
                 <td class="cell-actions">
@@ -232,14 +210,11 @@
             </tr>
 
             <tr>
-                <td class="cell-icon">
-                </td>
+                <td class="cell-icon">&nbsp;</td>
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-picture"></span>
                     <span class="name">Montenegro.jpg</span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="Montenegro.jpg">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="Montenegro.jpg">
                 </td>
                 <td class="cell-count">4 MB</td>
                 <td class="cell-actions">
@@ -249,14 +224,11 @@
             </tr>
 
             <tr>
-                <td class="cell-icon">
-                </td>
+                <td class="cell-icon">&nbsp;</td>
                 <td class="cell-filename">
                     <span class="glyphicon glyphicon-film"></span>
                     <span class="name">summer_party.avi</span>
-                    <label>
-                        <input type="text" name="new-name" class="input" value="summer_party.avi">
-                    </label>
+                    <input type="text" name="new-name" class="input" value="summer_party.avi">
                 </td>
                 <td class="cell-count">415 MB</td>
                 <td class="cell-actions">
@@ -268,7 +240,8 @@
     </main>
 
     <footer class="footer">
-        <p>Copyright &copy; 2020 <a href="https://www.teamdev.com/" target="_blank" title="TeamDev">TeamDev</a>. All rights reserved.</p>
+        <p>Copyright &copy; 2020 <a href="https://www.teamdev.com/" target="_blank" title="TeamDev">TeamDev</a>. All
+            rights reserved.</p>
     </footer>
 </div>
 

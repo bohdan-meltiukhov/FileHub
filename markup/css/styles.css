@@ -24,6 +24,12 @@ a:hover {
     cursor: pointer;
 }
 
+.button .glyphicon {
+    top: 6px;
+    margin-top: -6px;
+    margin-bottom: -2px;
+}
+
 .button:hover {
     background-color: #154772;
     border-color: #1b3e5e;
@@ -92,7 +98,7 @@ a:hover {
     padding: 8px 5px;
 }
 
-.form-box .row .input-block .input {
+.form-box .row .right-column .input {
     margin-bottom: 6px;
 }
 
@@ -172,8 +178,7 @@ a:hover {
 
 .current-directory .folder-icon {
     display: inline-block;
-    width: 45px;
-    text-align: center;
+    padding: 0 14px;
 }
 
 .current-directory .directory-name {
@@ -194,12 +199,6 @@ a:hover {
     top: 10px;
 }
 
-.current-directory .action-buttons .button .glyphicon {
-    top: 6px;
-    margin-top: -6px;
-    margin-bottom: -2px;
-}
-
 .table tbody td.cell-filename .name {
     display: inline;
 }
@@ -217,7 +216,6 @@ a:hover {
 
 .table td {
     vertical-align: middle;
-    text-align: center;
     padding: 13px 10px;
 }
 
@@ -226,7 +224,6 @@ a:hover {
 }
 
 .table td.cell-filename {
-    text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -238,10 +235,12 @@ a:hover {
 
 .table td.cell-count {
     width: 80px;
+    text-align: center;
 }
 
 .table td.cell-actions {
     width: 100px;
+    text-align: center;
 }
 
 .table td.cell-actions .glyphicon {

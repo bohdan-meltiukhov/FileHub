@@ -40,7 +40,7 @@ export default class Button extends Component {
   }
 
   /**
-   * @inheritdoc
+   * Adds a function that should be called when the button is pressed.
    */
   addClickHandler(handler) {
     this._clickHandlers.push(handler);
@@ -56,12 +56,11 @@ export default class Button extends Component {
   }
 
   /**
-   * Sets the button text field and changes the innerText property of the button.
+   * Changes the innerText property of the button.
    *
    * @param {string} value - The new text for the button.
    */
   set buttonText(value) {
-    this._buttonText = value;
     this.rootElement.innerText = value;
   }
 }

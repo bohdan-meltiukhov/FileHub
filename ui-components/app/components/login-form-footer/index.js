@@ -11,7 +11,7 @@ export default class FormFooter extends Component {
    * @typedef {object} Parameters
    * @property {string} buttonText - The text to be displayed inside the submit button.
    * @property {string} linkText - The text of the form link.
-   * @property {string} linkDirection - The href value of the form link.
+   * @property {string} linkUrl - The href value of the form link.
    */
 
   /**
@@ -23,13 +23,13 @@ export default class FormFooter extends Component {
   constructor(container, {
     buttonText = 'Submit',
     linkText = 'Take me to another page',
-    linkDirection = '#',
+    linkUrl = '#',
   } = {}) {
     super(container);
 
     this._buttonText = buttonText;
     this._linkText = linkText;
-    this._linkDirection = linkDirection;
+    this._linkUrl = linkUrl;
 
     this.render();
   }
@@ -42,7 +42,7 @@ export default class FormFooter extends Component {
             <div class="row">
                 <div class="form-footer">
                     <span class="submit-button"></span>
-                    <a href="${this._linkDirection}" class="form-link">${this._linkText}</a>
+                    <a href="${this._linkUrl}" class="form-link">${this._linkText}</a>
                 </div>
             </div>
         `;
@@ -68,32 +68,29 @@ export default class FormFooter extends Component {
   }
 
   /**
-   * Assign the provided button text to the private field and changes the text of the button.
+   * Changes the text of the button.
    *
    * @param {string} value - The new button text.
    */
   set buttonText(value) {
-    this._buttonText = value;
     this.button.buttonText = value;
   }
 
   /**
-   * Assigns the provided link text to the private field and changes the inner text of the form link.
+   * Changes the inner text of the form link.
    *
    * @param {string} value - The new link text.
    */
   set linkText(value) {
-    this._linkText = value;
     this.rootElement.querySelector('.form-link').innerText = value;
   }
 
   /**
-   * Assigns the provided link direction to the private field and changes the href property of the link.
+   * Changes the href property of the link.
    *
    * @param {string} value - The new link link direction.
    */
-  set linkDirection(value) {
-    this._linkDirection = value;
+  set linkUrl(value) {
     this.rootElement.querySelector('.form-link').href = value;
   }
 }

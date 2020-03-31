@@ -37,12 +37,11 @@ export default class FormHeader extends Component {
   }
 
   /**
-   * Assigns a new value to the header text and changes the inner text of the header.
+   * Changes the inner text of the header.
    *
    * @param {string} value - The new text to be displayed in the header.
    */
   set text(value) {
-    this._headerText = value;
     this.rootElement.querySelector('h1').innerText = value;
   }
 }

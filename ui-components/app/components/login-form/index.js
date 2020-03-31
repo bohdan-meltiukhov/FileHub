@@ -72,6 +72,7 @@ export default class LoginForm extends Component {
     const headerContainer = this.rootElement.querySelector('.form-header');
     this.header = new FormHeader(headerContainer, {
       headerText: 'Login',
+      withIcon: true,
     });
   }
 

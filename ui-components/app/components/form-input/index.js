@@ -10,7 +10,7 @@ export default class FormInput extends Component {
    * @typedef {object} Parameters
    * @property {string} labelText - The text for the input label.
    * @property {string} placeholder - The input placeholder value.
-   * @property {string} - The type of the input.
+   * @property {string} type - The type of the input.
    */
 
   /**
@@ -29,7 +29,6 @@ export default class FormInput extends Component {
     this._labelText = labelText;
     this._placeholder = placeholder;
     this._type = type;
-    this._helpText = '';
 
     this.render();
   }
@@ -44,7 +43,7 @@ export default class FormInput extends Component {
     
                 <div class="input-block">
                     <input type="${this._type}" name="username" class="input" placeholder="${this._placeholder}">
-                    <span class="error-message">${this._helpText}</span>
+                    <span class="error-message"></span>
                 </div>
             </div>
         `;
@@ -60,42 +59,38 @@ export default class FormInput extends Component {
   }
 
   /**
-   * Assigns the provided value to the input label text and changes the inner text of the label.
+   * Changes the inner text of the label.
    *
    * @param {string} value - The new label text.
    */
   set labelText(value) {
-    this._labelText = value;
     this.rootElement.querySelector('.input-label').innerText = value;
   }
 
   /**
-   * Assigns the new placeholder value to the private field and changes the placeholder for the input.
+   * Changes the placeholder for the input.
    *
    * @param {string} value - The new placeholder value.
    */
   set placeholder(value) {
-    this._placeholder = value;
     this.rootElement.querySelector('.input').placeholder = value;
   }
 
   /**
-   * Assigns the new input type to the private field and changes the input type.
+   * Changes the input type.
    *
    * @param {string} value - The new input type.
    */
   set type(value) {
-    this._type = value;
     this.rootElement.querySelector('.input').type = value;
   }
 
   /**
-   * Assigns the new help text to the private field and changes the help text.
+   * Changes the help text.
    *
    * @param {string} value - The new help text value.
    */
   set helpText(value) {
-    this._helpText = value;
     this.rootElement.querySelector('.error-message').innerText = value;
   }
 }

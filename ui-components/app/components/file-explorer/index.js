@@ -19,7 +19,7 @@ export default class FileExplorer extends Component {
    */
   markup() {
     return `
-      <div class="application-box">
+      <div class="application-box" data-test="file-explorer">
         <img src="app/images/logo.png" class="logo" alt="logo">
     
         <ul class="menu">

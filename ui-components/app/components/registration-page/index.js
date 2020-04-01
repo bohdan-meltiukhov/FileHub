@@ -23,7 +23,7 @@ export default class RegistrationPage extends Component {
   /** @inheritdoc */
   markup() {
     return `
-      <div class="registration-page"></div>
+      <div class="registration-page" data-test="registration-page"></div>
     `;
   }
 

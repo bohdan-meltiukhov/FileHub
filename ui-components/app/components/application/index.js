@@ -23,7 +23,7 @@ export default class Application extends Component {
    */
   markup() {
     return `
-            <div class="application"></div>
+            <div class="application" data-test="application"></div>
         `;
   }
 

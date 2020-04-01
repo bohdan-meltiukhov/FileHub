@@ -26,7 +26,7 @@ export default class LoginPage extends Component {
    */
   markup() {
     return `
-      <div class="login-page"></div>
+      <div class="login-page" data-test="login-page"></div>
     `;
   }
 

@@ -28,7 +28,7 @@ export default class RegistrationForm extends Component {
    */
   markup() {
     return `
-            <form class="application-box form-dialog" data-test="registration-form">
+            <form class="application-box form-dialog">
                 <img src="app/images/logo.png" class="logo" alt="logo">
             
                 <div class="form-header"></div>
@@ -88,7 +88,7 @@ export default class RegistrationForm extends Component {
   /**
    * Verifies that values from the form inputs meet the requirements.
    */
-  validateForm() {
+  _validateForm() {
     this.loginInput.helpText = '';
     this.passwordInput.helpText = '';
     this.confirmPasswordInput.helpText = '';
@@ -123,7 +123,7 @@ export default class RegistrationForm extends Component {
    * @inheritdoc
    */
   addEventListeners() {
-    this.formFooter.addButtonClickHandler(() => this.validateForm());
+    this.formFooter.addButtonClickHandler(() => this._validateForm());
 
     this.rootElement.addEventListener('submit', (event) => {
       event.preventDefault();

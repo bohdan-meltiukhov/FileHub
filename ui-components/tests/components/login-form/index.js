@@ -10,33 +10,31 @@ module('The LoginForm test', {
   },
 });
 
-test('should validate inputs.', (assert) => {
-  const element = new LoginForm(fixture);
-  const form = fixture.firstElementChild;
+test('should should call the onSubmit function with correct credentials.', async function(assert) {
+  const username = 'admin';
+  const password = '1234';
 
-  const loginInput = form.querySelector('.login-input .input');
-  const loginHelpText = form.querySelector('.login-input .error-message');
+  const loginForm = new LoginForm(fixture);
+  const formElement = fixture.firstElementChild;
 
-  loginInput.value = 'name@example.com';
-  element.validateForm();
-  assert.strictEqual(loginHelpText.innerText, '', 'The login form should remove the help text when the ' +
-    'username is not empty.');
+  const callback = async function(credentials) {
+    assert.step('Callback was called.');
+    assert.strictEqual(credentials.username, username, 'The login form should provide the entered username.');
+    assert.strictEqual(credentials.password, password, 'The login form should provide the entered pasword.');
+  };
 
-  loginInput.value = '';
-  element.validateForm();
-  assert.strictEqual(loginHelpText.innerText, 'The username should have 1 or more characters', 'The login form ' +
-    'should show the help text when the username is empty.');
+  loginForm.onSubmit(callback);
 
-  const passwordInput = form.querySelector('.password-input .input');
-  const passwordHelpText = form.querySelector('.password-input .error-message');
+  const usernameInput = formElement.querySelector('.login-input .input');
+  usernameInput.value = username;
 
-  passwordInput.value = 'ddnchd683whid';
-  element.validateForm();
-  assert.strictEqual(passwordHelpText.innerText, '', 'The password form should remove the help text when the ' +
-    'username is not empty.');
+  const passwordInput = formElement.querySelector('.password-input .input');
+  passwordInput.value = password;
 
-  passwordInput.value = '';
-  element.validateForm();
-  assert.strictEqual(passwordHelpText.innerText, 'The password should have 1 or more characters', 'The password ' +
-    'form should show the help text when the username is empty.');
+  const submitButton = formElement.querySelector('.login-form-footer .button');
+  submitButton.click();
+
+  await callback;
+  assert.verifySteps(['Callback was called.'], 'The login form should should call the onSubmit function ' +
+    'when the form is submitted with valid input values.');
 });

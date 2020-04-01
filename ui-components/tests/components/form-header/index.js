@@ -10,23 +10,28 @@ module('The FormHeader test', {
   },
 });
 
-test('should have the default text.', (assert) => {
+test('should have the default properties.', (assert) => {
   new FormHeader(fixture);
   const header = fixture.firstElementChild;
   assert.strictEqual(header.innerText, 'Header', 'The header should have the default text.');
+  assert.strictEqual(header.querySelector('.glyphicon').style.display, 'none', 'The header should hide the ' +
+    'icon by default.');
 });
 
-test('should display the provided text.', (assert) => {
-  const text = 'OK';
-  new FormHeader(fixture, {text});
+test('should have the provided properties.', (assert) => {
+  const headerText = 'OK';
+  const withIcon = true;
+  new FormHeader(fixture, {headerText, withIcon});
   const header = fixture.firstElementChild;
-  assert.strictEqual(header.innerText, text, 'The header should display the provided text.');
+  assert.strictEqual(header.innerText, headerText, 'The header should display the provided text.');
+  assert.strictEqual(header.querySelector('.glyphicon').style.display, 'block', 'The header should display the icon ' +
+    'when the corresponding property is true.');
 });
 
 test('should change the text.', (assert) => {
-  const text = 'New text';
-  const element = new FormHeader(fixture, {text: 'Initial text'});
-  element.text = text;
+  const headerText = 'New text';
+  const element = new FormHeader(fixture, {headerText: 'Initial text'});
+  element.text = headerText;
   const header = fixture.firstElementChild;
-  assert.strictEqual(header.innerText, text, 'The header should change the text.');
+  assert.strictEqual(header.innerText, headerText, 'The header should change the text.');
 });

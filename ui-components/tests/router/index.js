@@ -1,4 +1,4 @@
-import Router from '../../router.js';
+import Router from '../../app/router.js';
 import LoginForm from '../../app/components/login-form';
 import RegistrationForm from '../../app/components/registration-form';
 
@@ -39,13 +39,13 @@ test('should redirect to the default page.', (assert) => {
     'default location if the hash is changed to empty.');
 });
 
-test('should change the pages when the location hash changes.', (assert) => {
+test('should render the correct page when the location hash changes.', (assert) => {
   const windowMock = new WindowMock();
 
   const rootElement = document.createElement('div');
 
   const properties = {
-    rootElement: rootElement,
+    rootElement,
     pageMapping: {
       '/authentication': LoginForm,
       '/registration': RegistrationForm,

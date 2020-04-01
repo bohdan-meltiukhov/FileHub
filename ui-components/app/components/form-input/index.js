@@ -1,7 +1,7 @@
 import Component from '../component.js';
 
 /**
- * A component for input groups.
+ * The component for the input group.
  */
 export default class FormInput extends Component {
   /**
@@ -42,8 +42,9 @@ export default class FormInput extends Component {
                 <label for="input-username" class="input-label">${this._labelText}</label>
     
                 <div class="input-block">
-                    <input type="${this._type}" name="username" class="input" placeholder="${this._placeholder}">
-                    <span class="error-message"></span>
+                    <input type="${this._type}" name="username" class="input" placeholder="${this._placeholder}" 
+                    data-test="input">
+                    <span class="error-message" data-test="error-message"></span>
                 </div>
             </div>
         `;
@@ -55,34 +56,7 @@ export default class FormInput extends Component {
    * @returns {string} The input value.
    */
   get inputValue() {
-    return this.rootElement.querySelector('.input').value;
-  }
-
-  /**
-   * Changes the inner text of the label.
-   *
-   * @param {string} value - The new label text.
-   */
-  set labelText(value) {
-    this.rootElement.querySelector('.input-label').innerText = value;
-  }
-
-  /**
-   * Changes the placeholder for the input.
-   *
-   * @param {string} value - The new placeholder value.
-   */
-  set placeholder(value) {
-    this.rootElement.querySelector('.input').placeholder = value;
-  }
-
-  /**
-   * Changes the input type.
-   *
-   * @param {string} value - The new input type.
-   */
-  set type(value) {
-    this.rootElement.querySelector('.input').type = value;
+    return this.rootElement.querySelector('[data-test="input"]').value;
   }
 
   /**
@@ -91,6 +65,6 @@ export default class FormInput extends Component {
    * @param {string} value - The new help text value.
    */
   set helpText(value) {
-    this.rootElement.querySelector('.error-message').innerText = value;
+    this.rootElement.querySelector('[data-test="error-message"]').innerText = value;
   }
 }

@@ -1,7 +1,7 @@
 import Component from '../component.js';
 import LoginForm from '../login-form';
 import RegistrationForm from '../registration-form';
-import Router from '../../../router.js';
+import Router from '../../router.js';
 import NotFoundPage from '../not-found';
 
 /**
@@ -22,7 +22,7 @@ export default class Application extends Component {
    */
   markup() {
     return `
-            <div class="application"></div>
+            <div></div>
         `;
   }
 

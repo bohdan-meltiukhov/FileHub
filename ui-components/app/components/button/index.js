@@ -1,7 +1,7 @@
 import Component from '../component.js';
 
 /**
- * A component for buttons.
+ * The component for the button.
  */
 export default class Button extends Component {
   /**
@@ -55,14 +55,5 @@ export default class Button extends Component {
     this.rootElement.addEventListener('click', () => {
       this._clickHandlers.forEach((handler) => handler());
     });
-  }
-
-  /**
-   * Changes the innerText property of the button.
-   *
-   * @param {string} value - The new text for the button.
-   */
-  set buttonText(value) {
-    this.rootElement.innerText = value;
   }
 }

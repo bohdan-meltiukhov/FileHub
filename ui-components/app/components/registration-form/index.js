@@ -1,9 +1,9 @@
 import Component from '../component.js';
 import FormInput from '../form-input';
-import Validator from '../validator.js';
-import MinLengthValidationRule from '../validation-rules/min-length-validation-rule.js';
-import RegExpValidationRule from '../validation-rules/regexp-validation-rule.js';
-import EqualValidationRule from '../validation-rules/equal-validation-rule.js';
+import Validator from '../../services/validator';
+import MinLengthValidationRule from '../../services/validator/validation-rules/min-length-validation-rule.js';
+import RegExpValidationRule from '../../services/validator/validation-rules/regexp-validation-rule.js';
+import EqualValidationRule from '../../services/validator/validation-rules/equal-validation-rule.js';
 import ValidationErrorCase from '../../models/errors/validation-error-case';
 import UserCredentials from '../../models/user-credentials';
 import Button from '../button';
@@ -94,22 +94,27 @@ export default class RegistrationForm extends Component {
 
     const validator = new Validator();
 
-    validator.addField('username', this.loginInput.inputValue, [
-      new MinLengthValidationRule(5, 'have 5 or more characters'),
-      new RegExpValidationRule(/^[A-Za-z0-9]+$/, 'contain only latin letters and digits'),
+    validator.addField('username', [
+      new MinLengthValidationRule(5, 'Please enter 5 or more characters.'),
+      new RegExpValidationRule(/^[A-Za-z0-9]+$/, 'Only latin letters and digits are allowed.'),
     ]);
 
-    validator.addField('password', this.passwordInput.inputValue, [
-      new MinLengthValidationRule(8, 'have 8 or more characters'),
-      new RegExpValidationRule(/^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/, 'contain at least one digit, one lowercase ' +
-        'letter, and one uppercase letter'),
+    validator.addField('password', [
+      new MinLengthValidationRule(8, 'Please enter 8 or more characters.'),
+      new RegExpValidationRule(/^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/, 'Add at least one lowercase letter, ' +
+        'one uppercase letter and one digit.'),
     ]);
 
-    validator.addField('second password',
-      this.confirmPasswordInput.inputValue,
-      [new EqualValidationRule(this.passwordInput.inputValue, 'be equal to the first password')]);
+    validator.addField('confirmPassword',
+      [new EqualValidationRule(this.passwordInput.inputValue, 'The passwords do not match.')]);
 
-    validator.validate()
+    const inputValues = {
+      username: this.loginInput.inputValue,
+      password: this.passwordInput.inputValue,
+      confirmPassword: this.confirmPasswordInput.inputValue,
+    };
+
+    validator.validate(inputValues)
       .then(() => {
         this._onSubmit(new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue));
       })
@@ -145,20 +150,13 @@ export default class RegistrationForm extends Component {
    * @param {ValidationErrorCase[]} errors - The array of errors to display.
    */
   showValidationErrors(errors) {
-    errors.forEach((error) => {
-      switch (error.field) {
-      case 'username':
-        this.loginInput.helpText = error.message;
-        break;
-      case 'password':
-        this.passwordInput.helpText = error.message;
-        break;
-      case 'second password':
-        this.confirmPasswordInput.helpText = error.message;
-        break;
-      default:
-        console.log(error.message);
-      }
-    });
+    const errorMap = errors.reduce((map, error) => {
+      map[error.field] = error.message;
+      return map;
+    }, {});
+
+    this.loginInput.helpText = errorMap.username || '';
+    this.passwordInput.helpText = errorMap.password || '';
+    this.confirmPasswordInput.helpText = errorMap.confirmPassword || '';
   }
 }

@@ -1,6 +1,6 @@
 import Component from '../component.js';
 import RegistrationForm from '../registration-form';
-import APIService from '../../services/api-service';
+import ApiService from '../../services/api-service';
 import UserCredentials from '../../models/user-credentials';
 import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
@@ -38,21 +38,14 @@ export default class RegistrationPage extends Component {
    *
    * @param {UserCredentials} userCredentials - The provided credentials.
    */
-  verifyForm(userCredentials) {
-    const apiService = new APIService();
+  sendCredentials(userCredentials) {
+    const apiService = new ApiService();
     apiService.register(userCredentials)
       .then(() => {
         window.location.hash = '#/authentication';
       })
       .catch((error) => {
-        if (error instanceof ServerValidationError) {
-          this.registrationForm.showValidationErrors(error.errorCases);
-        } else if (error instanceof GeneralServerError) {
-          alert(`Internal server error: ${error.message}`);
-        } else {
-          alert('Unknown error. See the console for more details.');
-          console.log(error);
-        }
+        this._handleError(error);
       });
   }
 
@@ -60,6 +53,23 @@ export default class RegistrationPage extends Component {
    * Sets a function that should be called when the login form is submitted with verified values.
    */
   addEventListeners() {
-    this.registrationForm.onSubmit((userCredentials) => this.verifyForm(userCredentials));
+    this.registrationForm.onSubmit((userCredentials) => this.sendCredentials(userCredentials));
+  }
+
+  /**
+   * Checks the type of the error and takes the necessary measures.
+   *
+   * @param {object} error - The thrown error.
+   * @private
+   */
+  _handleError(error) {
+    if (error instanceof ServerValidationError) {
+      this.registrationForm.showValidationErrors(error.errorCases);
+    } else if (error instanceof GeneralServerError) {
+      alert(`Internal server error: ${error.message}`);
+    } else {
+      alert('Unknown error. See the console for more details.');
+      console.log(error);
+    }
   }
 }

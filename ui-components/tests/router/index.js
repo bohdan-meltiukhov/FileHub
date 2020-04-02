@@ -1,4 +1,4 @@
-import Router from '../../router.js';
+import Router from '../../app/router.js';
 import LoginPage from '../../app/components/login-page';
 import RegistrationPage from '../../app/components/registration-page';
 import FileExplorer from '../../app/components/file-explorer';

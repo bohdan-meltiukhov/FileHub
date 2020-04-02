@@ -1,7 +1,7 @@
 import Component from '../component.js';
 import FormInput from '../form-input';
-import Validator from '../validator.js';
-import MinLengthValidationRule from '../validation-rules/min-length-validation-rule.js';
+import Validator from '../../services/validator';
+import MinLengthValidationRule from '../../services/validator/validation-rules/min-length-validation-rule.js';
 import UserCredentials from '../../models/user-credentials';
 import ValidationErrorCase from '../../models/errors/validation-error-case';
 import Button from '../button';
@@ -86,13 +86,18 @@ export default class LoginForm extends Component {
 
     const validator = new Validator();
 
-    validator.addField('username', this.loginInput.inputValue,
-      [new MinLengthValidationRule(1, 'not be empty')]);
+    validator.addField('username',
+      [new MinLengthValidationRule(1, 'This field should not be empty.')]);
 
-    validator.addField('password', this.passwordInput.inputValue,
-      [new MinLengthValidationRule(1, 'not be empty')]);
+    validator.addField('password',
+      [new MinLengthValidationRule(1, 'This field should not be empty.')]);
 
-    validator.validate()
+    const inputValues = {
+      username: this.loginInput.inputValue,
+      password: this.passwordInput.inputValue,
+    };
+
+    validator.validate(inputValues)
       .then(() => {
         this._onSubmit(new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue));
       })
@@ -128,17 +133,12 @@ export default class LoginForm extends Component {
    * @param {ValidationErrorCase[]} errors - The array of errors to display.
    */
   showValidationErrors(errors) {
-    errors.forEach((error) => {
-      switch (error.field) {
-      case 'username':
-        this.loginInput.helpText = error.message;
-        break;
-      case 'password':
-        this.passwordInput.helpText = error.message;
-        break;
-      default:
-        console.log(error.message);
-      }
-    });
+    const errorMap = errors.reduce((map, error) => {
+      map[error.field] = error.message;
+      return map;
+    }, {});
+
+    this.loginInput.helpText = errorMap.username || '';
+    this.passwordInput.helpText = errorMap.password || '';
   }
 }

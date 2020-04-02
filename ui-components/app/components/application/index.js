@@ -1,5 +1,5 @@
 import Component from '../component.js';
-import Router from '../../../router.js';
+import Router from '../../router.js';
 import NotFoundPage from '../not-found';
 import FileExplorer from '../file-explorer';
 import LoginPage from '../login-page';

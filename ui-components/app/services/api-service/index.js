@@ -6,7 +6,7 @@ import ServerValidationError from '../../models/errors/server-validation-error';
 /**
  * The class for sending requests and receiving responses from backend.
  */
-export default class APIService {
+export default class ApiService {
   /**
    * Sends a request to authenticate a user with the provided credentials.
    *
@@ -32,7 +32,7 @@ export default class APIService {
   register(userCredentials) {
     return new Promise(((resolve, reject) => {
       if (userCredentials.username === 'admin') {
-        const errorCase = new ValidationErrorCase('username', 'The username is already taken.')
+        const errorCase = new ValidationErrorCase('username', 'The username is already taken.');
         reject(new ServerValidationError([errorCase]));
       } else {
         resolve();

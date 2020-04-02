@@ -20,7 +20,7 @@ export default class RegistrationPage extends Component {
 
     this.render();
 
-    const titleService = new TitleService();
+    const titleService = new TitleService(document);
     titleService.setTitle('Registration');
   }
 

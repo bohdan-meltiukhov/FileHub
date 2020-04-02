@@ -221,6 +221,11 @@ a:hover {
 
 .table .cell-icon {
     width: 22px;
+    text-align: center;
+}
+
+.table .cell-icon .glyphicon {
+    font-size: 12px;
 }
 
 .table td.cell-filename {

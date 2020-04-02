@@ -1,26 +1,59 @@
+/**
+ * An abstract class for different markup components.
+ *
+ * <p>Defines methods for rendering markup, adding different event listeners and nested components initialization.
+ */
 export default class Component {
-    constructor(container) {
-        this.init(container);
-    }
+  /**
+   * Creates an instance of a component with initialized fields.
+   *
+   * @param {Element} container - A parent element for the current component.
+   */
+  constructor(container) {
+    this.init(container);
+  }
 
-    init(container) {
-        this._container = container;
-    }
+  /**
+   * Assigns the provided container to the corresponding class field.
+   *
+   * @param {Element} container - A container for the current component.
+   */
+  init(container) {
+    this._container = container;
+  }
 
-    render() {
-        const fakeElement = document.createElement('div');
-        fakeElement.innerHTML = this.markup();
+  /**
+   * Takes the markup for the current component and applies it to the parent element.
+   */
+  render() {
+    const fakeElement = document.createElement('div');
+    fakeElement.innerHTML = this.markup();
 
-        this.rootElement = fakeElement.firstElementChild;
-        this._container.appendChild(this.rootElement);
+    this.rootElement = fakeElement.firstElementChild;
+    this._container.appendChild(this.rootElement);
 
-        this.initNestedComponents();
-        this.addEventListeners();
-    }
+    this.initNestedComponents();
+    this.addEventListeners();
+  }
 
-    markup() {}
+  /**
+   * Provides an HTML representation of the current component.
+   *
+   * @returns {string} An HTML code that represents the current component.
+   * @abstract
+   */
+  markup() {
+  }
 
-    initNestedComponents() {}
+  /**
+   * Initialises all the children components for the current component.
+   */
+  initNestedComponents() {
+  }
 
-    addEventListeners() {}
+  /**
+   * Adds event listeners for different parts of the current component.
+   */
+  addEventListeners() {
+  }
 }

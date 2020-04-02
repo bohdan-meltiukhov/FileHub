@@ -1,84 +1,103 @@
-import Component from "../component.js";
-import FormInput from "../form-input";
-import FormFooter from "../login-form-footer";
-import FormHeader from "../form-header";
+import Component from '../component.js';
+import FormInput from '../form-input';
+import Validator from '../validator.js';
+import Button from '../button';
 
+/**
+ * The component for the authentication form.
+ */
 export default class LoginForm extends Component {
+  /**
+   * Creates an instance of the login form component with set container.
+   *
+   * @param {Element} container - The parent element for the current login form component.
+   */
+  constructor(container) {
+    super(container);
 
-    constructor(container) {
-        super(container);
+    this.render();
+  }
 
-        this.render();
-    }
-
-    markup() {
-        return `
-            <form class="application-box form-dialog">
+  /**
+   * @inheritdoc
+   */
+  markup() {
+    return `
+            <form class="application-box form-dialog" data-test="login-form">
                 <img src="app/images/logo.png" class="logo" alt="logo">
             
-                <div class="form-header"></div>
+                <header class="header">
+                    <h1>Login</h1>
+                    <span class="glyphicon glyphicon-user"></span>
+                </header>
             
                 <main>
-                    <div class="login-input"></div>
+                    <div data-test="login-input"></div>
             
-                    <div class="password-input"></div>
+                    <div data-test="password-input"></div>
             
-                    <div class="login-form-footer"></div>
+                    <div class="row">
+                        <div class="form-footer">
+                            <span data-test="submit-button"></span>
+                            <a href="#/registration" class="form-link">Don't have an account yet?</a>
+                        </div>
+                    </div>
                 </main>
             
             </form>
         `;
-    }
+  }
 
+  /**
+   * @inheritdoc
+   */
+  initNestedComponents() {
+    const loginInputContainer = this.rootElement.querySelector('[data-test="login-input"]');
+    this.loginInput = new FormInput(loginInputContainer, {
+      labelText: 'Username',
+      placeholder: 'Email',
+      type: 'text',
+    });
 
-    initNestedComponents() {
-        const loginInputContainer = this.rootElement.querySelector('.login-input');
-        this.loginInput = new FormInput(loginInputContainer, {
-            labelText: 'Username',
-            placeholder: 'Email',
-            type: 'text'
-        });
+    const passwordInputContainer = this.rootElement.querySelector('[data-test="password-input"]');
+    this.passwordInput = new FormInput(passwordInputContainer, {
+      labelText: 'Password',
+      placeholder: 'Password',
+      type: 'password',
+    });
 
-        const passwordInputContainer = this.rootElement.querySelector('.password-input');
-        this.passwordInput = new FormInput(passwordInputContainer, {
-            labelText: 'Password',
-            placeholder: 'Password',
-            type: 'password'
-        });
+    const buttonContainer = this.rootElement.querySelector('[data-test="submit-button"]');
+    this.button = new Button(buttonContainer, {
+      buttonText: 'Log In',
+    });
+  }
 
-        const footerContainer = this.rootElement.querySelector('.login-form-footer');
-        this.formFooter = new FormFooter(footerContainer, {
-            buttonText: 'Log In',
-            linkText: 'Don\'t have an account yet?',
-            linkDirection: 'registration.html'
-        });
+  /**
+   * Verifies that values from the form inputs meet the requirements.
+   */
+  validateForm() {
+    const validator = new Validator();
 
-        const headerContainer = this.rootElement.querySelector('.form-header');
-        this.header = new FormHeader(headerContainer, {
-            text: 'Login'
-        });
-    }
+    validator.validate(this.loginInput, {
+      inputName: 'username',
+      minLength: 1,
+    });
 
-    checkInputs() {
-        if (this.loginInput.inputValue !== '') {
-            this.loginInput.helpText = '';
-        } else {
-            this.loginInput.helpText = 'Username can\'t be empty';
-        }
+    validator.validate(this.passwordInput, {
+      inputName: 'password',
+      minLength: 1,
+    });
+  }
 
-        if (this.passwordInput.inputValue !== '') {
-            this.passwordInput.helpText = '';
-        } else {
-            this.passwordInput.helpText = 'Password can\'t be empty';
-        }
-    }
+  /**
+   * @inheritdoc
+   */
+  addEventListeners() {
+    this.button.addClickHandler(() => this.validateForm());
 
-    addEventListeners() {
-        this.formFooter.addButtonClickHandler(() => this.checkInputs());
-
-        this.rootElement.addEventListener('submit', (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-        });
-    }
+    this.rootElement.addEventListener('submit', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    });
+  }
 }

@@ -81,9 +81,6 @@ export default class LoginForm extends Component {
    * @private
    */
   _validateForm() {
-    this.loginInput.helpText = '';
-    this.passwordInput.helpText = '';
-
     const validator = new Validator();
 
     validator.addField('username',

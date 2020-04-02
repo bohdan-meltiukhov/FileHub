@@ -88,10 +88,6 @@ export default class RegistrationForm extends Component {
    * Verifies that values from the form inputs meet the requirements.
    */
   _validateForm() {
-    this.loginInput.helpText = '';
-    this.passwordInput.helpText = '';
-    this.confirmPasswordInput.helpText = '';
-
     const validator = new Validator();
 
     validator.addField('username', [

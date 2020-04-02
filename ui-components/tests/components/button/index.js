@@ -17,18 +17,10 @@ test('should have the default text.', (assert) => {
 });
 
 test('should display the provided text.', (assert) => {
-    const buttonText = 'OK';
-    new Button(fixture, {buttonText});
-    const button = fixture.firstElementChild;
-    assert.strictEqual(button.innerText, buttonText, 'The button should display the provided text.')
-});
-
-test('should change the text.', (assert) => {
-  const text = 'New text';
-  const element = new Button(fixture, {buttonText: 'Initial text'});
-  element.buttonText = text;
+  const buttonText = 'OK';
+  new Button(fixture, {buttonText});
   const button = fixture.firstElementChild;
-  assert.strictEqual(button.innerText, text, 'The button should change the text.');
+  assert.strictEqual(button.innerText, buttonText, 'The button should display the provided text.');
 });
 
 test('should handle click.', (assert) => {

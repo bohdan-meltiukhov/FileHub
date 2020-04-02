@@ -1,5 +1,4 @@
 import Component from '../component.js';
-import FormHeader from '../form-header';
 
 /**
  * The component for the 404 page.
@@ -22,19 +21,13 @@ export default class NotFoundPage extends Component {
         <div class="application-box form-dialog" data-test="not-found">
             <img src="app/images/logo.png" class="logo" alt="logo">
             
-            <div class="form-header"></div>
+            <header class="header">
+                <h1>Error 404 - Not Found</h1>
+            </header>
             
-            <p>Not found</p>
+            <a href="#/authentication" title="Go to the authentication page">Go to the authentication page</a>
         </div>
     `;
   }
-
-  /** @inheritdoc */
-  initNestedComponents() {
-    const headerContainer = this.rootElement.querySelector('.form-header');
-    this.header = new FormHeader(headerContainer, {
-      headerText: 'Error 404',
-      withIcon: false,
-    });
-  }
 }
+

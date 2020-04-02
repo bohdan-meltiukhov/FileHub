@@ -1,13 +1,12 @@
 import Component from '../component.js';
-import FormHeader from '../form-header';
 import FormInput from '../form-input';
-import FormFooter from '../login-form-footer';
 import Validator from '../validator.js';
 import MinLengthValidationRule from '../validation-rules/min-length-validation-rule.js';
 import RegExpValidationRule from '../validation-rules/regexp-validation-rule.js';
 import EqualValidationRule from '../validation-rules/equal-validation-rule.js';
 import ValidationErrorCase from '../../models/errors/validation-error-case';
 import UserCredentials from '../../models/user-credentials';
+import Button from '../button';
 
 /**
  * The component for the registration form.
@@ -31,16 +30,24 @@ export default class RegistrationForm extends Component {
             <form class="application-box form-dialog">
                 <img src="app/images/logo.png" class="logo" alt="logo">
             
-                <div class="form-header"></div>
+                <header class="header">
+                    <h1>Registration</h1>
+                    <span class="glyphicon glyphicon-user"></span>
+                </header>
             
                 <main>
-                    <div class="login-input"></div>
+                    <div data-test="login-input"></div>
             
-                    <div class="password-input"></div>
+                    <div data-test="password-input"></div>
             
-                    <div class="confirm-password-input"></div>
+                    <div data-test="confirm-password-input"></div>
             
-                    <div class="login-form-footer"></div>
+                    <div class="row">
+                        <div class="form-footer">
+                            <span data-test="submit-button"></span>
+                            <a href="#/authentication" class="form-link">Already have an account?</a>
+                        </div>
+                    </div>
                 </main>
             </form>
         `;
@@ -50,38 +57,30 @@ export default class RegistrationForm extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
-    const headerContainer = this.rootElement.querySelector('.form-header');
-    this.header = new FormHeader(headerContainer, {
-      headerText: 'Registration',
-      withIcon: true,
-    });
-
-    const loginInputContainer = this.rootElement.querySelector('.login-input');
+    const loginInputContainer = this.rootElement.querySelector('[data-test="login-input"');
     this.loginInput = new FormInput(loginInputContainer, {
       labelText: 'Username',
       placeholder: 'Email',
       type: 'text',
     });
 
-    const passwordInputContainer = this.rootElement.querySelector('.password-input');
+    const passwordInputContainer = this.rootElement.querySelector('[data-test="password-input"');
     this.passwordInput = new FormInput(passwordInputContainer, {
       labelText: 'Password',
       placeholder: 'Password',
       type: 'password',
     });
 
-    const confirmPasswordInputContainer = this.rootElement.querySelector('.confirm-password-input');
+    const confirmPasswordInputContainer = this.rootElement.querySelector('[data-test="confirm-password-input"');
     this.confirmPasswordInput = new FormInput(confirmPasswordInputContainer, {
       labelText: 'Confirm password',
       placeholder: 'Confirm password',
       type: 'password',
     });
 
-    const footerContainer = this.rootElement.querySelector('.login-form-footer');
-    this.formFooter = new FormFooter(footerContainer, {
+    const buttonContainer = this.rootElement.querySelector('[data-test="submit-button"');
+    this.button = new Button(buttonContainer, {
       buttonText: 'Register',
-      linkText: 'Already have an account?',
-      linkDirection: '#/authentication',
     });
   }
 
@@ -123,7 +122,7 @@ export default class RegistrationForm extends Component {
    * @inheritdoc
    */
   addEventListeners() {
-    this.formFooter.addButtonClickHandler(() => this._validateForm());
+    this.button.addClickHandler(() => this._validateForm());
 
     this.rootElement.addEventListener('submit', (event) => {
       event.preventDefault();

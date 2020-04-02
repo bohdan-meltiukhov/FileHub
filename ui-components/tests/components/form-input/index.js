@@ -43,34 +43,6 @@ test('should display the provided properties.', (assert) => {
   assert.strictEqual(input.type, type, 'The form input should have the provided type.');
 });
 
-test('should change the properties.', (assert) => {
-  const labelText = 'New label';
-  const placeholder = 'New placeholder';
-  const type = 'text';
-  const helpText = 'Help text';
-  const element = new FormInput(fixture, {
-    labelText: 'Old label',
-    placeholder: 'Old placeholder',
-    type: 'password',
-  });
-  const formInput = fixture.firstElementChild;
-
-  const label = formInput.querySelector('.input-label');
-  element.labelText = labelText;
-  assert.strictEqual(label.innerText, labelText, 'The form input should change the label.');
-
-  const input = formInput.querySelector('.input');
-  element.placeholder = placeholder;
-  assert.strictEqual(input.placeholder, placeholder, 'The form input should change the placeholder.');
-
-  element.type = type;
-  assert.strictEqual(input.type, type, 'The form input should change the type.');
-
-  const helpTextElement = formInput.querySelector('.error-message');
-  element.helpText = helpText;
-  assert.strictEqual(helpTextElement.innerText, helpText, 'The form input should change the help text.');
-});
-
 test('should provide the input value.', (assert) => {
   const element = new FormInput(fixture);
   const formInput = fixture.firstElementChild;

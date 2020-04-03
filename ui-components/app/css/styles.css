@@ -2,7 +2,6 @@ body {
     font: 12px/18px Arial, Helvetica, sans-serif;
     background: #eee;
     min-width: 920px;
-    color: #000;
 }
 
 a {
@@ -24,12 +23,6 @@ a:hover {
     cursor: pointer;
 }
 
-.button .glyphicon {
-    top: 6px;
-    margin-top: -6px;
-    margin-bottom: -2px;
-}
-
 .button:hover {
     background-color: #154772;
     border-color: #1b3e5e;
@@ -47,7 +40,7 @@ a:hover {
     box-shadow: 0 0 15px #808080;
 }
 
-.form-box {
+.form-dialog {
     width: 464px;
 }
 
@@ -68,23 +61,23 @@ a:hover {
     right: 0;
 }
 
-.form-box .row {
+.form-dialog .row {
     margin-bottom: 10px;
 }
 
-.form-box .row:after {
+.form-dialog .row:after {
     display: block;
     clear: both;
     content: "";
 }
 
-.form-box .row .input-label {
+.form-dialog .row .input-label {
     float: left;
     margin-top: 8px;
     width: 30%;
 }
 
-.form-box .row .right-column {
+.form-dialog .row .input-block {
     float: right;
     width: 60%;
 }
@@ -98,7 +91,7 @@ a:hover {
     padding: 8px 5px;
 }
 
-.form-box .row .right-column .input {
+.form-dialog .row .input-block .input {
     margin-bottom: 6px;
 }
 
@@ -107,12 +100,17 @@ a:hover {
     box-shadow: 0 0 10px #59cbee;
 }
 
-.form-box .row .error-message {
+.form-dialog .row .error-message {
     color: #f00;
     line-height: 19px;
 }
 
-.form-box .right-column .form-link {
+.form-dialog .form-footer {
+    float: right;
+    width: 60%;
+}
+
+.form-dialog .form-footer .form-link {
     float: right;
     margin-top: 9px;
 }
@@ -131,7 +129,6 @@ a:hover {
 
 .application-box .menu .glyphicon {
     font-size: 16px;
-    margin: 0 4px;
 }
 
 .application-box .menu li {
@@ -149,16 +146,16 @@ a:hover {
     overflow: auto;
 }
 
-.table {
+.files {
     width: 100%;
     table-layout: fixed;
 }
 
-.table tr {
+.files tr {
     border-bottom: 1px solid #999;
 }
 
-.table tbody tr:hover {
+.files tbody tr:hover {
     background-color: #f4f4f4;
 }
 
@@ -178,7 +175,8 @@ a:hover {
 
 .current-directory .folder-icon {
     display: inline-block;
-    padding: 0 14px;
+    width: 45px;
+    text-align: center;
 }
 
 .current-directory .directory-name {
@@ -186,89 +184,83 @@ a:hover {
     font-weight: bold;
     display: inline-block;
     vertical-align: middle;
-    width: 500px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    padding-top: 1px;
 }
 
-.current-directory .action-buttons {
+.current-directory .function-buttons {
     position: absolute;
     right: 0;
     top: 10px;
 }
 
-.table tbody td.cell-filename .name {
+.current-directory .function-buttons .button {
+    padding: 2px 12px 7px;
+}
+
+.files tbody td.filename .name {
     display: inline;
 }
 
-.table tbody td.cell-filename .input,
-.table tbody tr.editing td.cell-filename .name {
+.files tbody tr.editing td.filename .name {
     display: none;
 }
 
-.table tbody tr.editing td.cell-filename .input {
+.files tbody td.filename .input {
+    display: none;
+}
+
+.files tbody tr.editing td.filename .input {
+    height: 20px;
     width: 300px;
-    margin-bottom: -5px;
     display: inline-block;
 }
 
-.table td {
+.files td {
     vertical-align: middle;
+    text-align: center;
     padding: 13px 10px;
 }
 
-.table .cell-icon {
+.files .icon-cell {
     width: 22px;
-    text-align: center;
 }
 
-.table .cell-icon .glyphicon {
-    font-size: 12px;
-}
-
-.table td.cell-filename {
+.files td.filename {
+    display: block;
+    text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.table td.cell-filename .glyphicon {
-    margin-right: 8px;
-}
-
-.table td.cell-count {
+.files td.count {
     width: 80px;
-    text-align: center;
 }
 
-.table td.cell-actions {
+.files td.cell-actions {
     width: 100px;
-    text-align: center;
 }
 
-.table td.cell-actions .glyphicon {
+.files td.cell-actions .glyphicon {
     cursor: pointer;
 }
 
-.table td.cell-actions .glyphicon-upload {
+.files td.cell-actions .glyphicon-upload {
     color: #6ebd4b;
 }
 
-.table td.cell-actions .glyphicon-download {
+.files td.cell-actions .glyphicon-download {
     color: #09a0d9;
 }
 
-.table td.cell-actions .glyphicon-remove-circle {
+.files td.cell-actions .glyphicon-remove-circle {
     color: #d01f31;
 }
 
-.table tbody td.cell-actions .glyphicon {
+.files tbody td.cell-actions .glyphicon {
     opacity: 0;
 }
 
-.table tbody tr:hover td.cell-actions .glyphicon {
+.files tbody tr:hover td.cell-actions .glyphicon {
     opacity: 1;
 }
 

@@ -3,64 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <title>File Explorer</title>
-
     <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<div class="application-box content">
+<div class="application-box">
     <img src="images/logo.png" class="logo" alt="logo">
 
     <ul class="menu">
-        <li><span class="glyphicon glyphicon-user"></span> John Doe</li>
-        <li><a href="authentication.html">Log Out <span class="glyphicon glyphicon-log-out"></span></a></li>
+        <li><span class="glyphicon glyphicon-user"></span>John Doe</li>
+        <li><a href="authentication.html" title="Log out">Log Out<span class="glyphicon glyphicon-log-out"></span></a>
+        </li>
     </ul>
 
     <header class="header">
-        <h1>File Explorer</h1>
+        <h1><a href="file-explorer.html" title="File Explorer">File Explorer</a></h1>
     </header>
 
     <main class="file-list">
-        <table class="files">
-            <thead>
-            <tr>
-                <th class="icon-cell">
+        <div class="current-directory">
+            <div>
+                <div class="folder-icon">
                     <span class="glyphicon glyphicon-folder-open"></span>
-                </th>
-                <th colspan="3">
-                    <div class="current-directory">
-                        <span class="directory-name">/ Root</span>
-                        <div class="function-buttons">
-                            <button class="button"><span class="glyphicon glyphicon-upload"></span> Upload File
-                            </button>
-                        </div>
-                    </div>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
+                </div>
+                <span class="directory-name" title="Root"><strong>/ Root</strong></span>
+            </div>
+            <div class="action-buttons">
+                <button class="button" title="Create folder">
+                    <span class="glyphicon glyphicon-plus"></span> Create folder
+                </button>
+                <button class="button" title="Upload file">
+                    <span class="glyphicon glyphicon-upload"></span> Upload File
+                </button>
+            </div>
+        </div>
+
+        <table class="table">
             <tr>
-                <td class="icon-cell">
+                <td class="cell-icon">
                     <span class="glyphicon glyphicon-menu-right"></span>
                 </td>
-                <td class="filename"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;
-                    <a href="#">Documents</a>
+                <td class="cell-filename">
+                    <span class="glyphicon glyphicon-folder-close"></span>
+                    <span class="name"><a href="inner-page.html" title="Documents">Documents</a></span>
+                    <input type="text" name="new-name" class="input" value="Documents">
                 </td>
-                <td class="count">2 items</td>
+                <td class="cell-count">2 items</td>
                 <td class="cell-actions">
-                    <span class="glyphicon glyphicon-upload"></span>
-                    <span class="glyphicon glyphicon-remove-circle"></span>
+                    <span class="glyphicon glyphicon-upload" title="Upload file"></span>
+                    <span class="glyphicon glyphicon-remove-circle" title="Delete"></span>
                 </td>
             </tr>
 
-            </tbody>
+            <tr>
+                <td class="cell-icon">
+                    <span class="glyphicon glyphicon-menu-right"></span>
+                </td>
+                <td class="cell-filename">
+                    <span class="glyphicon glyphicon-folder-close"></span>
+                    <span class="name"><a href="inner-page.html" title="Images">Images</a></span>
+                    <input type="text" name="new-name" class="input" value="Images">
+                </td>
+                <td class="cell-count">215 items</td>
+                <td class="cell-actions">
+                    <span class="glyphicon glyphicon-upload" title="Upload file"></span>
+                    <span class="glyphicon glyphicon-remove-circle" title="Delete"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="cell-icon">&nbsp;</td>
+                <td class="cell-filename">
+                    <span class="glyphicon glyphicon-music"></span>
+                    <span class="name">hello.mp3</span>
+                    <input type="text" name="new-name" class="input" value="hello.mp3">
+                </td>
+                <td class="cell-count">15 MB</td>
+                <td class="cell-actions">
+                    <span class="glyphicon glyphicon-download" title="Download"></span>
+                    <span class="glyphicon glyphicon-remove-circle" title="Delete"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="cell-icon">&nbsp;</td>
+                <td class="cell-filename">
+                    <span class="glyphicon glyphicon-film"></span>
+                    <span class="name">film.avi</span>
+                    <input type="text" name="new-name" class="input" value="film.avi">
+                </td>
+                <td class="cell-count">1.3 GB</td>
+                <td class="cell-actions">
+                    <span class="glyphicon glyphicon-download" title="Download"></span>
+                    <span class="glyphicon glyphicon-remove-circle" title="Delete"></span>
+                </td>
+            </tr>
         </table>
     </main>
 
     <footer class="footer">
-        Copyright © 2020 <a href="https://www.teamdev.com/" target="_blank">TeamDev</a>. All rights reserved.
+        <p>Copyright &copy; 2020 <a href="https://www.teamdev.com/" target="_blank" title="TeamDev">TeamDev</a>. All
+            rights reserved.</p>
     </footer>
 </div>
 

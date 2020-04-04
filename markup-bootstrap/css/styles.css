@@ -1,6 +1,20 @@
 body {
     font: 12px/18px Arial, Helvetica, sans-serif;
     background: #eee;
+    color: #000;
+}
+
+a {
+    color: #66afe9;
+}
+
+a:hover {
+    color: #66afe9;
+}
+
+.btn .glyphicon {
+    margin-top: -6px;
+    margin-bottom: -2px;
 }
 
 .form-control {
@@ -31,7 +45,7 @@ body {
     box-shadow: 0 0 15px #808080;
 }
 
-.form-dialog {
+.form-box {
     width: 464px;
 }
 
@@ -68,6 +82,7 @@ body {
 
 .application-box .menu .glyphicon {
     font-size: 16px;
+    margin: 0 4px;
 }
 
 .application-box .menu li {
@@ -98,12 +113,12 @@ body {
     overflow: auto;
 }
 
-.files {
+.table {
     width: 100%;
     table-layout: fixed;
 }
 
-.files tr {
+.table tr {
     border-bottom: 1px solid #999;
 }
 
@@ -118,96 +133,101 @@ body {
 
 .current-directory .folder-icon {
     display: inline-block;
-    width: 45px;
-    text-align: center;
+    padding: 0 14px;
 }
 
 .current-directory .directory-name {
     font-size: 24px;
-    font-weight: bold;
     display: inline-block;
+    width: 500px;
+    padding-top: 1px;
     vertical-align: middle;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
-.current-directory .function-buttons {
+.current-directory .action-buttons {
     position: absolute;
     right: 0;
     top: 10px;
 }
 
-.current-directory .function-buttons .btn {
-    padding: 2px 12px 7px;
-}
-
-.files tbody tr td {
+.table tbody tr td {
     border: 0;
 }
 
-.files tbody tr td {
+.table tbody tr td {
     vertical-align: middle;
-    text-align: center;
     padding: 13px 10px;
 }
 
-.files td.icon-cell {
-    width: 22px;
+.table td.cell-icon {
+    width: 42px;
+    text-align: center;
 }
 
-.files td.filename {
+.table td.cell-icon .glyphicon {
+    font-size: 12px;
+}
+
+.table td.cell-filename {
     display: block;
-    text-align: left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.files tbody td.filename .name {
+.table tbody td.cell-filename .name {
     display: inline;
 }
 
-.files tbody tr.editing td.filename .name {
+.table tbody tr.editing td.cell-filename .name,
+.table tbody td.cell-filename .form-control {
     display: none;
 }
 
-.files tbody td.filename .form-control {
-    display: none;
-}
-
-.files tbody tr.editing td.filename .form-control {
-    height: 20px;
+.table tbody tr.editing td.cell-filename .form-control {
     width: 300px;
+    margin-bottom: -5px;
     display: inline-block;
 }
 
-.files td.count {
+.table tbody td.cell-filename .glyphicon {
+    margin-right: 8px;
+}
+
+.table td.cell-count {
     width: 80px;
+    text-align: center;
 }
 
-.files td.cell-actions {
+.table td.cell-actions {
     width: 100px;
+    text-align: center;
 }
 
-.files td.cell-actions .glyphicon {
+.table td.cell-actions .glyphicon {
     cursor: pointer;
 }
 
-.files td.cell-actions .glyphicon-upload {
+.table td.cell-actions .glyphicon-upload {
     color: #6ebd4b;
 }
 
-.files td.cell-actions .glyphicon-download {
+.table td.cell-actions .glyphicon-download {
     color: #09a0d9;
 }
 
-.files td.cell-actions .glyphicon-remove-circle {
+.table td.cell-actions .glyphicon-remove-circle {
     color: #d01f31;
 }
 
-.files tbody td.cell-actions .glyphicon {
+.table tbody td.cell-actions .glyphicon {
     opacity: 0;
 }
 
-.files tbody tr:hover td.cell-actions .glyphicon {
+.table tbody tr:hover td.cell-actions .glyphicon {
     opacity: 1;
 }
 

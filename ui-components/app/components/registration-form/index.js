@@ -112,6 +112,9 @@ export default class RegistrationForm extends Component {
 
     validator.validate(inputValues)
       .then(() => {
+        this.loginInput.helpText = '';
+        this.passwordInput.helpText = '';
+        this.confirmPasswordInput.helpText = '';
         this._onSubmit(new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue));
       })
       .catch((errors) => {

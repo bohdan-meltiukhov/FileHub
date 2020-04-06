@@ -1,9 +1,9 @@
 import Component from '../component.js';
 import Router from '../../router.js';
 import NotFoundPage from '../not-found';
-import FileExplorer from '../file-explorer';
 import LoginPage from '../login-page';
 import RegistrationPage from '../registration-page';
+import FileListPage from '../file-list-page';
 
 /**
  * The component for the web application.
@@ -34,7 +34,7 @@ export default class Application extends Component {
     const pageMapping = {
       '/authentication': LoginPage,
       '/registration': RegistrationPage,
-      '/file-explorer': FileExplorer,
+      '/file-list': FileListPage,
     };
 
     const routerProperties = {

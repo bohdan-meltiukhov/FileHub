@@ -47,7 +47,7 @@ export default class LoginPage extends Component {
     const apiService = new ApiService();
     apiService.logIn(userCredentials)
       .then(() => {
-        window.location.hash = '#/file-explorer';
+        window.location.hash = '#/file-list';
       })
       .catch((error) => {
         this._handleError(error);

@@ -155,7 +155,7 @@ a:hover {
     border-bottom: 1px solid #999;
 }
 
-.files tbody tr:hover {
+.files tr:hover {
     background-color: #f4f4f4;
 }
 
@@ -196,19 +196,19 @@ a:hover {
     padding: 2px 12px 7px;
 }
 
-.files tbody td.filename .name {
+.files td.filename .name {
     display: inline;
 }
 
-.files tbody tr.editing td.filename .name {
+.files tr.editing td.filename .name {
     display: none;
 }
 
-.files tbody td.filename .input {
+.files td.filename .input {
     display: none;
 }
 
-.files tbody tr.editing td.filename .input {
+.files tr.editing td.filename .input {
     height: 20px;
     width: 300px;
     display: inline-block;
@@ -256,11 +256,11 @@ a:hover {
     color: #d01f31;
 }
 
-.files tbody td.cell-actions .glyphicon {
+.files td.cell-actions .glyphicon {
     opacity: 0;
 }
 
-.files tbody tr:hover td.cell-actions .glyphicon {
+.files tr:hover td.cell-actions .glyphicon {
     opacity: 1;
 }
 

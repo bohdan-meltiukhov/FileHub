@@ -36,7 +36,6 @@ export default class FileItem extends Component {
     this._itemsNumber = itemsNumber;
     this._type = type;
 
-    console.log('loading');
     this.render();
   }
 

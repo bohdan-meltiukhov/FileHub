@@ -1,20 +1,21 @@
-import Component from '../component.js';
 import UserDetails from '../user-details';
 import InnerBreadcrumbs from '../inner-breadcrumbs';
 import Button from '../button';
 import FileList from '../file-list';
+import StateAwareComponent from '../../state-aware-component';
 
 /**
  * The component for the File List Page.
  */
-export default class FileListPage extends Component {
+export default class FileListPage extends StateAwareComponent {
   /**
    * Creates an instance of the File List page with set container.
    *
    * @param {Element} container - The parent element for the page.
+   * @param {object} stateManager - The state manager to use.
    */
-  constructor(container) {
-    super(container);
+  constructor(container, stateManager) {
+    super(container, stateManager);
 
     this.render();
   }
@@ -75,17 +76,25 @@ export default class FileListPage extends Component {
 
     const fileListContainer = this.rootElement.querySelector('[data-test="file-list"]');
     this.fileList = new FileList(fileListContainer, [
-      {
-        name: 'Documents',
-        itemsNumber: 20,
-        type: 'folder',
-      },
-      {
-        name: 'photo.png',
-        mimeType: 'image',
-        size: 1000000000,
-        type: 'file',
-      },
+      // {
+      //   name: 'Documents',
+      //   itemsNumber: 20,
+      //   type: 'folder',
+      // },
+      // {
+      //   name: 'photo.png',
+      //   mimeType: 'image',
+      //   size: 1000000000,
+      //   type: 'file',
+      // },
     ]);
+  }
+
+  /** @inheritdoc */
+  initState() {
+    this.onStateChanged((state) => {
+      console.log('state change function called');
+      this.fileList.files = state.fileList;
+    });
   }
 }

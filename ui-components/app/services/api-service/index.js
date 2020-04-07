@@ -39,4 +39,27 @@ export default class ApiService {
       }
     }));
   }
+
+  /**
+   * Provides the files.
+   *
+   * @returns {Promise<object[]>} - The promise that resolves with an array of files.
+   */
+  getFiles() {
+    return new Promise((resolve, reject) => {
+      resolve([
+        {
+          name: 'Documents',
+          itemsNumber: 20,
+          type: 'folder',
+        },
+        {
+          name: 'photo.png',
+          mimeType: 'image',
+          size: 1000000000,
+          type: 'file',
+        },
+      ]);
+    });
+  }
 }

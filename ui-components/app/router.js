@@ -1,3 +1,5 @@
+import StateManager from './state/state-manager';
+
 /**
  * The class that allows switching between different pages.
  */
@@ -66,7 +68,7 @@ export default class Router {
 
     if (Object.keys(this._pageMapping).includes(hash)) {
       const Page = this._pageMapping[hash];
-      new Page(this._rootElement);
+      new Page(this._rootElement, new StateManager({}));
     } else {
       new this._notFoundPage(this._rootElement);
     }

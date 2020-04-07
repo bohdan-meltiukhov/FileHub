@@ -45,4 +45,14 @@ export default class FileList extends Component {
       new FileItem(row, file);
     });
   }
+
+  /**
+   * Shows the new list of files.
+   *
+   * @param {FileParameters[]} fileList - The array of files to be displayed.
+   */
+  set files(fileList) {
+    this._files = fileList;
+    this.render();
+  }
 }

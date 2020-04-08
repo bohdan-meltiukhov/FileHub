@@ -1,3 +1,7 @@
+import ApiService from '../../services/api-service';
+import Action from '../actions/action';
+import Mutator from '../mutators/mutator';
+
 /**
  * The manager that can change the state.
  */
@@ -6,7 +10,7 @@ export default class StateManager extends EventTarget {
    * Creates an instance of the state manager with set initial state.
    *
    * @param {object} initialState - The initial state for the state manager.
-   * @param {object} apiService - The ApiService to use.
+   * @param {ApiService} apiService - The ApiService to use.
    */
   constructor(initialState, apiService) {
     super();
@@ -15,7 +19,7 @@ export default class StateManager extends EventTarget {
     const setHandler = {
       set: (obj, prop, value) => {
         obj[prop] = value;
-        this.dispatchEvent(new Event('stateChanged'));
+        this.dispatchEvent(new Event(`stateChanged.${prop}`));
         return true;
       },
     };
@@ -27,24 +31,25 @@ export default class StateManager extends EventTarget {
    * Adds a function that wil be called when the state changes.
    *
    * @param {Function} handler - The function that should be called when the state changes.
+   * @param {string} field - The state field to listen to.
    */
-  onStateChanged(handler) {
-    this.addEventListener('stateChanged', () => handler(this.state));
+  onStateChanged(handler, field) {
+    this.addEventListener(`stateChanged.${field}`, () => handler(this.state));
   }
 
   /**
    * Dispatches the provided action.
    *
-   * @param {object} action - The action to be dispatched.
+   * @param {Action} action - The action to be dispatched.
    */
   dispatch(action) {
-    action.apply(this);
+    action.apply(this, this.apiService);
   }
 
   /**
    * Applies the provided mutator.
    *
-   * @param {object} mutator - The object to be applied.
+   * @param {Mutator} mutator - The object to be applied.
    */
   mutate(mutator) {
     mutator.apply(this.state);

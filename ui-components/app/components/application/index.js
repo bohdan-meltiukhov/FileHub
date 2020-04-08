@@ -1,5 +1,6 @@
 import Component from '../component.js';
-import Router from '../../router.js';
+import Router from '../../router';
+import {AUTHENTICATION_ROUTE, REGISTRATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
 import NotFoundPage from '../not-found';
 import LoginPage from '../login-page';
 import RegistrationPage from '../registration-page';
@@ -33,25 +34,22 @@ export default class Application extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
-    const pageMapping = {
-      '/authentication': LoginPage,
-      '/registration': RegistrationPage,
-      '/file-list': FileListPage,
-    };
-
     const stateManager = new StateManager({}, ApiService.getInstance());
+
+    const pageMapping = {
+      [AUTHENTICATION_ROUTE]: () => new LoginPage(this.rootElement),
+      [REGISTRATION_ROUTE]: () => new RegistrationPage(this.rootElement),
+      [FILE_LIST_ROUTE]: () => new FileListPage(this.rootElement, stateManager),
+    };
 
     const routerProperties = {
       rootElement: this.rootElement,
-      stateManager,
       pageMapping,
-      defaultLocation: '/authentication',
-      notFoundPage: NotFoundPage,
+      defaultLocation: AUTHENTICATION_ROUTE,
+      notFoundPage: () => new NotFoundPage(this.rootElement),
       window,
     };
 
-    const router = new Router(routerProperties);
-
-    this.router = router;
+    new Router(routerProperties);
   }
 }

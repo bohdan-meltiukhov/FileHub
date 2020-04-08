@@ -2,47 +2,22 @@ import UserCredentials from '../../models/user-credentials';
 import ValidationErrorCase from '../../models/errors/validation-error-case';
 import AuthorizationError from '../../models/errors/authorization-error';
 import ServerValidationError from '../../models/errors/server-validation-error';
-import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
 import GeneralServerError from '../../models/errors/general-server-error';
+import FetchMock from '../fetch-mock';
+
+let instance;
 
 /**
  * The class for sending requests and receiving responses from backend.
  */
 export default class ApiService {
-  static _instance;
-
   /**
    * Creates an instance of the API service with set fetch mock.
    *
    * @private
    */
   constructor() {
-    fetchMock.post('/login', (url, options) => {
-      const credentials = options.body;
-      if (credentials.username === 'admin' && credentials.password === '1234') {
-        return {token: 'my-token'};
-      }
-      return 401;
-    });
-
-    fetchMock.post('/register', (url, options) => {
-      const credentials = options.body;
-      if (credentials.username === 'admin') {
-        return {
-          status: 422,
-          body: {
-            errors: [
-              {
-                field: 'username',
-                message: 'The username is already taken.',
-              },
-            ],
-          },
-        };
-      } else {
-        return 200;
-      }
-    });
+    FetchMock.setMock();
   }
 
   /**
@@ -119,10 +94,10 @@ export default class ApiService {
    * @returns {ApiService} An instance of the ApiService class.
    */
   static getInstance() {
-    if (!this._instance) {
-      this._instance = new this();
+    if (!instance) {
+      instance = new this();
     }
-    return this._instance;
+    return instance;
   }
 
   /**
@@ -132,19 +107,26 @@ export default class ApiService {
    */
   getFiles() {
     return new Promise((resolve, reject) => {
-      resolve([
-        {
-          name: 'Documents',
-          itemsNumber: 20,
-          type: 'folder',
-        },
-        {
-          name: 'photo.png',
-          mimeType: 'image',
-          size: 1000000000,
-          type: 'file',
-        },
-      ]);
+      fetch('/files')
+        .then((response) => {
+          if (response.ok) {
+            response.json()
+              .then((responseBody) => {
+                resolve(responseBody.files);
+              });
+          } else {
+            switch (response.status) {
+            case 401:
+              reject(new AuthorizationError('Not authorized.'));
+              break;
+            case 500:
+              reject(new GeneralServerError('Internal server error'));
+              break;
+            default:
+              reject(new Error('Unknown error'));
+            }
+          }
+        });
     });
   }
 }

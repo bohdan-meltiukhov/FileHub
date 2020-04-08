@@ -4,6 +4,8 @@ import Button from '../button';
 import FileList from '../file-list';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
+import StateManager from '../../state/state-manager';
+import {AUTHENTICATION_ROUTE} from '../../router/routes';
 
 /**
  * The component for the File List Page.
@@ -13,13 +15,13 @@ export default class FileListPage extends StateAwareComponent {
    * Creates an instance of the File List page with set container.
    *
    * @param {Element} container - The parent element for the page.
-   * @param {object} stateManager - The state manager to use.
+   * @param {StateManager} stateManager - The state manager to use.
    */
   constructor(container, stateManager) {
     super(container, stateManager);
 
     this.render();
-    stateManager.dispatch(new GetFilesAction(stateManager.apiService));
+    stateManager.dispatch(new GetFilesAction());
   }
 
   /**
@@ -32,7 +34,9 @@ export default class FileListPage extends StateAwareComponent {
     
             <ul class="menu">
                 <li><span data-test="user-details"></li>
-                <li><a href="authentication.html">Log Out <span class="glyphicon glyphicon-log-out"></span></a></li>
+                <li>
+                    <a href="#${AUTHENTICATION_ROUTE}">Log Out <span class="glyphicon glyphicon-log-out"></span></a>
+                </li>
             </ul>
             
             <header class="header">
@@ -76,28 +80,24 @@ export default class FileListPage extends StateAwareComponent {
       buttonText: '<span class="glyphicon glyphicon-upload"></span> Upload file',
     });
 
-    const fileListContainer = this.rootElement.querySelector('[data-test="file-list"]');
-    this.fileList = new FileList(fileListContainer, [
-      // {
-      //   name: 'Documents',
-      //   itemsNumber: 20,
-      //   type: 'folder',
-      // },
-      // {
-      //   name: 'photo.png',
-      //   mimeType: 'image',
-      //   size: 1000000000,
-      //   type: 'file',
-      // },
-    ]);
+    this.fileListContainer = this.rootElement.querySelector('[data-test="file-list"]');
+    this.fileList = new FileList(this.fileListContainer);
   }
 
   /** @inheritdoc */
   initState() {
     this.onStateChanged((state) => {
-      if (state.fileList) {
-        this.fileList.files = state.fileList;
+      this.fileList.files = state.fileList;
+    }, 'fileList');
+
+    this.onStateChanged((state) => {
+      // console.log(state.isFileListLoading);
+      if (state.isFileListLoading) {
+        this.fileListContainer.innerHTML = '<div class="loader"></div>';
+      } else {
+        this.fileListContainer.innerHTML = '';
+        this.fileList = new FileList(this.fileListContainer);
       }
-    });
+    }, 'isFileListLoading');
   }
 }

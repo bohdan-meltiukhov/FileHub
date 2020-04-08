@@ -39,7 +39,7 @@ export default class Application extends Component {
       '/file-list': FileListPage,
     };
 
-    const stateManager = new StateManager({}, new ApiService());
+    const stateManager = new StateManager({}, ApiService.getInstance());
 
     const routerProperties = {
       rootElement: this.rootElement,

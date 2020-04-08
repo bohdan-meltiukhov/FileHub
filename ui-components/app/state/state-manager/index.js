@@ -10,7 +10,6 @@ export default class StateManager extends EventTarget {
    */
   constructor(initialState, apiService) {
     super();
-    // this.state = initialState;
     this.apiService = apiService;
 
     const setHandler = {

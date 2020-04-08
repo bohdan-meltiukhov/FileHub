@@ -3,6 +3,7 @@ import InnerBreadcrumbs from '../inner-breadcrumbs';
 import Button from '../button';
 import FileList from '../file-list';
 import StateAwareComponent from '../../state-aware-component';
+import GetFilesAction from '../../state/actions/get-files-action';
 
 /**
  * The component for the File List Page.
@@ -18,6 +19,7 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
+    stateManager.dispatch(new GetFilesAction(stateManager.apiService));
   }
 
   /**
@@ -93,8 +95,9 @@ export default class FileListPage extends StateAwareComponent {
   /** @inheritdoc */
   initState() {
     this.onStateChanged((state) => {
-      console.log('state change function called');
-      this.fileList.files = state.fileList;
+      if (state.fileList) {
+        this.fileList.files = state.fileList;
+      }
     });
   }
 }

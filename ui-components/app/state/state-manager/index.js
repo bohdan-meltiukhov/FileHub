@@ -6,10 +6,22 @@ export default class StateManager extends EventTarget {
    * Creates an instance of the state manager with set initial state.
    *
    * @param {object} initialState - The initial state for the state manager.
+   * @param {object} apiService - The ApiService to use.
    */
-  constructor(initialState) {
+  constructor(initialState, apiService) {
     super();
-    this.state = initialState;
+    // this.state = initialState;
+    this.apiService = apiService;
+
+    const setHandler = {
+      set: (obj, prop, value) => {
+        obj[prop] = value;
+        this.dispatchEvent(new Event('stateChanged'));
+        return true;
+      },
+    };
+
+    this.state = new Proxy(initialState, setHandler);
   }
 
   /**
@@ -18,7 +30,7 @@ export default class StateManager extends EventTarget {
    * @param {Function} handler - The function that should be called when the state changes.
    */
   onStateChanged(handler) {
-    this.addEventListener('stateChange', handler);
+    this.addEventListener('stateChanged', () => handler(this.state));
   }
 
   /**
@@ -42,7 +54,7 @@ export default class StateManager extends EventTarget {
   /**
    * Sets the state.
    *
-   * @param {object} newState - The new state
+   * @param {object} newState - The new state.
    */
   setState(newState) {
     this.state = newState;

@@ -4,6 +4,8 @@ import NotFoundPage from '../not-found';
 import LoginPage from '../login-page';
 import RegistrationPage from '../registration-page';
 import FileListPage from '../file-list-page';
+import StateManager from '../../state/state-manager';
+import ApiService from '../../services/api-service';
 
 /**
  * The component for the web application.
@@ -37,8 +39,11 @@ export default class Application extends Component {
       '/file-list': FileListPage,
     };
 
+    const stateManager = new StateManager({}, new ApiService());
+
     const routerProperties = {
       rootElement: this.rootElement,
+      stateManager,
       pageMapping,
       defaultLocation: '/authentication',
       notFoundPage: NotFoundPage,

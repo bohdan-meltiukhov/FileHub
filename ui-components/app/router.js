@@ -1,5 +1,3 @@
-import StateManager from './state/state-manager';
-
 /**
  * The class that allows switching between different pages.
  */
@@ -9,6 +7,7 @@ export default class Router {
    *
    * @typedef RouterProperties
    * @property {Element} rootElement - The parent element for the router.
+   * @property {object} stateManager - The state manager to use.
    * @property {object.<string, object>} pageMapping - The object that defines all the possible routes.
    * @property {string} defaultLocation - The location that should be opened in case the current location hash is empty.
    * @property {object} notFoundPage - The page that should be displayed in case the route is incorrect.
@@ -22,6 +21,7 @@ export default class Router {
    */
   constructor(properties) {
     this._rootElement = properties.rootElement;
+    this._stateManager = properties.stateManager;
     this._pageMapping = properties.pageMapping;
     this._defaultLocation = properties.defaultLocation;
     this._notFoundPage = properties.notFoundPage;
@@ -68,7 +68,7 @@ export default class Router {
 
     if (Object.keys(this._pageMapping).includes(hash)) {
       const Page = this._pageMapping[hash];
-      new Page(this._rootElement, new StateManager({}));
+      new Page(this._rootElement, this._stateManager);
     } else {
       new this._notFoundPage(this._rootElement);
     }

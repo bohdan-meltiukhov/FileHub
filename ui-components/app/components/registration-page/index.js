@@ -39,7 +39,7 @@ export default class RegistrationPage extends Component {
    * @param {UserCredentials} userCredentials - The provided credentials.
    */
   sendCredentials(userCredentials) {
-    const apiService = new ApiService();
+    const apiService = ApiService.getInstance();
     apiService.register(userCredentials)
       .then(() => {
         window.location.hash = '#/authentication';

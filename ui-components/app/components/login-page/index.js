@@ -44,7 +44,7 @@ export default class LoginPage extends Component {
    * @param {UserCredentials} userCredentials - The provided credentials.
    */
   sendCredentials(userCredentials) {
-    const apiService = new ApiService();
+    const apiService = ApiService.getInstance();
     apiService.logIn(userCredentials)
       .then(() => {
         window.location.hash = '#/file-list';

@@ -33,7 +33,7 @@ export default class FileList extends Component {
   /** @inheritdoc */
   markup() {
     return `
-        <table class="files"></table>
+        <table class="files" data-test="file-list-table"></table>
     `;
   }
 
@@ -53,6 +53,6 @@ export default class FileList extends Component {
    */
   set files(fileList) {
     this._files = fileList;
-    this.render();
+    this.initNestedComponents();
   }
 }

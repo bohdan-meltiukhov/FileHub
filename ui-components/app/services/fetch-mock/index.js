@@ -70,12 +70,12 @@ export default class FetchMock {
         {
           name: 'photo.png',
           mimeType: 'image',
-          size: 1000000000,
+          size: 16,
           type: 'file',
         },
       ],
     }, {
-      delay: 1000,
+      delay: 500,
     });
   }
 }

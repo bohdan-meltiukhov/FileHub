@@ -29,7 +29,9 @@ export default class UserDetails extends Component {
    */
   markup() {
     return `
-      <span><span class="glyphicon glyphicon-user"></span> ${this._username}</span>
+        <span data-test="user-details">
+            <span class="glyphicon glyphicon-user"></span> ${this._username}
+        </span>
     `;
   }
 }

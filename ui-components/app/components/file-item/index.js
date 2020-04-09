@@ -56,7 +56,7 @@ export default class FileItem extends Component {
   /** @inheritdoc */
   markup() {
     return `
-        <tr>
+        <tr data-test="file-item">
             <td class="icon-cell" data-test="icon-cell"></td>
             <td class="filename">
                 <span class="glyphicon" data-test="file-icon"></span>&nbsp;&nbsp;

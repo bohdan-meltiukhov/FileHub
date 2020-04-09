@@ -27,7 +27,7 @@ export default class RootBreadcrumbs extends Component {
   /** @inheritdoc */
   markup() {
     return `
-        <div>
+        <div data-test="breadcrumbs">
             <div class="folder-icon">
                 <span class="glyphicon glyphicon-folder-open"></span>
             </div>

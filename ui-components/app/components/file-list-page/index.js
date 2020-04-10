@@ -76,7 +76,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     const uploadFileButtonContainer = this.rootElement.querySelector('[data-test="upload-file-button"]');
-    this.createFolderButton = new Button(uploadFileButtonContainer, {
+    this.uploadFileButton = new Button(uploadFileButtonContainer, {
       buttonText: '<span class="glyphicon glyphicon-upload"></span> Upload file',
     });
 
@@ -91,7 +91,6 @@ export default class FileListPage extends StateAwareComponent {
     }, 'fileList');
 
     this.onStateChanged((state) => {
-      // console.log(state.isFileListLoading);
       if (state.isFileListLoading) {
         this.fileListContainer.innerHTML = '<div class="loader"></div>';
       } else {

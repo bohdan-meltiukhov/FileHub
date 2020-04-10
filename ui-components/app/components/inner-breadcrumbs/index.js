@@ -27,7 +27,7 @@ export default class InnerBreadcrumbs extends Component {
   /** @inheritdoc */
   markup() {
     return `
-        <div>
+        <div data-test="breadcrumbs">
             <div class="folder-icon">
                 <a href="#">
                     <span class="glyphicon glyphicon-level-up"></span>

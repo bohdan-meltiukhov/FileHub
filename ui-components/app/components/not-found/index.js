@@ -18,7 +18,7 @@ export default class NotFoundPage extends Component {
   /** @inheritdoc */
   markup() {
     return `
-        <div class="application-box form-dialog">
+        <div class="application-box form-dialog" data-test="not-found">
             <img src="app/images/logo.png" class="logo" alt="logo">
             
             <header class="header">

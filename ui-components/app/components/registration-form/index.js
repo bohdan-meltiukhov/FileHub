@@ -1,6 +1,11 @@
 import Component from '../component.js';
 import FormInput from '../form-input';
-import Validator from '../validator.js';
+import Validator from '../../services/validator';
+import MinLengthValidationRule from '../../services/validator/validation-rules/min-length-validation-rule.js';
+import RegExpValidationRule from '../../services/validator/validation-rules/regexp-validation-rule.js';
+import EqualValidationRule from '../../services/validator/validation-rules/equal-validation-rule.js';
+import ValidationErrorCase from '../../models/errors/validation-error-case';
+import UserCredentials from '../../models/user-credentials';
 import Button from '../button';
 
 /**
@@ -22,7 +27,7 @@ export default class RegistrationForm extends Component {
    */
   markup() {
     return `
-            <form class="application-box form-dialog" data-test="registration-form">
+            <form class="application-box form-dialog">
                 <img src="app/images/logo.png" class="logo" alt="logo">
             
                 <header class="header">
@@ -82,45 +87,72 @@ export default class RegistrationForm extends Component {
   /**
    * Verifies that values from the form inputs meet the requirements.
    */
-  validateForm() {
+  _validateForm() {
     const validator = new Validator();
 
-    const usernameProperties = {
-      inputName: 'username',
-      minLength: 5,
-      regExp: /^[A-Za-z0-9]+$/,
-      regExpDescription: 'contain only latin letters and digits',
+    validator.addField('username', [
+      new MinLengthValidationRule(5, 'Please enter 5 or more characters.'),
+      new RegExpValidationRule(/^[A-Za-z0-9]+$/, 'Only latin letters and digits are allowed.'),
+    ]);
+
+    validator.addField('password', [
+      new MinLengthValidationRule(8, 'Please enter 8 or more characters.'),
+      new RegExpValidationRule(/^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/, 'Add at least one lowercase letter, ' +
+        'one uppercase letter and one digit.'),
+    ]);
+
+    validator.addField('confirmPassword',
+      [new EqualValidationRule(this.passwordInput.inputValue, 'The passwords do not match.')]);
+
+    const inputValues = {
+      username: this.loginInput.inputValue,
+      password: this.passwordInput.inputValue,
+      confirmPassword: this.confirmPasswordInput.inputValue,
     };
 
-    validator.validate(this.loginInput, usernameProperties);
-
-    const passwordProperties = {
-      inputName: 'password',
-      minLength: 8,
-      regExp: /^.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/,
-      regExpDescription: 'contain at least one digit, one lowercase letter, and one uppercase letter',
-    };
-
-    validator.validate(this.passwordInput, passwordProperties);
-
-    const confirmPasswordProperties = {
-      inputName: 'second password',
-      equals: this.passwordInput.inputValue,
-      equalsDescription: 'be equal to the first password',
-    };
-
-    validator.validate(this.confirmPasswordInput, confirmPasswordProperties);
+    validator.validate(inputValues)
+      .then(() => {
+        this._onSubmit(new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue));
+      })
+      .catch((errors) => {
+        this.showValidationErrors(errors);
+      });
   }
 
   /**
    * @inheritdoc
    */
   addEventListeners() {
-    this.button.addClickHandler(() => this.validateForm());
+    this.button.addClickHandler(() => this._validateForm());
 
     this.rootElement.addEventListener('submit', (event) => {
       event.preventDefault();
       event.stopPropagation();
     });
+  }
+
+  /**
+   * Saves the callback that should be called in case the form is verified and the fields are verified.
+   *
+   * @param {Function} callback - The function that should be called when the form is submitted with verified values.
+   */
+  onSubmit(callback) {
+    this._onSubmit = callback;
+  }
+
+  /**
+   * Displays the provided validation errors on the form.
+   *
+   * @param {ValidationErrorCase[]} errors - The array of errors to display.
+   */
+  showValidationErrors(errors) {
+    const errorMap = errors.reduce((map, error) => {
+      map[error.field] = error.message;
+      return map;
+    }, {});
+
+    this.loginInput.helpText = errorMap.username || '';
+    this.passwordInput.helpText = errorMap.password || '';
+    this.confirmPasswordInput.helpText = errorMap.confirmPassword || '';
   }
 }

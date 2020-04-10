@@ -1,8 +1,9 @@
 import Component from '../component.js';
-import LoginForm from '../login-form';
-import RegistrationForm from '../registration-form';
 import Router from '../../router.js';
 import NotFoundPage from '../not-found';
+import FileExplorer from '../file-explorer';
+import LoginPage from '../login-page';
+import RegistrationPage from '../registration-page';
 
 /**
  * The component for the web application.
@@ -31,8 +32,9 @@ export default class Application extends Component {
    */
   initNestedComponents() {
     const pageMapping = {
-      '/authentication': LoginForm,
-      '/registration': RegistrationForm,
+      '/authentication': LoginPage,
+      '/registration': RegistrationPage,
+      '/file-explorer': FileExplorer,
     };
 
     const routerProperties = {

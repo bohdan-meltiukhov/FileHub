@@ -4,6 +4,7 @@ import ApiService from '../../services/api-service';
 import UserCredentials from '../../models/user-credentials';
 import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
+import TitleService from '../../services/title-service';
 
 /**
  * The component for teh registration page.
@@ -18,6 +19,9 @@ export default class RegistrationPage extends Component {
     super(container);
 
     this.render();
+
+    const titleService = new TitleService(document);
+    titleService.setTitle('Registration');
   }
 
   /** @inheritdoc */

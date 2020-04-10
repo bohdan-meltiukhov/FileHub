@@ -4,3 +4,4 @@ import * as loginForm from './components/login-form';
 import * as registrationForm from './components/registration-form';
 import * as router from './router';
 import * as apiService from './services/api-service';
+import * as titleService from './services/title-service';

@@ -1,4 +1,5 @@
 import Component from '../component.js';
+import TitleService from '../../services/title-service';
 
 /**
  * The component for the file explorer.
@@ -6,12 +7,16 @@ import Component from '../component.js';
 export default class FileExplorer extends Component {
   /**
    * Creates an instance of the file explorer component with set container.
-   * @param container
+   *
+   * @param {Element} container - The parent element for the file explorer page.
    */
   constructor(container) {
     super(container);
 
     this.render();
+
+    const titleService = new TitleService(document);
+    titleService.setTitle('File Explorer');
   }
 
   /**

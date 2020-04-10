@@ -36,18 +36,18 @@ test('should should call the onSubmit function with correct credentials.', async
   const callback = async function(credentials) {
     assert.step('Callback was called.');
     assert.strictEqual(credentials.username, username, 'The login form should provide the entered username.');
-    assert.strictEqual(credentials.password, password, 'The login form should provide the entered pasword.');
+    assert.strictEqual(credentials.password, password, 'The login form should provide the entered password.');
   };
 
   loginForm.onSubmit(callback);
 
-  const usernameInput = formElement.querySelector('.login-input .input');
+  const usernameInput = formElement.querySelector('[data-test="login-input"] input');
   usernameInput.value = username;
 
-  const passwordInput = formElement.querySelector('.password-input .input');
+  const passwordInput = formElement.querySelector('[data-test="password-input"] input');
   passwordInput.value = password;
 
-  const submitButton = formElement.querySelector('.login-form-footer .button');
+  const submitButton = formElement.querySelector('[data-test="submit-button"] button');
   submitButton.click();
 
   await callback;

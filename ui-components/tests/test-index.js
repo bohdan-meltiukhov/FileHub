@@ -7,3 +7,7 @@ import * as apiService from './services/api-service';
 import * as fileItem from './components/file-item';
 import * as fileList from './components/file-list';
 import * as fileListPage from './components/file-list-page';
+import * as innerBreadcrumbs from './components/inner-breadcrumbs';
+import * as rootBreadcrumbs from './components/root-breadcrumbs';
+import * as loginPage from './components/login-page';
+import * as registrationPage from './components/registration-page';

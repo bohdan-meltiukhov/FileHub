@@ -5,32 +5,36 @@ const {module, test} = QUnit;
 
 module('The ApiService test');
 
-test('should log in.', async function(assert) {
-  const apiService = new ApiService();
+test('should log in.', (assert) => {
+  const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('admin', '1234');
 
-  const callback = async function() {
-    assert.step('Logged in.');
-  };
-
   apiService.logIn(userCredentials)
-    .then(callback);
+    .then(() => {
+      assert.step('Logged in.');
+    });
 
-  await callback;
-  assert.verifySteps(['Logged in.'], 'The API service should log in with valid credentials.');
+  assert.timeout(500);
+  const done = assert.async();
+  setTimeout(() => {
+    assert.verifySteps(['Logged in.'], 'The API service should log in with valid credentials.');
+    done();
+  }, 100);
 });
 
-test('should register.', async function(assert) {
-  const apiService = new ApiService();
+test('should register.', (assert) => {
+  const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('user', 'password1234');
 
-  const callback = async function() {
-    assert.step('Registered.');
-  };
-
   apiService.register(userCredentials)
-    .then(callback);
+    .then(() => {
+      assert.step('Registered.');
+    });
 
-  await callback;
-  assert.verifySteps(['Registered.'], 'The API service should register with valid credentials.');
+  assert.timeout(500);
+  const done = assert.async();
+  setTimeout(() => {
+    assert.verifySteps(['Registered.'], 'The API service should register with valid credentials.');
+    done();
+  }, 100);
 });

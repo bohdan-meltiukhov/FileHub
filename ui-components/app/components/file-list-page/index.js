@@ -86,17 +86,17 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   initState() {
-    this.onStateChanged((state) => {
+    this.onStateChanged('fileList', (state) => {
       this.fileList.files = state.fileList;
-    }, 'fileList');
+    });
 
-    this.onStateChanged((state) => {
+    this.onStateChanged('isFileListLoading', (state) => {
       if (state.isFileListLoading) {
         this.fileListContainer.innerHTML = '<div class="loader"></div>';
       } else {
         this.fileListContainer.innerHTML = '';
         this.fileList = new FileList(this.fileListContainer);
       }
-    }, 'isFileListLoading');
+    });
   }
 }

@@ -99,5 +99,9 @@ export default class FileListPage extends StateAwareComponent {
         this.fileList = new FileList(this.fileListContainer);
       }
     });
+
+    this.onStateChanged('locationParameters', (state) => {
+      this.stateManager.dispatch(new GetFilesAction(state.locationParameters.id));
+    });
   }
 }

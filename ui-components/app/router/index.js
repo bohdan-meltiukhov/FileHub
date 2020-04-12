@@ -2,6 +2,8 @@
  * The class that allows switching between different pages.
  */
 export default class Router {
+  _hashChangedHandlers = [];
+
   /**
    * The class for providing the router properties via the constructor.
    *
@@ -39,6 +41,15 @@ export default class Router {
   }
 
   /**
+   * Adds a function that should be called when the location hash changes.
+   *
+   * @param {Function} handler - The function that will be called when the location hash changes.
+   */
+  onHashChanged(handler) {
+    this._hashChangedHandlers.push(handler);
+  }
+
+  /**
    * Checks the current location hash and provides it to the {@link _renderPage} method.
    *
    * <p>Redirects to the default page in case the location hash is empty.
@@ -65,16 +76,25 @@ export default class Router {
     const urlTemplate = this._findUrlTemplate(hash);
 
     const pageCreator = this._pageMapping[urlTemplate];
-    this._rootElement.innerHTML = '';
+
+    const staticPart = this._getStaticPart(urlTemplate);
 
     const dynamicPartMap = this._getDynamicPart(urlTemplate, hash);
-    pageCreator(dynamicPartMap);
 
-    // if (Object.keys(this._pageMapping).includes(hash)) {
-    //   this._pageMapping[hash]();
-    // } else {
-    //   this._notFoundPage();
-    // }
+    this._hashChangedHandlers.forEach((handler) => {
+      handler(staticPart, dynamicPartMap);
+    });
+
+    if (staticPart !== this._previousStaticPart) {
+      this._rootElement.innerHTML = '';
+      if (dynamicPartMap) {
+        pageCreator(dynamicPartMap);
+      } else {
+        this._notFoundPage();
+      }
+    }
+
+    this._previousStaticPart = staticPart;
   }
 
   /**
@@ -85,14 +105,12 @@ export default class Router {
    * @private
    */
   _findUrlTemplate(hash) {
-    const urlTemplate = Object.keys(this._pageMapping).find((urlTemplate) => {
+    return Object.keys(this._pageMapping).find((urlTemplate) => {
       const staticPart = this._getStaticPart(urlTemplate);
       if (hash.startsWith(staticPart)) {
         return true;
       }
     });
-
-    return urlTemplate;
   }
 
   /**

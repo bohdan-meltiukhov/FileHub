@@ -16,12 +16,13 @@ export default class FileListPage extends StateAwareComponent {
    *
    * @param {Element} container - The parent element for the page.
    * @param {StateManager} stateManager - The state manager to use.
+   * @param {object} properties - The URL properties.
    */
-  constructor(container, stateManager) {
+  constructor(container, stateManager, properties) {
     super(container, stateManager);
 
     this.render();
-    stateManager.dispatch(new GetFilesAction());
+    stateManager.dispatch(new GetFilesAction(properties.id));
   }
 
   /**

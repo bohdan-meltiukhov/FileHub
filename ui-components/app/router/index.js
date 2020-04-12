@@ -62,12 +62,75 @@ export default class Router {
    * @private
    */
   _renderPage(hash) {
+    const urlTemplate = this._findUrlTemplate(hash);
+
+    const pageCreator = this._pageMapping[urlTemplate];
     this._rootElement.innerHTML = '';
 
-    if (Object.keys(this._pageMapping).includes(hash)) {
-      this._pageMapping[hash]();
-    } else {
-      this._notFoundPage();
-    }
+    const dynamicPartMap = this._getDynamicPart(urlTemplate, hash);
+    pageCreator(dynamicPartMap);
+
+    // if (Object.keys(this._pageMapping).includes(hash)) {
+    //   this._pageMapping[hash]();
+    // } else {
+    //   this._notFoundPage();
+    // }
+  }
+
+  /**
+   * Finds the corresponding URL Template in the pageMapping object.
+   *
+   * @param {string} hash - The current location hash.
+   * @returns {string} The corresponding urlTemplate.
+   * @private
+   */
+  _findUrlTemplate(hash) {
+    const urlTemplate = Object.keys(this._pageMapping).find((urlTemplate) => {
+      const staticPart = this._getStaticPart(urlTemplate);
+      if (hash.startsWith(staticPart)) {
+        return true;
+      }
+    });
+
+    return urlTemplate;
+  }
+
+  /**
+   * Provides the static part of the URL Template.
+   *
+   * @param {string} urlTemplate - The URL Template that matches the current location hash.
+   * @returns {string} The static part of the URL Template.
+   * @private
+   */
+  _getStaticPart(urlTemplate) {
+    return urlTemplate.split(':')[0];
+  }
+
+  /**
+   * Generates a map of keys from the URL template and values from the provided URL.
+   *
+   * @param {string} urlTemplate - The template from the page mapping.
+   * @param {string} url - The current URL.
+   * @returns {object.<string, string>} The object with keys from the URL template and values from the current URL.
+   * @private
+   */
+  _getDynamicPart(urlTemplate, url) {
+    const templateParts = urlTemplate.split('/');
+
+    const keyToIndexMap = templateParts.reduce((accumulator, value, index) => {
+      if (!value.startsWith(':')) {
+        return accumulator;
+      }
+      const key = value.slice(1);
+      accumulator[key] = index;
+      return accumulator;
+    }, {});
+
+    const urlParts = url.split('/');
+
+    return Object.entries(keyToIndexMap).reduce((accumulator, [key, index]) => {
+      accumulator[key] = urlParts[index];
+      return accumulator;
+    }, {});
   }
 }

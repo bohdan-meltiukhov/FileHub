@@ -4,6 +4,7 @@ import AuthorizationError from '../../models/errors/authorization-error';
 import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import FetchMock from '../fetch-mock';
+import NotFoundError from '../../models/errors/NotFoundError';
 
 let instance;
 
@@ -103,11 +104,12 @@ export default class ApiService {
   /**
    * Provides the files.
    *
+   * @param {string} folderId - The identifier of the required folder.
    * @returns {Promise<object[]>} - The promise that resolves with an array of files.
    */
-  getFiles() {
+  getFiles(folderId) {
     return new Promise((resolve, reject) => {
-      fetch('/files')
+      fetch(`/folder/${folderId}/content`)
         .then((response) => {
           if (response.ok) {
             response.json()
@@ -120,7 +122,7 @@ export default class ApiService {
               reject(new AuthorizationError('Not authorized.'));
               break;
             case 500:
-              reject(new GeneralServerError('Internal server error'));
+              reject(new GeneralServerError('Internal server error.'));
               break;
             default:
               reject(new Error('Unknown error'));
@@ -129,4 +131,51 @@ export default class ApiService {
         });
     });
   }
+
+  /**
+   * The object for transferring a file or a folder.
+   *
+   * @typedef {object} FileItem
+   * @property {string} name - The name of the file.
+   * @property {('image'|'book'|'video'|'audio'|'stylesheet'|'other')} [mimeType] - The type of the file.
+   * @property {number} [size] - The size of the file in bytes.
+   * @property {number} [itemsNumber] - The number of items inside.
+   * @property {('file'|'folder')} type - Shows whether it is a file or a folder.
+   */
+
+  /**
+   * Provides the information about the folder.
+   *
+   * @param {string} id - The identifier of the required folder.
+   * @returns {Promise<FileItem>} The promise that resolves with information about the required folder.
+   */
+  getFolder(id) {
+    return new Promise((resolve, reject) => {
+      fetch(`/folder/${id}`)
+        .then((response) => {
+          if (response.ok) {
+            response.json()
+              .then((responseBody) => {
+                resolve(responseBody.folder);
+              });
+          } else {
+            switch (response.status) {
+            case 401:
+              reject(new AuthorizationError('Not authorized.'));
+              break;
+            case 404:
+              reject(new NotFoundError('This folder does not exist'));
+              break;
+            case 500:
+              reject(new GeneralServerError('Internal server error.'));
+              break;
+            default:
+              reject(new Error('Unknown error'));
+            }
+          }
+        });
+    });
+  }
+
+  // getFolderContent
 }

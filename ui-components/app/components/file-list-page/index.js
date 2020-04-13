@@ -6,6 +6,7 @@ import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import StateManager from '../../state/state-manager';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
+import RemoveItemAction from '../../state/actions/remove-item-action';
 
 /**
  * The component for the File List Page.
@@ -22,7 +23,8 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
-    stateManager.dispatch(new GetFilesAction(properties.id));
+    this._currentFolderId = properties.id;
+    stateManager.dispatch(new GetFilesAction(this._currentFolderId));
   }
 
   /**
@@ -86,9 +88,17 @@ export default class FileListPage extends StateAwareComponent {
   }
 
   /** @inheritdoc */
+  addEventListeners() {
+    this.fileList.onRemoveItem((id) => {
+      this.stateManager.dispatch(new RemoveItemAction(id, this._currentFolderId));
+    });
+  }
+
+  /** @inheritdoc */
   initState() {
     this.onStateChanged('fileList', (state) => {
       this.fileList.files = state.fileList;
+      this.addEventListeners();
     });
 
     this.onStateChanged('isFileListLoading', (state) => {
@@ -101,7 +111,8 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('locationParameters', (state) => {
-      this.stateManager.dispatch(new GetFilesAction(state.locationParameters.id));
+      this._currentFolderId = state.locationParameters.id;
+      this.stateManager.dispatch(new GetFilesAction(this._currentFolderId));
     });
   }
 }

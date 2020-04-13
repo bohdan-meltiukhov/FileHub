@@ -164,7 +164,7 @@ export default class ApiService {
               reject(new AuthorizationError('Not authorized.'));
               break;
             case 404:
-              reject(new NotFoundError('This folder does not exist'));
+              reject(new NotFoundError('This folder does not exist.'));
               break;
             case 500:
               reject(new GeneralServerError('Internal server error.'));
@@ -177,5 +177,36 @@ export default class ApiService {
     });
   }
 
-  // getFolderContent
+  /**
+   * Sends a request to delete a particular folder.
+   *
+   * @param {string} id - The identifier of the folder to be deleted.
+   * @returns {Promise} The promise that resolves if the folder is deleted successfully.
+   */
+  deleteFolder(id) {
+    return new Promise((resolve, reject) => {
+      fetch(`/folder/${id}`, {
+        method: 'DELETE',
+      })
+        .then((response) => {
+          if (response.ok) {
+            resolve();
+          } else {
+            switch (response.status) {
+            case 401:
+              reject(new AuthorizationError('Not authorized.'));
+              break;
+            case 404:
+              reject(new NotFoundError('This folder does not exist.'));
+              break;
+            case 500:
+              reject(new GeneralServerError('Internal server error.'));
+              break;
+            default:
+              reject(new Error('Unknown error'));
+            }
+          }
+        });
+    });
+  }
 }

@@ -4,10 +4,13 @@ import Component from '../component.js';
  * The class for displaying the file item.
  */
 export default class FileItem extends Component {
+  _removeItemHandlers = [];
+
   /**
    * The object for providing the file item configuration via the constructor.
    *
    * @typedef {object} Parameters
+   * @property {string} id - The identifier of the file item.
    * @property {string} name - The name of the file.
    * @property {('image'|'book'|'video'|'audio'|'stylesheet'|'other')} [mimeType] - The type of the file.
    * @property {number} [size] - The size of the file in bytes.
@@ -22,6 +25,7 @@ export default class FileItem extends Component {
    * @param {Parameters} parameters - The initial file items configurations.
    */
   constructor(container, {
+    id,
     name = 'File',
     mimeType = 'other',
     size = 16,
@@ -30,6 +34,7 @@ export default class FileItem extends Component {
   } = {}) {
     super(container);
 
+    this._id = id;
     this._name = name;
     this._mimeType = mimeType;
     this._size = size;
@@ -114,6 +119,26 @@ export default class FileItem extends Component {
       cellActions.innerHTML = '<span class="glyphicon glyphicon-download"></span>';
     }
     cellActions.innerHTML += ' <span class="glyphicon glyphicon-remove-circle"></span>';
+  }
+
+  /** @inheritdoc */
+  addEventListeners() {
+    const removeItemButton = this.rootElement
+      .querySelector('[data-test="cell-actions"] .glyphicon-remove-circle');
+    removeItemButton.addEventListener('click', () => {
+      this._removeItemHandlers.forEach((handler) => {
+        handler(this._id);
+      });
+    });
+  }
+
+  /**
+   * Adds a function that should be called when the remove item button is pressed.
+   *
+   * @param {Function} handler - The function that will be called when the user wants to delete an item.
+   */
+  onRemoveItem(handler) {
+    this._removeItemHandlers.push(handler);
   }
 
   /**

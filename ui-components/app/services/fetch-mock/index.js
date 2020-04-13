@@ -10,11 +10,13 @@ const folders = [
     },
     content: [
       {
+        id: 'uExvhDL4YwkxnBVa',
         name: 'Documents',
         itemsNumber: 2,
         type: 'folder',
       },
       {
+        id: 'tRZXiSHNRlgZluGQ',
         name: 'Images',
         itemsNumber: 2,
         type: 'folder',
@@ -30,17 +32,34 @@ const folders = [
     },
     content: [
       {
-        name: 'Shared with me',
-        itemsNumber: 202,
-        type: 'folder',
+        id: 'rYol3zzsCYc561cV',
+        name: 'Document.pdf',
+        mimeType: 'book',
+        size: 202,
+        type: 'file',
       },
       {
+        id: '1csJkySJRhAbMLKG',
         name: 'photo.png',
         mimeType: 'image',
         size: 16,
         type: 'file',
       },
     ],
+  },
+  {
+    id: 'rYol3zzsCYc561cV',
+    name: 'Document.pdf',
+    mimeType: 'book',
+    size: 202,
+    type: 'file',
+  },
+  {
+    id: '1csJkySJRhAbMLKG',
+    name: 'photo.png',
+    mimeType: 'image',
+    size: 16,
+    type: 'file',
   },
   {
     id: 'tRZXiSHNRlgZluGQ',
@@ -51,18 +70,34 @@ const folders = [
     },
     content: [
       {
+        id: 'ARqTPQ1XXUrFlaJe',
         name: 'Montenegro.jpg',
         mimeType: 'image',
         size: 162,
         type: 'file',
       },
       {
+        id: 'zHPz1GsbO9Kq8Xt0',
         name: 'my_friends.png',
         mimeType: 'image',
         size: 16,
         type: 'file',
       },
     ],
+  },
+  {
+    id: 'ARqTPQ1XXUrFlaJe',
+    name: 'Montenegro.jpg',
+    mimeType: 'image',
+    size: 162,
+    type: 'file',
+  },
+  {
+    id: 'zHPz1GsbO9Kq8Xt0',
+    name: 'my_friends.png',
+    mimeType: 'image',
+    size: 16,
+    type: 'file',
   },
 ];
 
@@ -78,6 +113,7 @@ export default class FetchMock {
     FetchMock._setRegister();
     FetchMock._setFiles();
     FetchMock._setFolder();
+    FetchMock._setDeleteFolder();
   }
 
   /**
@@ -136,6 +172,8 @@ export default class FetchMock {
         }
       });
 
+      // console.log(folder);
+
       if (!folder) {
         return 404;
       }
@@ -174,6 +212,53 @@ export default class FetchMock {
           folder: folder.folderInfo,
         },
       };
+    });
+  }
+
+  /**
+   * Sets a mock for the delete folder request.
+   *
+   * @private
+   */
+  static _setDeleteFolder() {
+    fetchMock.delete('glob:/folder/*', (url) => {
+      const id = url.slice(8);
+
+      const folder = folders.find((folder) => {
+        if (folder.id === id) {
+          return true;
+        }
+      });
+
+      if (!folder) {
+        return 404;
+      }
+
+      let index;
+
+      const parentFolder = folders.find((folder) => {
+        if (!folder.content) {
+          return false;
+        }
+
+        const foundChild = folder.content.find((child, childIndex) => {
+          if (child.id === id) {
+            index = childIndex;
+            return true;
+          }
+        });
+        if (foundChild) {
+          return true;
+        }
+      });
+
+      parentFolder.content.splice(index, 1);
+
+      folders.splice(folders.indexOf(folder), 1);
+
+      return 200;
+    }, {
+      delay: 500,
     });
   }
 }

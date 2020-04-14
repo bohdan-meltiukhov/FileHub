@@ -209,4 +209,37 @@ export default class ApiService {
         });
     });
   }
+
+  /**
+   * Sends a request to delete a particular file.
+   *
+   * @param {string} id - The identifier of the file to delete.
+   * @returns {Promise} The promise that resolves if the file is deleted successfully.
+   */
+  deleteFile(id) {
+    return new Promise((resolve, reject) => {
+      fetch(`/file/${id}`, {
+        method: 'DELETE',
+      })
+        .then((response) => {
+          if (response.ok) {
+            resolve();
+          } else {
+            switch (response.status) {
+            case 401:
+              reject(new AuthorizationError('Not authorized.'));
+              break;
+            case 404:
+              reject(new NotFoundError('This file does not exist.'));
+              break;
+            case 500:
+              reject(new GeneralServerError('Internal server error.'));
+              break;
+            default:
+              reject(new Error('Unknown error'));
+            }
+          }
+        });
+    });
+  }
 }

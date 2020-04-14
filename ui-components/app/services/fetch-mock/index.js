@@ -14,6 +14,7 @@ export default class FetchMock {
     FetchMock._setFiles();
     FetchMock._setFolder();
     FetchMock._setDeleteFolder();
+    FetchMock._setDeleteFile();
   }
 
   /**
@@ -139,12 +140,50 @@ export default class FetchMock {
   }
 
   /**
+   * Sets a mock for the delete file request.
+   *
+   * @private
+   */
+  static _setDeleteFile() {
+    fetchMock.delete('glob:/file/*', (url) => {
+      const id = url.slice(6);
+
+      const file = FileSystem.files.find((file) => {
+        if (file.id === id) {
+          return true;
+        }
+      });
+
+      if (!file) {
+        return 404;
+      }
+
+      const index = FileSystem.files.indexOf(file);
+      FileSystem.files.splice(index, 1);
+
+      return 200;
+    });
+  }
+
+  /**
+   * The object for describing the folder configurations.
+   *
+   * @typedef {object} FolderItem
+   * @property {string} id - The identifier of the folder.
+   * @property {string} parentId - The id of the parent folder.
+   * @property {string} name - The name of the folder.
+   * @property {number} itemsNumber - The number of items inside.
+   * @property {'folder'} type - Shows that this item is a folder.
+   */
+
+  /**
    * Recursively deletes a folder and all its content.
    *
-   * @param {object} folder - The folder to delete.
+   * @param {FolderItem} folder - The folder to delete.
    * @private
    */
   static _deleteFolder(folder) {
+    console.log(folder);
     const childFolders = FileSystem.folders.filter((childFolder) => childFolder.parentId === folder.id);
     childFolders.forEach((childFolder) => {
       FetchMock._deleteFolder(childFolder);

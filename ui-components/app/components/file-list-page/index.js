@@ -89,8 +89,8 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   addEventListeners() {
-    this.fileList.onRemoveItem((id) => {
-      this.stateManager.dispatch(new RemoveItemAction(id, this._currentFolderId));
+    this.fileList.onRemoveItem((item) => {
+      this.stateManager.dispatch(new RemoveItemAction(item));
     });
   }
 
@@ -111,8 +111,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('locationParameters', (state) => {
-      this._currentFolderId = state.locationParameters.id;
-      this.stateManager.dispatch(new GetFilesAction(this._currentFolderId));
+      this.stateManager.dispatch(new GetFilesAction(state.locationParameters.id));
     });
   }
 }

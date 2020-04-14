@@ -23,8 +23,7 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
-    this._currentFolderId = properties.id;
-    stateManager.dispatch(new GetFilesAction(this._currentFolderId));
+    stateManager.dispatch(new GetFilesAction(properties.id));
   }
 
   /**
@@ -96,12 +95,14 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   initState() {
-    this.onStateChanged('fileList', (state) => {
+    this.onStateChanged('fileList', (event) => {
+      const state = event.detail.state;
       this.fileList.files = state.fileList;
       this.addEventListeners();
     });
 
-    this.onStateChanged('isFileListLoading', (state) => {
+    this.onStateChanged('isFileListLoading', (event) => {
+      const state = event.detail.state;
       if (state.isFileListLoading) {
         this.fileListContainer.innerHTML = '<div class="loader"></div>';
       } else {
@@ -110,8 +111,16 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    this.onStateChanged('locationParameters', (state) => {
-      this.stateManager.dispatch(new GetFilesAction(state.locationParameters.id));
+    this.onStateChanged('locationParameters', (event) => {
+      const state = event.detail.state;
+      if (state.locationParameters.id) {
+        this.stateManager.dispatch(new GetFilesAction(state.locationParameters.id));
+      }
     });
+  }
+
+  /** @inheritdoc */
+  willDestroy() {
+    this.removeStateChangedListeners();
   }
 }

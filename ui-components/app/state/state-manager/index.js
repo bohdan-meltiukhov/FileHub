@@ -19,7 +19,11 @@ export default class StateManager extends EventTarget {
     const setHandler = {
       set: (obj, prop, value) => {
         obj[prop] = value;
-        this.dispatchEvent(new Event(`stateChanged.${prop}`));
+        this.dispatchEvent(new CustomEvent(`stateChanged.${prop}`, {
+          detail: {
+            state: this.state,
+          },
+        }));
         return true;
       },
     };
@@ -34,7 +38,17 @@ export default class StateManager extends EventTarget {
    * @param {Function} handler - The function that should be called when the state changes.
    */
   onStateChanged(field, handler) {
-    this.addEventListener(`stateChanged.${field}`, () => handler(this.state));
+    this.addEventListener(`stateChanged.${field}`, handler);
+  }
+
+  /**
+   * Removes a state changed listener.
+   *
+   * @param {string} field - The field of the state.
+   * @param {Function} handler - The handler to remove.
+   */
+  removeStateChangedListener(field, handler) {
+    this.removeEventListener(`stateChanged.${field}`, handler, false);
   }
 
   /**

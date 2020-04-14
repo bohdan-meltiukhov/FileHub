@@ -183,7 +183,6 @@ export default class FetchMock {
    * @private
    */
   static _deleteFolder(folder) {
-    console.log(folder);
     const childFolders = FileSystem.folders.filter((childFolder) => childFolder.parentId === folder.id);
     childFolders.forEach((childFolder) => {
       FetchMock._deleteFolder(childFolder);

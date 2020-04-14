@@ -1,105 +1,5 @@
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
-
-const folders = [
-  {
-    id: '4Goz0J0Tz8xfDfsJ',
-    folderInfo: {
-      name: 'Root',
-      itemsNumber: 20,
-      type: 'folder',
-    },
-    content: [
-      {
-        id: 'uExvhDL4YwkxnBVa',
-        name: 'Documents',
-        itemsNumber: 2,
-        type: 'folder',
-      },
-      {
-        id: 'tRZXiSHNRlgZluGQ',
-        name: 'Images',
-        itemsNumber: 2,
-        type: 'folder',
-      },
-    ],
-  },
-  {
-    id: 'uExvhDL4YwkxnBVa',
-    folderInfo: {
-      name: 'Documents',
-      itemsNumber: 20,
-      type: 'folder',
-    },
-    content: [
-      {
-        id: 'rYol3zzsCYc561cV',
-        name: 'Document.pdf',
-        mimeType: 'book',
-        size: 202,
-        type: 'file',
-      },
-      {
-        id: '1csJkySJRhAbMLKG',
-        name: 'photo.png',
-        mimeType: 'image',
-        size: 16,
-        type: 'file',
-      },
-    ],
-  },
-  {
-    id: 'rYol3zzsCYc561cV',
-    name: 'Document.pdf',
-    mimeType: 'book',
-    size: 202,
-    type: 'file',
-  },
-  {
-    id: '1csJkySJRhAbMLKG',
-    name: 'photo.png',
-    mimeType: 'image',
-    size: 16,
-    type: 'file',
-  },
-  {
-    id: 'tRZXiSHNRlgZluGQ',
-    folderInfo: {
-      name: 'Images',
-      itemsNumber: 20,
-      type: 'folder',
-    },
-    content: [
-      {
-        id: 'ARqTPQ1XXUrFlaJe',
-        name: 'Montenegro.jpg',
-        mimeType: 'image',
-        size: 162,
-        type: 'file',
-      },
-      {
-        id: 'zHPz1GsbO9Kq8Xt0',
-        name: 'my_friends.png',
-        mimeType: 'image',
-        size: 16,
-        type: 'file',
-      },
-    ],
-  },
-  {
-    id: 'ARqTPQ1XXUrFlaJe',
-    name: 'Montenegro.jpg',
-    mimeType: 'image',
-    size: 162,
-    type: 'file',
-  },
-  {
-    id: 'zHPz1GsbO9Kq8Xt0',
-    name: 'my_friends.png',
-    mimeType: 'image',
-    size: 16,
-    type: 'file',
-  },
-];
+import FileSystem from './file-system';
 
 /**
  * The class for setting the fetch mock.
@@ -166,21 +66,17 @@ export default class FetchMock {
     fetchMock.get('glob:/folder/*/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
 
-      const folder = folders.find((folder) => {
-        if (folder.id === id) {
-          return true;
-        }
-      });
+      const folders = FileSystem.folders.filter((folder) => folder.parentId === id);
+      const files = FileSystem.files.filter((file) => file.parentId === id);
+      const content = folders.concat(files);
 
-      // console.log(folder);
-
-      if (!folder) {
+      if (!content) {
         return 404;
       }
 
       return {
         body: {
-          files: folder.content,
+          files: content,
         },
       };
     }, {
@@ -197,7 +93,7 @@ export default class FetchMock {
     fetchMock.get('glob:/folder/*', (url) => {
       const id = url.slice(8);
 
-      const folder = folders.find((folder) => {
+      const folder = FileSystem.folders.find((folder) => {
         if (folder.id === id) {
           return true;
         }
@@ -209,7 +105,7 @@ export default class FetchMock {
 
       return {
         body: {
-          folder: folder.folderInfo,
+          folder,
         },
       };
     });
@@ -224,7 +120,7 @@ export default class FetchMock {
     fetchMock.delete('glob:/folder/*', (url) => {
       const id = url.slice(8);
 
-      const folder = folders.find((folder) => {
+      const folder = FileSystem.folders.find((folder) => {
         if (folder.id === id) {
           return true;
         }
@@ -234,31 +130,33 @@ export default class FetchMock {
         return 404;
       }
 
-      let index;
-
-      const parentFolder = folders.find((folder) => {
-        if (!folder.content) {
-          return false;
-        }
-
-        const foundChild = folder.content.find((child, childIndex) => {
-          if (child.id === id) {
-            index = childIndex;
-            return true;
-          }
-        });
-        if (foundChild) {
-          return true;
-        }
-      });
-
-      parentFolder.content.splice(index, 1);
-
-      folders.splice(folders.indexOf(folder), 1);
+      FetchMock._deleteFolder(folder);
 
       return 200;
     }, {
       delay: 500,
     });
+  }
+
+  /**
+   * Recursively deletes a folder and all its content.
+   *
+   * @param {object} folder - The folder to delete.
+   * @private
+   */
+  static _deleteFolder(folder) {
+    const childFolders = FileSystem.folders.filter((childFolder) => childFolder.parentId === folder.id);
+    childFolders.forEach((childFolder) => {
+      FetchMock._deleteFolder(childFolder);
+    });
+
+    const files = FileSystem.files.filter((file) => file.parentId === folder.id);
+    files.forEach((file) => {
+      const index = FileSystem.files.indexOf(file);
+      FileSystem.files.splice(index, 1);
+    });
+
+    const index = FileSystem.folders.indexOf(folder);
+    FileSystem.folders.splice(index, 1);
   }
 }

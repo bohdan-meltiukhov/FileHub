@@ -5,8 +5,6 @@ import NotFoundPage from '../not-found';
 import LoginPage from '../login-page';
 import RegistrationPage from '../registration-page';
 import FileListPage from '../file-list-page';
-import StateManager from '../../state/state-manager';
-import ApiService from '../../services/api-service';
 
 /**
  * The component for the web application.
@@ -34,12 +32,10 @@ export default class Application extends Component {
    * @inheritdoc
    */
   initNestedComponents() {
-    const stateManager = new StateManager({}, ApiService.getInstance());
-
     const pageMapping = {
       [AUTHENTICATION_ROUTE]: () => new LoginPage(this.rootElement),
       [REGISTRATION_ROUTE]: () => new RegistrationPage(this.rootElement),
-      [FILE_LIST_ROUTE]: () => new FileListPage(this.rootElement, stateManager),
+      [FILE_LIST_ROUTE]: () => new FileListPage(this.rootElement),
     };
 
     const routerProperties = {

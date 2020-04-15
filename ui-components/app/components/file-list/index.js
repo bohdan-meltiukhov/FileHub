@@ -76,13 +76,24 @@ export default class FileList extends Component {
   }
 
   /**
-   * Adds a function to be called when any itm changes its name.
+   * Adds a function to be called when any item changes its name.
    *
    * @param {Function} handler - The function to call when an item changes its name.
    */
   onItemNameChanged(handler) {
     this._fileItems.forEach((item) => {
       item.onNameChanged(handler);
+    });
+  }
+
+  /**
+   * Sets the function to be called when any item get selected file.
+   *
+   * @param {Function} handler - The function to call when a folder gets a file uploaded.
+   */
+  onFileSelected(handler) {
+    this._fileItems.forEach((item) => {
+      item.onFileSelected(handler);
     });
   }
 

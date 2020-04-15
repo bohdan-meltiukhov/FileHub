@@ -1,4 +1,3 @@
-import Component from '../component.js';
 import ListItem from '../list-item';
 
 /**
@@ -63,10 +62,27 @@ export default class FolderItem extends ListItem {
       window.location.hash = `/file-list/${this._parameters.id}`;
     });
 
+    const uploadButton = this.rootElement.querySelector('[data-test="cell-actions"] .glyphicon-upload');
+    uploadButton.addEventListener('click', () => this._openFileBrowser());
+  }
 
+  /**
+   * Opens the file upload menu.
+   *
+   * @private
+   */
+  _openFileBrowser() {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.click();
 
-    // const newEl = input.cloneNode(false);
-    // while (input.hasChildNodes()) newEl.appendChild(input.firstChild);
-    // input.parentNode.replaceChild(newEl, input);
+    input.addEventListener('change', () => {
+      this._fileSelectedHandler(this._parameters, input.files[0]);
+    });
+  }
+
+  /** @inheritdoc */
+  onFileSelected(handler) {
+    this._fileSelectedHandler = handler;
   }
 }

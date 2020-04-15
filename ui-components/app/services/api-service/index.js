@@ -324,4 +324,39 @@ export default class ApiService {
         });
     });
   }
+
+  /**
+   * Uploads the provided file.
+   *
+   * @param {string} folderId - The identifier of the folder to upload the file to.
+   * @param {FormData} formData - The form data with the file to upload.
+   * @returns {Promise} The promise that resolves if the file is uploaded successfully.
+   */
+  uploadFile(folderId, formData) {
+    return new Promise((resolve, reject) => {
+      fetch(`/folder/${folderId}/file`, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => {
+          if (response.ok) {
+            resolve();
+          } else {
+            switch (response.status) {
+            case 401:
+              reject(new AuthorizationError('Not authorized.'));
+              break;
+            case 404:
+              reject(new NotFoundError('This folder does not exist.'));
+              break;
+            case 500:
+              reject(new GeneralServerError('Internal server error.'));
+              break;
+            default:
+              reject(new Error('Unknown error'));
+            }
+          }
+        });
+    });
+  }
 }

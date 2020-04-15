@@ -89,4 +89,12 @@ export default class ListItem extends Component {
   onNameChanged(handler) {
     this._onNameChanged = handler;
   }
+
+  /**
+   * Sets the function to be called when the file is selected.
+   *
+   * @param {Function} handler - The function to call when the file is selected.
+   */
+  onFileSelected(handler) {
+  }
 }

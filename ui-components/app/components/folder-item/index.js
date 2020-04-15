@@ -1,11 +1,10 @@
 import Component from '../component.js';
+import ListItem from '../list-item';
 
 /**
  * The component for displaying the folder item.
  */
-export default class FolderItem extends Component {
-  _removeItemHandlers = [];
-
+export default class FolderItem extends ListItem {
   /**
    * The object for describing the folder configurations.
    *
@@ -32,20 +31,6 @@ export default class FolderItem extends Component {
   }
 
   /** @inheritdoc */
-  render() {
-    const fakeElement = document.createElement('tbody');
-    fakeElement.innerHTML = this.markup();
-
-    this.rootElement = fakeElement.firstElementChild;
-    const parentElement = this._container.parentElement;
-    parentElement.removeChild(this._container);
-    parentElement.appendChild(this.rootElement);
-
-    this.initNestedComponents();
-    this.addEventListeners();
-  }
-
-  /** @inheritdoc */
   markup() {
     return `
         <tr data-test="file-item">
@@ -55,11 +40,11 @@ export default class FolderItem extends Component {
             <td class="filename">
                 <span class="glyphicon glyphicon-folder-close" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">
-                    <a href="#/file-list/${this._parameters.id}" title="${this._parameters.name}">
+                    <a href="#/file-list/${this._parameters.parentId}" title="${this._parameters.name}">
                         ${this._parameters.name}
                     </a>
                 </span>
-                <input type="text" name="new-name" class="input" value="${this._parameters.name}">
+                <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>
             <td class="count" data-test="cell-count">${this._parameters.itemsNumber} items</td>
             <td class="cell-actions" data-test="cell-actions">
@@ -72,21 +57,16 @@ export default class FolderItem extends Component {
 
   /** @inheritdoc */
   addEventListeners() {
-    const removeItemButton = this.rootElement
-      .querySelector('[data-test="cell-actions"] .glyphicon-remove-circle');
-    removeItemButton.addEventListener('click', () => {
-      this._removeItemHandlers.forEach((handler) => {
-        handler(this._parameters);
-      });
-    });
-  }
+    super.addEventListeners();
 
-  /**
-   * Adds a function that should be called when the remove item button is pressed.
-   *
-   * @param {Function} handler - The function that will be called when the user wants to delete an item.
-   */
-  onRemoveItem(handler) {
-    this._removeItemHandlers.push(handler);
+    this.rootElement.addEventListener('dblclick', () => {
+      window.location.hash = `/file-list/${this._parameters.id}`;
+    });
+
+
+
+    // const newEl = input.cloneNode(false);
+    // while (input.hasChildNodes()) newEl.appendChild(input.firstChild);
+    // input.parentNode.replaceChild(newEl, input);
   }
 }

@@ -196,6 +196,10 @@ a:hover {
     padding: 2px 12px 7px;
 }
 
+.files tr.selected {
+    background-color: #e3f2ff;
+}
+
 .files td.filename .name {
     display: inline;
 }

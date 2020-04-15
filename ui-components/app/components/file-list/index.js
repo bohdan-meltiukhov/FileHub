@@ -44,13 +44,23 @@ export default class FileList extends Component {
     this._files.forEach((file) => {
       const row = document.createElement('tr');
       this.rootElement.appendChild(row);
-      // console.log(file);
       if (file.type === 'folder') {
         this._fileItems.push(new FolderItem(row, file));
       } else if (file.type === 'file') {
         this._fileItems.push(new FileItem(row, file));
       }
-      // this._fileItems.push(new FileItem(row, file));
+    });
+
+    let previousItem;
+
+    this._fileItems.forEach((item) => {
+      item.onClick(() => {
+        if (previousItem && previousItem !== item) {
+          previousItem.isSelected = false;
+        }
+        item.isSelected = true;
+        previousItem = item;
+      });
     });
   }
 
@@ -62,6 +72,17 @@ export default class FileList extends Component {
   onRemoveItem(handler) {
     this._fileItems.forEach((item) => {
       item.onRemoveItem(handler);
+    });
+  }
+
+  /**
+   * Adds a function to be called when any itm changes its name.
+   *
+   * @param {Function} handler - The function to call when an item changes its name.
+   */
+  onItemNameChanged(handler) {
+    this._fileItems.forEach((item) => {
+      item.onNameChanged(handler);
     });
   }
 

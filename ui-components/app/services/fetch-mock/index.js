@@ -15,6 +15,8 @@ export default class FetchMock {
     FetchMock._setFolder();
     FetchMock._setDeleteFolder();
     FetchMock._setDeleteFile();
+    FetchMock._setUpdateFolder();
+    FetchMock._setUpdateFile();
   }
 
   /**
@@ -175,6 +177,53 @@ export default class FetchMock {
    * @property {number} itemsNumber - The number of items inside.
    * @property {'folder'} type - Shows that this item is a folder.
    */
+
+  /**
+   * Sets a mock for the put folder request.
+   *
+   * @private
+   */
+  static _setUpdateFolder() {
+    fetchMock.put('glob:/folder/*', (url, options) => {
+      const id = url.slice(8);
+      const index = FileSystem.folders.findIndex((folder) => {
+        if (folder.id === id) {
+          return true;
+        }
+      });
+
+      if (index === -1) {
+        return 404;
+      }
+
+      FileSystem.folders[index] = options.body.element;
+      return FileSystem.folders[index];
+    });
+  }
+
+  /**
+   * Sets a mock for the put file request.
+   *
+   * @private
+   */
+  static _setUpdateFile() {
+    fetchMock.put('glob:/file/*', (url, options) => {
+      const id = url.slice(6);
+
+      const index = FileSystem.files.findIndex((file) => {
+        if (file.id === id) {
+          return true;
+        }
+      });
+
+      if (index === -1) {
+        return 404;
+      }
+
+      FileSystem.files[index] = options.body.element;
+      return FileSystem.files[index];
+    });
+  }
 
   /**
    * Recursively deletes a folder and all its content.

@@ -1,11 +1,10 @@
 import Component from '../component.js';
+import ListItem from '../list-item';
 
 /**
  * The class for displaying the file item.
  */
-export default class FileItem extends Component {
-  _removeItemHandlers = [];
-
+export default class FileItem extends ListItem {
   /**
    * The object for describing the file configurations.
    *
@@ -33,20 +32,6 @@ export default class FileItem extends Component {
   }
 
   /** @inheritdoc */
-  render() {
-    const fakeElement = document.createElement('tbody');
-    fakeElement.innerHTML = this.markup();
-
-    this.rootElement = fakeElement.firstElementChild;
-    const parentElement = this._container.parentElement;
-    parentElement.removeChild(this._container);
-    parentElement.appendChild(this.rootElement);
-
-    this.initNestedComponents();
-    this.addEventListeners();
-  }
-
-  /** @inheritdoc */
   markup() {
     return `
         <tr data-test="file-item">
@@ -54,7 +39,7 @@ export default class FileItem extends Component {
             <td class="filename">
                 <span class="glyphicon" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">${this._parameters.name}</span>
-                <input type="text" name="new-name" class="input" value="${this._parameters.name}">
+                <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>
             <td class="count" data-test="cell-count">${this._getReadableFileSizeString(this._parameters.size)}</td>
             <td class="cell-actions" data-test="cell-actions">
@@ -81,26 +66,6 @@ export default class FileItem extends Component {
     } else {
       fileIcon.classList.add('glyphicon-file');
     }
-  }
-
-  /** @inheritdoc */
-  addEventListeners() {
-    const removeItemButton = this.rootElement
-      .querySelector('[data-test="cell-actions"] .glyphicon-remove-circle');
-    removeItemButton.addEventListener('click', () => {
-      this._removeItemHandlers.forEach((handler) => {
-        handler(this._parameters);
-      });
-    });
-  }
-
-  /**
-   * Adds a function that should be called when the remove item button is pressed.
-   *
-   * @param {Function} handler - The function that will be called when the user wants to delete an item.
-   */
-  onRemoveItem(handler) {
-    this._removeItemHandlers.push(handler);
   }
 
   /**

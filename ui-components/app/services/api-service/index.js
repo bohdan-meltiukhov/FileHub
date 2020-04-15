@@ -133,21 +133,103 @@ export default class ApiService {
   }
 
   /**
-   * The object for transferring a file or a folder.
+   * The object for describing the folder configurations.
    *
-   * @typedef {object} FileItem
-   * @property {string} name - The name of the file.
-   * @property {('image'|'book'|'video'|'audio'|'stylesheet'|'other')} [mimeType] - The type of the file.
-   * @property {number} [size] - The size of the file in bytes.
-   * @property {number} [itemsNumber] - The number of items inside.
-   * @property {('file'|'folder')} type - Shows whether it is a file or a folder.
+   * @typedef {object} FolderItemProperties
+   * @property {string} id - The identifier of the folder.
+   * @property {string} parentId - The id of the parent folder.
+   * @property {string} name - The name of the folder.
+   * @property {number} itemsNumber - The number of items inside.
+   * @property {'folder'} type - Shows that this item is a folder.
    */
+
+  /**
+   * Updates the provided folder.
+   *
+   * @param {FolderItemProperties} folder - The new folder properties.
+   * @returns {Promise} The promise that resolves if the folder is updated successfully.
+   */
+  updateFolder(folder) {
+    return new Promise((resolve, reject) => {
+      fetch(`/folder/${folder.id}`, {
+        method: 'PUT',
+        body: {
+          element: folder,
+        },
+      }).then((response) => {
+        if (response.ok) {
+          resolve();
+        } else {
+          switch (response.status) {
+          case 401:
+            reject(new AuthorizationError('Not authorized.'));
+            break;
+          case 404:
+            reject(new NotFoundError('This folder does not exist.'));
+            break;
+          case 500:
+            reject(new GeneralServerError('Internal server error.'));
+            break;
+          default:
+            reject(new Error('Unknown error'));
+          }
+        }
+      });
+    });
+  }
+
+  /**
+   * The object for describing the file configurations.
+   *
+   * @typedef {object} FileItemProperties
+   * @property {string} id - The identifier of the file.
+   * @property {string} parentId - The id of the parent folder.
+   * @property {string} name - The name of the file.
+   * @property {('image'|'book'|'video'|'audio'|'stylesheet'|'other')} mimeType - The type of the file.
+   * @property {number} size - The size of the file in bytes.
+   * @property {'file'} type - Shows that this item is a file.
+   */
+
+  /**
+   * Updates the provided file.
+   *
+   * @param {FileItemProperties} file - The new file properties.
+   * @returns {Promise} The promise that resolves if the file is updated successfully.
+   */
+  updateFile(file) {
+    return new Promise((resolve, reject) => {
+      fetch(`/file/${file.id}`, {
+        method: 'PUT',
+        body: {
+          element: file,
+        },
+      }).then((response) => {
+        if (response.ok) {
+          resolve();
+        } else {
+          switch (response.status) {
+          case 401:
+            reject(new AuthorizationError('Not authorized.'));
+            break;
+          case 404:
+            reject(new NotFoundError('This file does not exist.'));
+            break;
+          case 500:
+            reject(new GeneralServerError('Internal server error.'));
+            break;
+          default:
+            reject(new Error('Unknown error'));
+          }
+        }
+      });
+    });
+  }
 
   /**
    * Provides the information about the folder.
    *
    * @param {string} id - The identifier of the required folder.
-   * @returns {Promise<FileItem>} The promise that resolves with information about the required folder.
+   * @returns {Promise<FolderItem>} The promise that resolves with information about the required folder.
    */
   getFolder(id) {
     return new Promise((resolve, reject) => {

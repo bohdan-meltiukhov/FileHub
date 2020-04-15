@@ -6,8 +6,6 @@ import Component from '../component.js';
  * @abstract
  */
 export default class ListItem extends Component {
-  _removeItemHandlers = [];
-
   /** @inheritdoc */
   render() {
     const fakeElement = document.createElement('tbody');
@@ -47,15 +45,6 @@ export default class ListItem extends Component {
       this._parameters.name = event.target.value;
       this._onNameChanged(this._parameters);
     });
-  }
-
-  /**
-   * Adds a function that should be called when the remove item button is pressed.
-   *
-   * @param {Function} handler - The function that will be called when the user wants to delete an item.
-   */
-  onRemoveItem(handler) {
-    this._removeItemHandlers.push(handler);
   }
 
   /**

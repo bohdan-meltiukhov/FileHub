@@ -65,17 +65,6 @@ export default class FileList extends Component {
   }
 
   /**
-   * Adds a function that should be called when an item is deleted.
-   *
-   * @param {Function} handler - The function to call when the use wants to delete an item.
-   */
-  onRemoveItem(handler) {
-    this._fileItems.forEach((item) => {
-      item.onRemoveItem(handler);
-    });
-  }
-
-  /**
    * Adds a function to be called when any itm changes its name.
    *
    * @param {Function} handler - The function to call when an item changes its name.

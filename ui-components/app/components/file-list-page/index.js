@@ -6,7 +6,6 @@ import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import StateManager from '../../state/state-manager';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
-import RemoveItemAction from '../../state/actions/remove-item-action';
 import UpdateItemAction from '../../state/actions/update-item-action';
 
 /**
@@ -89,10 +88,6 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   addEventListeners() {
-    this.fileList.onRemoveItem((item) => {
-      this.stateManager.dispatch(new RemoveItemAction(item));
-    });
-
     this.fileList.onItemNameChanged((item) => {
       this.stateManager.dispatch(new UpdateItemAction(item));
     });

@@ -13,8 +13,6 @@ export default class FetchMock {
     FetchMock._setRegister();
     FetchMock._setFiles();
     FetchMock._setFolder();
-    FetchMock._setDeleteFolder();
-    FetchMock._setDeleteFile();
     FetchMock._setUpdateFolder();
     FetchMock._setUpdateFile();
   }
@@ -115,59 +113,6 @@ export default class FetchMock {
   }
 
   /**
-   * Sets a mock for the delete folder request.
-   *
-   * @private
-   */
-  static _setDeleteFolder() {
-    fetchMock.delete('glob:/folder/*', (url) => {
-      const id = url.slice(8);
-
-      const folder = FileSystem.folders.find((folder) => {
-        if (folder.id === id) {
-          return true;
-        }
-      });
-
-      if (!folder) {
-        return 404;
-      }
-
-      FetchMock._deleteFolder(folder);
-
-      return 200;
-    }, {
-      delay: 500,
-    });
-  }
-
-  /**
-   * Sets a mock for the delete file request.
-   *
-   * @private
-   */
-  static _setDeleteFile() {
-    fetchMock.delete('glob:/file/*', (url) => {
-      const id = url.slice(6);
-
-      const file = FileSystem.files.find((file) => {
-        if (file.id === id) {
-          return true;
-        }
-      });
-
-      if (!file) {
-        return 404;
-      }
-
-      const index = FileSystem.files.indexOf(file);
-      FileSystem.files.splice(index, 1);
-
-      return 200;
-    });
-  }
-
-  /**
    * The object for describing the folder configurations.
    *
    * @typedef {object} FolderItem
@@ -223,27 +168,5 @@ export default class FetchMock {
       FileSystem.files[index] = options.body.element;
       return FileSystem.files[index];
     });
-  }
-
-  /**
-   * Recursively deletes a folder and all its content.
-   *
-   * @param {FolderItem} folder - The folder to delete.
-   * @private
-   */
-  static _deleteFolder(folder) {
-    const childFolders = FileSystem.folders.filter((childFolder) => childFolder.parentId === folder.id);
-    childFolders.forEach((childFolder) => {
-      FetchMock._deleteFolder(childFolder);
-    });
-
-    const files = FileSystem.files.filter((file) => file.parentId === folder.id);
-    files.forEach((file) => {
-      const index = FileSystem.files.indexOf(file);
-      FileSystem.files.splice(index, 1);
-    });
-
-    const index = FileSystem.folders.indexOf(folder);
-    FileSystem.folders.splice(index, 1);
   }
 }

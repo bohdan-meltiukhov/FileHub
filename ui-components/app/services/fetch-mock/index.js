@@ -15,6 +15,7 @@ export default class FetchMock {
     FetchMock._setFolder();
     FetchMock._setUpdateFolder();
     FetchMock._setUpdateFile();
+    FetchMock._setCreateFolder();
   }
 
   /**
@@ -168,5 +169,73 @@ export default class FetchMock {
       FileSystem.files[index] = options.body.element;
       return FileSystem.files[index];
     });
+  }
+
+  /**
+   * Sets a mock for the create folder request.
+   *
+   * @private
+   */
+  static _setCreateFolder() {
+    fetchMock.post('glob:/folder/*/folder', (url) => {
+      const id = url.slice(8, url.lastIndexOf('/folder'));
+
+      const parentFolder = FileSystem.folders.find((folder) => {
+        if (folder.id === id) {
+          return true;
+        }
+      });
+
+      if (!parentFolder) {
+        return 404;
+      }
+
+      const childFolders = FileSystem.folders.filter((folder) => {
+        if (folder.parentId === id) {
+          return true;
+        }
+      });
+
+      const childFolderNames = childFolders.map((folder) => folder.name);
+      let name = '';
+      console.log('childFolderNames', childFolderNames);
+      if (childFolderNames.includes('New folder')) {
+        console.log('includes');
+        for (let i = 2; ; i++) {
+          if (!childFolderNames.includes(`New folder (${i})`)) {
+            name = `New folder (${i})`;
+            break;
+          }
+        }
+      } else {
+        name = 'New folder';
+      }
+      const folder = {
+        id: FetchMock._generateRandomId(16),
+        parentId: id,
+        name,
+        itemsNumber: 0,
+        type: 'folder',
+      };
+      FileSystem.folders.push(folder);
+      return folder;
+    });
+  }
+
+  /**
+   * Generates a random string identified.
+   *
+   * @param {number} length - The length of the required string.
+   * @returns {string} The generated string.
+   * @private
+   */
+  static _generateRandomId(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
   }
 }

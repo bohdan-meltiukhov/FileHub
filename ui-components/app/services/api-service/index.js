@@ -226,6 +226,17 @@ export default class ApiService {
   }
 
   /**
+   * The object for describing the folder configurations.
+   *
+   * @typedef {object} FolderItem
+   * @property {string} id - The identifier of the folder.
+   * @property {string} parentId - The id of the parent folder.
+   * @property {string} name - The name of the folder.
+   * @property {number} itemsNumber - The number of items inside.
+   * @property {'folder'} type - Shows that this item is a folder.
+   */
+
+  /**
    * Provides the information about the folder.
    *
    * @param {string} id - The identifier of the required folder.
@@ -240,6 +251,50 @@ export default class ApiService {
               .then((responseBody) => {
                 resolve(responseBody.folder);
               });
+          } else {
+            switch (response.status) {
+            case 401:
+              reject(new AuthorizationError('Not authorized.'));
+              break;
+            case 404:
+              reject(new NotFoundError('This folder does not exist.'));
+              break;
+            case 500:
+              reject(new GeneralServerError('Internal server error.'));
+              break;
+            default:
+              reject(new Error('Unknown error'));
+            }
+          }
+        });
+    });
+  }
+
+  /**
+   * Creates a folder.
+   *
+   * @param {string} id - The identifier of the parent folder.
+   * @returns {Promise} The promise that resolved if the folder is created successfully.
+   */
+  createFolder(id) {
+    return new Promise((resolve, reject) => {
+      fetch(`/folder/${id}/folder`, {
+        method: 'POST',
+        body: {
+          folder: {
+            name: 'New folder',
+            itemsNumber: 0,
+            type: 'folder',
+          },
+        },
+      })
+        .then((response) => {
+          if (response.ok) {
+            response.json()
+              .then((body) => {
+                console.log(body);
+              });
+            resolve();
           } else {
             switch (response.status) {
             case 401:

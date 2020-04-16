@@ -7,6 +7,7 @@ import GetFilesAction from '../../state/actions/get-files-action';
 import StateManager from '../../state/state-manager';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
 import UpdateItemAction from '../../state/actions/update-item-action';
+import CreateFolderAction from '../../state/actions/create-folder-action';
 
 /**
  * The component for the File List Page.
@@ -23,6 +24,7 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
+    this._folderId = properties.id;
     stateManager.dispatch(new GetFilesAction(properties.id));
   }
 
@@ -91,6 +93,11 @@ export default class FileListPage extends StateAwareComponent {
     this.fileList.onItemNameChanged((item) => {
       this.stateManager.dispatch(new UpdateItemAction(item));
     });
+
+    this.createFolderButton.addClickHandler(() => {
+      console.log('click handler called');
+      this.stateManager.dispatch(new CreateFolderAction(this._folderId));
+    });
   }
 
   /** @inheritdoc */
@@ -98,7 +105,6 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('fileList', (event) => {
       const state = event.detail.state;
       this.fileList.files = state.fileList;
-      this.addEventListeners();
     });
 
     this.onStateChanged('isFileListLoading', (event) => {

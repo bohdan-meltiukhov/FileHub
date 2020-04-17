@@ -5,7 +5,6 @@ import UserCredentials from '../../models/user-credentials';
 import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import ServerValidationError from '../../models/errors/server-validation-error';
-import {FILE_LIST_ROUTE} from '../../router/routes';
 
 /**
  * The component for the login page.
@@ -48,7 +47,7 @@ export default class LoginPage extends Component {
     const apiService = ApiService.getInstance();
     apiService.logIn(userCredentials)
       .then(() => {
-        window.location.hash = FILE_LIST_ROUTE;
+        window.location.hash = '#/file-list';
       })
       .catch((error) => {
         this._handleError(error);

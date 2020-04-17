@@ -5,7 +5,6 @@ import MinLengthValidationRule from '../../services/validator/validation-rules/m
 import UserCredentials from '../../models/user-credentials';
 import ValidationErrorCase from '../../models/errors/validation-error-case';
 import Button from '../button';
-import {REGISTRATION_ROUTE} from '../../router/routes';
 
 /**
  * The component for the authentication form.
@@ -43,7 +42,7 @@ export default class LoginForm extends Component {
                     <div class="row">
                         <div class="form-footer">
                             <span data-test="submit-button"></span>
-                            <a href="#${REGISTRATION_ROUTE}" class="form-link">Don't have an account yet?</a>
+                            <a href="#/registration" class="form-link">Don't have an account yet?</a>
                         </div>
                     </div>
                 </main>

@@ -28,9 +28,8 @@ export default class StateAwareComponent extends Component {
    * Adds a function that will be called when the state changes.
    *
    * @param {Function} handler - The function that should be called when the state changes.
-   * @param {string} field - The state field to listen to.
    */
-  onStateChanged(handler, field) {
-    this.stateManager.onStateChanged(handler, field);
+  onStateChanged(handler) {
+    this.stateManager.onStateChanged(handler);
   }
 }

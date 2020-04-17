@@ -30,10 +30,10 @@ export default class StateManager extends EventTarget {
   /**
    * Adds a function that wil be called when the state changes.
    *
-   * @param {string} field - The state field to listen to.
    * @param {Function} handler - The function that should be called when the state changes.
+   * @param {string} field - The state field to listen to.
    */
-  onStateChanged(field, handler) {
+  onStateChanged(handler, field) {
     this.addEventListener(`stateChanged.${field}`, () => handler(this.state));
   }
 

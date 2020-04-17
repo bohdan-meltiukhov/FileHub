@@ -4,6 +4,7 @@ import ApiService from '../../services/api-service';
 import UserCredentials from '../../models/user-credentials';
 import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
+import {AUTHENTICATION_ROUTE} from '../../router/routes';
 
 /**
  * The component for teh registration page.
@@ -42,7 +43,7 @@ export default class RegistrationPage extends Component {
     const apiService = ApiService.getInstance();
     apiService.register(userCredentials)
       .then(() => {
-        window.location.hash = '#/authentication';
+        window.location.hash = `#${AUTHENTICATION_ROUTE}`;
       })
       .catch((error) => {
         this._handleError(error);

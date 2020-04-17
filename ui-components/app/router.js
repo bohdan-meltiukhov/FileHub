@@ -1,5 +1,3 @@
-import StateManager from './state/state-manager';
-
 /**
  * The class that allows switching between different pages.
  */

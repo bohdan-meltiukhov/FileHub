@@ -43,7 +43,7 @@ export default class RegistrationPage extends Component {
     const apiService = ApiService.getInstance();
     apiService.register(userCredentials)
       .then(() => {
-        window.location.hash = `#${AUTHENTICATION_ROUTE}`;
+        window.location.hash = AUTHENTICATION_ROUTE;
       })
       .catch((error) => {
         this._handleError(error);

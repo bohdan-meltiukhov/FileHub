@@ -8,20 +8,22 @@ import FileListLoadingErrorMutator from '../../mutators/file-list-loading-error-
  */
 export default class GetFilesAction extends Action {
   /**
-   * Creates an instance of the GetFiles Action with set API Service.
+   * Creates an instance of the GetFilesAction with set folder ID.
    *
-   * @param {object} apiService - The API Service for this action.
+   * @param {string} folderId - The identifier of the required folder.
    */
-  constructor(apiService) {
+  constructor(folderId) {
     super();
-    this.apiService = apiService;
+
+    this._folderId = folderId;
   }
 
   /** @inheritdoc */
-  async apply(stateManager) {
+  async apply(stateManager, apiService) {
     stateManager.mutate(new IsFileListLoadingMutator(true));
     try {
-      const files = await this.apiService.getFiles();
+      const files = await apiService.getFiles();
+      stateManager.mutate(new IsFileListLoadingMutator(false));
       stateManager.mutate(new FileListMutator(files));
     } catch (e) {
       stateManager.mutate(new FileListLoadingErrorMutator(e.message));

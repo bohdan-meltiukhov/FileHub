@@ -34,9 +34,9 @@ export default class Application extends Component {
    */
   initNestedComponents() {
     const pageMapping = {
-      '/authentication': LoginPage,
-      '/registration': RegistrationPage,
-      '/file-list': FileListPage,
+      [AUTHENTICATION_ROUTE]: () => new LoginPage(this.rootElement),
+      [REGISTRATION_ROUTE]: () => new RegistrationPage(this.rootElement),
+      [FILE_LIST_ROUTE]: () => new FileListPage(this.rootElement),
     };
 
     const stateManager = new StateManager({}, ApiService.getInstance());
@@ -45,13 +45,11 @@ export default class Application extends Component {
       rootElement: this.rootElement,
       stateManager,
       pageMapping,
-      defaultLocation: '/authentication',
-      notFoundPage: NotFoundPage,
+      defaultLocation: AUTHENTICATION_ROUTE,
+      notFoundPage: () => new NotFoundPage(this.rootElement),
       window,
     };
 
-    const router = new Router(routerProperties);
-
-    this.router = router;
+    new Router(routerProperties);
   }
 }

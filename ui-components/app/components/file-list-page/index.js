@@ -4,6 +4,7 @@ import Button from '../button';
 import FileList from '../file-list';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
+import {AUTHENTICATION_ROUTE} from '../../router/routes';
 
 /**
  * The component for the File List Page.

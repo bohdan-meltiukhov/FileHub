@@ -1,3 +1,6 @@
+import StateManager from '../../state-manager';
+import ApiService from '../../../services/api-service';
+
 /**
  * The class for different actions.
  */
@@ -5,9 +8,10 @@ export default class Action {
   /**
    * Applies the provided stateManager.
    *
-   * @param {object} stateManager - The state manager to apply.
+   * @param {StateManager} stateManager - The state manager to apply.
+   * @param {ApiService} apiService - The ApiService to use.
    * @abstract
    */
-  apply(stateManager) {
+  apply(stateManager, apiService) {
   }
 }

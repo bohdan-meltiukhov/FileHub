@@ -5,8 +5,6 @@ import NotFoundPage from '../not-found';
 import LoginPage from '../login-page';
 import RegistrationPage from '../registration-page';
 import FileListPage from '../file-list-page';
-import StateManager from '../../state/state-manager';
-import ApiService from '../../services/api-service';
 
 /**
  * The component for the web application.

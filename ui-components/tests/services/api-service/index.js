@@ -3,34 +3,46 @@ import UserCredentials from '../../../app/models/user-credentials';
 
 const {module, test} = QUnit;
 
-module('The ApiService test');
+module('The ApiService');
 
-test('should log in.', async function(assert) {
-  const apiService = new ApiService();
+test('should log in.', (assert) => {
+  const fetchMock = (url, options) => {
+    return new Promise((resolve) => {
+      if (url === '/login' && options.method === 'POST') {
+        assert.step('Log In fetch called.');
+      }
+      const response = {
+        status: 200,
+      };
+      resolve(response);
+    });
+  };
+
+  const apiService = new ApiService(fetchMock);
   const userCredentials = new UserCredentials('admin', '1234');
 
-  const callback = async function() {
-    assert.step('Logged in.');
-  };
+  apiService.logIn(userCredentials);
 
-  apiService.logIn(userCredentials)
-    .then(callback);
-
-  await callback;
-  assert.verifySteps(['Logged in.'], 'The API service should log in with valid credentials.');
+  assert.verifySteps(['Fetch called.'], 'The API service should call the fetch function.');
 });
 
-test('should register.', async function(assert) {
-  const apiService = new ApiService();
-  const userCredentials = new UserCredentials('user', 'password1234');
-
-  const callback = async function() {
-    assert.step('Registered.');
+test('should register.', (assert) => {
+  const fetchMock = (url, options) => {
+    return new Promise((resolve) => {
+      if (url === '/register' && options.method === 'POST') {
+        assert.step('Register fetch called.');
+      }
+      const response = {
+        status: 200,
+      };
+      resolve(response);
+    });
   };
 
-  apiService.register(userCredentials)
-    .then(callback);
+  const apiService = new ApiService(fetchMock);
+  const userCredentials = new UserCredentials('user', 'password1234');
 
-  await callback;
-  assert.verifySteps(['Registered.'], 'The API service should register with valid credentials.');
+  apiService.register(userCredentials);
+
+  assert.verifySteps(['Register fetch called.'], 'The API service should call the fetch function.');
 });

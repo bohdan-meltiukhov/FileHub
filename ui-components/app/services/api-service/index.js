@@ -25,7 +25,7 @@ export default class ApiService {
         return {token: 'my-token'};
       }
       return 401;
-    });
+    }, {overwriteRoutes: false});
 
     fetchMock.post('/register', (url, options) => {
       const credentials = options.body;
@@ -44,7 +44,7 @@ export default class ApiService {
       } else {
         return 200;
       }
-    });
+    }, {overwriteRoutes: false});
   }
 
   /**

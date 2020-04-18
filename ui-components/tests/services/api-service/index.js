@@ -9,7 +9,7 @@ test('should log in.', (assert) => {
   const fetchMock = (url, options) => {
     return new Promise((resolve) => {
       if (url === '/login' && options.method === 'POST') {
-        assert.step('Log In fetch called.');
+        assert.step('Log in fetch called.');
       }
       const response = {
         status: 200,
@@ -23,7 +23,7 @@ test('should log in.', (assert) => {
 
   apiService.logIn(userCredentials);
 
-  assert.verifySteps(['Fetch called.'], 'The API service should call the fetch function.');
+  assert.verifySteps(['Log in fetch called.'], 'The API service should call the fetch function.');
 });
 
 test('should register.', (assert) => {

@@ -5,6 +5,7 @@ import FileList from '../file-list';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
+import GetUserAction from '../../state/actions/get-user-action';
 
 /**
  * The component for the File List Page.
@@ -21,6 +22,7 @@ export default class FileListPage extends StateAwareComponent {
 
     this.render();
     stateManager.dispatch(new GetFilesAction());
+    stateManager.dispatch(new GetUserAction());
   }
 
   /**

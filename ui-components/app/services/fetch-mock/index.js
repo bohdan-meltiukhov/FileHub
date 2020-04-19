@@ -1,5 +1,7 @@
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
 
+const TOKEN = 'my-token';
+
 /**
  * The class for setting the fetch mock.
  */
@@ -11,6 +13,7 @@ export default class FetchMock {
     FetchMock._setLogin();
     FetchMock._setRegister();
     FetchMock._setFiles();
+    FetchMock._setUser();
   }
 
   /**
@@ -22,7 +25,7 @@ export default class FetchMock {
     fetchMock.post('/login', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin' && credentials.password === '1234') {
-        return {token: 'my-token'};
+        return {token: TOKEN};
       }
       return 401;
     });
@@ -76,6 +79,25 @@ export default class FetchMock {
       ],
     }, {
       delay: 500,
+    });
+  }
+
+  /**
+   * Sets a mock for the get user request.
+   *
+   * @private
+   */
+  static _setUser() {
+    fetchMock.get('/user', (url, opts) => {
+      if (opts.headers.Authentication === TOKEN) {
+        return {
+          body: {
+            name: 'John',
+          },
+        };
+      } else {
+        return 401;
+      }
     });
   }
 }

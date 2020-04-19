@@ -11,6 +11,8 @@ let instance;
  * The class for sending requests and receiving responses from backend.
  */
 export default class ApiService {
+  _token = '';
+
   /**
    * Creates an instance of the API service with set fetch mock.
    *
@@ -34,6 +36,11 @@ export default class ApiService {
       })
         .then((response) => {
           if (response.ok) {
+            response.json()
+              .then((body) => {
+                // this._token = body.token;
+                localStorage.setItem('token', body.token);
+              });
             resolve();
           }
 
@@ -128,5 +135,32 @@ export default class ApiService {
           }
         });
     });
+  }
+
+  /**
+   * Provides the current user's name.
+   *
+   * @returns {Promise} A promise that resolves with the current user's data.
+   */
+  getUser() {
+    return fetch('/user', {
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          switch (response.status) {
+          case 401:
+            throw new AuthorizationError('Access denied.');
+          case 500:
+            throw new GeneralServerError('Internal server error');
+          default:
+            throw new Error('Unknown error');
+          }
+        }
+      });
   }
 }

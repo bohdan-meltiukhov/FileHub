@@ -2,7 +2,7 @@ import FileListMutator from '../../../../app/state/mutators/file-list-mutator';
 
 const {module, test} = QUnit;
 
-module('The FileListMutator test');
+module('The FileListMutator');
 
 test('should apply the file list.', (assert) => {
   const fileList = [

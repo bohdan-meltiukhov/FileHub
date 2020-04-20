@@ -1,4 +1,5 @@
 import Router from '../../app/router';
+import {REGISTRATION_ROUTE, AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../app/router/routes';
 import LoginPage from '../../app/components/login-page';
 import RegistrationPage from '../../app/components/registration-page';
 import FileListPage from '../../app/components/file-list-page';
@@ -8,7 +9,7 @@ import ApiService from '../../app/services/api-service';
 
 const {module, test} = QUnit;
 
-module('The Router test');
+module('The Router');
 
 /**
  * The class for mock objects that act like the window object.
@@ -55,11 +56,11 @@ test('should render the correct page when the location hash changes.', (assert) 
   const properties = {
     rootElement,
     pageMapping: {
-      '/authentication': () => new LoginPage(rootElement),
-      '/registration': () => new RegistrationPage(rootElement),
-      '/file-list': () => new FileListPage(rootElement, stateManager),
+      [AUTHENTICATION_ROUTE]: () => new LoginPage(rootElement),
+      [REGISTRATION_ROUTE]: () => new RegistrationPage(rootElement),
+      [FILE_LIST_ROUTE]: () => new FileListPage(rootElement, stateManager),
     },
-    defaultLocation: '/authentication',
+    defaultLocation: AUTHENTICATION_ROUTE,
     notFoundPage: function() {
     },
     window: windowMock,
@@ -67,19 +68,19 @@ test('should render the correct page when the location hash changes.', (assert) 
 
   new Router(properties);
 
-  windowMock.location.hash = '#/registration';
+  windowMock.location.hash = `#${REGISTRATION_ROUTE}`;
   windowMock.dispatchEvent(new Event('hashchange'));
   const registrationPage = rootElement.firstElementChild.getAttribute('data-test');
   assert.strictEqual(registrationPage, 'registration-page', 'The router should open the registration page ' +
     'on the registration location hash.');
 
-  windowMock.location.hash = '#/authentication';
+  windowMock.location.hash = `#${AUTHENTICATION_ROUTE}`;
   windowMock.dispatchEvent(new Event('hashchange'));
   const authenticationPage = rootElement.firstElementChild.getAttribute('data-test');
   assert.strictEqual(authenticationPage, 'login-page', 'The router should open the authentication page ' +
     'on the authentication location hash.');
 
-  windowMock.location.hash = '#/file-list';
+  windowMock.location.hash = `#${FILE_LIST_ROUTE}`;
   windowMock.dispatchEvent(new Event('hashchange'));
   const fileExplorerPage = rootElement.firstElementChild.getAttribute('data-test');
   assert.strictEqual(fileExplorerPage, 'file-list-page', 'The router should open the file list page ' +

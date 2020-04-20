@@ -19,6 +19,8 @@ export default class Application extends Component {
    */
   constructor(container) {
     super(container);
+
+    window.devMode = true;
   }
 
   /**

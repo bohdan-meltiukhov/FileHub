@@ -18,7 +18,7 @@ const files = [
   },
 ];
 
-module('The FileList test', {
+module('The FileList', {
   beforeEach: function() {
     fixture = document.getElementById('qunit-fixture');
   },
@@ -28,15 +28,9 @@ test('should display the provided list of files.', (assert) => {
   new FileList(fixture, files);
   const fileList = fixture.firstElementChild;
 
-  assert.timeout(2000);
-  const done = assert.async();
-
-  setTimeout(() => {
-    const fileItems = fileList.querySelectorAll('[data-test="file-item"]');
-    assert.strictEqual(fileItems.length, 2, 'The file list should display as many files as it received via ' +
-      'constructor.');
-    done();
-  }, 1000);
+  const fileItems = fileList.querySelectorAll('[data-test="file-item"]');
+  assert.strictEqual(fileItems.length, 2, 'The file list should display as many files as it received via ' +
+    'constructor.');
 });
 
 test('should update the list of files.', (assert) => {

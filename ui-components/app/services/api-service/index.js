@@ -17,75 +17,77 @@ export default class ApiService {
    * @private
    */
   constructor() {
-    FetchMock.setMock();
+    if (window.devMode) {
+      FetchMock.setMock();
+    }
   }
 
   /**
    * Sends a request to authenticate a user with the provided credentials.
    *
    * @param {UserCredentials} userCredentials - The provided username and password.
-   * @returns {Promise} The promise that resolves when a response from teh server is received..
+   * @returns {Promise} The promise that resolves when a response from the server is received.
    */
   logIn(userCredentials) {
-    return new Promise((resolve, reject) => {
-      fetch('/login', {
-        method: 'POST',
-        body: userCredentials,
-      })
-        .then((response) => {
-          if (response.ok) {
-            resolve();
-          }
-
-          switch (response.status) {
-          case 401:
-            reject(new AuthorizationError('The username or password is incorrect'));
-            break;
-          case 500:
-            reject(new GeneralServerError('Internal server error'));
-            break;
-          default:
-            reject(new Error('Unknown error'));
-          }
-        });
-    });
+    return fetch('/login', {
+      method: 'POST',
+      body: userCredentials,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw this._handleAuthenticationErrors(response);
+        }
+      });
   }
 
   /**
    * Sends a request to check user credentials and register a new user.
    *
    * @param {UserCredentials} userCredentials - The credentials for the new user.
-   * @returns {Promise} The promise that resolves when a response from teh server is received..
+   * @returns {Promise} The promise that resolves when a response from the server is received.
    */
   register(userCredentials) {
-    return new Promise((resolve, reject) => {
-      fetch('/register', {
-        method: 'POST',
-        body: userCredentials,
-      })
-        .then((response) => {
-          if (response.ok) {
-            resolve();
-          }
+    return fetch('/register', {
+      method: 'POST',
+      body: userCredentials,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw this._handleAuthenticationErrors(response);
+        }
+      });
+  }
 
-          switch (response.status) {
-          case 422:
-            response.json().then((body) => {
-              const errorCases = [];
-              body.errors.forEach((error) => {
-                errorCases.push(new ValidationErrorCase(error.field, error.message));
-              });
-              reject(new ServerValidationError(errorCases));
-            });
-            break;
-          case 500:
-            reject(new GeneralServerError('Internal server error'));
-            break;
-          default:
-            reject(new Error('Unknown error'));
-          }
+  /**
+   * Check the response status code and creates an instance of the corresponding error.
+   *
+   * @param {Response} response - The response from the server.
+   * @returns {Error} The error to throw.
+   * @private
+   */
+  _handleAuthenticationErrors(response) {
+    let error;
+
+    switch (response.status) {
+    case 401:
+      error = new AuthorizationError('The username or password is incorrect');
+      break;
+    case 422:
+      response.json().then((body) => {
+        const errorCases = [];
+        body.errors.forEach((error) => {
+          errorCases.push(new ValidationErrorCase(error.field, error.message));
         });
-    });
+        error = new ServerValidationError(errorCases);
+      });
+      break;
+    case 500:
+      error = new GeneralServerError('Internal server error');
+      break;
+    default:
+      error = new Error('Unknown error');
+    }
+    return error;
   }
 
   /**

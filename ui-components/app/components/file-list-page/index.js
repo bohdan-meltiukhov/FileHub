@@ -1,5 +1,5 @@
 import UserDetails from '../user-details';
-import InnerBreadcrumbs from '../inner-breadcrumbs';
+import Breadcrumbs from '../breadcrumbs';
 import Button from '../button';
 import FileList from '../file-list';
 import StateAwareComponent from '../../state-aware-component';
@@ -65,7 +65,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     const breadcrumbsContainer = this.rootElement.querySelector('[data-test="breadcrumbs"]');
-    this.breadcrumbs = new InnerBreadcrumbs(breadcrumbsContainer, {
+    this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer, {
       folder: 'Documents',
     });
 

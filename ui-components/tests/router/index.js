@@ -3,12 +3,10 @@ import LoginPage from '../../app/components/login-page';
 import RegistrationPage from '../../app/components/registration-page';
 import FileListPage from '../../app/components/file-list-page';
 import NotFoundPage from '../../app/components/not-found';
-import StateManager from '../../app/state/state-manager';
-import ApiService from '../../app/services/api-service';
 
 const {module, test} = QUnit;
 
-module('The Router test');
+module('The Router');
 
 /**
  * The class for mock objects that act like the window object.
@@ -50,14 +48,12 @@ test('should render the correct page when the location hash changes.', (assert) 
 
   const rootElement = document.createElement('div');
 
-  const stateManager = new StateManager({}, ApiService.getInstance());
-
   const properties = {
     rootElement,
     pageMapping: {
       '/authentication': () => new LoginPage(rootElement),
       '/registration': () => new RegistrationPage(rootElement),
-      '/file-list': () => new FileListPage(rootElement, stateManager),
+      '/file-list': () => new FileListPage(rootElement),
     },
     defaultLocation: '/authentication',
     notFoundPage: function() {

@@ -4,6 +4,7 @@ import Button from '../button';
 import FileList from '../file-list';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
+import LogOutAction from '../../state/actions/log-out-action';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
 
 /**
@@ -34,7 +35,9 @@ export default class FileListPage extends StateAwareComponent {
             <ul class="menu">
                 <li><span data-test="user-details"></li>
                 <li>
-                    <a href="#${AUTHENTICATION_ROUTE}">Log Out <span class="glyphicon glyphicon-log-out"></span></a>
+                    <a href="#${AUTHENTICATION_ROUTE}" data-test="log-out">
+                        Log Out <span class="glyphicon glyphicon-log-out"></span>
+                    </a>
                 </li>
             </ul>
             
@@ -81,6 +84,14 @@ export default class FileListPage extends StateAwareComponent {
 
     this.fileListContainer = this.rootElement.querySelector('[data-test="file-list"]');
     this.fileList = new FileList(this.fileListContainer);
+  }
+
+  /** @inheritdoc */
+  addEventListeners() {
+    const logOutLink = this.rootElement.querySelector('[data-test="log-out"]');
+    logOutLink.addEventListener('click', () => {
+      this.stateManager.dispatch(new LogOutAction());
+    });
   }
 
   /** @inheritdoc */

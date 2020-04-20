@@ -11,6 +11,7 @@ export default class FetchMock {
     FetchMock._setLogin();
     FetchMock._setRegister();
     FetchMock._setFiles();
+    FetchMock._setLogOut();
   }
 
   /**
@@ -77,5 +78,14 @@ export default class FetchMock {
     }, {
       delay: 500,
     });
+  }
+
+  /**
+   * Sets a mock for the logout request.
+   *
+   * @private
+   */
+  static _setLogOut() {
+    fetchMock.post('/logout', 200);
   }
 }

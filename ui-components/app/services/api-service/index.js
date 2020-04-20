@@ -34,7 +34,12 @@ export default class ApiService {
       body: userCredentials,
     })
       .then((response) => {
-        if (!response.ok) {
+        if (response.ok) {
+          response.json()
+            .then((body) => {
+              localStorage.setItem('token', body.token);
+            });
+        } else {
           throw this._handleAuthenticationErrors(response);
         }
       });
@@ -130,5 +135,25 @@ export default class ApiService {
           }
         });
     });
+  }
+
+  /**
+   * Sends a request to log the current user out.
+   */
+  logOut() {
+    fetch('/logout', {
+      method: 'POST',
+    })
+      .then((response) => {
+        if (response.ok) {
+          localStorage.removeItem('token');
+        } else {
+          if (response.status === 500) {
+            throw new GeneralServerError('Internal server error');
+          } else {
+            throw new Error('Unknown error');
+          }
+        }
+      });
   }
 }

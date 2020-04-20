@@ -26,8 +26,6 @@ export default class FolderItem extends ListItem {
 
     this._parameters = parameters;
 
-    console.log('name:' + this._parameters.name + '.');
-
     this.render();
   }
 

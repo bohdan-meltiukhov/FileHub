@@ -2,6 +2,7 @@ import UserDetails from '../user-details';
 import Breadcrumbs from '../breadcrumbs';
 import Button from '../button';
 import FileList from '../file-list';
+import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';

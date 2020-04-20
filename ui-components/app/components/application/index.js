@@ -44,7 +44,6 @@ export default class Application extends Component {
       [FILE_LIST_ROUTE]: () => new FileListPage(this.rootElement, stateManager),
     };
 
-
     const routerProperties = {
       rootElement: this.rootElement,
       pageMapping,

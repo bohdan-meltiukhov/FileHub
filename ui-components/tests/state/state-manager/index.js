@@ -3,7 +3,7 @@ import ApiService from '../../../app/services/api-service';
 
 const {module, test} = QUnit;
 
-module('The StateManager test');
+module('The StateManager');
 
 test('should handle the state change.', (assert) => {
   const state = {};

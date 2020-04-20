@@ -1,13 +1,13 @@
-import Component from '../component.js';
+import ListItem from '../list-item';
 
 /**
  * The class for displaying the file item.
  */
-export default class FileItem extends Component {
+export default class FileItem extends ListItem {
   _removeItemHandlers = [];
 
   /**
-   * The object for describing the file configurations.
+   * The object for providing the file item configuration via the constructor.
    *
    * @typedef {object} Parameters
    * @property {string} id - The identifier of the file.
@@ -33,20 +33,6 @@ export default class FileItem extends Component {
   }
 
   /** @inheritdoc */
-  render() {
-    const fakeElement = document.createElement('tbody');
-    fakeElement.innerHTML = this.markup();
-
-    this.rootElement = fakeElement.firstElementChild;
-    const parentElement = this._container.parentElement;
-    parentElement.removeChild(this._container);
-    parentElement.appendChild(this.rootElement);
-
-    this.initNestedComponents();
-    this.addEventListeners();
-  }
-
-  /** @inheritdoc */
   markup() {
     return `
         <tr data-test="file-item">
@@ -54,7 +40,7 @@ export default class FileItem extends Component {
             <td class="filename">
                 <span class="glyphicon" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">${this._parameters.name}</span>
-                <input type="text" name="new-name" class="input" value="${this._parameters.name}">
+                <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>
             <td class="count" data-test="cell-count">${this._getReadableFileSizeString(this._parameters.size)}</td>
             <td class="cell-actions" data-test="cell-actions">

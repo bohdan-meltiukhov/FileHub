@@ -19,6 +19,8 @@ export default class Application extends Component {
    */
   constructor(container) {
     super(container);
+
+    window.devMode = true;
   }
 
   /**
@@ -41,7 +43,6 @@ export default class Application extends Component {
       [REGISTRATION_ROUTE]: () => new RegistrationPage(this.rootElement),
       [FILE_LIST_ROUTE]: () => new FileListPage(this.rootElement, stateManager),
     };
-
 
     const routerProperties = {
       rootElement: this.rootElement,

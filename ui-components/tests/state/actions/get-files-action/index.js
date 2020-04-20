@@ -3,7 +3,7 @@ import GetFilesAction from '../../../../app/state/actions/get-files-action';
 
 const {module, test} = QUnit;
 
-module('The GetFilesAction test');
+module('The GetFilesAction');
 
 test('should mutate the stateManager.', (assert) => {
   const files = [
@@ -20,29 +20,19 @@ test('should mutate the stateManager.', (assert) => {
     },
   ];
 
-  const apiService = {
+  const apiServiceMock = {
     getFiles: () => files,
   };
 
-  const stateManager = {
-    state: {},
+  const stateManagerMock = {
     mutate: (mutator) => {
-      assert.step('The mutate() method called.');
       if (mutator instanceof FileListMutator) {
-        const state = {};
-        mutator.apply(state);
-        assert.strictEqual(state.fileList, files, 'The GetFilesAction should provide the correct files.');
+        assert.strictEqual(mutator._fileList, files, 'The GetFilesAction should create an instance of the ' +
+          'FileListMutator with correct files.');
       }
     },
   };
 
   const action = new GetFilesAction();
-  action.apply(stateManager, apiService);
-
-  assert.timeout(1000);
-  const done = assert.async();
-  setTimeout(() => {
-    assert.verifySteps(['The mutate() method called.', 'The mutate() method called.', 'The mutate() method called.']);
-    done();
-  }, 500);
+  action.apply(stateManagerMock, apiServiceMock);
 });

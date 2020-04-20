@@ -1,36 +1,54 @@
 import ApiService from '../../../app/services/api-service';
 import UserCredentials from '../../../app/models/user-credentials';
+import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
+
 
 const {module, test} = QUnit;
 
-module('The ApiService test');
+module('The ApiService');
 
-test('should log in.', async function(assert) {
-  const apiService = new ApiService();
-  const userCredentials = new UserCredentials('admin', '1234');
+test('should log in.', (assert) => {
+  const username = 'admin';
+  const password = '1234';
 
-  const callback = async function() {
-    assert.step('Logged in.');
-  };
+  fetchMock.post('/login', (url, opts) => {
+    const credentials = opts.body;
+    assert.strictEqual(credentials.username, username, 'The API Service should provide the correct username in the ' +
+      'request body.');
+    assert.strictEqual(credentials.password, password, 'The API Service should provide the correct password in the ' +
+      'request body.');
+    return 200;
+  });
 
-  apiService.logIn(userCredentials)
-    .then(callback);
+  const apiService = ApiService.getInstance();
+  const userCredentials = new UserCredentials(username, password);
 
-  await callback;
-  assert.verifySteps(['Logged in.'], 'The API service should log in with valid credentials.');
+  apiService.logIn(userCredentials);
+
+  assert.ok(fetchMock.called('/login', {
+    method: 'POST',
+  }), 'The API Service should send the POST request to the \'/login\' URL.');
 });
 
-test('should register.', async function(assert) {
-  const apiService = new ApiService();
-  const userCredentials = new UserCredentials('user', 'password1234');
+test('should register.', (assert) => {
+  const username = 'admin';
+  const password = '1234';
 
-  const callback = async function() {
-    assert.step('Registered.');
-  };
+  fetchMock.post('/register', (url, opts) => {
+    const credentials = opts.body;
+    assert.strictEqual(credentials.username, username, 'The API Service should provide the correct username in the ' +
+      'request body.');
+    assert.strictEqual(credentials.password, password, 'The API Service should provide the correct password in the ' +
+      'request body.');
+    return 200;
+  });
 
-  apiService.register(userCredentials)
-    .then(callback);
+  const apiService = ApiService.getInstance();
+  const userCredentials = new UserCredentials(username, password);
 
-  await callback;
-  assert.verifySteps(['Registered.'], 'The API service should register with valid credentials.');
+  apiService.register(userCredentials);
+
+  assert.ok(fetchMock.called('/register', {
+    method: 'POST',
+  }), 'The API Service should send the POST request to the \'/register\' URL.');
 });

@@ -1,4 +1,3 @@
-import Component from '../component.js';
 import ListItem from '../list-item';
 
 /**

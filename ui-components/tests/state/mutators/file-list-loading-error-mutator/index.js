@@ -2,7 +2,7 @@ import FileListLoadingErrorMutator from '../../../../app/state/mutators/file-lis
 
 const {module, test} = QUnit;
 
-module('The FileListLoadingErrorMutator test');
+module('The FileListLoadingErrorMutator');
 
 test('should apply the message.', (assert) => {
   const message = 'General Error!';

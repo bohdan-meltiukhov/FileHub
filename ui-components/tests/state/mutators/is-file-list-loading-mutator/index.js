@@ -2,7 +2,7 @@ import IsFileListLoadingMutator from '../../../../app/state/mutators/is-file-lis
 
 const {module, test} = QUnit;
 
-module('The IsFileListLoadingMutator test');
+module('The IsFileListLoadingMutator');
 
 test('should apply the isLoading flag to the state.', (assert) => {
   const flag = true;
@@ -12,5 +12,5 @@ test('should apply the isLoading flag to the state.', (assert) => {
   mutator.apply(state);
 
   assert.strictEqual(state.isFileListLoading, flag, 'The is file list loading mutator should apply the ' +
-    'isFileListLoading fla to the provided state.');
+    'isFileListLoading flag to the provided state.');
 });

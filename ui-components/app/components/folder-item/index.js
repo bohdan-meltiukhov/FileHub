@@ -33,15 +33,11 @@ export default class FolderItem extends ListItem {
   markup() {
     return `
         <tr data-test="file-item">
-            <td class="icon-cell" data-test="icon-cell">
-                <span class="glyphicon glyphicon-menu-right"></span>
-            </td>
+            <td class="icon-cell" data-test="icon-cell"><span class="glyphicon glyphicon-menu-right"></span></td>
             <td class="filename">
                 <span class="glyphicon glyphicon-folder-close" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">
-                    <a href="#/file-list/${this._parameters.parentId}" title="${this._parameters.name}">
-                        ${this._parameters.name}
-                    </a>
+                    <a href="#/file-list" title="${this._parameters.name}">${this._parameters.name}</a>
                 </span>
                 <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>

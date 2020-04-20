@@ -62,9 +62,7 @@ export default class FileListPage extends StateAwareComponent {
   /** @inheritdoc */
   initNestedComponents() {
     const userDetailsContainer = this.rootElement.querySelector('[data-test="user-details"]');
-    this.userDetails = new UserDetails(userDetailsContainer, {
-      username: 'John Doe',
-    });
+    this.userDetails = new UserDetails(userDetailsContainer);
 
     const breadcrumbsContainer = this.rootElement.querySelector('[data-test="breadcrumbs"]');
     this.breadcrumbs = new InnerBreadcrumbs(breadcrumbsContainer, {
@@ -100,6 +98,11 @@ export default class FileListPage extends StateAwareComponent {
         this.fileListContainer.innerHTML = '';
         this.fileList = new FileList(this.fileListContainer);
       }
+    });
+
+    this.onStateChanged('username', (event) => {
+      const state = event.detail.state;
+      this.userDetails.username = state.username;
     });
   }
 }

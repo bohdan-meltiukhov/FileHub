@@ -30,8 +30,19 @@ export default class UserDetails extends Component {
   markup() {
     return `
         <span data-test="user-details">
-            <span class="glyphicon glyphicon-user"></span> ${this._username}
+            <span class="glyphicon glyphicon-user"></span>
+            <span data-test="user-name">${this._username}</span>
         </span>
     `;
+  }
+
+  /**
+   * Changes the displayed username.
+   *
+   * @param {string} value - The new username.
+   */
+  set username(value) {
+    const name = this.rootElement.querySelector('[data-test="user-name"]');
+    name.innerText = value;
   }
 }

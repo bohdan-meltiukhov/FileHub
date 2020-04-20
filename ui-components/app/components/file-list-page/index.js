@@ -89,14 +89,6 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   addEventListeners() {
-    this.fileList.onRemoveItem((item) => {
-      this.stateManager.dispatch(new RemoveItemAction(item));
-    });
-
-    this.fileList.onItemNameChanged((item) => {
-      this.stateManager.dispatch(new UpdateItemAction(item));
-    });
-
     this.fileList.onFileSelected((folder, file) => {
       this.stateManager.dispatch(new UploadFileAction(folder, file));
     });

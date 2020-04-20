@@ -50,40 +50,6 @@ export default class FileList extends Component {
         this._fileItems.push(new FileItem(row, file));
       }
     });
-
-    let previousItem;
-
-    this._fileItems.forEach((item) => {
-      item.onClick(() => {
-        if (previousItem && previousItem !== item) {
-          previousItem.isSelected = false;
-        }
-        item.isSelected = true;
-        previousItem = item;
-      });
-    });
-  }
-
-  /**
-   * Adds a function that should be called when an item is deleted.
-   *
-   * @param {Function} handler - The function to call when the use wants to delete an item.
-   */
-  onRemoveItem(handler) {
-    this._fileItems.forEach((item) => {
-      item.onRemoveItem(handler);
-    });
-  }
-
-  /**
-   * Adds a function to be called when any item changes its name.
-   *
-   * @param {Function} handler - The function to call when an item changes its name.
-   */
-  onItemNameChanged(handler) {
-    this._fileItems.forEach((item) => {
-      item.onNameChanged(handler);
-    });
   }
 
   /**

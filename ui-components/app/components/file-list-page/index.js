@@ -2,11 +2,10 @@ import UserDetails from '../user-details';
 import Breadcrumbs from '../breadcrumbs';
 import Button from '../button';
 import FileList from '../file-list';
+import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
-import RemoveItemAction from '../../state/actions/remove-item-action';
-import UpdateItemAction from '../../state/actions/update-item-action';
 import UploadFileAction from '../../state/actions/upload-file-action';
 
 /**

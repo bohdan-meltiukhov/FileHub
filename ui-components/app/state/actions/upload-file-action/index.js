@@ -30,12 +30,9 @@ export default class UploadFileAction extends Action {
   }
 
   /** @inheritdoc */
-  apply(stateManager, apiService) {
+  async apply(stateManager, apiService) {
     const formData = new FormData();
     formData.append('file', this._file);
-    apiService.uploadFile(this._folder.id, formData)
-      .then(() => {
-        stateManager.dispatch(new GetFilesAction(this._folder.parentId));
-      });
+    await apiService.uploadFile(this._folder.id, formData);
   }
 }

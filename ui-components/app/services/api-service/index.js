@@ -92,6 +92,26 @@ export default class ApiService {
   }
 
   /**
+   * Checks the response status and creates an instance of the corresponding error for other requests.
+   *
+   * @param {number} status - The status code of the response.
+   * @returns {AuthorizationError|NotFoundError|Error|GeneralServerError} The error to throw.
+   * @private
+   */
+  _handleRequestErrors(status) {
+    switch (status) {
+    case 401:
+      return new AuthorizationError('Not authorized.');
+    case 404:
+      return new NotFoundError('This item does not exist.');
+    case 500:
+      return new GeneralServerError('Internal server error.');
+    default:
+      return new Error('Unknown error');
+    }
+  }
+
+  /**
    * The method for getting the same instance of the ApiService class.
    *
    * @returns {ApiService} An instance of the ApiService class.
@@ -107,76 +127,34 @@ export default class ApiService {
    * Provides the files.
    *
    * @param {string} folderId - The identifier of the required folder.
-   * @returns {Promise<object[]>} - The promise that resolves with an array of files.
+   * @returns {Promise} - The promise that resolves with an array of files.
    */
   getFiles(folderId) {
-    return new Promise((resolve, reject) => {
-      fetch(`/folder/${folderId}/content`)
-        .then((response) => {
-          if (response.ok) {
-            response.json()
-              .then((responseBody) => {
-                resolve(responseBody.files);
-              });
-          } else {
-            switch (response.status) {
-            case 401:
-              reject(new AuthorizationError('Not authorized.'));
-              break;
-            case 500:
-              reject(new GeneralServerError('Internal server error.'));
-              break;
-            default:
-              reject(new Error('Unknown error'));
-            }
-          }
-        });
-    });
+    return fetch(`/folder/${folderId}/content`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response.status);
+        }
+      });
   }
-
-  /**
-   * The object for describing the folder configurations.
-   *
-   * @typedef {object} FolderItemProperties
-   * @property {string} id - The identifier of the folder.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
-   * @property {'folder'} type - Shows that this item is a folder.
-   */
 
   /**
    * Provides the information about the folder.
    *
    * @param {string} id - The identifier of the required folder.
-   * @returns {Promise<FolderItemProperties>} The promise that resolves with information about the required folder.
+   * @returns {Promise} The promise that resolves with information about the required folder.
    */
   getFolder(id) {
-    return new Promise((resolve, reject) => {
-      fetch(`/folder/${id}`)
-        .then((response) => {
-          if (response.ok) {
-            response.json()
-              .then((responseBody) => {
-                resolve(responseBody.folder);
-              });
-          } else {
-            switch (response.status) {
-            case 401:
-              reject(new AuthorizationError('Not authorized.'));
-              break;
-            case 404:
-              reject(new NotFoundError('This folder does not exist.'));
-              break;
-            case 500:
-              reject(new GeneralServerError('Internal server error.'));
-              break;
-            default:
-              reject(new Error('Unknown error'));
-            }
-          }
-        });
-    });
+    return fetch(`/folder/${id}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response.status);
+        }
+      });
   }
 
   /**
@@ -187,30 +165,14 @@ export default class ApiService {
    * @returns {Promise} The promise that resolves if the file is uploaded successfully.
    */
   uploadFile(folderId, formData) {
-    return new Promise((resolve, reject) => {
-      fetch(`/folder/${folderId}/file`, {
-        method: 'POST',
-        body: formData,
-      })
-        .then((response) => {
-          if (response.ok) {
-            resolve();
-          } else {
-            switch (response.status) {
-            case 401:
-              reject(new AuthorizationError('Not authorized.'));
-              break;
-            case 404:
-              reject(new NotFoundError('This folder does not exist.'));
-              break;
-            case 500:
-              reject(new GeneralServerError('Internal server error.'));
-              break;
-            default:
-              reject(new Error('Unknown error'));
-            }
-          }
-        });
-    });
+    return fetch(`/folder/${folderId}/file`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw this._handleRequestErrors(response.status);
+        }
+      });
   }
 }

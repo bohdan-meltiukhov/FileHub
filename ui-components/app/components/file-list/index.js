@@ -40,14 +40,26 @@ export default class FileList extends Component {
 
   /** @inheritdoc */
   initNestedComponents() {
+    this._fileItems = [];
     this._files.forEach((file) => {
       const row = document.createElement('tr');
       this.rootElement.appendChild(row);
       if (file.type === 'folder') {
-        new FolderItem(row, file);
+        this._fileItems.push(new FolderItem(row, file));
       } else if (file.type === 'file') {
-        new FileItem(row, file);
+        this._fileItems.push(new FileItem(row, file));
       }
+    });
+  }
+
+  /**
+   * Sets the function to be called when the user wants to download the file.
+   *
+   * @param {Function} handler - The function to call when the user wants to download the file.
+   */
+  onDownloadFile(handler) {
+    this._fileItems.forEach((item) => {
+      item.onDownloadFile(handler);
     });
   }
 

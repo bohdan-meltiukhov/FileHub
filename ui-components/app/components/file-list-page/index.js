@@ -5,6 +5,7 @@ import FileList from '../file-list';
 import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
+import DownloadFileAction from '../../state/actions/download-file-action';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
 
 /**
@@ -16,12 +17,13 @@ export default class FileListPage extends StateAwareComponent {
    *
    * @param {Element} container - The parent element for the page.
    * @param {StateManager} stateManager - The state manager to use.
+   * @param {object} properties - The URL properties.
    */
-  constructor(container, stateManager) {
+  constructor(container, stateManager, properties) {
     super(container, stateManager);
 
     this.render();
-    stateManager.dispatch(new GetFilesAction());
+    stateManager.dispatch(new GetFilesAction(properties.id));
   }
 
   /**
@@ -85,10 +87,23 @@ export default class FileListPage extends StateAwareComponent {
   }
 
   /** @inheritdoc */
+  addEventListeners() {
+    this.fileList.onDownloadFile((id, name) => {
+      this._downloadedFileName = name;
+      this.stateManager.dispatch(new DownloadFileAction(id));
+    });
+  }
+
+  /** @inheritdoc */
   initState() {
     this.onStateChanged('fileList', (event) => {
       const state = event.detail.state;
       this.fileList.files = state.fileList;
+
+      this.fileList.onDownloadFile((id, name) => {
+        this._downloadedFileName = name;
+        this.stateManager.dispatch(new DownloadFileAction(id));
+      });
     });
 
     this.onStateChanged('isFileListLoading', (event) => {
@@ -99,6 +114,16 @@ export default class FileListPage extends StateAwareComponent {
         this.fileListContainer.innerHTML = '';
         this.fileList = new FileList(this.fileListContainer);
       }
+    });
+
+    this.onStateChanged('downloadedFile', (event) => {
+      const state = event.detail.state;
+
+      const anchor = document.createElement('a');
+      anchor.setAttribute('download', this._downloadedFileName);
+      const url = URL.createObjectURL(state.downloadedFile);
+      anchor.setAttribute('href', url);
+      anchor.click();
     });
   }
 }

@@ -67,6 +67,24 @@ export default class FileItem extends ListItem {
     }
   }
 
+  /** @inheritdoc */
+  addEventListeners() {
+    super.addEventListeners();
+
+    const downloadButton = this.rootElement.querySelector('[data-test="cell-actions"] .glyphicon-download');
+    downloadButton.addEventListener('click',
+      () => this._downloadFileHandler(this._parameters.id, this._parameters.name));
+  }
+
+  /**
+   * Sets the function to be called when the user wants to download the file.
+   *
+   * @param {Function} handler - The function to call when the user wants to download the file.
+   */
+  onDownloadFile(handler) {
+    this._downloadFileHandler = handler;
+  }
+
   /**
    * Converts bytes to a human-readable string.
    *

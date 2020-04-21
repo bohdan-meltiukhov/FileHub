@@ -1,4 +1,5 @@
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
+import FileSystem from './file-system';
 
 /**
  * The class for setting the fetch mock.
@@ -11,6 +12,7 @@ export default class FetchMock {
     FetchMock._setLogin();
     FetchMock._setRegister();
     FetchMock._setFiles();
+    FetchMock._setDownloadFile();
   }
 
   /**
@@ -60,22 +62,43 @@ export default class FetchMock {
    * @private
    */
   static _setFiles() {
-    fetchMock.get('/files', {
-      files: [
-        {
-          name: 'Documents',
-          itemsNumber: 20,
-          type: 'folder',
+    fetchMock.get('glob:/folder/*/content', (url) => {
+      const id = url.slice(8, url.indexOf('/content'));
+
+      const folders = FileSystem.folders.filter((folder) => folder.parentId === id);
+      const files = FileSystem.files.filter((file) => file.parentId === id);
+      const content = folders.concat(files);
+
+      if (!content) {
+        return 404;
+      }
+
+      return {
+        body: {
+          files: content,
         },
-        {
-          name: 'photo.png',
-          mimeType: 'image',
-          size: 16,
-          type: 'file',
-        },
-      ],
+      };
     }, {
       delay: 500,
     });
+  }
+
+  /**
+   * Sets a mock for the get file request.
+   */
+  static _setDownloadFile() {
+    fetchMock.post('glob:/file/*', (url) => {
+      const id = url.slice(6);
+      const file = FileSystem.files.find((file) => {
+        if (file.id === id) {
+          return true;
+        }
+      });
+      if (file) {
+        return new Blob(['Hello, world!'], {type: 'text/plain'});
+      } else {
+        return 404;
+      }
+    }, {sendAsJson: false});
   }
 }

@@ -41,7 +41,7 @@ export default class Application extends Component {
     const pageMapping = {
       [AUTHENTICATION_ROUTE]: () => new LoginPage(this.rootElement),
       [REGISTRATION_ROUTE]: () => new RegistrationPage(this.rootElement),
-      [FILE_LIST_ROUTE]: () => new FileListPage(this.rootElement, stateManager),
+      [FILE_LIST_ROUTE]: (properties) => new FileListPage(this.rootElement, stateManager, properties),
     };
 
     const routerProperties = {

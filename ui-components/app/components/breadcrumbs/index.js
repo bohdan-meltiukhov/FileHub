@@ -28,11 +28,7 @@ export default class Breadcrumbs extends Component {
   markup() {
     return `
         <div data-test="breadcrumbs">
-            <div class="folder-icon" data-test="folder-icon">
-<!--                <a href="#/file-list">-->
-<!--                    <span class="glyphicon glyphicon-level-up"></span>-->
-<!--                </a>-->
-            </div>
+            <div class="folder-icon" data-test="folder-icon"></div>
             <span class="directory-name" data-test="directory-name">/ ${this._folder}</span>
         </div>
     `;

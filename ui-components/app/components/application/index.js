@@ -7,6 +7,7 @@ import RegistrationPage from '../registration-page';
 import FileListPage from '../file-list-page';
 import StateManager from '../../state/state-manager';
 import ApiService from '../../services/api-service';
+import HashChangedAction from '../../state/actions/hash-changed-action';
 
 /**
  * The component for the web application.
@@ -41,7 +42,7 @@ export default class Application extends Component {
     const pageMapping = {
       [AUTHENTICATION_ROUTE]: () => new LoginPage(this.rootElement),
       [REGISTRATION_ROUTE]: () => new RegistrationPage(this.rootElement),
-      [FILE_LIST_ROUTE]: () => new FileListPage(this.rootElement, stateManager),
+      [FILE_LIST_ROUTE]: (properties) => new FileListPage(this.rootElement, stateManager, properties),
     };
 
     const routerProperties = {
@@ -52,6 +53,9 @@ export default class Application extends Component {
       window,
     };
 
-    new Router(routerProperties);
+    const router = new Router(routerProperties);
+    router.onHashChanged((staticPart, dynamicPart) => {
+      stateManager.dispatch(new HashChangedAction(staticPart, dynamicPart));
+    });
   }
 }

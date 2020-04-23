@@ -127,7 +127,7 @@ export default class ApiService {
    * Provides the files.
    *
    * @param {string} folderId - The identifier of the required folder.
-   * @returns {Promise<object[]>} - The promise that resolves with an array of files.
+   * @returns {Promise} - The promise that resolves with an array of files.
    */
   getFiles(folderId) {
     return fetch(`/folder/${folderId}/content`)
@@ -175,31 +175,15 @@ export default class ApiService {
    * @returns {Promise} The promise that resolves if the folder is updated successfully.
    */
   updateFolder(folder) {
-    return new Promise((resolve, reject) => {
-      fetch(`/folder/${folder.id}`, {
-        method: 'PUT',
-        body: {
-          element: folder,
-        },
-      }).then((response) => {
-        if (response.ok) {
-          resolve();
-        } else {
-          switch (response.status) {
-          case 401:
-            reject(new AuthorizationError('Not authorized.'));
-            break;
-          case 404:
-            reject(new NotFoundError('This folder does not exist.'));
-            break;
-          case 500:
-            reject(new GeneralServerError('Internal server error.'));
-            break;
-          default:
-            reject(new Error('Unknown error'));
-          }
-        }
-      });
+    return fetch(`/folder/${folder.id}`, {
+      method: 'PUT',
+      body: {
+        element: folder,
+      },
+    }).then((response) => {
+      if (!response.ok) {
+        throw this._handleRequestErrors(response.status);
+      }
     });
   }
 
@@ -222,31 +206,15 @@ export default class ApiService {
    * @returns {Promise} The promise that resolves if the file is updated successfully.
    */
   updateFile(file) {
-    return new Promise((resolve, reject) => {
-      fetch(`/file/${file.id}`, {
-        method: 'PUT',
-        body: {
-          element: file,
-        },
-      }).then((response) => {
-        if (response.ok) {
-          resolve();
-        } else {
-          switch (response.status) {
-          case 401:
-            reject(new AuthorizationError('Not authorized.'));
-            break;
-          case 404:
-            reject(new NotFoundError('This file does not exist.'));
-            break;
-          case 500:
-            reject(new GeneralServerError('Internal server error.'));
-            break;
-          default:
-            reject(new Error('Unknown error'));
-          }
-        }
-      });
+    return fetch(`/file/${file.id}`, {
+      method: 'PUT',
+      body: {
+        element: file,
+      },
+    }).then((response) => {
+      if (!response.ok) {
+        throw this._handleRequestErrors(response.status);
+      }
     });
   }
 }

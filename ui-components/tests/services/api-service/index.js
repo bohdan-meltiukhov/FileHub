@@ -8,15 +8,17 @@ const {module, test} = QUnit;
 module('The ApiService');
 
 test('should log in.', (assert) => {
+  assert.expect(3);
+
   const username = 'admin';
   const password = '1234';
 
   fetchMock.post('/login', (url, opts) => {
     const credentials = opts.body;
-    assert.strictEqual(credentials.username, username, 'The API Service should provide the correct username in the ' +
-      'request body.');
-    assert.strictEqual(credentials.password, password, 'The API Service should provide the correct password in the ' +
-      'request body.');
+    assert.strictEqual(credentials.username, username, 'The login() method should provide the correct username in ' +
+      'the request body.');
+    assert.strictEqual(credentials.password, password, 'The login() method should provide the correct password in ' +
+      'the request body.');
     return 200;
   });
 
@@ -31,15 +33,17 @@ test('should log in.', (assert) => {
 });
 
 test('should register.', (assert) => {
+  assert.expect(3);
+
   const username = 'admin';
   const password = '1234';
 
   fetchMock.post('/register', (url, opts) => {
     const credentials = opts.body;
-    assert.strictEqual(credentials.username, username, 'The API Service should provide the correct username in the ' +
-      'request body.');
-    assert.strictEqual(credentials.password, password, 'The API Service should provide the correct password in the ' +
-      'request body.');
+    assert.strictEqual(credentials.username, username, 'The register() method should provide the correct username in ' +
+      'the request body.');
+    assert.strictEqual(credentials.password, password, 'The register() method should provide the correct password in ' +
+      'the request body.');
     return 200;
   });
 

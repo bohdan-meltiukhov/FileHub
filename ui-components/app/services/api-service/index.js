@@ -3,8 +3,8 @@ import ValidationErrorCase from '../../models/errors/validation-error-case';
 import AuthorizationError from '../../models/errors/authorization-error';
 import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
-import FetchMock from '../fetch-mock';
 import NotFoundError from '../../models/errors/NotFoundError';
+import FetchMock from '../fetch-mock';
 
 let instance;
 

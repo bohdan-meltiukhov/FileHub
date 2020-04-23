@@ -92,6 +92,26 @@ export default class ApiService {
   }
 
   /**
+   * Checks the response status and creates an instance of the corresponding error for other requests.
+   *
+   * @param {number} status - The status code of the response.
+   * @returns {AuthorizationError|NotFoundError|Error|GeneralServerError} The error to throw.
+   * @private
+   */
+  _handleRequestErrors(status) {
+    switch (status) {
+    case 401:
+      return new AuthorizationError('Not authorized.');
+    case 404:
+      return new NotFoundError('This item does not exist.');
+    case 500:
+      return new GeneralServerError('Internal server error.');
+    default:
+      return new Error('Unknown error');
+    }
+  }
+
+  /**
    * The method for getting the same instance of the ApiService class.
    *
    * @returns {ApiService} An instance of the ApiService class.
@@ -110,28 +130,31 @@ export default class ApiService {
    * @returns {Promise<object[]>} - The promise that resolves with an array of files.
    */
   getFiles(folderId) {
-    return new Promise((resolve, reject) => {
-      fetch(`/folder/${folderId}/content`)
-        .then((response) => {
-          if (response.ok) {
-            response.json()
-              .then((responseBody) => {
-                resolve(responseBody.files);
-              });
-          } else {
-            switch (response.status) {
-            case 401:
-              reject(new AuthorizationError('Not authorized.'));
-              break;
-            case 500:
-              reject(new GeneralServerError('Internal server error.'));
-              break;
-            default:
-              reject(new Error('Unknown error'));
-            }
-          }
-        });
-    });
+    return fetch(`/folder/${folderId}/content`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response.status);
+        }
+      });
+  }
+
+  /**
+   * Provides the information about the folder.
+   *
+   * @param {string} id - The identifier of the required folder.
+   * @returns {Promise} The promise that resolves with information about the required folder.
+   */
+  getFolder(id) {
+    return fetch(`/folder/${id}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response.status);
+        }
+      });
   }
 
   /**
@@ -224,40 +247,6 @@ export default class ApiService {
           }
         }
       });
-    });
-  }
-
-  /**
-   * Provides the information about the folder.
-   *
-   * @param {string} id - The identifier of the required folder.
-   * @returns {Promise<FolderItem>} The promise that resolves with information about the required folder.
-   */
-  getFolder(id) {
-    return new Promise((resolve, reject) => {
-      fetch(`/folder/${id}`)
-        .then((response) => {
-          if (response.ok) {
-            response.json()
-              .then((responseBody) => {
-                resolve(responseBody.folder);
-              });
-          } else {
-            switch (response.status) {
-            case 401:
-              reject(new AuthorizationError('Not authorized.'));
-              break;
-            case 404:
-              reject(new NotFoundError('This folder does not exist.'));
-              break;
-            case 500:
-              reject(new GeneralServerError('Internal server error.'));
-              break;
-            default:
-              reject(new Error('Unknown error'));
-            }
-          }
-        });
     });
   }
 }

@@ -54,12 +54,18 @@ export default class FolderItem extends ListItem {
 
   /** @inheritdoc */
   addEventListeners() {
+    super.addEventListeners();
+
     const removeItemButton = this.rootElement
       .querySelector('[data-test="cell-actions"] .glyphicon-remove-circle');
     removeItemButton.addEventListener('click', () => {
       this._removeItemHandlers.forEach((handler) => {
         handler(this._parameters);
       });
+    });
+
+    this.rootElement.addEventListener('dblclick', () => {
+      window.location.hash = `/file-list/${this._parameters.id}`;
     });
   }
 

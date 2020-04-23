@@ -2,10 +2,12 @@ import UserDetails from '../user-details';
 import Breadcrumbs from '../breadcrumbs';
 import Button from '../button';
 import FileList from '../file-list';
+import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
 import RemoveItemAction from '../../state/actions/remove-item-action';
+import GetFolderAction from '../../state/actions/get-folder-action';
 
 /**
  * The component for the File List Page.
@@ -22,6 +24,7 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
+    stateManager.dispatch(new GetFolderAction(properties.id));
     stateManager.dispatch(new GetFilesAction(properties.id));
   }
 
@@ -68,7 +71,7 @@ export default class FileListPage extends StateAwareComponent {
 
     const breadcrumbsContainer = this.rootElement.querySelector('[data-test="breadcrumbs"]');
     this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer, {
-      folder: 'Documents',
+      folder: '',
     });
 
     const createFolderButtonContainer = this.rootElement.querySelector('[data-test="create-folder-button"]');
@@ -113,8 +116,15 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('locationParameters', (event) => {
       const state = event.detail.state;
       if (state.locationParameters.id) {
+        this.stateManager.dispatch(new GetFolderAction(state.locationParameters.id));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.id));
       }
+    });
+
+    this.onStateChanged('folder', (event) => {
+      const state = event.detail.state;
+      this._folder = state.folder;
+      this.breadcrumbs.folder = state.folder;
     });
   }
 

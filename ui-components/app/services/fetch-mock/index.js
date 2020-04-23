@@ -1,4 +1,5 @@
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
+import FileSystem from './file-system';
 
 /**
  * The class for setting the fetch mock.
@@ -11,6 +12,7 @@ export default class FetchMock {
     FetchMock._setLogin();
     FetchMock._setRegister();
     FetchMock._setFiles();
+    FetchMock._setFolder();
     FetchMock._setLogOut();
   }
 
@@ -61,22 +63,51 @@ export default class FetchMock {
    * @private
    */
   static _setFiles() {
-    fetchMock.get('/files', {
-      files: [
-        {
-          name: 'Documents',
-          itemsNumber: 20,
-          type: 'folder',
+    fetchMock.get('glob:/folder/*/content', (url) => {
+      const id = url.slice(8, url.indexOf('/content'));
+
+      const folders = FileSystem.folders.filter((folder) => folder.parentId === id);
+      const files = FileSystem.files.filter((file) => file.parentId === id);
+      const content = folders.concat(files);
+
+      if (!content) {
+        return 404;
+      }
+
+      return {
+        body: {
+          files: content,
         },
-        {
-          name: 'photo.png',
-          mimeType: 'image',
-          size: 16,
-          type: 'file',
-        },
-      ],
+      };
     }, {
       delay: 500,
+    });
+  }
+
+  /**
+   * Sets a mock for the folder request.
+   *
+   * @private
+   */
+  static _setFolder() {
+    fetchMock.get('glob:/folder/*', (url) => {
+      const id = url.slice(8);
+
+      const folder = FileSystem.folders.find((folder) => {
+        if (folder.id === id) {
+          return true;
+        }
+      });
+
+      if (!folder) {
+        return 404;
+      }
+
+      return {
+        body: {
+          folder,
+        },
+      };
     });
   }
 

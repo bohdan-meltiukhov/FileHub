@@ -37,7 +37,7 @@ export default class FolderItem extends ListItem {
             <td class="filename">
                 <span class="glyphicon glyphicon-folder-close" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">
-                    <a href="#/file-list" title="${this._parameters.name}">${this._parameters.name}</a>
+                    <a title="${this._parameters.name}">${this._parameters.name}</a>
                 </span>
                 <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>
@@ -55,7 +55,7 @@ export default class FolderItem extends ListItem {
     super.addEventListeners();
 
     this.rootElement.addEventListener('dblclick', () => {
-      window.location.hash = `/file-list`;
+      window.location.hash = `/file-list/${this._parameters.id}`;
     });
   }
 }

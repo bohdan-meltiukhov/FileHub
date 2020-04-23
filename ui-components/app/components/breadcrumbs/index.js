@@ -1,4 +1,5 @@
 import Component from '../component.js';
+import {FILE_LIST_ROUTE} from '../../router/routes';
 
 /**
  * The component for displaying breadcrumbs.
@@ -29,7 +30,7 @@ export default class Breadcrumbs extends Component {
     return `
         <div data-test="breadcrumbs">
             <div class="folder-icon">
-                <a href="#/file-list">
+                <a href="#${FILE_LIST_ROUTE}">
                     <span class="glyphicon glyphicon-level-up"></span>
                 </a>
             </div>

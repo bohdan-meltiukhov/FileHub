@@ -82,6 +82,6 @@ export default class FileItem extends ListItem {
       i++;
     } while (fileSizeInBytes > 1024);
 
-    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+    return fileSizeInBytes.toFixed(1) + byteUnits[i];
   }
 }

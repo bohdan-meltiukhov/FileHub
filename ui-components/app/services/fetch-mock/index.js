@@ -64,7 +64,6 @@ export default class FetchMock {
   static _setFiles() {
     fetchMock.get('glob:/folder/*/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
-      console.log('files', id);
 
       const folders = FileSystem.folders.filter((folder) => folder.parentId === id);
       const files = FileSystem.files.filter((file) => file.parentId === id);

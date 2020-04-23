@@ -105,7 +105,6 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('locationParameters', (event) => {
-      console.log('locationParams changed');
       const state = event.detail.state;
       if (state.locationParameters.id) {
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.id));

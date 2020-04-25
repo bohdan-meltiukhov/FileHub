@@ -1,17 +1,26 @@
 import ApiService from '../../../app/services/api-service';
 import UserCredentials from '../../../app/models/user-credentials';
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
-
+import AuthorizationError from '../../../app/models/errors/authorization-error';
+import ServerValidationError from '../../../app/models/errors/server-validation-error';
+import GeneralServerError from '../../../app/models/errors/general-server-error';
 
 const {module, test} = QUnit;
 
-module('The ApiService');
+const username = 'admin';
+const password = '1234';
+
+const apiService = ApiService.getInstance();
+const userCredentials = new UserCredentials(username, password);
+
+module('The ApiService', {
+  afterEach: () => {
+    fetchMock.reset();
+  },
+});
 
 test('should log in.', (assert) => {
   assert.expect(3);
-
-  const username = 'admin';
-  const password = '1234';
 
   fetchMock.post('/login', (url, opts) => {
     const credentials = opts.body;
@@ -21,9 +30,6 @@ test('should log in.', (assert) => {
       'the request body.');
     return 200;
   });
-
-  const apiService = ApiService.getInstance();
-  const userCredentials = new UserCredentials(username, password);
 
   apiService.logIn(userCredentials);
 
@@ -35,9 +41,6 @@ test('should log in.', (assert) => {
 test('should register.', (assert) => {
   assert.expect(3);
 
-  const username = 'admin';
-  const password = '1234';
-
   fetchMock.post('/register', (url, opts) => {
     const credentials = opts.body;
     assert.strictEqual(credentials.username, username, 'The register() method should provide the correct username in ' +
@@ -47,12 +50,98 @@ test('should register.', (assert) => {
     return 200;
   });
 
-  const apiService = ApiService.getInstance();
-  const userCredentials = new UserCredentials(username, password);
-
   apiService.register(userCredentials);
 
   assert.ok(fetchMock.called('/register', {
     method: 'POST',
   }), 'The API Service should send the POST request to the \'/register\' URL.');
+});
+
+test('should handle the 401 error.', async (assert) => {
+  assert.expect(4);
+
+  fetchMock.post('/login', 401);
+
+  try {
+    await apiService.logIn(userCredentials);
+  } catch (e) {
+    assert.ok(e instanceof AuthorizationError, 'The login() method should throw an AuthorizationError ' +
+      'if the response status is 401.');
+    assert.strictEqual(e.message, 'The username or password is incorrect', 'The login() method should describe ' +
+      'the issue correctly.');
+  }
+
+  fetchMock.post('/register', 401);
+
+  try {
+    await apiService.register(userCredentials);
+  } catch (e) {
+    assert.ok(e instanceof AuthorizationError, 'The register() method should throw an AuthorizationError ' +
+      'if the response status is 401.');
+    assert.strictEqual(e.message, 'The username or password is incorrect', 'The register() method should describe ' +
+      'the issue correctly.');
+  }
+});
+
+test('should handle the 422 error.', async (assert) => {
+  assert.expect(6);
+
+  const error = {
+    field: 'username',
+    message: 'The username is already taken.',
+  };
+
+  fetchMock.post(/^\/(login|register)$/, {
+    status: 422,
+    body: {
+      errors: [
+        error,
+      ],
+    },
+  });
+
+  try {
+    await apiService.logIn(userCredentials);
+  } catch (e) {
+    assert.ok(e instanceof ServerValidationError, 'The login() method should throw a ServerValidationError ' +
+      'if the response status is 422.');
+
+    assert.strictEqual(e.errorCases[0].field, error.field, 'The login() method should provide the correct error ' +
+      'field.');
+    assert.strictEqual(e.errorCases[0].message, error.message, 'The login() method should provide the correct error ' +
+      'message.');
+  }
+
+  try {
+    await apiService.register(userCredentials);
+  } catch (e) {
+    assert.ok(e instanceof ServerValidationError, 'The register() method should throw a ServerValidationError ' +
+      'if the response status is 422.');
+
+    assert.strictEqual(e.errorCases[0].field, error.field, 'The register() method should provide the correct error ' +
+      'field.');
+    assert.strictEqual(e.errorCases[0].message, error.message, 'The register() method should provide the correct ' +
+      'error message.');
+  }
+});
+
+test('should handle the 500 error.', async (assert) => {
+  fetchMock.post(/^\/(login|register)$/, 500);
+
+  try {
+    await apiService.logIn(userCredentials);
+  } catch (e) {
+    assert.ok(e instanceof GeneralServerError, 'The login() method should throw a GeneralServerError if the response ' +
+      'status is 500');
+    assert.strictEqual(e.message, 'Internal server error', 'The login() method should describe the issue correctly.');
+  }
+
+  try {
+    await apiService.register(userCredentials);
+  } catch (e) {
+    assert.ok(e instanceof GeneralServerError, 'The register() method should throw a GeneralServerError if ' +
+      'the response status is 500');
+    assert.strictEqual(e.message, 'Internal server error', 'The register() method should describe the issue ' +
+      'correctly.');
+  }
 });

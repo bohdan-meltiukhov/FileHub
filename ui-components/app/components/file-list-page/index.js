@@ -24,8 +24,8 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
-    stateManager.dispatch(new GetFolderAction(properties.id));
-    stateManager.dispatch(new GetFilesAction(properties.id));
+    stateManager.dispatch(new GetFolderAction(properties.folderId));
+    stateManager.dispatch(new GetFilesAction(properties.folderId));
   }
 
   /**
@@ -44,7 +44,7 @@ export default class FileListPage extends StateAwareComponent {
             </ul>
             
             <header class="header">
-                <a href="#"><h1>File Explorer</h1></a>
+                <a href="#/file-list/4Goz0J0Tz8xfDfsJ"><h1>File Explorer</h1></a>
             </header>
             
             <main class="file-list">
@@ -115,9 +115,9 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('locationParameters', (event) => {
       const state = event.detail.state;
-      if (state.locationParameters.id) {
-        this.stateManager.dispatch(new GetFolderAction(state.locationParameters.id));
-        this.stateManager.dispatch(new GetFilesAction(state.locationParameters.id));
+      if (state.locationParameters.folderId) {
+        this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
+        this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
       }
     });
 

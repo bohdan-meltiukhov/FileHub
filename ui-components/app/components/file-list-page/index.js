@@ -118,4 +118,9 @@ export default class FileListPage extends StateAwareComponent {
       this.breadcrumbs.folder = state.folder;
     });
   }
+
+  /** @inheritdoc */
+  willDestroy() {
+    this.removeStateChangedListeners();
+  }
 }

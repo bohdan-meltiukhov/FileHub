@@ -7,7 +7,7 @@ const {module, test} = QUnit;
 module('The GetFilesAction');
 
 test('should call the mutate method of the state manager.', async (assert) => {
-  assert.expect(3);
+  assert.expect(5);
 
   const files = [
     {
@@ -31,15 +31,12 @@ test('should call the mutate method of the state manager.', async (assert) => {
     getFiles,
   };
 
-  let isFileListLoadingMutatorProvided = false;
-  let fileListMutatorProvided = false;
-
   const stateManagerMock = {
     mutate: (mutator) => {
       if (mutator instanceof IsFileListLoadingMutator) {
-        isFileListLoadingMutatorProvided = true;
+        assert.step('isFileListLoadingMutator: ' + mutator._isLoading);
       } else if (mutator instanceof FileListMutator) {
-        fileListMutatorProvided = true;
+        assert.step('fileListMutator');
         assert.strictEqual(mutator._fileList, files, 'The GetFilesAction should create an instance of the ' +
           'FileListMutator with correct files.');
       }
@@ -50,7 +47,9 @@ test('should call the mutate method of the state manager.', async (assert) => {
   action.apply(stateManagerMock, apiServiceMock);
 
   await getFiles();
-  assert.ok(isFileListLoadingMutatorProvided, 'The GetFilesAction should provide the IsFileListLoadingMutator to ' +
-    'the state manager.');
-  assert.ok(fileListMutatorProvided, 'The GetFilesAction should provide the FileListMutator to the state manager.');
+  assert.verifySteps([
+    'isFileListLoadingMutator: true',
+    'isFileListLoadingMutator: false',
+    'fileListMutator',
+  ]);
 });

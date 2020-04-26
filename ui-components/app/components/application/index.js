@@ -46,11 +46,11 @@ export default class Application extends Component {
       },
       [REGISTRATION_ROUTE]: () => {
         this._destroyPreviousPage();
-        this._previousPage = new RegistrationPage(this.rootElement)
+        this._previousPage = new RegistrationPage(this.rootElement);
       },
       [FILE_LIST_ROUTE]: (properties) => {
         this._destroyPreviousPage();
-        this._previousPage = new FileListPage(this.rootElement, stateManager, properties)
+        this._previousPage = new FileListPage(this.rootElement, stateManager, properties);
       },
     };
 

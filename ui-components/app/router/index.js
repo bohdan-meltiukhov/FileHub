@@ -76,6 +76,7 @@ export default class Router {
     const urlTemplate = this._findUrlTemplate(hash);
 
     if (!urlTemplate) {
+      this._rootElement.innerHTML = '';
       this._notFoundPage();
       return;
     }

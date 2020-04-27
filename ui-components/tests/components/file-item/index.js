@@ -47,3 +47,33 @@ test('should have the provided properties.', (assert) => {
   assert.strictEqual(firstAction.className, 'glyphicon glyphicon-download', 'The file item should show the download ' +
     'action.');
 });
+
+test('should call the onRemove handler.', async (assert) => {
+  assert.expect(3);
+
+  const file = {
+    id: '1',
+    parentId: 'parent',
+    name,
+    mimeType: 'image',
+    size: 46236,
+    type: 'folder',
+  };
+
+  const handler = (parameters) => {
+    assert.step('File item is removed.');
+    assert.deepEqual(parameters, file, 'The file item should provide the correct file to the onRemove handler.');
+  };
+
+  const fileItem = new FileItem(row, file);
+  const fileItemElement = fixture.firstElementChild;
+
+  fileItem.onRemoveItem(handler);
+
+  const removeButton = fileItemElement.querySelector('[data-test="cell-actions"] .glyphicon-remove-circle');
+  removeButton.click();
+
+  await handler;
+  assert.verifySteps(['File item is removed.'], 'The file item should call the onRemove handler when the remove ' +
+    'button is pressed.');
+});

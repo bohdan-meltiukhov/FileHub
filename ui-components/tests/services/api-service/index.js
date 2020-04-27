@@ -134,3 +134,41 @@ test('should get a folder.', async (assert) => {
     method: 'GET',
   }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
 });
+
+test('should delete folders.', (assert) => {
+  assert.expect(2);
+
+  const id = 'uExvhDL4YwkxnBVa';
+
+  fetchMock.delete('glob:/folder/*', (url) => {
+    const folderId = url.slice(8);
+    assert.strictEqual(folderId, id, 'The deleteFolder() method should provide the correct folder id to the server.');
+    return 200;
+  });
+
+  const apiService = ApiService.getInstance();
+  apiService.deleteFolder(id);
+
+  assert.ok(fetchMock.called('glob:/folder/*', {
+    method: 'DELETE',
+  }), 'The deleteFolder() method should send a DELETE request to the \'/folder/:id\' URL.');
+});
+
+test('should delete files.', (assert) => {
+  assert.expect(2);
+
+  const id = 'ARqTPQ1XXUrFlaJe';
+
+  fetchMock.delete('glob:/file/*', (url) => {
+    const folderId = url.slice(6);
+    assert.strictEqual(folderId, id, 'The deleteFile() method should provide the correct file id to the server.');
+    return 200;
+  });
+
+  const apiService = ApiService.getInstance();
+  apiService.deleteFile(id);
+
+  assert.ok(fetchMock.called('glob:/file/*', {
+    method: 'DELETE',
+  }), 'The deleteFile() method should send a DELETE request to the \'/file/:id\' URL.');
+});

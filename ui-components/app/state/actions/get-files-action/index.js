@@ -23,8 +23,8 @@ export default class GetFilesAction extends Action {
     stateManager.mutate(new IsFileListLoadingMutator(true));
     try {
       const files = await apiService.getFiles();
-      stateManager.mutate(new IsFileListLoadingMutator(false));
       stateManager.mutate(new FileListMutator(files));
+      stateManager.mutate(new IsFileListLoadingMutator(false));
     } catch (e) {
       stateManager.mutate(new FileListLoadingErrorMutator(e.message));
     }

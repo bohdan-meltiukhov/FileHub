@@ -95,4 +95,34 @@ export default class ApiService {
     }
     return instance;
   }
+
+  /**
+   * Provides the files.
+   *
+   * @returns {Promise<object[]>} - The promise that resolves with an array of files.
+   */
+  getFiles() {
+    return new Promise((resolve, reject) => {
+      fetch('/files')
+        .then((response) => {
+          if (response.ok) {
+            response.json()
+              .then((responseBody) => {
+                resolve(responseBody.files);
+              });
+          } else {
+            switch (response.status) {
+            case 401:
+              reject(new AuthorizationError('Not authorized.'));
+              break;
+            case 500:
+              reject(new GeneralServerError('Internal server error'));
+              break;
+            default:
+              reject(new Error('Unknown error'));
+            }
+          }
+        });
+    });
+  }
 }

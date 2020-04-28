@@ -10,6 +10,7 @@ export default class FetchMock {
   static setMock() {
     FetchMock._setLogin();
     FetchMock._setRegister();
+    FetchMock._setFiles();
   }
 
   /**
@@ -50,6 +51,31 @@ export default class FetchMock {
       } else {
         return 200;
       }
+    });
+  }
+
+  /**
+   * Sets a mock for the files request.
+   *
+   * @private
+   */
+  static _setFiles() {
+    fetchMock.get('/files', {
+      files: [
+        {
+          name: 'Documents',
+          itemsNumber: 20,
+          type: 'folder',
+        },
+        {
+          name: 'photo.png',
+          mimeType: 'image',
+          size: 16,
+          type: 'file',
+        },
+      ],
+    }, {
+      delay: 500,
     });
   }
 }

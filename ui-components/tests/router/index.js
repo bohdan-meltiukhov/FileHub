@@ -1,12 +1,12 @@
-import Router from '../../app/router.js';
+import Router from '../../app/router';
 import LoginPage from '../../app/components/login-page';
 import RegistrationPage from '../../app/components/registration-page';
-import FileExplorer from '../../app/components/file-explorer';
+import FileListPage from '../../app/components/file-list-page';
 import NotFoundPage from '../../app/components/not-found';
 
 const {module, test} = QUnit;
 
-module('The Router test');
+module('The Router');
 
 /**
  * The class for mock objects that act like the window object.
@@ -51,9 +51,9 @@ test('should render the correct page when the location hash changes.', (assert) 
   const properties = {
     rootElement,
     pageMapping: {
-      '/authentication': LoginPage,
-      '/registration': RegistrationPage,
-      '/file-explorer': FileExplorer,
+      '/authentication': () => new LoginPage(rootElement),
+      '/registration': () => new RegistrationPage(rootElement),
+      '/file-list': () => new FileListPage(rootElement),
     },
     defaultLocation: '/authentication',
     notFoundPage: function() {
@@ -75,10 +75,10 @@ test('should render the correct page when the location hash changes.', (assert) 
   assert.strictEqual(authenticationPage, 'login-page', 'The router should open the authentication page ' +
     'on the authentication location hash.');
 
-  windowMock.location.hash = '#/file-explorer';
+  windowMock.location.hash = '#/file-list';
   windowMock.dispatchEvent(new Event('hashchange'));
   const fileExplorerPage = rootElement.firstElementChild.getAttribute('data-test');
-  assert.strictEqual(fileExplorerPage, 'file-explorer', 'The router should open the file explorer page ' +
+  assert.strictEqual(fileExplorerPage, 'file-list-page', 'The router should open the file list page ' +
     'on the corresponding location hash.');
 });
 
@@ -94,7 +94,7 @@ test('should show the 404 page in case the route is not registered.', (assert) =
       },
     },
     defaultLocation: '/default',
-    notFoundPage: NotFoundPage,
+    notFoundPage: () => new NotFoundPage(rootElement),
     window: windowMock,
   };
 

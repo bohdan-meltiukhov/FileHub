@@ -7,9 +7,9 @@ export default class Router {
    *
    * @typedef RouterProperties
    * @property {Element} rootElement - The parent element for the router.
-   * @property {object.<string, object>} pageMapping - The object that defines all the possible routes.
+   * @property {object.<string, Function>} pageMapping - The object that defines all the possible routes.
    * @property {string} defaultLocation - The location that should be opened in case the current location hash is empty.
-   * @property {object} notFoundPage - The page that should be displayed in case the route is incorrect.
+   * @property {Function} notFoundPage - The page that should be displayed in case the route is incorrect.
    * @property {object} window - The window containing a DOM document.
    */
 
@@ -65,10 +65,9 @@ export default class Router {
     this._rootElement.innerHTML = '';
 
     if (Object.keys(this._pageMapping).includes(hash)) {
-      const Page = this._pageMapping[hash];
-      new Page(this._rootElement);
+      this._pageMapping[hash]();
     } else {
-      new this._notFoundPage(this._rootElement);
+      this._notFoundPage();
     }
   }
 }

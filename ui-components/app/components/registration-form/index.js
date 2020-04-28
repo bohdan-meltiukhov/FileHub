@@ -7,6 +7,7 @@ import EqualValidationRule from '../../services/validator/validation-rules/equal
 import ValidationErrorCase from '../../models/errors/validation-error-case';
 import UserCredentials from '../../models/user-credentials';
 import Button from '../button';
+import {AUTHENTICATION_ROUTE} from '../../router/routes';
 
 /**
  * The component for the registration form.
@@ -27,7 +28,7 @@ export default class RegistrationForm extends Component {
    */
   markup() {
     return `
-            <form class="application-box form-dialog">
+            <form class="application-box form-dialog" data-test="registration-form">
                 <img src="app/images/logo.png" class="logo" alt="logo">
             
                 <header class="header">
@@ -45,7 +46,7 @@ export default class RegistrationForm extends Component {
                     <div class="row">
                         <div class="form-footer">
                             <span data-test="submit-button"></span>
-                            <a href="#/authentication" class="form-link">Already have an account?</a>
+                            <a href="#${AUTHENTICATION_ROUTE}" class="form-link">Already have an account?</a>
                         </div>
                     </div>
                 </main>

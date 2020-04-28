@@ -7,12 +7,6 @@ import GeneralServerError from '../../../app/models/errors/general-server-error'
 
 const {module, test} = QUnit;
 
-const username = 'admin';
-const password = '1234';
-
-const apiService = ApiService.getInstance();
-const userCredentials = new UserCredentials(username, password);
-
 module('The ApiService', {
   afterEach: () => {
     fetchMock.reset();
@@ -21,6 +15,12 @@ module('The ApiService', {
 
 test('should log in.', (assert) => {
   assert.expect(3);
+
+  const username = 'admin';
+  const password = '1234';
+
+  const apiService = ApiService.getInstance();
+  const userCredentials = new UserCredentials(username, password);
 
   fetchMock.post('/login', (url, opts) => {
     const credentials = opts.body;
@@ -41,6 +41,12 @@ test('should log in.', (assert) => {
 test('should register.', (assert) => {
   assert.expect(3);
 
+  const username = 'admin';
+  const password = '1234';
+
+  const apiService = ApiService.getInstance();
+  const userCredentials = new UserCredentials(username, password);
+
   fetchMock.post('/register', (url, opts) => {
     const credentials = opts.body;
     assert.strictEqual(credentials.username, username, 'The register() method should provide the correct username in ' +
@@ -59,6 +65,9 @@ test('should register.', (assert) => {
 
 test('should handle the 401 error.', async (assert) => {
   assert.expect(4);
+
+  const apiService = ApiService.getInstance();
+  const userCredentials = new UserCredentials('admin', '1234');
 
   fetchMock.post('/login', 401);
 
@@ -85,6 +94,9 @@ test('should handle the 401 error.', async (assert) => {
 
 test('should handle the 422 error.', async (assert) => {
   assert.expect(6);
+
+  const apiService = ApiService.getInstance();
+  const userCredentials = new UserCredentials('admin', '1234');
 
   const error = {
     field: 'username',
@@ -127,6 +139,9 @@ test('should handle the 422 error.', async (assert) => {
 
 test('should handle the 500 error.', async (assert) => {
   fetchMock.post(/^\/(login|register)$/, 500);
+
+  const apiService = ApiService.getInstance();
+  const userCredentials = new UserCredentials('admin', '1234');
 
   try {
     await apiService.logIn(userCredentials);

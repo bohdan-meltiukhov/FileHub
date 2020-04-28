@@ -5,6 +5,7 @@ import UserCredentials from '../../models/user-credentials';
 import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import ServerValidationError from '../../models/errors/server-validation-error';
+import TitleService from '../../services/title-service';
 import {FILE_LIST_ROUTE} from '../../router/routes';
 
 /**
@@ -20,6 +21,9 @@ export default class LoginPage extends Component {
     super(container);
 
     this.render();
+
+    const titleService = new TitleService(document);
+    titleService.setTitle('Authentication');
   }
 
   /**

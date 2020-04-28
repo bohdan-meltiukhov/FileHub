@@ -134,3 +134,28 @@ test('should get a folder.', async (assert) => {
     method: 'GET',
   }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
 });
+
+test('should upload files.', (assert) => {
+  const folderId = 'tRZXiSHNRlgZluGQ';
+
+  const formData = new FormData();
+
+  fetchMock.post('glob:/folder/*/file', (url, opts) => {
+    const providedId = url.slice(8, url.indexOf('/file'));
+
+    assert.strictEqual(providedId, folderId, 'The uploadFile() method should send a request with correct folder id.');
+
+    const uploadedFile = opts.body;
+
+    assert.strictEqual(uploadedFile, formData, 'The uploadFile() method should send a request with correct formData.');
+
+    return 200;
+  });
+
+  const apiService = ApiService.getInstance();
+  apiService.uploadFile(folderId, formData);
+
+  assert.ok(fetchMock.called('glob:/folder/*/file', {
+    method: 'POST',
+  }), 'The uploadFile() method should send a POST request to the \'/folder/:id/file\' URL.');
+});

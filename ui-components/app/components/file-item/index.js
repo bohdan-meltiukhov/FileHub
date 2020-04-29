@@ -23,7 +23,7 @@ export default class FileItem extends ListItem {
    * @param {Parameters} parameters - The initial file items configurations.
    */
   constructor(container, parameters) {
-    super(container);
+    super(container, parameters.id);
 
     this._parameters = parameters;
 

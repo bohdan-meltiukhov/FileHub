@@ -6,6 +6,18 @@ import Component from '../component.js';
  * @abstract
  */
 export default class ListItem extends Component {
+  /**
+   * Creates an instance of the List Item with set container and item ID.
+   *
+   * @param {Element} container - The parent element for the current list item.
+   * @param {string} itemId - The identifier of the current item.
+   */
+  constructor(container, itemId) {
+    super(container);
+
+    this._itemId = itemId;
+  }
+
   /** @inheritdoc */
   render() {
     const fakeElement = document.createElement('tbody');
@@ -22,14 +34,6 @@ export default class ListItem extends Component {
 
   /** @inheritdoc */
   addEventListeners() {
-    const removeItemButton = this.rootElement
-      .querySelector('[data-test="cell-actions"] .glyphicon-remove-circle');
-    removeItemButton.addEventListener('click', () => {
-      this._removeItemHandlers.forEach((handler) => {
-        handler(this._parameters);
-      });
-    });
-
     this.rootElement.addEventListener('click', () => {
       const classList = this.rootElement.classList;
       if (classList.contains('selected') && !classList.contains('editing')) {
@@ -71,11 +75,33 @@ export default class ListItem extends Component {
   }
 
   /**
+   * Sets whether this item's name is being editing or not.
+   *
+   * @param {boolean} isEditing - The flag that shows if the item's name is being edited or not.
+   */
+  set isEditing(isEditing) {
+    if (isEditing) {
+      this.rootElement.classList.add('editing');
+    } else {
+      this.rootElement.classList.remove('editing');
+    }
+  }
+
+  /**
    * Sets the function to be called when the item name changes.
    *
    * @param {Function} handler - The function to call when the item name changes.
    */
   onNameChanged(handler) {
     this._onNameChanged = handler;
+  }
+
+  /**
+   * Provides the identifier of the current item.
+   *
+   * @returns {string} The ID of the current list item.
+   */
+  get id() {
+    return this._itemId;
   }
 }

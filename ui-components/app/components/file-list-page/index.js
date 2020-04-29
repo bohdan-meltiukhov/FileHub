@@ -25,7 +25,7 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
-    this._folderId = properties.id;
+    this._folderId = properties.folderId;
     stateManager.dispatch(new GetFolderAction(properties.folderId));
     stateManager.dispatch(new GetFilesAction(properties.folderId));
   }
@@ -106,7 +106,10 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('fileList', (event) => {
       const state = event.detail.state;
       this.fileList.files = state.fileList;
-      this.addEventListeners();
+
+      this.fileList.onItemNameChanged((item) => {
+        this.stateManager.dispatch(new UpdateItemAction(item));
+      });
     });
 
     this.onStateChanged('isFileListLoading', (event) => {
@@ -122,6 +125,7 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('locationParameters', (event) => {
       const state = event.detail.state;
       if (state.locationParameters.folderId) {
+        this._folderId = state.locationParameters.folderId;
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
       }
@@ -131,6 +135,11 @@ export default class FileListPage extends StateAwareComponent {
       const state = event.detail.state;
       this._folder = state.folder;
       this.breadcrumbs.folder = state.folder;
+    });
+
+    this.onStateChanged('renameFolderId', (event) => {
+      const state = event.detail.state;
+      this.fileList.renameFolder(state.renameFolderId);
     });
   }
 

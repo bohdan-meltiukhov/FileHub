@@ -198,9 +198,7 @@ export default class FetchMock {
 
       const childFolderNames = childFolders.map((folder) => folder.name);
       let name = '';
-      console.log('childFolderNames', childFolderNames);
       if (childFolderNames.includes('New folder')) {
-        console.log('includes');
         for (let i = 2; ; i++) {
           if (!childFolderNames.includes(`New folder (${i})`)) {
             name = `New folder (${i})`;

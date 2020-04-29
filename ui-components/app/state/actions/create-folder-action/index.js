@@ -1,5 +1,6 @@
 import Action from '../action';
 import GetFilesAction from '../get-files-action';
+import RenameFolderMutator from '../../mutators/rename-folder-mutator';
 
 /**
  * The action that creates a folder.
@@ -19,8 +20,15 @@ export default class CreateFolderAction extends Action {
   /** @inheritdoc */
   apply(stateManager, apiService) {
     apiService.createFolder(this._folderId)
-      .then(() => {
+      .then((createdFolder) => {
         stateManager.dispatch(new GetFilesAction(this._folderId));
+
+        const renameFolderFunction = () => {
+          stateManager.mutate(new RenameFolderMutator(createdFolder.id));
+          stateManager.removeStateChangedListener('fileList', renameFolderFunction);
+        };
+
+        stateManager.onStateChanged('fileList', renameFolderFunction);
       });
   }
 }

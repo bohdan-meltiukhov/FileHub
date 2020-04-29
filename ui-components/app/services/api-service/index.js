@@ -222,7 +222,7 @@ export default class ApiService {
    * Creates a folder.
    *
    * @param {string} id - The identifier of the parent folder.
-   * @returns {Promise} The promise that resolved if the folder is created successfully.
+   * @returns {Promise} The promise that resolves if the folder is created successfully.
    */
   createFolder(id) {
     return fetch(`/folder/${id}/folder`, {
@@ -236,8 +236,10 @@ export default class ApiService {
       },
     })
       .then((response) => {
-        if (!response.ok) {
-          this._handleRequestErrors(response.status);
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response.status);
         }
       });
   }

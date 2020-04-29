@@ -51,15 +51,13 @@ export default class FileList extends Component {
       }
     });
 
-    let previousItem;
-
     this._fileItems.forEach((item) => {
       item.onClick(() => {
-        if (previousItem && previousItem !== item) {
-          previousItem.isSelected = false;
+        if (this._previousItem && this._previousItem !== item) {
+          this._previousItem.isSelected = false;
         }
         item.isSelected = true;
-        previousItem = item;
+        this._previousItem = item;
       });
     });
   }
@@ -83,5 +81,25 @@ export default class FileList extends Component {
   set files(fileList) {
     this._files = fileList;
     this.initNestedComponents();
+  }
+
+  /**
+   * Sets the provided folder's status to editing name.
+   *
+   * @param {string} folderId - The identifier of the required folder.
+   */
+  renameFolder(folderId) {
+    if (this._previousItem) {
+      this._previousItem.isSelected = false;
+    }
+
+    const createdFolder = this._fileItems.find((item) => {
+      if (item.id === folderId) {
+        return true;
+      }
+    });
+
+    createdFolder.isSelected = true;
+    createdFolder.isEditing = true;
   }
 }

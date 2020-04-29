@@ -22,7 +22,7 @@ export default class FolderItem extends ListItem {
    * @param {Parameters} parameters - The initial folder items configurations.
    */
   constructor(container, parameters) {
-    super(container);
+    super(container, parameters.id);
 
     this._parameters = parameters;
 

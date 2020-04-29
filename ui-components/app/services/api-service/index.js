@@ -225,40 +225,20 @@ export default class ApiService {
    * @returns {Promise} The promise that resolved if the folder is created successfully.
    */
   createFolder(id) {
-    return new Promise((resolve, reject) => {
-      fetch(`/folder/${id}/folder`, {
-        method: 'POST',
-        body: {
-          folder: {
-            name: 'New folder',
-            itemsNumber: 0,
-            type: 'folder',
-          },
+    return fetch(`/folder/${id}/folder`, {
+      method: 'POST',
+      body: {
+        folder: {
+          name: 'New folder',
+          itemsNumber: 0,
+          type: 'folder',
         },
-      })
-        .then((response) => {
-          if (response.ok) {
-            response.json()
-              .then((body) => {
-                console.log(body);
-              });
-            resolve();
-          } else {
-            switch (response.status) {
-            case 401:
-              reject(new AuthorizationError('Not authorized.'));
-              break;
-            case 404:
-              reject(new NotFoundError('This folder does not exist.'));
-              break;
-            case 500:
-              reject(new GeneralServerError('Internal server error.'));
-              break;
-            default:
-              reject(new Error('Unknown error'));
-            }
-          }
-        });
-    });
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          this._handleRequestErrors(response.status);
+        }
+      });
   }
 }

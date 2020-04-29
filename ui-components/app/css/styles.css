@@ -153,6 +153,7 @@ a:hover {
 
 .files tr {
     border-bottom: 1px solid #999;
+    cursor: pointer;
 }
 
 .files tr:hover {

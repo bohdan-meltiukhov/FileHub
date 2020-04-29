@@ -75,6 +75,12 @@ export default class Router {
   _renderPage(hash) {
     const urlTemplate = this._findUrlTemplate(hash);
 
+    if (!urlTemplate) {
+      this._rootElement.innerHTML = '';
+      this._notFoundPage();
+      return;
+    }
+
     const pageCreator = this._pageMapping[urlTemplate];
 
     const staticPart = this._getStaticPart(urlTemplate);
@@ -87,11 +93,7 @@ export default class Router {
 
     if (staticPart !== this._previousStaticPart) {
       this._rootElement.innerHTML = '';
-      if (dynamicPartMap) {
-        pageCreator(dynamicPartMap);
-      } else {
-        this._notFoundPage();
-      }
+      pageCreator(dynamicPartMap);
     }
 
     this._previousStaticPart = staticPart;

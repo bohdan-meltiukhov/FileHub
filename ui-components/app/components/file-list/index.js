@@ -1,6 +1,6 @@
 import Component from '../component.js';
-import FileItem from '../file-item';
-import FolderItem from '../folder-item';
+import FileItemComponent from '../file-item-component';
+import FolderItemComponent from '../folder-item-component';
 
 /**
  * The component for displaying the file list.
@@ -45,9 +45,9 @@ export default class FileList extends Component {
       const row = document.createElement('tr');
       this.rootElement.appendChild(row);
       if (file.type === 'folder') {
-        this._fileItems.push(new FolderItem(row, file));
+        this._fileItems.push(new FolderItemComponent(row, file));
       } else if (file.type === 'file') {
-        this._fileItems.push(new FileItem(row, file));
+        this._fileItems.push(new FileItemComponent(row, file));
       }
     });
   }

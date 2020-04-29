@@ -3,7 +3,7 @@ import ListItem from '../list-item';
 /**
  * The class for displaying the file item.
  */
-export default class FileItem extends ListItem {
+export default class FileItemComponent extends ListItem {
   /**
    * The object for describing the file configurations.
    *

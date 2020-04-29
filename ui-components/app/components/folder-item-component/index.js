@@ -3,7 +3,7 @@ import ListItem from '../list-item';
 /**
  * The component for displaying the folder item.
  */
-export default class FolderItem extends ListItem {
+export default class FolderItemComponent extends ListItem {
   /**
    * The object for describing the folder configurations.
    *

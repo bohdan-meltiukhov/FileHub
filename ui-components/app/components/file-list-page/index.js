@@ -7,6 +7,7 @@ import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
 import GetFolderAction from '../../state/actions/get-folder-action';
+import UrlProperties from '../../models/url-properties';
 
 /**
  * The component for the File List Page.
@@ -17,7 +18,7 @@ export default class FileListPage extends StateAwareComponent {
    *
    * @param {Element} container - The parent element for the page.
    * @param {StateManager} stateManager - The state manager to use.
-   * @param {object} properties - The URL properties.
+   * @param {UrlProperties} properties - The URL properties.
    */
   constructor(container, stateManager, properties) {
     super(container, stateManager);

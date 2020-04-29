@@ -55,7 +55,9 @@ export default class FileListPage extends StateAwareComponent {
                     </div>
                 </div>
                 
-                <div data-test="file-list"></div>
+                <div data-test="file-list">
+                    <div class="loader" data-test="loader"></div>
+                </div>
             </main>
         </div>
     `;
@@ -96,11 +98,11 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('isFileListLoading', (event) => {
       const state = event.detail.state;
+      const loader = this.rootElement.querySelector('[data-test="loader"]');
       if (state.isFileListLoading) {
-        this.fileListContainer.innerHTML = '<div class="loader"></div>';
+        loader.style.display = 'block';
       } else {
-        this.fileListContainer.innerHTML = '';
-        this.fileList = new FileList(this.fileListContainer);
+        loader.style.display = 'none';
       }
     });
 

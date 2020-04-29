@@ -1,5 +1,7 @@
 import Action from '../action';
 import FolderMutator from '../../mutators/folder-mutator';
+import IsFolderLoadingMutator from '../../mutators/is-folder-loading-mutator';
+import FolderLoadingErrorMutator from '../../mutators/folder-loading-error-mutator';
 
 /**
  * The action that gets the folder data.
@@ -17,10 +19,14 @@ export default class GetFolderAction extends Action {
   }
 
   /** @inheritdoc */
-  apply(stateManager, apiService) {
-    apiService.getFolder(this._folderId)
-      .then((folder) => {
-        stateManager.mutate(new FolderMutator(folder.folder));
-      });
+  async apply(stateManager, apiService) {
+    stateManager.mutate(new IsFolderLoadingMutator(true));
+    try {
+      const folder = await apiService.getFolder(this._folderId);
+      stateManager.mutate(new FolderMutator(folder.folder));
+      stateManager.mutate(new IsFolderLoadingMutator(false));
+    } catch (e) {
+      stateManager.mutate(new FolderLoadingErrorMutator(e.message));
+    }
   }
 }

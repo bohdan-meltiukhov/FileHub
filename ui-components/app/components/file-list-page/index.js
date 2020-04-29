@@ -57,8 +57,8 @@ export default class FileListPage extends StateAwareComponent {
                 </div>
                 
                 <div data-test="file-list">
-                    <div class="loader" data-test="loader"></div>
                 </div>
+                <div class="loader" data-test="loader"></div>
             </main>
         </div>
     `;
@@ -72,9 +72,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     const breadcrumbsContainer = this.rootElement.querySelector('[data-test="breadcrumbs"]');
-    this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer, {
-      folder: '',
-    });
+    this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer);
 
     const createFolderButtonContainer = this.rootElement.querySelector('[data-test="create-folder-button"]');
     this.createFolderButton = new Button(createFolderButtonContainer, {
@@ -101,9 +99,11 @@ export default class FileListPage extends StateAwareComponent {
       const state = event.detail.state;
       const loader = this.rootElement.querySelector('[data-test="loader"]');
       if (state.isFileListLoading) {
+        this.fileList.display = false;
         loader.style.display = 'block';
       } else {
         loader.style.display = 'none';
+        this.fileList.display = true;
       }
     });
 
@@ -113,6 +113,11 @@ export default class FileListPage extends StateAwareComponent {
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
       }
+    });
+
+    this.onStateChanged('isFolderLoading', (event) => {
+      const state = event.detail.state;
+      this.breadcrumbs.isLoading = state.isFolderLoading;
     });
 
     this.onStateChanged('folder', (event) => {

@@ -59,6 +59,20 @@ export default class FileList extends Component {
    */
   set files(fileList) {
     this._files = fileList;
+    this.rootElement.innerHTML = '';
     this.initNestedComponents();
+  }
+
+  /**
+   * Sets whether this component should be displayed or not.
+   *
+   * @param {boolean} display - Shows if this component should be displayed or not.
+   */
+  set display(display) {
+    if (display) {
+      this.rootElement.style.display = 'table';
+    } else {
+      this.rootElement.style.display = 'none';
+    }
   }
 }

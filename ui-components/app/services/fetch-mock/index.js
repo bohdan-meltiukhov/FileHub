@@ -107,6 +107,8 @@ export default class FetchMock {
           folder,
         },
       };
+    }, {
+      delay: 500,
     });
   }
 }

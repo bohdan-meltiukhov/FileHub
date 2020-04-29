@@ -5,22 +5,13 @@ import Component from '../component.js';
  */
 export default class Breadcrumbs extends Component {
   /**
-   * The object for providing the Inner Breadcrumbs configuration via the constructor.
-   *
-   * @typedef {object} Parameters
-   * @property {string} folder - The name of the current folder.
-   */
-
-  /**
    * Creates an instance of the Inner Breadcrumbs component with set container and folder.
    *
    * @param {Element} container - The parent element for the breadcrumbs component.
-   * @param {Parameters} parameters - The initial component parameters.
    */
-  constructor(container, {folder = 'Folder'} = {}) {
+  constructor(container) {
     super(container);
 
-    this._folder = folder;
     this.render();
   }
 
@@ -29,7 +20,7 @@ export default class Breadcrumbs extends Component {
     return `
         <div data-test="breadcrumbs">
             <div class="folder-icon" data-test="folder-icon"></div>
-            <span class="directory-name" data-test="directory-name">/ ${this._folder}</span>
+            <span class="directory-name" data-test="directory-name"></span>
         </div>
     `;
   }
@@ -68,5 +59,18 @@ export default class Breadcrumbs extends Component {
     }
 
     this._folderName.innerText = `/ ${folder.name}`;
+  }
+
+  /**
+   * Sets whether the folder data is being loaded or not.
+   *
+   * @param {boolean} isLoading - The flag that shows if the folder data is being loaded.
+   */
+  set isLoading(isLoading) {
+    if (isLoading) {
+      this._folderIcon.style.visibility = 'hidden';
+    } else {
+      this._folderIcon.style.visibility = 'visible';
+    }
   }
 }

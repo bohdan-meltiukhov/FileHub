@@ -1,4 +1,5 @@
 import Component from '../component.js';
+import FolderItem from '../../models/list-items/folder-item';
 
 /**
  * The component for displaying breadcrumbs.
@@ -41,20 +42,9 @@ export default class Breadcrumbs extends Component {
   }
 
   /**
-   * The object for describing the folder configurations.
-   *
-   * @typedef {object} FolderItemProperties
-   * @property {string} id - The identifier of the folder.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
-   * @property {'folder'} type - Shows that this item is a folder.
-   */
-
-  /**
    * Sets the current folder.
    *
-   * @param {FolderItemProperties} folder - The new folder.
+   * @param {FolderItem} folder - The new folder.
    */
   set folder(folder) {
     if (folder.parentId === 'none') {

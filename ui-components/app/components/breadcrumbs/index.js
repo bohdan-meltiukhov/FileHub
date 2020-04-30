@@ -17,7 +17,7 @@ export default class Breadcrumbs extends Component {
    * @param {Element} container - The parent element for the breadcrumbs component.
    * @param {Parameters} parameters - The initial component parameters.
    */
-  constructor(container, parameters) {
+  constructor(container, parameters = {folderName: ''}) {
     super(container);
 
     this.render();

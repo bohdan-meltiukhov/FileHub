@@ -16,6 +16,9 @@ import * as fileListLoadingErrorMutator from './state/mutators/file-list-loading
 import * as fileListMutator from './state/mutators/file-list-mutator';
 import * as isFileListLoadingMutator from './state/mutators/is-file-list-loading-mutator';
 import * as stateManager from './state/state-manager';
+import * as hashChangedAction from './state/actions/hash-changed-action';
+import * as locationMutator from './state/mutators/location-mutator';
+import * as locationParametersMutator from './state/mutators/location-parameters-mutator';
 import * as getFolderAction from './state/actions/get-folder-action';
 import * as folderMutator from './state/mutators/folder-mutator';
 import * as folderLoadingErrorMutator from './state/mutators/folder-loading-error-mutator';

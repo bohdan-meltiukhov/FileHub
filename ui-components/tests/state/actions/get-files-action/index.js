@@ -7,24 +7,32 @@ const {module, test} = QUnit;
 module('The GetFilesAction');
 
 test('should call the mutate method of the state manager.', async (assert) => {
-  assert.expect(7);
+  assert.expect(8);
+
+  const parentId = 'tRZXiSHNRlgZluGQ';
 
   const files = [
     {
-      name: 'Documents',
-      itemsNumber: 20,
-      type: 'folder',
+      id: 'ARqTPQ1XXUrFlaJe',
+      parentId,
+      name: 'Montenegro.jpg',
+      mimeType: 'image',
+      size: 162,
+      type: 'file',
     },
     {
-      name: 'photo.png',
+      id: 'zHPz1GsbO9Kq8Xt0',
+      parentId,
+      name: 'my_friends.png',
       mimeType: 'image',
       size: 16,
       type: 'file',
     },
   ];
 
-  const getFiles = async () => {
-    return files;
+  const getFiles = async (folderId) => {
+    assert.strictEqual(folderId, parentId, 'The GetFilesAction should provide correct folderId to the apiService.');
+    return {files};
   };
 
   const apiServiceMock = {
@@ -43,10 +51,10 @@ test('should call the mutate method of the state manager.', async (assert) => {
     },
   };
 
-  const action = new GetFilesAction();
+  const action = new GetFilesAction(parentId);
   action.apply(stateManagerMock, apiServiceMock);
 
-  await getFiles();
+  await getFiles;
   assert.verifySteps([
     'IsFileListLoadingMutator',
     'IsFileListLoadingMutator: true',

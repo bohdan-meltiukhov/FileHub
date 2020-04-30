@@ -58,7 +58,10 @@ export default class Application extends Component {
       rootElement: this.rootElement,
       pageMapping,
       defaultLocation: AUTHENTICATION_ROUTE,
-      notFoundPage: () => new NotFoundPage(this.rootElement),
+      notFoundPage: () => {
+        this._destroyPreviousPage();
+        this._previousPage = new NotFoundPage(this.rootElement);
+      },
       window,
     };
 

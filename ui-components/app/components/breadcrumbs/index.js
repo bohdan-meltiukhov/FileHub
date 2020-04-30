@@ -5,14 +5,23 @@ import Component from '../component.js';
  */
 export default class Breadcrumbs extends Component {
   /**
+   * The object for providing the Breadcrumbs configuration via the constructor.
+   *
+   * @typedef {object} Parameters
+   * @property {string} folderName - The name of the current folder.
+   */
+
+  /**
    * Creates an instance of the Inner Breadcrumbs component with set container and folder.
    *
    * @param {Element} container - The parent element for the breadcrumbs component.
+   * @param {Parameters} parameters - The initial component parameters.
    */
-  constructor(container) {
+  constructor(container, parameters) {
     super(container);
 
     this.render();
+    this._name = parameters.folderName;
   }
 
   /** @inheritdoc */
@@ -58,7 +67,7 @@ export default class Breadcrumbs extends Component {
       `;
     }
 
-    this._folderName.innerText = `/ ${folder.name}`;
+    this._name = folder.name;
   }
 
   /**
@@ -69,8 +78,10 @@ export default class Breadcrumbs extends Component {
   set isLoading(isLoading) {
     if (isLoading) {
       this._folderIcon.style.visibility = 'hidden';
+      this._folderName.innerText = 'Loading...';
     } else {
       this._folderIcon.style.visibility = 'visible';
+      this._folderName.innerText = `/ ${this._name}`;
     }
   }
 }

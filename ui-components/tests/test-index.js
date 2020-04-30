@@ -18,3 +18,5 @@ import * as isFileListLoadingMutator from './state/mutators/is-file-list-loading
 import * as stateManager from './state/state-manager';
 import * as getFolderAction from './state/actions/get-folder-action';
 import * as folderMutator from './state/mutators/folder-mutator';
+import * as folderLoadingErrorMutator from './state/mutators/folder-loading-error-mutator';
+import * as isFolderLoadingMutator from './state/mutators/is-folder-loading-mutator';

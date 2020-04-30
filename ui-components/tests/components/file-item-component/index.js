@@ -1,11 +1,11 @@
-import FileItem from '../../../app/components/file-item';
+import FileItemComponent from '../../../app/components/file-item-component';
 
 const {module, test} = QUnit;
 
 let fixture;
 let row;
 
-module('The FileItem', {
+module('The FileItemComponent', {
   beforeEach: function() {
     fixture = document.getElementById('qunit-fixture');
     row = document.createElement('tr');
@@ -25,25 +25,25 @@ test('should have the provided properties.', (assert) => {
     size,
     type: 'folder',
   };
-  new FileItem(row, file);
+  new FileItemComponent(row, file);
 
   const fileItem = fixture.firstElementChild;
 
   const iconCell = fileItem.querySelector('[data-test="icon-cell"]');
-  assert.strictEqual(iconCell.innerHTML, '&nbsp;', 'The file item should have &nbsp; in the icon cell.');
+  assert.strictEqual(iconCell.innerHTML, '&nbsp;', 'The file item component should have &nbsp; in the icon cell.');
 
   const fileIcon = fileItem.querySelector('[data-test="file-icon"]');
   assert.strictEqual(fileIcon.className, 'glyphicon glyphicon-picture', 'The file icon should have the ' +
     'glyphicon-picture class when the mime type is image.');
 
   const fileName = fileItem.querySelector('[data-test="filename"]');
-  assert.strictEqual(fileName.innerText, name, 'The file item should display the provided name.');
+  assert.strictEqual(fileName.innerText, name, 'The file item component should display the provided name.');
 
   const fileSize = fileItem.querySelector('[data-test="cell-count"]');
-  assert.strictEqual(fileSize.innerText, `40.0 KB`, 'The file item should display the provided size.');
+  assert.strictEqual(fileSize.innerText, `40.0 KB`, 'The file item component should display the provided size.');
 
   const actions = fileItem.querySelector('[data-test="cell-actions"]');
   const firstAction = actions.firstElementChild;
-  assert.strictEqual(firstAction.className, 'glyphicon glyphicon-download', 'The file item should show the download ' +
-    'action.');
+  assert.strictEqual(firstAction.className, 'glyphicon glyphicon-download', 'The file item component should show the ' +
+    'download action.');
 });

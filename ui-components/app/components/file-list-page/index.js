@@ -8,6 +8,7 @@ import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
 import GetFolderAction from '../../state/actions/get-folder-action';
 import UrlProperties from '../../models/url-properties';
+import {ROOT_FOLDER_ID} from '../../models/root-folder';
 
 /**
  * The component for the File List Page.
@@ -44,7 +45,7 @@ export default class FileListPage extends StateAwareComponent {
             </ul>
             
             <header class="header">
-                <a href="#/file-list/4Goz0J0Tz8xfDfsJ"><h1>File Explorer</h1></a>
+                <a href="#/file-list/${ROOT_FOLDER_ID}"><h1>File Explorer</h1></a>
             </header>
             
             <main class="file-list">

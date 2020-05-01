@@ -94,12 +94,12 @@ export default class ApiService {
   /**
    * Checks the response status and creates an instance of the corresponding error for other requests.
    *
-   * @param {number} status - The status code of the response.
+   * @param {Response} response - The response from the server.
    * @returns {AuthorizationError|NotFoundError|Error|GeneralServerError} The error to throw.
    * @private
    */
-  _handleRequestErrors(status) {
-    switch (status) {
+  _handleRequestErrors(response) {
+    switch (response.status) {
     case 401:
       return new AuthorizationError('Not authorized.');
     case 404:
@@ -135,7 +135,7 @@ export default class ApiService {
         if (response.ok) {
           return response.json();
         } else {
-          throw this._handleRequestErrors(response.status);
+          throw this._handleRequestErrors(response);
         }
       });
   }
@@ -152,7 +152,7 @@ export default class ApiService {
         if (response.ok) {
           return response.json();
         } else {
-          throw this._handleRequestErrors(response.status);
+          throw this._handleRequestErrors(response);
         }
       });
   }

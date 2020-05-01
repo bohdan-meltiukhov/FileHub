@@ -10,23 +10,20 @@ module('The Breadcrumbs', {
   },
 });
 
-test('should have the default folder name.', (assert) => {
-  new Breadcrumbs(fixture);
-  const breadcrumbs = fixture.firstElementChild;
-
-  assert.strictEqual(breadcrumbs.innerText, '/ Folder', 'The inner breadcrumbs should have the default folder name.');
-});
-
 test('should display the provided folder name.', (assert) => {
-  const folder = 'Documents';
-  new Breadcrumbs(fixture, {folder});
-  const breadcrumbs = fixture.firstElementChild;
+  const folderName = 'Documents';
+  const breadcrumbs = new Breadcrumbs(fixture, {folderName});
+  const breadcrumbsElement = fixture.firstElementChild;
 
-  assert.strictEqual(breadcrumbs.innerText, `/ ${folder}`, 'The inner breadcrumbs should display the provided ' +
-    'folder name.');
+  // breadcrumbs.isLoading = false;
+  console.log('lol');
+  assert.strictEqual(breadcrumbsElement.innerText, `/ ${folderName}`, 'The inner breadcrumbs should display ' +
+    'the provided folder name.');
 });
 
 test('should set the folder.', (assert) => {
+  assert.expect(3);
+
   const rootFolderName = 'Root';
 
   const rootFolder = {
@@ -41,13 +38,15 @@ test('should set the folder.', (assert) => {
   const breadcrumbsElement = fixture.firstElementChild;
 
   breadcrumbs.folder = rootFolder;
+  breadcrumbs.isLoading = false;
 
   let folderIcon = breadcrumbsElement.querySelector('[data-test="folder-icon"] .glyphicon');
 
   assert.ok(folderIcon.classList.contains('glyphicon-folder-open'), 'The breadcrumbs should show the folder-open ' +
     'icon when the folder has no parent.');
 
-  assert.strictEqual(breadcrumbsElement.innerText, `/ ${rootFolderName}`, 'The breadcrumbs should set the folder name');
+  assert.strictEqual(breadcrumbsElement.innerText, `/ ${rootFolderName}`, 'The breadcrumbs should set the folder ' +
+    'name.');
 
   breadcrumbs.folder = {
     id: 'id',

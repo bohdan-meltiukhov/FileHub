@@ -257,6 +257,8 @@ test('should update folders.', (assert) => {
     assert.strictEqual(id, folder.id, 'The updateFolder() method should send a request with correct folder id.');
     assert.deepEqual(opts.body.element, folder, 'The updateFolder() method should send a request with correct ' +
       'folder object.');
+
+    return 200;
   });
 
   const apiService = ApiService.getInstance();
@@ -285,6 +287,8 @@ test('should update files.', (assert) => {
     assert.strictEqual(id, file.id, 'The updateFile() method should send a request with correct file id.');
     assert.deepEqual(opts.body.element, file, 'The updateFile() method should send a request with correct ' +
       'file object.');
+
+    return 200;
   });
 
   const apiService = ApiService.getInstance();

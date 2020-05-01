@@ -1,6 +1,6 @@
 import Component from '../component.js';
 import Router from '../../router';
-import {AUTHENTICATION_ROUTE, REGISTRATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
+import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE, REGISTRATION_ROUTE} from '../../router/routes';
 import NotFoundPage from '../not-found';
 import LoginPage from '../login-page';
 import RegistrationPage from '../registration-page';
@@ -58,7 +58,10 @@ export default class Application extends Component {
       rootElement: this.rootElement,
       pageMapping,
       defaultLocation: AUTHENTICATION_ROUTE,
-      notFoundPage: () => new NotFoundPage(this.rootElement),
+      notFoundPage: () => {
+        this._destroyPreviousPage();
+        this._previousPage = new NotFoundPage(this.rootElement);
+      },
       window,
     };
 

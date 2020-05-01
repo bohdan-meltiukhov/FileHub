@@ -1,26 +1,15 @@
 import ListItem from '../list-item';
+import FileItem from '../../models/list-items/file-item';
 
 /**
  * The class for displaying the file item.
  */
-export default class FileItem extends ListItem {
-  /**
-   * The object for describing the file configurations.
-   *
-   * @typedef {object} Parameters
-   * @property {string} id - The identifier of the file.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the file.
-   * @property {('image'|'book'|'video'|'audio'|'stylesheet'|'other')} mimeType - The type of the file.
-   * @property {number} size - The size of the file in bytes.
-   * @property {'file'} type - Shows that this item is a file.
-   */
-
+export default class FileItemComponent extends ListItem {
   /**
    * Creates an instance of the file item component with set container and properties.
    *
    * @param {Element} container - The parent element for the file item component.
-   * @param {Parameters} parameters - The initial file items configurations.
+   * @param {FileItem} parameters - The initial file items configurations.
    */
   constructor(container, parameters) {
     super(container, parameters.id);
@@ -75,13 +64,13 @@ export default class FileItem extends ListItem {
    * @private
    */
   _getReadableFileSizeString(fileSizeInBytes) {
-    let i = -1;
-    const byteUnits = [' KB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
-    do {
+    let i = 0;
+    const byteUnits = [' B', ' KB', ' MB', ' GB', ' TB', ' PB', ' EB', ' ZB', ' YB'];
+    while (fileSizeInBytes > 1024) {
       fileSizeInBytes = fileSizeInBytes / 1024;
       i++;
-    } while (fileSizeInBytes > 1024);
+    }
 
-    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+    return Math.round(fileSizeInBytes * 10) / 10 + byteUnits[i];
   }
 }

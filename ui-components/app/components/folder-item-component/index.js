@@ -23,9 +23,7 @@ export default class FolderItemComponent extends ListItem {
   markup() {
     return `
         <tr data-test="file-item">
-            <td class="icon-cell" data-test="icon-cell">
-                <span class="glyphicon glyphicon-menu-right"></span>
-            </td>
+            <td class="icon-cell" data-test="icon-cell"><span class="glyphicon glyphicon-menu-right"></span></td>
             <td class="filename">
                 <span class="glyphicon glyphicon-folder-close" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">

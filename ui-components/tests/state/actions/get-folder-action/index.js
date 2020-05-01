@@ -32,7 +32,6 @@ test('should call the mutate method of the state manager.', async (assert) => {
       if (mutator instanceof IsFolderLoadingMutator) {
         assert.step('IsFolderLoadingMutator: ' + mutator._isLoading);
       } else if (mutator instanceof FolderMutator) {
-        console.log('mutator', mutator);
         assert.deepEqual(mutator._folder, folder, 'The GetFolderAction should provide correct folder to the state ' +
           'manager.');
       }

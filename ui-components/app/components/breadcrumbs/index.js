@@ -1,14 +1,15 @@
 import Component from '../component.js';
+import FolderItem from '../../models/list-items/folder-item';
 
 /**
  * The component for displaying breadcrumbs.
  */
 export default class Breadcrumbs extends Component {
   /**
-   * The object for providing the Inner Breadcrumbs configuration via the constructor.
+   * The object for providing the Breadcrumbs configuration via the constructor.
    *
    * @typedef {object} Parameters
-   * @property {string} folder - The name of the current folder.
+   * @property {string} folderName - The name of the current folder.
    */
 
   /**
@@ -17,10 +18,10 @@ export default class Breadcrumbs extends Component {
    * @param {Element} container - The parent element for the breadcrumbs component.
    * @param {Parameters} parameters - The initial component parameters.
    */
-  constructor(container, {folder = 'Folder'} = {}) {
+  constructor(container, parameters = {folderName: ''}) {
     super(container);
 
-    this._folder = folder;
+    this._name = parameters.folderName;
     this.render();
   }
 
@@ -29,7 +30,7 @@ export default class Breadcrumbs extends Component {
     return `
         <div data-test="breadcrumbs">
             <div class="folder-icon" data-test="folder-icon"></div>
-            <span class="directory-name" data-test="directory-name">/ ${this._folder}</span>
+            <span class="directory-name" data-test="directory-name">/ ${this._name}</span>
         </div>
     `;
   }
@@ -41,22 +42,12 @@ export default class Breadcrumbs extends Component {
   }
 
   /**
-   * The object for describing the folder configurations.
-   *
-   * @typedef {object} FolderItemProperties
-   * @property {string} id - The identifier of the folder.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
-   * @property {'folder'} type - Shows that this item is a folder.
-   */
-
-  /**
    * Sets the current folder.
    *
-   * @param {FolderItemProperties} folder - The new folder.
+   * @param {FolderItem} folder - The new folder.
    */
   set folder(folder) {
+    console.log('folder setter');
     if (folder.parentId === 'none') {
       this._folderIcon.innerHTML = '<span class="glyphicon glyphicon-folder-open"></span>';
     } else {
@@ -67,6 +58,31 @@ export default class Breadcrumbs extends Component {
       `;
     }
 
+    this._folderIcon.style.visibility = 'visible';
     this._folderName.innerText = `/ ${folder.name}`;
+  }
+
+  /**
+   * Sets whether the folder data is being loaded or not.
+   *
+   * @param {boolean} isLoading - The flag that shows if the folder data is being loaded.
+   */
+  set isLoading(isLoading) {
+    console.log('isLoading setter');
+    if (isLoading) {
+      this._folderIcon.style.visibility = 'hidden';
+      this._folderName.innerText = 'Loading...';
+    }
+  }
+
+  /**
+   * Shows the provided error message.
+   *
+   * @param {string} message - The message to show.
+   */
+  set error(message) {
+    console.log('error setter');
+    this._folderIcon.style.visibility = 'hidden';
+    this._folderName.innerText = message;
   }
 }

@@ -8,6 +8,9 @@ import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE} from '../../router/routes';
 import RemoveItemAction from '../../state/actions/remove-item-action';
 import GetFolderAction from '../../state/actions/get-folder-action';
+import UrlProperties from '../../models/url-properties';
+import {ROOT_FOLDER_ID} from '../../models/root-folder';
+import NotFoundError from '../../models/errors/not-found-error';
 
 /**
  * The component for the File List Page.
@@ -18,7 +21,7 @@ export default class FileListPage extends StateAwareComponent {
    *
    * @param {Element} container - The parent element for the page.
    * @param {StateManager} stateManager - The state manager to use.
-   * @param {object} properties - The URL properties.
+   * @param {UrlProperties} properties - The URL properties.
    */
   constructor(container, stateManager, properties) {
     super(container, stateManager);
@@ -44,7 +47,7 @@ export default class FileListPage extends StateAwareComponent {
             </ul>
             
             <header class="header">
-                <a href="#/file-list/4Goz0J0Tz8xfDfsJ"><h1>File Explorer</h1></a>
+                <a href="#/file-list/${ROOT_FOLDER_ID}"><h1>File Explorer</h1></a>
             </header>
             
             <main class="file-list">
@@ -57,6 +60,11 @@ export default class FileListPage extends StateAwareComponent {
                 </div>
                 
                 <div data-test="file-list"></div>
+                <div class="loader" data-test="loader"></div>
+                <div class="not-found-message" data-test="not-found-message">
+                    <p>Unfortunately, we didn't manage to find this folder.</p>
+                    <a href="#/file-list/${ROOT_FOLDER_ID}" title="Go to the root folder">Go to the root folder</atitle>
+                </div>
             </main>
         </div>
     `;
@@ -71,7 +79,7 @@ export default class FileListPage extends StateAwareComponent {
 
     const breadcrumbsContainer = this.rootElement.querySelector('[data-test="breadcrumbs"]');
     this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer, {
-      folder: '',
+      folderName: '',
     });
 
     const createFolderButtonContainer = this.rootElement.querySelector('[data-test="create-folder-button"]');
@@ -86,6 +94,9 @@ export default class FileListPage extends StateAwareComponent {
 
     this.fileListContainer = this.rootElement.querySelector('[data-test="file-list"]');
     this.fileList = new FileList(this.fileListContainer);
+
+    this._notFoundMessage = this.rootElement.querySelector('[data-test="not-found-message"]');
+    this._notFoundMessage.style.display = 'none';
   }
 
   /** @inheritdoc */
@@ -105,11 +116,14 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('isFileListLoading', (event) => {
       const state = event.detail.state;
+      const loader = this.rootElement.querySelector('[data-test="loader"]');
       if (state.isFileListLoading) {
-        this.fileListContainer.innerHTML = '<div class="loader"></div>';
+        this.fileList.display = false;
+        loader.style.display = 'block';
+        this._notFoundMessage.style.display = 'none';
       } else {
-        this.fileListContainer.innerHTML = '';
-        this.fileList = new FileList(this.fileListContainer);
+        loader.style.display = 'none';
+        this.fileList.display = true;
       }
     });
 
@@ -121,10 +135,32 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
+    this.onStateChanged('isFolderLoading', (event) => {
+      const state = event.detail.state;
+      this.breadcrumbs.isLoading = state.isFolderLoading;
+    });
+
     this.onStateChanged('folder', (event) => {
       const state = event.detail.state;
       this._folder = state.folder;
       this.breadcrumbs.folder = state.folder;
+    });
+
+    this.onStateChanged('fileListLoadingError', (event) => {
+      const state = event.detail.state;
+      const error = state.fileListLoadingError;
+      if (error instanceof NotFoundError) {
+        this.fileList.files = [];
+        this._notFoundMessage.style.display = 'block';
+      }
+    });
+
+    this.onStateChanged('folderLoadingError', (event) => {
+      const state = event.detail.state;
+      const error = state.folderLoadingError;
+      if (error instanceof NotFoundError) {
+        this.breadcrumbs.error = 'Not Found';
+      }
     });
   }
 

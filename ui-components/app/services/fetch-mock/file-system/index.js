@@ -1,19 +1,10 @@
+import FileItem from '../../../models/list-items/file-item';
+import FolderItem from '../../../models/list-items/folder-item';
+
 /**
  * The class for storing files and folders for the fetch-mock.
  */
 export default class FileSystem {
-  /**
-   * The object for describing the file configurations.
-   *
-   * @typedef {object} FileItem
-   * @property {string} id - The identifier of the file.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the file.
-   * @property {('image'|'book'|'video'|'audio'|'stylesheet'|'other')} mimeType - The type of the file.
-   * @property {number} size - The size of the file in bytes.
-   * @property {'file'} type - Shows that this item is a file.
-   */
-
   /**
    * An array of files.
    *
@@ -53,17 +44,6 @@ export default class FileSystem {
       type: 'file',
     },
   ];
-
-  /**
-   * The object for describing the folder configurations.
-   *
-   * @typedef {object} FolderItem
-   * @property {string} id - The identifier of the folder.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
-   * @property {'folder'} type - Shows that this item is a folder.
-   */
 
   /**
    * An array of folders.

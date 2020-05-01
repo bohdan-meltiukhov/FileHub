@@ -5,7 +5,7 @@ import FileList from '../file-list';
 import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
-import {AUTHENTICATION_ROUTE} from '../../router/routes';
+import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
 
 /**
  * The component for the File List Page.
@@ -40,7 +40,7 @@ export default class FileListPage extends StateAwareComponent {
             </ul>
             
             <header class="header">
-                <a href="#"><h1>File Explorer</h1></a>
+                <a href="#${FILE_LIST_ROUTE}"><h1>File Explorer</h1></a>
             </header>
             
             <main class="file-list">

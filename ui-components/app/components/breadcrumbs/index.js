@@ -47,7 +47,6 @@ export default class Breadcrumbs extends Component {
    * @param {FolderItem} folder - The new folder.
    */
   set folder(folder) {
-    console.log('folder setter');
     if (folder.parentId === 'none') {
       this._folderIcon.innerHTML = '<span class="glyphicon glyphicon-folder-open"></span>';
     } else {
@@ -68,7 +67,6 @@ export default class Breadcrumbs extends Component {
    * @param {boolean} isLoading - The flag that shows if the folder data is being loaded.
    */
   set isLoading(isLoading) {
-    console.log('isLoading setter');
     if (isLoading) {
       this._folderIcon.style.visibility = 'hidden';
       this._folderName.innerText = 'Loading...';
@@ -81,7 +79,6 @@ export default class Breadcrumbs extends Component {
    * @param {string} message - The message to show.
    */
   set error(message) {
-    console.log('error setter');
     this._folderIcon.style.visibility = 'hidden';
     this._folderName.innerText = message;
   }

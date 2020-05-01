@@ -24,9 +24,10 @@ export default class GetFolderAction extends Action {
     try {
       const folder = await apiService.getFolder(this._folderId);
       stateManager.mutate(new FolderMutator(folder.folder));
-      stateManager.mutate(new IsFolderLoadingMutator(false));
     } catch (e) {
-      stateManager.mutate(new FolderLoadingErrorMutator(e.message));
+      stateManager.mutate(new FolderLoadingErrorMutator(e));
+    } finally {
+      stateManager.mutate(new IsFolderLoadingMutator(false));
     }
   }
 }

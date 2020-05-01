@@ -7,16 +7,16 @@ export default class FolderLoadingErrorMutator extends Mutator {
   /**
    * Creates an instance of the FolderLoadingErrorMutator with set error message.
    *
-   * @param {string} message - The message that describes the error.
+   * @param {Error} error - The error that occurred.
    */
-  constructor(message) {
+  constructor(error) {
     super();
 
-    this._message = message;
+    this._error = error;
   }
 
   /** @inheritdoc */
   apply(state) {
-    state.folderLoadingError = this._message;
+    state.folderLoadingError = this._error;
   }
 }

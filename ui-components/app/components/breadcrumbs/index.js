@@ -57,7 +57,8 @@ export default class Breadcrumbs extends Component {
       `;
     }
 
-    this._name = folder.name;
+    this._folderIcon.style.visibility = 'visible';
+    this._folderName.innerText = `/ ${folder.name}`;
   }
 
   /**
@@ -69,9 +70,16 @@ export default class Breadcrumbs extends Component {
     if (isLoading) {
       this._folderIcon.style.visibility = 'hidden';
       this._folderName.innerText = 'Loading...';
-    } else {
-      this._folderIcon.style.visibility = 'visible';
-      this._folderName.innerText = `/ ${this._name}`;
     }
+  }
+
+  /**
+   * Shows the provided error message.
+   *
+   * @param {string} message - The message to show.
+   */
+  set error(message) {
+    this._folderIcon.style.visibility = 'hidden';
+    this._folderName.innerText = message;
   }
 }

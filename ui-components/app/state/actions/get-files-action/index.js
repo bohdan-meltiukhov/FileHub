@@ -26,9 +26,10 @@ export default class GetFilesAction extends Action {
       const files = await apiService.getFiles(this._folderId);
       const items = files.files.map((item) => ListItemFactory.createItem(item));
       stateManager.mutate(new FileListMutator(items));
-      stateManager.mutate(new IsFileListLoadingMutator(false));
     } catch (e) {
-      stateManager.mutate(new FileListLoadingErrorMutator(e.message));
+      stateManager.mutate(new FileListLoadingErrorMutator(e));
+    } finally {
+      stateManager.mutate(new IsFileListLoadingMutator(false));
     }
   }
 }

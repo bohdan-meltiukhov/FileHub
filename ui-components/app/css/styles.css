@@ -272,6 +272,10 @@ a:hover {
     opacity: 1;
 }
 
+.file-list .not-found-message p {
+    margin: 10px 0;
+}
+
 .footer {
     border-top: 2px solid #999;
     text-align: center;

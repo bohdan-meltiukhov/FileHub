@@ -26,3 +26,4 @@ import * as folderLoadingErrorMutator from './state/mutators/folder-loading-erro
 import * as isFolderLoadingMutator from './state/mutators/is-folder-loading-mutator';
 import * as updateItemAction from './state/actions/update-item-action';
 import * as createFolderAction from './state/actions/create-folder-action';
+import * as renameFolderMutator from './state/mutators/rename-folder-mutator';

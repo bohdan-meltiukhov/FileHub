@@ -15,7 +15,7 @@ module('The FileItem', {
 
 test('should have the provided properties.', (assert) => {
   const name = 'image.png';
-  const size = 40960; // equals to 40 KB
+  const size = 41460; // equals to 40.5 KB
 
   const file = {
     id: '1',
@@ -23,7 +23,7 @@ test('should have the provided properties.', (assert) => {
     name,
     mimeType: 'image',
     size,
-    type: 'folder',
+    type: 'file',
   };
   new FileItem(row, file);
 
@@ -40,10 +40,55 @@ test('should have the provided properties.', (assert) => {
   assert.strictEqual(fileName.innerText, name, 'The file item should display the provided name.');
 
   const fileSize = fileItem.querySelector('[data-test="cell-count"]');
-  assert.strictEqual(fileSize.innerText, `40.0 KB`, 'The file item should display the provided size.');
+  assert.strictEqual(fileSize.innerText, `40.5 KB`, 'The file item should display the provided size.');
 
   const actions = fileItem.querySelector('[data-test="cell-actions"]');
   const firstAction = actions.firstElementChild;
   assert.strictEqual(firstAction.className, 'glyphicon glyphicon-download', 'The file item should show the download ' +
     'action.');
 });
+
+test('should calculate the file size correctly.', (assert) => {
+  const zeroBytes = 0;
+  const twoHundredBytes = 200;
+  const megabytes = 5000000;
+
+  const fileTemplate = {
+    id: '1',
+    parentId: 'parent',
+    name: 'Document.pdf',
+    mimeType: 'book',
+    type: 'file',
+  };
+
+  new FileItem(row, Object.assign(fileTemplate, {size: zeroBytes}));
+  let fileItem = fixture.firstElementChild;
+
+  let fileSize = fileItem.querySelector('[data-test="cell-count"]');
+  assert.strictEqual(fileSize.innerText, '0 B', 'The file item should display 0 bytes correctly.');
+
+  clearFixture();
+
+  new FileItem(row, Object.assign(fileTemplate, {size: twoHundredBytes}));
+  fileItem = fixture.firstElementChild;
+
+  fileSize = fileItem.querySelector('[data-test="cell-count"]');
+  assert.strictEqual(fileSize.innerText, '200 B', 'The file item should display 200 bytes correctly.');
+
+  clearFixture();
+
+  new FileItem(row, Object.assign(fileTemplate, {size: megabytes}));
+  fileItem = fixture.firstElementChild;
+
+  fileSize = fileItem.querySelector('[data-test="cell-count"]');
+  assert.strictEqual(fileSize.innerText, '4.8 MB', 'The file item should display 4.8 megabytes correctly.');
+});
+
+/**
+ * Clears the QUnit fixture.
+ */
+function clearFixture() {
+  fixture.innerHTML = '';
+  row = document.createElement('tr');
+  fixture.appendChild(row);
+}

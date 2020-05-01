@@ -15,7 +15,7 @@ module('The FolderItem', {
 
 test('should have the provided properties.', (assert) => {
   const name = 'Documents';
-  const itemsNumber = 15; // equals to 40 KB
+  const itemsNumber = 15;
 
   const file = {
     id: '1',

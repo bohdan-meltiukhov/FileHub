@@ -41,7 +41,7 @@ export default class FileList extends Component {
   /** @inheritdoc */
   initNestedComponents() {
     this._files.forEach((file) => {
-      const row = document.createElement('tr');
+      const row = document.createElement('div');
       this.rootElement.appendChild(row);
       if (file.type === 'folder') {
         new FolderItem(row, file);

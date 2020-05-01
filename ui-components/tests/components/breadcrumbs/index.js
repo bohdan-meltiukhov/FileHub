@@ -15,8 +15,8 @@ test('should display the provided folder name.', (assert) => {
   const breadcrumbs = new Breadcrumbs(fixture, {folderName});
   const breadcrumbsElement = fixture.firstElementChild;
 
-  breadcrumbs.isLoading = false;
-
+  // breadcrumbs.isLoading = false;
+  console.log('lol');
   assert.strictEqual(breadcrumbsElement.innerText, `/ ${folderName}`, 'The inner breadcrumbs should display ' +
     'the provided folder name.');
 });

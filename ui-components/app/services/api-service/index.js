@@ -101,7 +101,9 @@ export default class ApiService {
     case 500:
       return new GeneralServerError('Internal server error.');
     default:
-      return new Error('Unknown error');
+      return response.json().then((body) => {
+        return new Error(body);
+      });
     }
   }
 

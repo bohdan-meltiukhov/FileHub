@@ -1,5 +1,4 @@
 import Component from '../component.js';
-import {FILE_LIST_ROUTE} from '../../router/routes';
 import FolderItem from '../../models/list-items/folder-item';
 
 /**
@@ -22,8 +21,8 @@ export default class Breadcrumbs extends Component {
   constructor(container, parameters = {folderName: ''}) {
     super(container);
 
-    this.render();
     this._name = parameters.folderName;
+    this.render();
   }
 
   /** @inheritdoc */
@@ -31,7 +30,7 @@ export default class Breadcrumbs extends Component {
     return `
         <div data-test="breadcrumbs">
             <div class="folder-icon" data-test="folder-icon"></div>
-            <span class="directory-name" data-test="directory-name"></span>
+            <span class="directory-name" data-test="directory-name">/ ${this._name}</span>
         </div>
     `;
   }
@@ -48,6 +47,7 @@ export default class Breadcrumbs extends Component {
    * @param {FolderItem} folder - The new folder.
    */
   set folder(folder) {
+    console.log('folder setter');
     if (folder.parentId === 'none') {
       this._folderIcon.innerHTML = '<span class="glyphicon glyphicon-folder-open"></span>';
     } else {
@@ -68,6 +68,7 @@ export default class Breadcrumbs extends Component {
    * @param {boolean} isLoading - The flag that shows if the folder data is being loaded.
    */
   set isLoading(isLoading) {
+    console.log('isLoading setter');
     if (isLoading) {
       this._folderIcon.style.visibility = 'hidden';
       this._folderName.innerText = 'Loading...';
@@ -80,6 +81,7 @@ export default class Breadcrumbs extends Component {
    * @param {string} message - The message to show.
    */
   set error(message) {
+    console.log('error setter');
     this._folderIcon.style.visibility = 'hidden';
     this._folderName.innerText = message;
   }

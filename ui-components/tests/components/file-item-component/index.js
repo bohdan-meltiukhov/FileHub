@@ -61,7 +61,7 @@ test('should calculate the file size correctly.', (assert) => {
     type: 'file',
   };
 
-  new FileItem(row, Object.assign(fileTemplate, {size: zeroBytes}));
+  new FileItemComponent(row, Object.assign(fileTemplate, {size: zeroBytes}));
   let fileItem = fixture.firstElementChild;
 
   let fileSize = fileItem.querySelector('[data-test="cell-count"]');
@@ -69,7 +69,7 @@ test('should calculate the file size correctly.', (assert) => {
 
   clearFixture();
 
-  new FileItem(row, Object.assign(fileTemplate, {size: twoHundredBytes}));
+  new FileItemComponent(row, Object.assign(fileTemplate, {size: twoHundredBytes}));
   fileItem = fixture.firstElementChild;
 
   fileSize = fileItem.querySelector('[data-test="cell-count"]');
@@ -77,7 +77,7 @@ test('should calculate the file size correctly.', (assert) => {
 
   clearFixture();
 
-  new FileItem(row, Object.assign(fileTemplate, {size: megabytes}));
+  new FileItemComponent(row, Object.assign(fileTemplate, {size: megabytes}));
   fileItem = fixture.firstElementChild;
 
   fileSize = fileItem.querySelector('[data-test="cell-count"]');

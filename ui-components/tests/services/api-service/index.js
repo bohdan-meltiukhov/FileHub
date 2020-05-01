@@ -298,3 +298,32 @@ test('should update files.', (assert) => {
     method: 'PUT',
   }), 'The updateFile() method should send a PUT request to the \'/file/:id\' URL.');
 });
+
+test('should create folders.', async (assert) => {
+  assert.expect(3);
+
+  const parentId = '4Goz0J0Tz8xfDfsJ';
+  const folder = {
+    id: 'uExvhDL4YwkxnBVa',
+    parentId,
+    name: 'New Folder',
+    itemsNumber: 0,
+    type: 'folder',
+  };
+
+  fetchMock.post('glob:/folder/*/folder', (url) => {
+    const id = url.slice(8, url.lastIndexOf('/folder'));
+
+    assert.strictEqual(id, parentId, 'The createFolder() method should send a request with correct folder ID.');
+
+    return folder;
+  });
+
+  const apiService = ApiService.getInstance();
+  const response = await apiService.createFolder(parentId);
+  assert.deepEqual(response, folder, 'The createFolder() method should return the correct folder.');
+
+  assert.ok(fetchMock.called('glob:/folder/*/folder', {
+    method: 'POST',
+  }), 'The createFolder() method should send a POST request to the \'/folder/:id/folder\' URL.');
+});

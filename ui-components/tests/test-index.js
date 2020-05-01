@@ -6,6 +6,7 @@ import * as router from './router';
 import * as apiService from './services/api-service';
 import * as fileItemComponent from './components/file-item-component';
 import * as folderItemComponent from './components/folder-item-component';
+import * as titleService from './services/title-service';
 import * as fileList from './components/file-list';
 import * as fileListPage from './components/file-list-page';
 import * as breadcrumbs from './components/breadcrumbs';

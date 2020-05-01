@@ -1,4 +1,5 @@
 import Component from '../component.js';
+import {FILE_LIST_ROUTE} from '../../router/routes';
 import FolderItem from '../../models/list-items/folder-item';
 
 /**

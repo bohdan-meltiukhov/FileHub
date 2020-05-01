@@ -10,7 +10,7 @@ export default class HashChangedAction extends Action {
    * Creates an instance of the HashChangedAction with set static and dynamic URL parts.
    *
    * @param {string} staticPart - The static part of the URL.
-   * @param {string} dynamicPart - The dynamic part of the URL.
+   * @param {object.<string, string>} dynamicPart - The dynamic part of the URL.
    */
   constructor(staticPart, dynamicPart) {
     super();

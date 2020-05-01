@@ -1,12 +1,13 @@
 import FolderMutator from '../../../../app/state/mutators/folder-mutator';
 import GetFolderAction from '../../../../app/state/actions/get-folder-action';
+import IsFolderLoadingMutator from '../../../../app/state/mutators/is-folder-loading-mutator';
 
 const {module, test} = QUnit;
 
 module('The GetFolderAction');
 
-test('should call the mutate method of the state manager.', (assert) => {
-  assert.expect(2);
+test('should call the mutate method of the state manager.', async (assert) => {
+  assert.expect(8);
 
   const folder = {
     id: 'uExvhDL4YwkxnBVa',
@@ -16,22 +17,36 @@ test('should call the mutate method of the state manager.', (assert) => {
     type: 'folder',
   };
 
+  const getFolder = async (folderId) => {
+    assert.strictEqual(folderId, folder.id, 'The GetFolderAction should provide correct folderId to the apiService.');
+    return {folder};
+  };
+
   const apiServiceMock = {
-    getFolder: async () => {
-      return {folder};
-    },
+    getFolder,
   };
 
   const stateManagerMock = {
     mutate: (mutator) => {
-      assert.ok(mutator instanceof FolderMutator, 'The GetFolderAction should send a FolderMutator to the state ' +
-        'manager.');
-
-      assert.deepEqual(mutator._folder, folder, 'The GetFolderAction should send the correct folder to the ' +
-        'FolderMutator.');
+      assert.step(mutator.constructor.name);
+      if (mutator instanceof IsFolderLoadingMutator) {
+        assert.step('IsFolderLoadingMutator: ' + mutator._isLoading);
+      } else if (mutator instanceof FolderMutator) {
+        assert.deepEqual(mutator._folder, folder, 'The GetFolderAction should provide correct folder to the state ' +
+          'manager.');
+      }
     },
   };
 
-  const action = new GetFolderAction();
+  const action = new GetFolderAction(folder.id);
   action.apply(stateManagerMock, apiServiceMock);
+
+  await getFolder;
+  assert.verifySteps([
+    'IsFolderLoadingMutator',
+    'IsFolderLoadingMutator: true',
+    'FolderMutator',
+    'IsFolderLoadingMutator',
+    'IsFolderLoadingMutator: false',
+  ], 'The GetFolderAction should provide mutators to the state manager in the correct order.');
 });

@@ -66,13 +66,19 @@ export default class FetchMock {
     fetchMock.get('glob:/folder/*/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
 
+      const parentFolder = FileSystem.folders.find((folder) => {
+        if (folder.id === id) {
+          return true;
+        }
+      });
+
+      if (!parentFolder) {
+        return 404;
+      }
+
       const folders = FileSystem.folders.filter((folder) => folder.parentId === id);
       const files = FileSystem.files.filter((file) => file.parentId === id);
       const content = folders.concat(files);
-
-      if (!content) {
-        return 404;
-      }
 
       return {
         body: {
@@ -108,6 +114,8 @@ export default class FetchMock {
           folder,
         },
       };
+    }, {
+      delay: 500,
     });
   }
 

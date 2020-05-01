@@ -1,21 +1,27 @@
 import FileList from '../../../app/components/file-list';
+import FolderItem from '../../../app/models/list-items/folder-item';
+import FileItem from '../../../app/models/list-items/file-item';
 
 const {module, test} = QUnit;
 
 let fixture;
 
 const files = [
-  {
+  new FolderItem({
+    id: 'uExvhDL4YwkxnBVa',
+    parentId: '4Goz0J0Tz8xfDfsJ',
     name: 'Documents',
     itemsNumber: 20,
     type: 'folder',
-  },
-  {
-    name: 'photo.png',
-    mimeType: 'image',
-    size: 16,
+  }),
+  new FileItem({
+    id: 'rYol3zzsCYc561cV',
+    parentId: '4Goz0J0Tz8xfDfsJ',
+    name: 'Document.pdf',
+    mimeType: 'book',
+    size: 202,
     type: 'file',
-  },
+  }),
 ];
 
 module('The FileList', {

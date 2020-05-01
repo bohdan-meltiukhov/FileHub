@@ -1,5 +1,5 @@
 import Router from '../../app/router';
-import {REGISTRATION_ROUTE, AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../app/router/routes';
+import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE, REGISTRATION_ROUTE} from '../../app/router/routes';
 import LoginPage from '../../app/components/login-page';
 import RegistrationPage from '../../app/components/registration-page';
 import FileListPage from '../../app/components/file-list-page';

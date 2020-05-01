@@ -12,11 +12,9 @@ module('The Breadcrumbs', {
 
 test('should display the provided folder name.', (assert) => {
   const folderName = 'Documents';
-  const breadcrumbs = new Breadcrumbs(fixture, {folderName});
+  new Breadcrumbs(fixture, {folderName});
   const breadcrumbsElement = fixture.firstElementChild;
 
-  // breadcrumbs.isLoading = false;
-  console.log('lol');
   assert.strictEqual(breadcrumbsElement.innerText, `/ ${folderName}`, 'The inner breadcrumbs should display ' +
     'the provided folder name.');
 });

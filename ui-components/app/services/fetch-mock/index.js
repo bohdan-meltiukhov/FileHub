@@ -13,8 +13,8 @@ export default class FetchMock {
     FetchMock._postRegister();
     FetchMock._getFiles();
     FetchMock._getFolder();
-    FetchMock._updateFolder();
-    FetchMock._updateFile();
+    FetchMock._putFolder();
+    FetchMock._putFile();
   }
 
   /**
@@ -125,7 +125,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _updateFolder() {
+  static _putFolder() {
     fetchMock.put('glob:/folder/*', (url, options) => {
       const id = url.slice(8);
       const index = FileSystem.folders.findIndex((folder) => {
@@ -148,7 +148,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _updateFile() {
+  static _putFile() {
     fetchMock.put('glob:/file/*', (url, options) => {
       const id = url.slice(6);
 

@@ -52,7 +52,12 @@ test('should render the correct page when the location hash changes.', (assert) 
 
   const rootElement = document.createElement('div');
 
-  const stateManager = new StateManager({}, ApiService.getInstance());
+  const stateManager = {
+    dispatch: (action) => {
+    },
+    onStateChanged: () => {
+    },
+  };
 
   const urlProperties = new UrlProperties('root');
 

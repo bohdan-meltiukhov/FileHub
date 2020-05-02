@@ -138,6 +138,8 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
+  assert.expect(4);
+
   fetchMock.post(/^\/(login|register)$/, 500);
 
   const apiService = ApiService.getInstance();

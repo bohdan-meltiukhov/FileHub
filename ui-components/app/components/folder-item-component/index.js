@@ -1,5 +1,5 @@
 import ListItem from '../list-item';
-import FolderItem from '../../models/list-items/folder-item';
+import FolderItem from '../../models/file-system-objects/folder-item';
 
 /**
  * The component for displaying the folder item.

@@ -1,5 +1,6 @@
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
 import FileSystem from './file-system';
+import FolderItem from '../../models/list-items/folder-item';
 
 /**
  * The class for setting the fetch mock.
@@ -9,12 +10,12 @@ export default class FetchMock {
    * Sets mocks for different fetch requests.
    */
   static setMock() {
-    FetchMock._setLogin();
-    FetchMock._setRegister();
-    FetchMock._setFiles();
-    FetchMock._setFolder();
-    FetchMock._setDeleteFolder();
-    FetchMock._setDeleteFile();
+    FetchMock._postLogin();
+    FetchMock._postRegister();
+    FetchMock._getFiles();
+    FetchMock._getFolder();
+    FetchMock._deleteFolder();
+    FetchMock._deleteFile();
   }
 
   /**
@@ -22,7 +23,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setLogin() {
+  static _postLogin() {
     fetchMock.post('/login', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin' && credentials.password === '1234') {
@@ -37,7 +38,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setRegister() {
+  static _postRegister() {
     fetchMock.post('/register', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin') {
@@ -63,7 +64,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setFiles() {
+  static _getFiles() {
     fetchMock.get('glob:/folder/*/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
 
@@ -96,7 +97,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setFolder() {
+  static _getFolder() {
     fetchMock.get('glob:/folder/*', (url) => {
       const id = url.slice(8);
 
@@ -125,7 +126,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setDeleteFolder() {
+  static _deleteFolder() {
     fetchMock.delete('glob:/folder/*', (url) => {
       const id = url.slice(8);
 
@@ -139,7 +140,7 @@ export default class FetchMock {
         return 404;
       }
 
-      FetchMock._deleteFolder(folder);
+      FetchMock._deleteFolderRecursively(folder);
 
       return 200;
     }, {
@@ -152,7 +153,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setDeleteFile() {
+  static _deleteFile() {
     fetchMock.delete('glob:/file/*', (url) => {
       const id = url.slice(6);
 
@@ -174,23 +175,12 @@ export default class FetchMock {
   }
 
   /**
-   * The object for describing the folder configurations.
-   *
-   * @typedef {object} FolderItem
-   * @property {string} id - The identifier of the folder.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
-   * @property {'folder'} type - Shows that this item is a folder.
-   */
-
-  /**
    * Recursively deletes a folder and all its content.
    *
    * @param {FolderItem} folder - The folder to delete.
    * @private
    */
-  static _deleteFolder(folder) {
+  static _deleteFolderRecursively(folder) {
     const childFolders = FileSystem.folders.filter((childFolder) => childFolder.parentId === folder.id);
     childFolders.forEach((childFolder) => {
       FetchMock._deleteFolder(childFolder);

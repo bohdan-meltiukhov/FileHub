@@ -53,7 +53,7 @@ export default class LoginPage extends Component {
     const apiService = ApiService.getInstance();
     apiService.logIn(userCredentials)
       .then(() => {
-        window.location.hash = FILE_LIST_ROUTE.slice(0, FILE_LIST_ROUTE.indexOf(':folderId')) + ROOT_FOLDER_ID;
+        window.location.hash = FILE_LIST_ROUTE.replace(':folderId', ROOT_FOLDER_ID);
       })
       .catch((error) => {
         this._handleError(error);

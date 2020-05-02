@@ -100,13 +100,11 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   initState() {
-    this.onStateChanged('fileList', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
     });
 
-    this.onStateChanged('isFileListLoading', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('isFileListLoading', ({detail: {state}}) => {
       const loader = this.rootElement.querySelector('[data-test="loader"]');
       if (state.isFileListLoading) {
         this.fileList.display = false;
@@ -118,27 +116,23 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    this.onStateChanged('locationParameters', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('locationParameters', ({detail: {state}}) => {
       if (state.locationParameters.folderId) {
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
       }
     });
 
-    this.onStateChanged('isFolderLoading', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('isFolderLoading', ({detail: {state}}) => {
       this.breadcrumbs.isLoading = state.isFolderLoading;
     });
 
-    this.onStateChanged('folder', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('folder', ({detail: {state}}) => {
       this._folder = state.folder;
       this.breadcrumbs.folder = state.folder;
     });
 
-    this.onStateChanged('fileListLoadingError', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('fileListLoadingError', ({detail: {state}}) => {
       const error = state.fileListLoadingError;
       if (error instanceof NotFoundError) {
         this.fileList.files = [];
@@ -146,8 +140,7 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    this.onStateChanged('folderLoadingError', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('folderLoadingError', ({detail: {state}}) => {
       const error = state.folderLoadingError;
       if (error instanceof NotFoundError) {
         this.breadcrumbs.error = 'Not Found';

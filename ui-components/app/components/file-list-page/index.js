@@ -5,7 +5,7 @@ import FileList from '../file-list';
 import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
-import {AUTHENTICATION_ROUTE} from '../../router/routes';
+import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
 import GetFolderAction from '../../state/actions/get-folder-action';
 import UrlProperties from '../../models/url-properties';
 import {ROOT_FOLDER_ID} from '../../models/root-folder';
@@ -34,6 +34,7 @@ export default class FileListPage extends StateAwareComponent {
    * @inheritdoc
    */
   markup() {
+    const rootFolderPath = FILE_LIST_ROUTE.replace(':folderId', ROOT_FOLDER_ID);
     return `
         <div class="application-box" data-test="file-list-page">
             <img src="app/images/logo.png" class="logo" alt="logo">
@@ -46,7 +47,7 @@ export default class FileListPage extends StateAwareComponent {
             </ul>
             
             <header class="header">
-                <a href="#/file-list/${ROOT_FOLDER_ID}"><h1>File Explorer</h1></a>
+                <a href="#${rootFolderPath}"><h1>File Explorer</h1></a>
             </header>
             
             <main class="file-list">
@@ -62,7 +63,7 @@ export default class FileListPage extends StateAwareComponent {
                 <div class="loader" data-test="loader"></div>
                 <div class="not-found-message" data-test="not-found-message">
                     <p>Unfortunately, we didn't manage to find this folder.</p>
-                    <a href="#/file-list/${ROOT_FOLDER_ID}" title="Go to the root folder">Go to the root folder</atitle>
+                    <a href="#${rootFolderPath}" title="Go to the root folder">Go to the root folder</atitle>
                 </div>
             </main>
         </div>

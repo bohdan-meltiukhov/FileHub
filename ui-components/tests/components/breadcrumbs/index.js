@@ -10,15 +10,6 @@ module('The Breadcrumbs', {
   },
 });
 
-test('should display the provided folder name.', (assert) => {
-  const folderName = 'Documents';
-  new Breadcrumbs(fixture, {folderName});
-  const breadcrumbsElement = fixture.firstElementChild;
-
-  assert.strictEqual(breadcrumbsElement.innerText, `/ ${folderName}`, 'The inner breadcrumbs should display ' +
-    'the provided folder name.');
-});
-
 test('should set the folder.', (assert) => {
   assert.expect(3);
 

@@ -165,7 +165,7 @@ export default class ApiService {
     })
       .then((response) => {
         if (!response.ok) {
-          throw this._handleRequestErrors(response.status);
+          throw this._handleRequestErrors(response);
         }
       });
   }
@@ -182,7 +182,7 @@ export default class ApiService {
     })
       .then((response) => {
         if (!response.ok) {
-          throw this._handleRequestErrors(response.status);
+          throw this._handleRequestErrors(response);
         }
       });
   }

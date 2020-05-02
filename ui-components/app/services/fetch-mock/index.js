@@ -1,6 +1,6 @@
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
 import FileSystem from './file-system';
-import FolderItem from '../../models/list-items/folder-item';
+import FolderItem from '../../models/file-system-objects/folder-item';
 
 /**
  * The class for setting the fetch mock.

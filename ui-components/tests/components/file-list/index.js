@@ -1,6 +1,6 @@
 import FileList from '../../../app/components/file-list';
-import FolderItem from '../../../app/models/list-items/folder-item';
-import FileItem from '../../../app/models/list-items/file-item';
+import FolderItem from '../../../app/models/file-system-objects/folder-item';
+import FileItem from '../../../app/models/file-system-objects/file-item';
 
 const {module, test} = QUnit;
 

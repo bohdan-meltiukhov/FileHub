@@ -1,5 +1,5 @@
 import Mutator from '../mutator';
-import FolderItem from '../../../models/list-items/folder-item';
+import FolderItem from '../../../models/file-system-objects/folder-item';
 
 /**
  * The mutator that sets the folder data.

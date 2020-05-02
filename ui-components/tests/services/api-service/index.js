@@ -138,6 +138,8 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
+  assert.expect(4);
+
   fetchMock.post(/^\/(login|register)$/, 500);
 
   const apiService = ApiService.getInstance();
@@ -162,7 +164,7 @@ test('should handle the 500 error.', async (assert) => {
 });
 
 test('should get files.', async (assert) => {
-  assert.expect(3);
+  assert.expect(2);
 
   const folderId = '4Goz0J0Tz8xfDfsJ';
 
@@ -191,26 +193,20 @@ test('should get files.', async (assert) => {
     },
   ];
 
-  fetchMock.get('glob:/folder/*/content', (url) => {
-    const id = url.slice(8, url.indexOf('/content'));
-
-    assert.strictEqual(id, folderId, 'The getFiles() method should send the files request with correct folder id.');
-
-    return content;
-  });
+  fetchMock.get(`/folder/${folderId}/content`, content);
 
   const apiService = ApiService.getInstance();
   const files = await apiService.getFiles(folderId);
 
   assert.deepEqual(files, content, 'The getFiles() method should provide correct files.');
 
-  assert.ok(fetchMock.called('glob:/folder/*', {
+  assert.ok(fetchMock.called(`/folder/${folderId}/content`, {
     method: 'GET',
   }), 'The getFiles() method should send a GET request to the \'/folder/:id/content\' URL.');
 });
 
 test('should get a folder.', async (assert) => {
-  assert.expect(3);
+  assert.expect(2);
 
   const folderId = 'uExvhDL4YwkxnBVa';
 
@@ -222,20 +218,14 @@ test('should get a folder.', async (assert) => {
     type: 'folder',
   };
 
-  fetchMock.get('glob:/folder/*', (url) => {
-    const id = url.slice(8);
-
-    assert.strictEqual(id, folderId, 'The getFolder() method should send the folder request with correct folder id.');
-
-    return folder;
-  });
+  fetchMock.get(`/folder/${folderId}`, folder);
 
   const apiService = ApiService.getInstance();
   const response = await apiService.getFolder(folderId);
 
   assert.deepEqual(response, folder, 'The getFolder() method should provide the correct folder.');
 
-  assert.ok(fetchMock.called('glob:/folder/*', {
+  assert.ok(fetchMock.called(`/folder/${folderId}`, {
     method: 'GET',
   }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
 });

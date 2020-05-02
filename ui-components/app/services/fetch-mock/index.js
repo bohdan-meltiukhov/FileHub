@@ -9,12 +9,12 @@ export default class FetchMock {
    * Sets mocks for different fetch requests.
    */
   static setMock() {
-    FetchMock._setLogin();
-    FetchMock._setRegister();
-    FetchMock._setFiles();
-    FetchMock._setFolder();
-    FetchMock._setUpdateFolder();
-    FetchMock._setUpdateFile();
+    FetchMock._postLogin();
+    FetchMock._postRegister();
+    FetchMock._getFiles();
+    FetchMock._getFolder();
+    FetchMock._updateFolder();
+    FetchMock._updateFile();
   }
 
   /**
@@ -22,7 +22,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setLogin() {
+  static _postLogin() {
     fetchMock.post('/login', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin' && credentials.password === '1234') {
@@ -37,7 +37,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setRegister() {
+  static _postRegister() {
     fetchMock.post('/register', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin') {
@@ -63,7 +63,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setFiles() {
+  static _getFiles() {
     fetchMock.get('glob:/folder/*/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
 
@@ -96,7 +96,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setFolder() {
+  static _getFolder() {
     fetchMock.get('glob:/folder/*', (url) => {
       const id = url.slice(8);
 
@@ -121,22 +121,11 @@ export default class FetchMock {
   }
 
   /**
-   * The object for describing the folder configurations.
-   *
-   * @typedef {object} FolderItem
-   * @property {string} id - The identifier of the folder.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
-   * @property {'folder'} type - Shows that this item is a folder.
-   */
-
-  /**
    * Sets a mock for the put folder request.
    *
    * @private
    */
-  static _setUpdateFolder() {
+  static _updateFolder() {
     fetchMock.put('glob:/folder/*', (url, options) => {
       const id = url.slice(8);
       const index = FileSystem.folders.findIndex((folder) => {
@@ -159,7 +148,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setUpdateFile() {
+  static _updateFile() {
     fetchMock.put('glob:/file/*', (url, options) => {
       const id = url.slice(6);
 

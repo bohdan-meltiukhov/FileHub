@@ -1,7 +1,7 @@
 import FileListMutator from '../../../../app/state/mutators/file-list-mutator';
 import GetFilesAction from '../../../../app/state/actions/get-files-action';
 import IsFileListLoadingMutator from '../../../../app/state/mutators/is-file-list-loading-mutator';
-import FileItem from '../../../../app/models/list-items/file-item';
+import FileItem from '../../../../app/models/file-system-objects/file-item';
 
 const {module, test} = QUnit;
 

@@ -11,11 +11,11 @@ export default class FetchMock {
    * Sets mocks for different fetch requests.
    */
   static setMock() {
-    FetchMock._setLogin();
-    FetchMock._setRegister();
-    FetchMock._setFiles();
-    FetchMock._setFolder();
-    FetchMock._setUser();
+    FetchMock._postLogin();
+    FetchMock._postRegister();
+    FetchMock._getFiles();
+    FetchMock._getFolder();
+    FetchMock._getUser();
   }
 
   /**
@@ -23,7 +23,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setLogin() {
+  static _postLogin() {
     fetchMock.post('/login', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin' && credentials.password === '1234') {
@@ -38,7 +38,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setRegister() {
+  static _postRegister() {
     fetchMock.post('/register', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin') {
@@ -64,17 +64,23 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setFiles() {
+  static _getFiles() {
     fetchMock.get('glob:/folder/*/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
+
+      const parentFolder = FileSystem.folders.find((folder) => {
+        if (folder.id === id) {
+          return true;
+        }
+      });
+
+      if (!parentFolder) {
+        return 404;
+      }
 
       const folders = FileSystem.folders.filter((folder) => folder.parentId === id);
       const files = FileSystem.files.filter((file) => file.parentId === id);
       const content = folders.concat(files);
-
-      if (!content) {
-        return 404;
-      }
 
       return {
         body: {
@@ -91,7 +97,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setFolder() {
+  static _getFolder() {
     fetchMock.get('glob:/folder/*', (url) => {
       const id = url.slice(8);
 
@@ -110,6 +116,8 @@ export default class FetchMock {
           folder,
         },
       };
+    }, {
+      delay: 500,
     });
   }
 
@@ -118,7 +126,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setUser() {
+  static _getUser() {
     fetchMock.get('/user', (url, opts) => {
       if (opts.headers.Authentication === TOKEN) {
         return {

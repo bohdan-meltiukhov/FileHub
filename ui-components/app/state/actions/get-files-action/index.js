@@ -2,6 +2,7 @@ import Action from '../action';
 import IsFileListLoadingMutator from '../../mutators/is-file-list-loading-mutator';
 import FileListMutator from '../../mutators/file-list-mutator';
 import FileListLoadingErrorMutator from '../../mutators/file-list-loading-error-mutator';
+import FileSystemObjectFactory from '../../../models/file-system-objects/file-system-object-factory';
 
 /**
  * The actions that gets files from the server.
@@ -23,10 +24,12 @@ export default class GetFilesAction extends Action {
     stateManager.mutate(new IsFileListLoadingMutator(true));
     try {
       const files = await apiService.getFiles(this._folderId);
-      stateManager.mutate(new IsFileListLoadingMutator(false));
-      stateManager.mutate(new FileListMutator(files.files));
+      const items = files.files.map((item) => FileSystemObjectFactory.createItem(item));
+      stateManager.mutate(new FileListMutator(items));
     } catch (e) {
-      stateManager.mutate(new FileListLoadingErrorMutator(e.message));
+      stateManager.mutate(new FileListLoadingErrorMutator(e));
+    } finally {
+      stateManager.mutate(new IsFileListLoadingMutator(false));
     }
   }
 }

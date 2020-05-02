@@ -5,7 +5,9 @@ import UserCredentials from '../../models/user-credentials';
 import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import ServerValidationError from '../../models/errors/server-validation-error';
+import TitleService from '../../services/title-service';
 import {FILE_LIST_ROUTE} from '../../router/routes';
+import {ROOT_FOLDER_ID} from '../../models/root-folder';
 
 /**
  * The component for the login page.
@@ -20,6 +22,9 @@ export default class LoginPage extends Component {
     super(container);
 
     this.render();
+
+    const titleService = new TitleService(document);
+    titleService.setTitle('Authentication');
   }
 
   /**
@@ -48,8 +53,7 @@ export default class LoginPage extends Component {
     const apiService = ApiService.getInstance();
     apiService.logIn(userCredentials)
       .then(() => {
-        const rootFolderRoute = FILE_LIST_ROUTE.slice(0, FILE_LIST_ROUTE.indexOf(':id')) + '4Goz0J0Tz8xfDfsJ';
-        window.location.hash = rootFolderRoute;
+        window.location.hash = FILE_LIST_ROUTE.replace(':folderId', ROOT_FOLDER_ID);
       })
       .catch((error) => {
         this._handleError(error);

@@ -1,11 +1,12 @@
 import Router from '../../app/router';
-import {REGISTRATION_ROUTE, AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../app/router/routes';
+import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE, REGISTRATION_ROUTE} from '../../app/router/routes';
 import LoginPage from '../../app/components/login-page';
 import RegistrationPage from '../../app/components/registration-page';
 import FileListPage from '../../app/components/file-list-page';
 import NotFoundPage from '../../app/components/not-found';
 import StateManager from '../../app/state/state-manager';
 import ApiService from '../../app/services/api-service';
+import UrlProperties from '../../app/models/url-properties';
 
 const {module, test} = QUnit;
 
@@ -53,12 +54,14 @@ test('should render the correct page when the location hash changes.', (assert) 
 
   const stateManager = new StateManager({}, ApiService.getInstance());
 
+  const urlProperties = new UrlProperties('root');
+
   const properties = {
     rootElement,
     pageMapping: {
       [AUTHENTICATION_ROUTE]: () => new LoginPage(rootElement),
       [REGISTRATION_ROUTE]: () => new RegistrationPage(rootElement),
-      [FILE_LIST_ROUTE]: () => new FileListPage(rootElement, stateManager),
+      [FILE_LIST_ROUTE]: () => new FileListPage(rootElement, stateManager, urlProperties),
     },
     defaultLocation: AUTHENTICATION_ROUTE,
     notFoundPage: function() {

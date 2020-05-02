@@ -79,9 +79,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     const breadcrumbsContainer = this.rootElement.querySelector('[data-test="breadcrumbs"]');
-    this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer, {
-      folderName: '',
-    });
+    this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer);
 
     const createFolderButtonContainer = this.rootElement.querySelector('[data-test="create-folder-button"]');
     this.createFolderButton = new Button(createFolderButtonContainer, {

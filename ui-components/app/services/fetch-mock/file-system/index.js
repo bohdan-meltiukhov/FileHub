@@ -1,5 +1,5 @@
-import FileItem from '../../../models/list-items/file-item';
-import FolderItem from '../../../models/list-items/folder-item';
+import FileItem from '../../../models/file-system-objects/file-item';
+import FolderItem from '../../../models/file-system-objects/folder-item';
 
 /**
  * The class for storing files and folders for the fetch-mock.

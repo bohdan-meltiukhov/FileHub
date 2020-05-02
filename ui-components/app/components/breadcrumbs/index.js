@@ -1,5 +1,5 @@
 import Component from '../component.js';
-import FolderItem from '../../models/list-items/folder-item';
+import FolderItem from '../../models/file-system-objects/folder-item';
 
 /**
  * The component for displaying breadcrumbs.

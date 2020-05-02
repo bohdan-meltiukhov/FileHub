@@ -4,7 +4,7 @@ import FileItem from '../file-item';
 /**
  * The factory that creates necessary file and folder items.
  */
-export default class ListItemFactory {
+export default class FileSystemObjectFactory {
   /**
    * The object for providing file parameters.
    *

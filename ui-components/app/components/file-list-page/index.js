@@ -5,7 +5,7 @@ import FileList from '../file-list';
 import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
-import {AUTHENTICATION_ROUTE} from '../../router/routes';
+import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
 import UpdateItemAction from '../../state/actions/update-item-action';
 import GetFolderAction from '../../state/actions/get-folder-action';
 import CreateFolderAction from '../../state/actions/create-folder-action';
@@ -37,6 +37,7 @@ export default class FileListPage extends StateAwareComponent {
    * @inheritdoc
    */
   markup() {
+    const rootFolderPath = FILE_LIST_ROUTE.replace(':folderId', ROOT_FOLDER_ID);
     return `
         <div class="application-box" data-test="file-list-page">
             <img src="app/images/logo.png" class="logo" alt="logo">
@@ -49,7 +50,7 @@ export default class FileListPage extends StateAwareComponent {
             </ul>
             
             <header class="header">
-                <a href="#/file-list/${ROOT_FOLDER_ID}"><h1>File Explorer</h1></a>
+                <a href="#${rootFolderPath}"><h1>File Explorer</h1></a>
             </header>
             
             <main class="file-list">
@@ -65,7 +66,7 @@ export default class FileListPage extends StateAwareComponent {
                 <div class="loader" data-test="loader"></div>
                 <div class="not-found-message" data-test="not-found-message">
                     <p>Unfortunately, we didn't manage to find this folder.</p>
-                    <a href="#/file-list/${ROOT_FOLDER_ID}" title="Go to the root folder">Go to the root folder</atitle>
+                    <a href="#${rootFolderPath}" title="Go to the root folder">Go to the root folder</atitle>
                 </div>
             </main>
         </div>
@@ -114,8 +115,7 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   initState() {
-    this.onStateChanged('fileList', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
 
       this.fileList.onItemNameChanged((item) => {
@@ -123,8 +123,7 @@ export default class FileListPage extends StateAwareComponent {
       });
     });
 
-    this.onStateChanged('isFileListLoading', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('isFileListLoading', ({detail: {state}}) => {
       const loader = this.rootElement.querySelector('[data-test="loader"]');
       if (state.isFileListLoading) {
         this.fileList.display = false;
@@ -136,8 +135,7 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    this.onStateChanged('locationParameters', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('locationParameters', ({detail: {state}}) => {
       if (state.locationParameters.folderId) {
         this._folderId = state.locationParameters.folderId;
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
@@ -145,24 +143,20 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    this.onStateChanged('isFolderLoading', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('isFolderLoading', ({detail: {state}}) => {
       this.breadcrumbs.isLoading = state.isFolderLoading;
     });
 
-    this.onStateChanged('folder', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('folder', ({detail: {state}}) => {
       this._folder = state.folder;
       this.breadcrumbs.folder = state.folder;
     });
 
-    this.onStateChanged('renameFolderId', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('renameFolderId', ({detail: {state}}) => {
       this.fileList.renameFolder(state.renameFolderId);
     });
 
-    this.onStateChanged('fileListLoadingError', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('fileListLoadingError', ({detail: {state}}) => {
       const error = state.fileListLoadingError;
       if (error instanceof NotFoundError) {
         this.fileList.files = [];
@@ -170,8 +164,7 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    this.onStateChanged('folderLoadingError', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('folderLoadingError', ({detail: {state}}) => {
       const error = state.folderLoadingError;
       if (error instanceof NotFoundError) {
         this.breadcrumbs.error = 'Not Found';

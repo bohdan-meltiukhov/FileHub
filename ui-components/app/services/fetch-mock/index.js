@@ -9,10 +9,10 @@ export default class FetchMock {
    * Sets mocks for different fetch requests.
    */
   static setMock() {
-    FetchMock._setLogin();
-    FetchMock._setRegister();
-    FetchMock._setFiles();
-    FetchMock._setFolder();
+    FetchMock._postLogin();
+    FetchMock._postRegister();
+    FetchMock._getFiles();
+    FetchMock._getFolder();
     FetchMock._setUpdateFolder();
     FetchMock._setUpdateFile();
     FetchMock._setCreateFolder();
@@ -23,7 +23,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setLogin() {
+  static _postLogin() {
     fetchMock.post('/login', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin' && credentials.password === '1234') {
@@ -38,7 +38,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setRegister() {
+  static _postRegister() {
     fetchMock.post('/register', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin') {
@@ -64,7 +64,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setFiles() {
+  static _getFiles() {
     fetchMock.get('glob:/folder/*/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
 
@@ -97,7 +97,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setFolder() {
+  static _getFolder() {
     fetchMock.get('glob:/folder/*', (url) => {
       const id = url.slice(8);
 

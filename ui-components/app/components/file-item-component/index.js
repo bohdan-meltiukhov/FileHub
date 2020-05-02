@@ -1,5 +1,5 @@
 import ListItem from '../list-item';
-import FileItem from '../../models/list-items/file-item';
+import FileItem from '../../models/file-system-objects/file-item';
 
 /**
  * The class for displaying the file item.

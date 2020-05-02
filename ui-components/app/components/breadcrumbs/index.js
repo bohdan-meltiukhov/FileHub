@@ -16,12 +16,10 @@ export default class Breadcrumbs extends Component {
    * Creates an instance of the Inner Breadcrumbs component with set container and folder.
    *
    * @param {Element} container - The parent element for the breadcrumbs component.
-   * @param {Parameters} parameters - The initial component parameters.
    */
-  constructor(container, parameters = {folderName: ''}) {
+  constructor(container) {
     super(container);
 
-    this._name = parameters.folderName;
     this.render();
   }
 
@@ -30,7 +28,10 @@ export default class Breadcrumbs extends Component {
     return `
         <div data-test="breadcrumbs">
             <div class="folder-icon" data-test="folder-icon"></div>
-            <span class="directory-name" data-test="directory-name">/ ${this._name}</span>
+            <span class="directory-name">
+                <span data-test="directory-name"></span>
+                <span data-test="loading-message">Loading...</span>
+            </span>
         </div>
     `;
   }
@@ -39,6 +40,7 @@ export default class Breadcrumbs extends Component {
   initNestedComponents() {
     this._folderIcon = this.rootElement.querySelector('[data-test="folder-icon"]');
     this._folderName = this.rootElement.querySelector('[data-test="directory-name"]');
+    this._loadingMessage = this.rootElement.querySelector('[data-test="loading-message"]');
   }
 
   /**
@@ -69,7 +71,10 @@ export default class Breadcrumbs extends Component {
   set isLoading(isLoading) {
     if (isLoading) {
       this._folderIcon.style.visibility = 'hidden';
-      this._folderName.innerText = 'Loading...';
+      this._folderName.innerText = '';
+      this._loadingMessage.style.display = 'inline';
+    } else {
+      this._loadingMessage.style.display = 'none';
     }
   }
 

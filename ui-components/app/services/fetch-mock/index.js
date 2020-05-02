@@ -13,7 +13,7 @@ export default class FetchMock {
     FetchMock._setRegister();
     FetchMock._setFiles();
     FetchMock._setFolder();
-    FetchMock._setUploadFile();
+    FetchMock._uploadFile();
   }
 
   /**
@@ -124,7 +124,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setUploadFile() {
+  static _uploadFile() {
     fetchMock.post('glob:/folder/*/file', (url, options) => {
       const id = url.slice(8, url.indexOf('/file'));
       const file = options.body.get('file');

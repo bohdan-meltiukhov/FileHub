@@ -5,6 +5,8 @@ import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import NotFoundError from '../../models/errors/not-found-error';
 import FetchMock from '../fetch-mock';
+import FolderItem from '../../models/file-system-objects/folder-item';
+import FileItem from '../../models/file-system-objects/file-item';
 
 let instance;
 
@@ -154,20 +156,9 @@ export default class ApiService {
   }
 
   /**
-   * The object for describing the folder configurations.
-   *
-   * @typedef {object} FolderItemProperties
-   * @property {string} id - The identifier of the folder.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
-   * @property {'folder'} type - Shows that this item is a folder.
-   */
-
-  /**
    * Updates the provided folder.
    *
-   * @param {FolderItemProperties} folder - The new folder properties.
+   * @param {FolderItem} folder - The new folder properties.
    * @returns {Promise} The promise that resolves if the folder is updated successfully.
    */
   updateFolder(folder) {
@@ -178,27 +169,15 @@ export default class ApiService {
       },
     }).then((response) => {
       if (!response.ok) {
-        throw this._handleRequestErrors(response.status);
+        throw this._handleRequestErrors(response);
       }
     });
   }
 
   /**
-   * The object for describing the file configurations.
-   *
-   * @typedef {object} FileItemProperties
-   * @property {string} id - The identifier of the file.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the file.
-   * @property {('image'|'book'|'video'|'audio'|'stylesheet'|'other')} mimeType - The type of the file.
-   * @property {number} size - The size of the file in bytes.
-   * @property {'file'} type - Shows that this item is a file.
-   */
-
-  /**
    * Updates the provided file.
    *
-   * @param {FileItemProperties} file - The new file properties.
+   * @param {FileItem} file - The new file properties.
    * @returns {Promise} The promise that resolves if the file is updated successfully.
    */
   updateFile(file) {
@@ -209,7 +188,7 @@ export default class ApiService {
       },
     }).then((response) => {
       if (!response.ok) {
-        throw this._handleRequestErrors(response.status);
+        throw this._handleRequestErrors(response);
       }
     });
   }

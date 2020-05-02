@@ -13,9 +13,9 @@ export default class FetchMock {
     FetchMock._postRegister();
     FetchMock._getFiles();
     FetchMock._getFolder();
-    FetchMock._setUpdateFolder();
-    FetchMock._setUpdateFile();
-    FetchMock._setCreateFolder();
+    FetchMock._putFolder();
+    FetchMock._putFile();
+    FetchMock._createFolder();
   }
 
   /**
@@ -122,22 +122,11 @@ export default class FetchMock {
   }
 
   /**
-   * The object for describing the folder configurations.
-   *
-   * @typedef {object} FolderItem
-   * @property {string} id - The identifier of the folder.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
-   * @property {'folder'} type - Shows that this item is a folder.
-   */
-
-  /**
    * Sets a mock for the put folder request.
    *
    * @private
    */
-  static _setUpdateFolder() {
+  static _putFolder() {
     fetchMock.put('glob:/folder/*', (url, options) => {
       const id = url.slice(8);
       const index = FileSystem.folders.findIndex((folder) => {
@@ -160,7 +149,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setUpdateFile() {
+  static _putFile() {
     fetchMock.put('glob:/file/*', (url, options) => {
       const id = url.slice(6);
 
@@ -184,7 +173,7 @@ export default class FetchMock {
    *
    * @private
    */
-  static _setCreateFolder() {
+  static _createFolder() {
     fetchMock.post('glob:/folder/*/folder', (url) => {
       const id = url.slice(8, url.lastIndexOf('/folder'));
 

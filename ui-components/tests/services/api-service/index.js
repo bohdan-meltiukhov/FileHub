@@ -28,7 +28,7 @@ test('should log in.', (assert) => {
       'the request body.');
     assert.strictEqual(credentials.password, password, 'The login() method should provide the correct password in ' +
       'the request body.');
-    return 200;
+    return {token: 'my-token'};
   });
 
   apiService.logIn(userCredentials);
@@ -228,4 +228,21 @@ test('should get a folder.', async (assert) => {
   assert.ok(fetchMock.called(`/folder/${folderId}`, {
     method: 'GET',
   }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
+});
+
+test('should get the user', async (assert) => {
+  const user = {
+    name: 'John',
+  };
+
+  fetchMock.get('/user', user);
+
+  const apiService = ApiService.getInstance();
+  const response = await apiService.getUser();
+
+  assert.deepEqual(response, user, 'The getUser() method should provide correct user.');
+
+  assert.ok(fetchMock.called('/user'), {
+    method: 'GET',
+  }, 'The getUser() method should send a GET request to the \'/user\' URL.');
 });

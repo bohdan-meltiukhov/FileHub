@@ -231,7 +231,7 @@ test('should get a folder.', async (assert) => {
 });
 
 test('should update folders.', (assert) => {
-  assert.expect(3);
+  assert.expect(2);
 
   const folder = {
     id: 'uExvhDL4YwkxnBVa',
@@ -241,10 +241,7 @@ test('should update folders.', (assert) => {
     type: 'folder',
   };
 
-  fetchMock.put('glob:/folder/*', (url, opts) => {
-    const id = url.slice(8);
-
-    assert.strictEqual(id, folder.id, 'The updateFolder() method should send a request with correct folder id.');
+  fetchMock.put(`/folder/${folder.id}`, (url, opts) => {
     assert.deepEqual(opts.body.element, folder, 'The updateFolder() method should send a request with correct ' +
       'folder object.');
 
@@ -254,13 +251,13 @@ test('should update folders.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.updateFolder(folder);
 
-  assert.ok(fetchMock.called('glob:/folder/*', {
+  assert.ok(fetchMock.called(`/folder/${folder.id}`, {
     method: 'PUT',
-  }), 'The updateFolder() method should send a PUT request to the \'/folder/:id\' URL.');
+  }), 'The updateFolder() method should send a PUT request to the \'/folder/:folderId\' URL.');
 });
 
 test('should update files.', (assert) => {
-  assert.expect(3);
+  assert.expect(2);
 
   const file = {
     id: 'ARqTPQ1XXUrFlaJe',
@@ -271,10 +268,7 @@ test('should update files.', (assert) => {
     type: 'file',
   };
 
-  fetchMock.put('glob:/file/*', (url, opts) => {
-    const id = url.slice(6);
-
-    assert.strictEqual(id, file.id, 'The updateFile() method should send a request with correct file id.');
+  fetchMock.put(`/file/${file.id}`, (url, opts) => {
     assert.deepEqual(opts.body.element, file, 'The updateFile() method should send a request with correct ' +
       'file object.');
 
@@ -284,7 +278,7 @@ test('should update files.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.updateFile(file);
 
-  assert.ok(fetchMock.called('glob:/file/*', {
+  assert.ok(fetchMock.called(`/file/${file.id}`, {
     method: 'PUT',
-  }), 'The updateFile() method should send a PUT request to the \'/file/:id\' URL.');
+  }), 'The updateFile() method should send a PUT request to the \'/file/:fileId\' URL.');
 });

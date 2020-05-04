@@ -169,11 +169,7 @@ export default class ApiService {
         if (response.ok) {
           localStorage.removeItem('token');
         } else {
-          if (response.status === 500) {
-            throw new GeneralServerError('Internal server error');
-          } else {
-            throw new Error('Unknown error');
-          }
+          throw this._handleRequestErrors(response);
         }
       });
   }

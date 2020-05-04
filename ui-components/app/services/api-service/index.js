@@ -34,9 +34,9 @@ export default class ApiService {
       method: 'POST',
       body: userCredentials,
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
-          throw this._handleAuthenticationErrors(response);
+          throw await this._handleAuthenticationErrors(response);
         }
       });
   }
@@ -52,9 +52,9 @@ export default class ApiService {
       method: 'POST',
       body: userCredentials,
     })
-      .then((response) => {
+      .then(async (response) => {
         if (!response.ok) {
-          throw this._handleAuthenticationErrors(response);
+          throw await this._handleAuthenticationErrors(response);
         }
       });
   }
@@ -63,43 +63,37 @@ export default class ApiService {
    * Check the response status code and creates an instance of the corresponding error.
    *
    * @param {Response} response - The response from the server.
-   * @returns {Error} The error to throw.
+   * @returns {AuthorizationError|ServerValidationError|Error|GeneralServerError} The error to throw.
    * @private
    */
   _handleAuthenticationErrors(response) {
-    let error;
-
     switch (response.status) {
     case 401:
-      error = new AuthorizationError('The username or password is incorrect');
-      break;
+      return new AuthorizationError('The username or password is incorrect');
     case 422:
-      response.json().then((body) => {
+      return response.json().then((body) => {
         const errorCases = [];
         body.errors.forEach((error) => {
           errorCases.push(new ValidationErrorCase(error.field, error.message));
         });
-        error = new ServerValidationError(errorCases);
+        return new ServerValidationError(errorCases);
       });
-      break;
     case 500:
-      error = new GeneralServerError('Internal server error');
-      break;
+      return new GeneralServerError('Internal server error');
     default:
-      error = new Error('Unknown error');
+      return new Error('Unknown error');
     }
-    return error;
   }
 
   /**
    * Checks the response status and creates an instance of the corresponding error for other requests.
    *
-   * @param {number} status - The status code of the response.
+   * @param {Response} response - The response from the server.
    * @returns {AuthorizationError|NotFoundError|Error|GeneralServerError} The error to throw.
    * @private
    */
-  _handleRequestErrors(status) {
-    switch (status) {
+  _handleRequestErrors(response) {
+    switch (response.status) {
     case 401:
       return new AuthorizationError('Not authorized.');
     case 404:
@@ -107,7 +101,9 @@ export default class ApiService {
     case 500:
       return new GeneralServerError('Internal server error.');
     default:
-      return new Error('Unknown error');
+      return response.text().then((text) => {
+        return new Error(text);
+      });
     }
   }
 
@@ -135,7 +131,24 @@ export default class ApiService {
         if (response.ok) {
           return response.json();
         } else {
-          throw this._handleRequestErrors(response.status);
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
+
+  /**
+   * Provides the information about the folder.
+   *
+   * @param {string} id - The identifier of the required folder.
+   * @returns {Promise} The promise that resolves with information about the required folder.
+   */
+  getFolder(id) {
+    return fetch(`/folder/${id}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response);
         }
       });
   }
@@ -148,13 +161,13 @@ export default class ApiService {
    */
   getFile(id) {
     return fetch(`/file/${id}`, {
-      method: 'POST',
+      method: 'GET',
     })
       .then((response) => {
         if (response.ok) {
           return response.blob();
         } else {
-          throw this._handleRequestErrors(response.status);
+          throw this._handleRequestErrors(response);
         }
       });
   }

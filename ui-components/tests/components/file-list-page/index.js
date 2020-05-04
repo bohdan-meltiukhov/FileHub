@@ -1,4 +1,7 @@
 import FileListPage from '../../../app/components/file-list-page';
+import StateManager from '../../../app/state/state-manager';
+import ApiService from '../../../app/services/api-service';
+import UrlProperties from '../../../app/models/url-properties';
 
 const {module, test} = QUnit;
 
@@ -11,7 +14,10 @@ module('The FileListPage', {
 });
 
 test('should initialize nested components.', (assert) => {
-  new FileListPage(fixture);
+  const stateManager = new StateManager({}, ApiService.getInstance());
+  const urlProperties = new UrlProperties('root');
+
+  new FileListPage(fixture, stateManager, urlProperties);
   const page = fixture.firstElementChild;
 
   const userDetails = page.querySelector('[data-test="user-details"]');

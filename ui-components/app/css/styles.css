@@ -153,6 +153,7 @@ a:hover {
 
 .files tr {
     border-bottom: 1px solid #999;
+    cursor: pointer;
 }
 
 .files tr:hover {
@@ -176,7 +177,14 @@ a:hover {
 .current-directory .folder-icon {
     display: inline-block;
     width: 45px;
-    text-align: center;
+    height: 24px;
+    position: relative;
+}
+
+.current-directory .folder-icon .glyphicon {
+    position: absolute;
+    left: 14px;
+    top: 6px;
 }
 
 .current-directory .directory-name {
@@ -264,6 +272,10 @@ a:hover {
     opacity: 1;
 }
 
+.file-list .not-found-message p {
+    margin: 10px 0;
+}
+
 .footer {
     border-top: 2px solid #999;
     text-align: center;
@@ -281,6 +293,10 @@ a:hover {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

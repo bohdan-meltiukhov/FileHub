@@ -1,5 +1,4 @@
 import RegistrationForm from '../../../app/components/registration-form';
-import LoginForm from '../../../app/components/login-form';
 
 const {module, test} = QUnit;
 

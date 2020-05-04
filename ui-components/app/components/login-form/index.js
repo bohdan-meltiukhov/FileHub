@@ -97,6 +97,8 @@ export default class LoginForm extends Component {
 
     validator.validate(inputValues)
       .then(() => {
+        this.loginInput.helpText = '';
+        this.passwordInput.helpText = '';
         this._onSubmit(new UserCredentials(this.loginInput.inputValue, this.passwordInput.inputValue));
       })
       .catch((errors) => {

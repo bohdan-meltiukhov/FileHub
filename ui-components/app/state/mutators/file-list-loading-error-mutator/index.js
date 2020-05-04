@@ -7,15 +7,15 @@ export default class FileListLoadingErrorMutator extends Mutator {
   /**
    * Creates an instance of the FileListLoadingErrorMutator with set error message.
    *
-   * @param {string} message - The message that describes the error.
+   * @param {Error} error - The error that occurred.
    */
-  constructor(message) {
+  constructor(error) {
     super();
-    this._message = message;
+    this._error = error;
   }
 
   /** @inheritdoc */
   apply(state) {
-    state.fileListLoadingError = this._message;
+    state.fileListLoadingError = this._error;
   }
 }

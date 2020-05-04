@@ -25,3 +25,4 @@ import * as folderMutator from './state/mutators/folder-mutator';
 import * as folderLoadingErrorMutator from './state/mutators/folder-loading-error-mutator';
 import * as isFolderLoadingMutator from './state/mutators/is-folder-loading-mutator';
 import * as downloadFileAction from './state/actions/download-file-action';
+import * as downloadedFileMutator from './state/mutators/downloaded-file-mutator';

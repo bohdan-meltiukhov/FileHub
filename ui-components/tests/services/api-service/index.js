@@ -7,6 +7,8 @@ import GeneralServerError from '../../../app/models/errors/general-server-error'
 
 const {module, test} = QUnit;
 
+const TOKEN = 'my-token';
+
 module('The ApiService', {
   afterEach: () => {
     fetchMock.reset();
@@ -28,7 +30,7 @@ test('should log in.', (assert) => {
       'the request body.');
     assert.strictEqual(credentials.password, password, 'The login() method should provide the correct password in ' +
       'the request body.');
-    return 200;
+    return {token: TOKEN};
   });
 
   apiService.logIn(userCredentials);
@@ -228,4 +230,15 @@ test('should get a folder.', async (assert) => {
   assert.ok(fetchMock.called(`/folder/${folderId}`, {
     method: 'GET',
   }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
+});
+
+test('should log the current user out.', (assert) => {
+  fetchMock.post('/logout', 200);
+
+  const apiService = ApiService.getInstance();
+  apiService.logOut();
+
+  assert.ok(fetchMock.called('/logout'), {
+    method: 'POST',
+  }, 'The logOut() method should send a POST request to the \'/logout\' URL.');
 });

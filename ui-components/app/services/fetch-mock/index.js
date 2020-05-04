@@ -127,7 +127,7 @@ export default class FetchMock {
    * @private
    */
   static _deleteFolder() {
-    fetchMock.delete('glob:/folder/*', (url) => {
+    fetchMock.delete('express:/folder/:folderId', (url) => {
       const id = url.slice(8);
 
       const folder = FileSystem.folders.find((folder) => {
@@ -154,7 +154,7 @@ export default class FetchMock {
    * @private
    */
   static _deleteFile() {
-    fetchMock.delete('glob:/file/*', (url) => {
+    fetchMock.delete('express:/file/:fileId', (url) => {
       const id = url.slice(6);
 
       const file = FileSystem.files.find((file) => {

@@ -235,7 +235,7 @@ test('should delete folders.', (assert) => {
 
   const id = 'uExvhDL4YwkxnBVa';
 
-  fetchMock.delete('glob:/folder/*', (url) => {
+  fetchMock.delete(`/folder/${id}`, (url) => {
     const folderId = url.slice(8);
     assert.strictEqual(folderId, id, 'The deleteFolder() method should provide the correct folder id to the server.');
     return 200;
@@ -244,7 +244,7 @@ test('should delete folders.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.deleteFolder(id);
 
-  assert.ok(fetchMock.called('glob:/folder/*', {
+  assert.ok(fetchMock.called(`/folder/${id}`, {
     method: 'DELETE',
   }), 'The deleteFolder() method should send a DELETE request to the \'/folder/:id\' URL.');
 });
@@ -254,7 +254,7 @@ test('should delete files.', (assert) => {
 
   const id = 'ARqTPQ1XXUrFlaJe';
 
-  fetchMock.delete('glob:/file/*', (url) => {
+  fetchMock.delete(`/file/${id}`, (url) => {
     const folderId = url.slice(6);
     assert.strictEqual(folderId, id, 'The deleteFile() method should provide the correct file id to the server.');
     return 200;
@@ -263,7 +263,7 @@ test('should delete files.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.deleteFile(id);
 
-  assert.ok(fetchMock.called('glob:/file/*', {
+  assert.ok(fetchMock.called(`/file/${id}`, {
     method: 'DELETE',
   }), 'The deleteFile() method should send a DELETE request to the \'/file/:id\' URL.');
 });

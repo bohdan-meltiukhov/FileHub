@@ -174,7 +174,7 @@ export default class FetchMock {
    * @private
    */
   static _createFolder() {
-    fetchMock.post('glob:/folder/*/folder', (url) => {
+    fetchMock.post('express:/folder/:folderId/folder', (url) => {
       const id = url.slice(8, url.lastIndexOf('/folder'));
 
       const parentFolder = FileSystem.folders.find((folder) => {

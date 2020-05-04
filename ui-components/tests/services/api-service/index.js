@@ -284,7 +284,7 @@ test('should update files.', (assert) => {
 });
 
 test('should create folders.', async (assert) => {
-  assert.expect(3);
+  assert.expect(2);
 
   const parentId = '4Goz0J0Tz8xfDfsJ';
   const folder = {
@@ -295,19 +295,13 @@ test('should create folders.', async (assert) => {
     type: 'folder',
   };
 
-  fetchMock.post('glob:/folder/*/folder', (url) => {
-    const id = url.slice(8, url.lastIndexOf('/folder'));
-
-    assert.strictEqual(id, parentId, 'The createFolder() method should send a request with correct folder ID.');
-
-    return folder;
-  });
+  fetchMock.post(`/folder/${parentId}/folder`, folder);
 
   const apiService = ApiService.getInstance();
   const response = await apiService.createFolder(parentId);
   assert.deepEqual(response, folder, 'The createFolder() method should return the correct folder.');
 
-  assert.ok(fetchMock.called('glob:/folder/*/folder', {
+  assert.ok(fetchMock.called(`/folder/${parentId}/folder`, {
     method: 'POST',
-  }), 'The createFolder() method should send a POST request to the \'/folder/:id/folder\' URL.');
+  }), 'The createFolder() method should send a POST request to the \'/folder/:folderId/folder\' URL.');
 });

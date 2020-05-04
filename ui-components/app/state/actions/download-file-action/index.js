@@ -20,7 +20,6 @@ export default class DownloadFileAction extends Action {
   apply(stateManager, apiService) {
     apiService.getFile(this._fileId)
       .then((file) => {
-        console.log('file in action', file);
         stateManager.mutate(new DownloadedFileMutator(file));
       });
   }

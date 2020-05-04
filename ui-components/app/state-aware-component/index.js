@@ -6,6 +6,8 @@ import Component from '../components/component.js';
  * @abstract
  */
 export default class StateAwareComponent extends Component {
+  _stateChangedHandlers = [];
+
   /**
    * Creates an instance of the state-aware component with set container and state manager.
    *
@@ -32,5 +34,15 @@ export default class StateAwareComponent extends Component {
    */
   onStateChanged(field, handler) {
     this.stateManager.onStateChanged(field, handler);
+    this._stateChangedHandlers.push({field, handler});
+  }
+
+  /**
+   * Removes state changed listeners.
+   */
+  removeStateChangedListeners() {
+    this._stateChangedHandlers.forEach(({field, handler}) => {
+      this.stateManager.removeStateChangedListener(field, handler);
+    });
   }
 }

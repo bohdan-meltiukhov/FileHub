@@ -1,6 +1,6 @@
 import Component from '../component.js';
 import Router from '../../router';
-import {AUTHENTICATION_ROUTE, REGISTRATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
+import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE, REGISTRATION_ROUTE} from '../../router/routes';
 import NotFoundPage from '../not-found';
 import LoginPage from '../login-page';
 import RegistrationPage from '../registration-page';
@@ -40,16 +40,28 @@ export default class Application extends Component {
     const stateManager = new StateManager({}, ApiService.getInstance());
 
     const pageMapping = {
-      [AUTHENTICATION_ROUTE]: () => new LoginPage(this.rootElement),
-      [REGISTRATION_ROUTE]: () => new RegistrationPage(this.rootElement),
-      [FILE_LIST_ROUTE]: (properties) => new FileListPage(this.rootElement, stateManager, properties),
+      [AUTHENTICATION_ROUTE]: () => {
+        this._destroyPreviousPage();
+        this._previousPage = new LoginPage(this.rootElement);
+      },
+      [REGISTRATION_ROUTE]: () => {
+        this._destroyPreviousPage();
+        this._previousPage = new RegistrationPage(this.rootElement);
+      },
+      [FILE_LIST_ROUTE]: (properties) => {
+        this._destroyPreviousPage();
+        this._previousPage = new FileListPage(this.rootElement, stateManager, properties);
+      },
     };
 
     const routerProperties = {
       rootElement: this.rootElement,
       pageMapping,
       defaultLocation: AUTHENTICATION_ROUTE,
-      notFoundPage: () => new NotFoundPage(this.rootElement),
+      notFoundPage: () => {
+        this._destroyPreviousPage();
+        this._previousPage = new NotFoundPage(this.rootElement);
+      },
       window,
     };
 
@@ -57,5 +69,16 @@ export default class Application extends Component {
     router.onHashChanged((staticPart, dynamicPart) => {
       stateManager.dispatch(new HashChangedAction(staticPart, dynamicPart));
     });
+  }
+
+  /**
+   * Destroys the previous page if it exists.
+   *
+   * @private
+   */
+  _destroyPreviousPage() {
+    if (this._previousPage) {
+      this._previousPage.willDestroy();
+    }
   }
 }

@@ -26,6 +26,6 @@ module.exports = {
     }],
     'valid-jsdoc': 'off',
     'jsdoc/require-description-complete-sentence': 'error',
-    indent: ['error', 2, {'MemberExpression': 1}],
+    indent: ['error', 2, {'MemberExpression': 1}]
   },
 };

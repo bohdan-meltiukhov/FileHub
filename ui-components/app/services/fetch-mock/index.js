@@ -65,7 +65,7 @@ export default class FetchMock {
    * @private
    */
   static _getFiles() {
-    fetchMock.get('glob:/folder/*/content', (url) => {
+    fetchMock.get('express:/folder/:folderId/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
 
       const parentFolder = FileSystem.folders.find((folder) => {
@@ -98,7 +98,7 @@ export default class FetchMock {
    * @private
    */
   static _getFolder() {
-    fetchMock.get('glob:/folder/*', (url) => {
+    fetchMock.get('express:/folder/:folderId', (url) => {
       const id = url.slice(8);
 
       const folder = FileSystem.folders.find((folder) => {
@@ -127,7 +127,7 @@ export default class FetchMock {
    * @private
    */
   static _putFolder() {
-    fetchMock.put('glob:/folder/*', (url, options) => {
+    fetchMock.put('express:/folder/:folderId', (url, options) => {
       const id = url.slice(8);
       const index = FileSystem.folders.findIndex((folder) => {
         if (folder.id === id) {
@@ -150,7 +150,7 @@ export default class FetchMock {
    * @private
    */
   static _putFile() {
-    fetchMock.put('glob:/file/*', (url, options) => {
+    fetchMock.put('express:/file/:fileId', (url, options) => {
       const id = url.slice(6);
 
       const index = FileSystem.files.findIndex((file) => {

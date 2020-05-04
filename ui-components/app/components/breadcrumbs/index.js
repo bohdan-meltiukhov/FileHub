@@ -61,6 +61,7 @@ export default class Breadcrumbs extends Component {
 
     this._folderIcon.style.visibility = 'visible';
     this._folderName.innerText = `/ ${folder.name}`;
+    this._folderName.style.display = 'inline';
   }
 
   /**
@@ -71,7 +72,7 @@ export default class Breadcrumbs extends Component {
   set isLoading(isLoading) {
     if (isLoading) {
       this._folderIcon.style.visibility = 'hidden';
-      this._folderName.innerText = '';
+      this._folderName.style.display = 'none';
       this._loadingMessage.style.display = 'inline';
     } else {
       this._loadingMessage.style.display = 'none';

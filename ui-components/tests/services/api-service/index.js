@@ -229,3 +229,20 @@ test('should get a folder.', async (assert) => {
     method: 'GET',
   }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
 });
+
+test('should get a file for download.', async (assert) => {
+  const fileId = '1csJkySJRhAbMLKG';
+
+  const file = new Blob(['Hello, world!'], {type: 'text/plain'});
+
+  fetchMock.get(`/file/${fileId}`, file, {sendAsJson: false});
+
+  const apiService = ApiService.getInstance();
+  const response = await apiService.getFile(fileId);
+
+  assert.deepEqual(response, file, 'The getFile() method should provide the correct file.');
+
+  assert.ok(fetchMock.called(`/file/${fileId}`, {
+    method: 'GET',
+  }), 'The getFile() method should send a GET request to the \'/file/:fileId\' URL.');
+});

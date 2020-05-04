@@ -24,3 +24,4 @@ import * as getFolderAction from './state/actions/get-folder-action';
 import * as folderMutator from './state/mutators/folder-mutator';
 import * as folderLoadingErrorMutator from './state/mutators/folder-loading-error-mutator';
 import * as isFolderLoadingMutator from './state/mutators/is-folder-loading-mutator';
+import * as logOutAction from './state/actions/log-out-action';

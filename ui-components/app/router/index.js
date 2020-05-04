@@ -2,6 +2,8 @@
  * The class that allows switching between different pages.
  */
 export default class Router {
+  _hashChangedHandlers = [];
+
   /**
    * The class for providing the router properties via the constructor.
    *
@@ -39,6 +41,15 @@ export default class Router {
   }
 
   /**
+   * Adds a function that should be called when the location hash changes.
+   *
+   * @param {Function} handler - The function that will be called when the location hash changes.
+   */
+  onHashChanged(handler) {
+    this._hashChangedHandlers.push(handler);
+  }
+
+  /**
    * Checks the current location hash and provides it to the {@link _renderPage} method.
    *
    * <p>Redirects to the default page in case the location hash is empty.
@@ -62,12 +73,83 @@ export default class Router {
    * @private
    */
   _renderPage(hash) {
-    this._rootElement.innerHTML = '';
+    const urlTemplate = this._findUrlTemplate(hash);
 
-    if (Object.keys(this._pageMapping).includes(hash)) {
-      this._pageMapping[hash]();
-    } else {
+    if (!urlTemplate) {
       this._notFoundPage();
+      return;
     }
+
+    const pageCreator = this._pageMapping[urlTemplate];
+
+    const staticPart = this._getStaticPart(urlTemplate);
+
+    const dynamicPartMap = this._getDynamicPart(urlTemplate, hash);
+
+    this._hashChangedHandlers.forEach((handler) => {
+      handler(staticPart, dynamicPartMap);
+    });
+
+    if (staticPart !== this._previousStaticPart) {
+      this._rootElement.innerHTML = '';
+      pageCreator(dynamicPartMap);
+    }
+
+    this._previousStaticPart = staticPart;
+  }
+
+  /**
+   * Finds the corresponding URL Template in the pageMapping object.
+   *
+   * @param {string} hash - The current location hash.
+   * @returns {string} The corresponding urlTemplate.
+   * @private
+   */
+  _findUrlTemplate(hash) {
+    return Object.keys(this._pageMapping).find((urlTemplate) => {
+      const staticPart = this._getStaticPart(urlTemplate);
+      if (hash.startsWith(staticPart)) {
+        return true;
+      }
+    });
+  }
+
+  /**
+   * Provides the static part of the URL Template.
+   *
+   * @param {string} urlTemplate - The URL Template that matches the current location hash.
+   * @returns {string} The static part of the URL Template.
+   * @private
+   */
+  _getStaticPart(urlTemplate) {
+    return urlTemplate.split(':')[0];
+  }
+
+  /**
+   * Generates a map of keys from the URL template and values from the provided URL.
+   *
+   * @param {string} urlTemplate - The template from the page mapping.
+   * @param {string} url - The current URL.
+   * @returns {object.<string, string>} The object with keys from the URL template and values from the current URL.
+   * @private
+   */
+  _getDynamicPart(urlTemplate, url) {
+    const templateParts = urlTemplate.split('/');
+
+    const keyToIndexMap = templateParts.reduce((accumulator, value, index) => {
+      if (!value.startsWith(':')) {
+        return accumulator;
+      }
+      const key = value.slice(1);
+      accumulator[key] = index;
+      return accumulator;
+    }, {});
+
+    const urlParts = url.split('/');
+
+    return Object.entries(keyToIndexMap).reduce((accumulator, [key, index]) => {
+      accumulator[key] = urlParts[index];
+      return accumulator;
+    }, {});
   }
 }

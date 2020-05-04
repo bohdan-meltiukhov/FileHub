@@ -1,26 +1,15 @@
 import ListItem from '../list-item';
-import {FILE_LIST_ROUTE} from '../../router/routes';
+import FolderItem from '../../models/file-system-objects/folder-item';
 
 /**
  * The component for displaying the folder item.
  */
-export default class FolderItem extends ListItem {
-  /**
-   * The object for describing the folder configurations.
-   *
-   * @typedef {object} Parameters
-   * @property {string} id - The identifier of the folder.
-   * @property {string} parentId - The id of the parent folder.
-   * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
-   * @property {'folder'} type - Shows that this item is a folder.
-   */
-
+export default class FolderItemComponent extends ListItem {
   /**
    * Creates an instance of the folder item component with set container and properties.
    *
    * @param {Element} container - The parent element for the folder item component.
-   * @param {Parameters} parameters - The initial folder items configurations.
+   * @param {FolderItem} parameters - The initial folder items configurations.
    */
   constructor(container, parameters) {
     super(container);
@@ -38,7 +27,7 @@ export default class FolderItem extends ListItem {
             <td class="filename">
                 <span class="glyphicon glyphicon-folder-close" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">
-                    <a href="#${FILE_LIST_ROUTE}" title="${this._parameters.name}">${this._parameters.name}</a>
+                    <a title="${this._parameters.name}">${this._parameters.name}</a>
                 </span>
                 <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>
@@ -56,7 +45,7 @@ export default class FolderItem extends ListItem {
     super.addEventListeners();
 
     this.rootElement.addEventListener('dblclick', () => {
-      window.location.hash = FILE_LIST_ROUTE;
+      window.location.hash = `/file-list/${this._parameters.id}`;
     });
   }
 }

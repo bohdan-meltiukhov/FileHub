@@ -6,6 +6,10 @@ import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
+import GetFolderAction from '../../state/actions/get-folder-action';
+import UrlProperties from '../../models/url-properties';
+import {ROOT_FOLDER_ID} from '../../models/root-folder';
+import NotFoundError from '../../models/errors/not-found-error';
 
 /**
  * The component for the File List Page.
@@ -16,18 +20,21 @@ export default class FileListPage extends StateAwareComponent {
    *
    * @param {Element} container - The parent element for the page.
    * @param {StateManager} stateManager - The state manager to use.
+   * @param {UrlProperties} properties - The URL properties.
    */
-  constructor(container, stateManager) {
+  constructor(container, stateManager, properties) {
     super(container, stateManager);
 
     this.render();
-    stateManager.dispatch(new GetFilesAction());
+    stateManager.dispatch(new GetFolderAction(properties.folderId));
+    stateManager.dispatch(new GetFilesAction(properties.folderId));
   }
 
   /**
    * @inheritdoc
    */
   markup() {
+    const rootFolderPath = FILE_LIST_ROUTE.replace(':folderId', ROOT_FOLDER_ID);
     return `
         <div class="application-box" data-test="file-list-page">
             <img src="app/images/logo.png" class="logo" alt="logo">
@@ -40,7 +47,7 @@ export default class FileListPage extends StateAwareComponent {
             </ul>
             
             <header class="header">
-                <a href="#${FILE_LIST_ROUTE}"><h1>File Explorer</h1></a>
+                <a href="#${rootFolderPath}"><h1>File Explorer</h1></a>
             </header>
             
             <main class="file-list">
@@ -52,8 +59,11 @@ export default class FileListPage extends StateAwareComponent {
                     </div>
                 </div>
                 
-                <div data-test="file-list">
-                    <div class="loader" data-test="loader"></div>
+                <div data-test="file-list"></div>
+                <div class="loader" data-test="loader"></div>
+                <div class="not-found-message" data-test="not-found-message">
+                    <p>Unfortunately, we didn't manage to find this folder.</p>
+                    <a href="#${rootFolderPath}" title="Go to the root folder">Go to the root folder</atitle>
                 </div>
             </main>
         </div>
@@ -68,9 +78,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     const breadcrumbsContainer = this.rootElement.querySelector('[data-test="breadcrumbs"]');
-    this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer, {
-      folder: 'Documents',
-    });
+    this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer);
 
     const createFolderButtonContainer = this.rootElement.querySelector('[data-test="create-folder-button"]');
     this.createFolderButton = new Button(createFolderButtonContainer, {
@@ -84,23 +92,63 @@ export default class FileListPage extends StateAwareComponent {
 
     this.fileListContainer = this.rootElement.querySelector('[data-test="file-list"]');
     this.fileList = new FileList(this.fileListContainer);
+
+    this._notFoundMessage = this.rootElement.querySelector('[data-test="not-found-message"]');
+    this._notFoundMessage.style.display = 'none';
   }
 
   /** @inheritdoc */
   initState() {
-    this.onStateChanged('fileList', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
     });
 
-    this.onStateChanged('isFileListLoading', (event) => {
-      const state = event.detail.state;
+    this.onStateChanged('isFileListLoading', ({detail: {state}}) => {
       const loader = this.rootElement.querySelector('[data-test="loader"]');
       if (state.isFileListLoading) {
+        this.fileList.display = false;
         loader.style.display = 'block';
+        this._notFoundMessage.style.display = 'none';
       } else {
         loader.style.display = 'none';
+        this.fileList.display = true;
       }
     });
+
+    this.onStateChanged('locationParameters', ({detail: {state}}) => {
+      if (state.locationParameters.folderId) {
+        this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
+        this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
+      }
+    });
+
+    this.onStateChanged('isFolderLoading', ({detail: {state}}) => {
+      this.breadcrumbs.isLoading = state.isFolderLoading;
+    });
+
+    this.onStateChanged('folder', ({detail: {state}}) => {
+      this._folder = state.folder;
+      this.breadcrumbs.folder = state.folder;
+    });
+
+    this.onStateChanged('fileListLoadingError', ({detail: {state}}) => {
+      const error = state.fileListLoadingError;
+      if (error instanceof NotFoundError) {
+        this.fileList.files = [];
+        this._notFoundMessage.style.display = 'block';
+      }
+    });
+
+    this.onStateChanged('folderLoadingError', ({detail: {state}}) => {
+      const error = state.folderLoadingError;
+      if (error instanceof NotFoundError) {
+        this.breadcrumbs.error = 'Not Found';
+      }
+    });
+  }
+
+  /** @inheritdoc */
+  willDestroy() {
+    this.removeStateChangedListeners();
   }
 }

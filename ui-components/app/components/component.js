@@ -56,4 +56,10 @@ export default class Component {
    */
   addEventListeners() {
   }
+
+  /**
+   * A hook that is called when the component is going to be destroyed.
+   */
+  willDestroy() {
+  }
 }

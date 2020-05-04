@@ -138,6 +138,8 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
+  assert.expect(4);
+
   fetchMock.post(/^\/(login|register)$/, 500);
 
   const apiService = ApiService.getInstance();
@@ -159,4 +161,71 @@ test('should handle the 500 error.', async (assert) => {
     assert.strictEqual(e.message, 'Internal server error', 'The register() method should describe the issue ' +
       'correctly.');
   }
+});
+
+test('should get files.', async (assert) => {
+  assert.expect(2);
+
+  const folderId = '4Goz0J0Tz8xfDfsJ';
+
+  const content = [
+    {
+      id: 'uExvhDL4YwkxnBVa',
+      parentId: '4Goz0J0Tz8xfDfsJ',
+      name: 'Documents',
+      itemsNumber: 20,
+      type: 'folder',
+    },
+    {
+      id: 'tRZXiSHNRlgZluGQ',
+      parentId: '4Goz0J0Tz8xfDfsJ',
+      name: 'Images',
+      itemsNumber: 20,
+      type: 'folder',
+    },
+    {
+      id: 'ARqTPQ1XXUrFlaJe',
+      parentId: 'tRZXiSHNRlgZluGQ',
+      name: 'Montenegro.jpg',
+      mimeType: 'image',
+      size: 162,
+      type: 'file',
+    },
+  ];
+
+  fetchMock.get(`/folder/${folderId}/content`, content);
+
+  const apiService = ApiService.getInstance();
+  const files = await apiService.getFiles(folderId);
+
+  assert.deepEqual(files, content, 'The getFiles() method should provide correct files.');
+
+  assert.ok(fetchMock.called(`/folder/${folderId}/content`, {
+    method: 'GET',
+  }), 'The getFiles() method should send a GET request to the \'/folder/:id/content\' URL.');
+});
+
+test('should get a folder.', async (assert) => {
+  assert.expect(2);
+
+  const folderId = 'uExvhDL4YwkxnBVa';
+
+  const folder = {
+    id: 'uExvhDL4YwkxnBVa',
+    parentId: '4Goz0J0Tz8xfDfsJ',
+    name: 'Documents',
+    itemsNumber: 20,
+    type: 'folder',
+  };
+
+  fetchMock.get(`/folder/${folderId}`, folder);
+
+  const apiService = ApiService.getInstance();
+  const response = await apiService.getFolder(folderId);
+
+  assert.deepEqual(response, folder, 'The getFolder() method should provide the correct folder.');
+
+  assert.ok(fetchMock.called(`/folder/${folderId}`, {
+    method: 'GET',
+  }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
 });

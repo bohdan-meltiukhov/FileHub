@@ -3,6 +3,7 @@ import ValidationErrorCase from '../../models/errors/validation-error-case';
 import AuthorizationError from '../../models/errors/authorization-error';
 import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
+import NotFoundError from '../../models/errors/not-found-error';
 import FetchMock from '../fetch-mock';
 
 let instance;
@@ -85,6 +86,28 @@ export default class ApiService {
   }
 
   /**
+   * Checks the response status and creates an instance of the corresponding error for other requests.
+   *
+   * @param {Response} response - The response from the server.
+   * @returns {AuthorizationError|NotFoundError|Error|GeneralServerError} The error to throw.
+   * @private
+   */
+  _handleRequestErrors(response) {
+    switch (response.status) {
+    case 401:
+      return new AuthorizationError('Not authorized.');
+    case 404:
+      return new NotFoundError('This item does not exist.');
+    case 500:
+      return new GeneralServerError('Internal server error.');
+    default:
+      return response.text().then((text) => {
+        return new Error(text);
+      });
+    }
+  }
+
+  /**
    * The method for getting the same instance of the ApiService class.
    *
    * @returns {ApiService} An instance of the ApiService class.
@@ -99,30 +122,34 @@ export default class ApiService {
   /**
    * Provides the files.
    *
-   * @returns {Promise<object[]>} - The promise that resolves with an array of files.
+   * @param {string} folderId - The identifier of the required folder.
+   * @returns {Promise} - The promise that resolves with an array of files.
    */
-  getFiles() {
-    return new Promise((resolve, reject) => {
-      fetch('/files')
-        .then((response) => {
-          if (response.ok) {
-            response.json()
-              .then((responseBody) => {
-                resolve(responseBody.files);
-              });
-          } else {
-            switch (response.status) {
-            case 401:
-              reject(new AuthorizationError('Not authorized.'));
-              break;
-            case 500:
-              reject(new GeneralServerError('Internal server error'));
-              break;
-            default:
-              reject(new Error('Unknown error'));
-            }
-          }
-        });
-    });
+  getFiles(folderId) {
+    return fetch(`/folder/${folderId}/content`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
+
+  /**
+   * Provides the information about the folder.
+   *
+   * @param {string} id - The identifier of the required folder.
+   * @returns {Promise} The promise that resolves with information about the required folder.
+   */
+  getFolder(id) {
+    return fetch(`/folder/${id}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response);
+        }
+      });
   }
 }

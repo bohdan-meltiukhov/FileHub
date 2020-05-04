@@ -65,7 +65,7 @@ export default class FetchMock {
    * @private
    */
   static _getFiles() {
-    fetchMock.get('glob:/folder/*/content', (url) => {
+    fetchMock.get('express:/folder/:folderId/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
 
       const parentFolder = FileSystem.folders.find((folder) => {
@@ -98,7 +98,7 @@ export default class FetchMock {
    * @private
    */
   static _getFolder() {
-    fetchMock.get('glob:/folder/*', (url) => {
+    fetchMock.get('express:/folder/:folderId', (url) => {
       const id = url.slice(8);
 
       const folder = FileSystem.folders.find((folder) => {

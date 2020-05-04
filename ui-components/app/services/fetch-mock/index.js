@@ -125,7 +125,7 @@ export default class FetchMock {
    * @private
    */
   static _uploadFile() {
-    fetchMock.post('glob:/folder/*/file', (url, options) => {
+    fetchMock.post('express:/folder/:folderId/file', (url, options) => {
       const id = url.slice(8, url.indexOf('/file'));
       const file = options.body.get('file');
       const fileItem = {

@@ -227,7 +227,7 @@ test('should get a folder.', async (assert) => {
 
   assert.ok(fetchMock.called(`/folder/${folderId}`, {
     method: 'GET',
-  }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
+  }), 'The getFolder() method should send a GET request to the \'/folder/:folderId\' URL.');
 });
 
 test('should upload files.', (assert) => {
@@ -235,11 +235,7 @@ test('should upload files.', (assert) => {
 
   const formData = new FormData();
 
-  fetchMock.post('glob:/folder/*/file', (url, opts) => {
-    const providedId = url.slice(8, url.indexOf('/file'));
-
-    assert.strictEqual(providedId, folderId, 'The uploadFile() method should send a request with correct folder id.');
-
+  fetchMock.post(`/folder/${folderId}/file`, (url, opts) => {
     const uploadedFile = opts.body;
 
     assert.strictEqual(uploadedFile, formData, 'The uploadFile() method should send a request with correct formData.');
@@ -250,7 +246,7 @@ test('should upload files.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.uploadFile(folderId, formData);
 
-  assert.ok(fetchMock.called('glob:/folder/*/file', {
+  assert.ok(fetchMock.called(`/folder/${folderId}/file`, {
     method: 'POST',
-  }), 'The uploadFile() method should send a POST request to the \'/folder/:id/file\' URL.');
+  }), 'The uploadFile() method should send a POST request to the \'/folder/:folderId/file\' URL.');
 });

@@ -56,7 +56,7 @@ export default class FileList extends Component {
   }
 
   /**
-   * Adds a function to be called when any itm changes its name.
+   * Adds a function to be called when any item changes its name.
    *
    * @param {Function} handler - The function to call when an item changes its name.
    */
@@ -64,6 +64,8 @@ export default class FileList extends Component {
     this._fileItems.forEach((item) => {
       item.onNameChanged(handler);
     });
+
+    this._onItemNameChangedHandler = handler;
   }
 
   /**
@@ -75,6 +77,10 @@ export default class FileList extends Component {
     this._files = fileList;
     this.rootElement.innerHTML = '';
     this.initNestedComponents();
+
+    this._fileItems.forEach((item) => {
+      item.onNameChanged(this._onItemNameChangedHandler);
+    });
   }
 
   /**

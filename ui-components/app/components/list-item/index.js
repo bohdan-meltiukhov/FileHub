@@ -22,14 +22,6 @@ export default class ListItem extends Component {
 
   /** @inheritdoc */
   addEventListeners() {
-    const removeItemButton = this.rootElement
-      .querySelector('[data-test="cell-actions"] .glyphicon-remove-circle');
-    removeItemButton.addEventListener('click', () => {
-      this._removeItemHandlers.forEach((handler) => {
-        handler(this._parameters);
-      });
-    });
-
     this.rootElement.addEventListener('click', () => {
       const classList = this.rootElement.classList;
       if (classList.contains('selected') && !classList.contains('editing')) {
@@ -38,6 +30,7 @@ export default class ListItem extends Component {
         }, 600);
       }
     });
+
     this.rootElement.addEventListener('click', () => this._onClickHandler());
 
     const input = this.rootElement.querySelector('[data-test="new-name-input"]');

@@ -109,7 +109,6 @@ export default class FileListPage extends StateAwareComponent {
   initState() {
     this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
-      this.addEventListeners();
     });
 
     this.onStateChanged('isFileListLoading', ({detail: {state}}) => {

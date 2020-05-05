@@ -42,15 +42,15 @@ export default class FileList extends Component {
       }
     });
 
-    let previousItem;
+    let selectedItem;
 
     this._fileItems.forEach((item) => {
       item.onClick(() => {
-        if (previousItem && previousItem !== item) {
-          previousItem.isSelected = false;
+        if (selectedItem && selectedItem !== item) {
+          selectedItem.isSelected = false;
         }
         item.isSelected = true;
-        previousItem = item;
+        selectedItem = item;
       });
     });
   }

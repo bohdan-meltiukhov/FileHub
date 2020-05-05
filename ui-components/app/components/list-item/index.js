@@ -21,6 +21,14 @@ export default class ListItem extends Component {
   }
 
   /** @inheritdoc */
+  initNestedComponents() {
+    this._filename = this.rootElement.querySelector('[data-test="filename"]');
+    this._input = this.rootElement.querySelector('[data-test="new-name-input"]');
+    this._loader = this.rootElement.querySelector('[data-test="loader-small"]');
+    this._loader.style.display = 'none';
+  }
+
+  /** @inheritdoc */
   addEventListeners() {
     const input = this.rootElement.querySelector('[data-test="new-name-input"]');
 
@@ -68,6 +76,22 @@ export default class ListItem extends Component {
     } else {
       this.rootElement.classList.remove('selected');
       this.rootElement.classList.remove('editing');
+    }
+  }
+
+  /**
+   * Sets if the current item is loading or not.
+   *
+   * @param {boolean} value - The flag that shows whether the current list item is loading or not.
+   */
+  set isLoading(value) {
+    if (value) {
+      this._filename.style.display = 'none';
+      this._input.style.display = 'none';
+      this._loader.style.display = 'inline-block';
+    } else {
+      this._loader.style.display = 'none';
+      this._filename.style.display = 'inline';
     }
   }
 

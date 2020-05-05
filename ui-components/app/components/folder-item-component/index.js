@@ -29,6 +29,7 @@ export default class FolderItemComponent extends ListItem {
                 <span class="name" data-test="filename">
                     <a title="${this._parameters.name}">${this._parameters.name}</a>
                 </span>
+                <div class="loader-small" data-test="loader-small"></div>
                 <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>
             <td class="count" data-test="cell-count">${this._parameters.itemsNumber} items</td>

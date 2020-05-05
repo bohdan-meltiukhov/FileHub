@@ -153,6 +153,10 @@ export default class FileListPage extends StateAwareComponent {
         this.breadcrumbs.error = 'Not Found';
       }
     });
+
+    this.onStateChanged('isRenameItemLoading', ({detail: {state}}) => {
+      this.fileList.isSelectedItemLoading = state.isRenameItemLoading;
+    });
   }
 
   /** @inheritdoc */

@@ -27,6 +27,7 @@ export default class FileItemComponent extends ListItem {
             <td class="filename">
                 <span class="glyphicon" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">${this._parameters.name}</span>
+                <div class="loader-small" data-test="loader-small"></div>
                 <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>
             <td class="count" data-test="cell-count">${this._getReadableFileSizeString(this._parameters.size)}</td>
@@ -40,6 +41,8 @@ export default class FileItemComponent extends ListItem {
 
   /** @inheritdoc */
   initNestedComponents() {
+    super.initNestedComponents();
+
     const mimeTypes = {
       image: 'glyphicon-picture',
       book: 'glyphicon-book',

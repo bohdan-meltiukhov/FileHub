@@ -67,11 +67,7 @@ export default class FetchMock {
     fetchMock.get('express:/folder/:folderId/content', (url) => {
       const id = url.slice(8, url.indexOf('/content'));
 
-      const parentFolder = FileSystem.folders.find((folder) => {
-        if (folder.id === id) {
-          return true;
-        }
-      });
+      const parentFolder = FileSystem.folders.find((folder) => folder.id === id);
 
       if (!parentFolder) {
         return 404;
@@ -100,11 +96,7 @@ export default class FetchMock {
     fetchMock.get('express:/folder/:folderId', (url) => {
       const id = url.slice(8);
 
-      const folder = FileSystem.folders.find((folder) => {
-        if (folder.id === id) {
-          return true;
-        }
-      });
+      const folder = FileSystem.folders.find((folder) => folder.id === id);
 
       if (!folder) {
         return 404;
@@ -128,11 +120,7 @@ export default class FetchMock {
   static _putFolder() {
     fetchMock.put('express:/folder/:folderId', (url, options) => {
       const id = url.slice(8);
-      const index = FileSystem.folders.findIndex((folder) => {
-        if (folder.id === id) {
-          return true;
-        }
-      });
+      const index = FileSystem.folders.findIndex((folder) => folder.id === id);
 
       if (index === -1) {
         return 404;
@@ -152,11 +140,7 @@ export default class FetchMock {
     fetchMock.put('express:/file/:fileId', (url, options) => {
       const id = url.slice(6);
 
-      const index = FileSystem.files.findIndex((file) => {
-        if (file.id === id) {
-          return true;
-        }
-      });
+      const index = FileSystem.files.findIndex((file) => file.id === id);
 
       if (index === -1) {
         return 404;

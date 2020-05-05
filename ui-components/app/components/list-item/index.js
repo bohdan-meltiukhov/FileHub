@@ -22,21 +22,29 @@ export default class ListItem extends Component {
 
   /** @inheritdoc */
   addEventListeners() {
+    const input = this.rootElement.querySelector('[data-test="new-name-input"]');
+
     this.rootElement.addEventListener('click', () => {
       const classList = this.rootElement.classList;
       if (classList.contains('selected') && !classList.contains('editing')) {
         setTimeout(() => {
           classList.add('editing');
+          input.focus();
+          input.selectionStart = input.selectionEnd = input.value.length;
         }, 600);
       }
     });
 
     this.rootElement.addEventListener('click', () => this._onClickHandler());
 
-    const input = this.rootElement.querySelector('[data-test="new-name-input"]');
     input.addEventListener('change', (event) => {
       this._parameters.name = event.target.value;
       this._onNameChanged(this._parameters);
+    });
+    input.addEventListener('blur', () => {
+      setTimeout(() => {
+        this.rootElement.classList.remove('editing');
+      }, 300);
     });
   }
 

@@ -11,6 +11,8 @@ import GetFolderAction from '../../state/actions/get-folder-action';
 import UrlProperties from '../../models/url-properties';
 import {ROOT_FOLDER_ID} from '../../models/root-folder';
 import NotFoundError from '../../models/errors/not-found-error';
+import AuthorizationError from '../../models/errors/authorization-error';
+import GeneralServerError from '../../models/errors/general-server-error';
 
 /**
  * The component for the File List Page.
@@ -27,6 +29,7 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
+    this._folderId = properties.folderId;
     stateManager.dispatch(new GetFolderAction(properties.folderId));
     stateManager.dispatch(new GetFilesAction(properties.folderId));
   }
@@ -125,6 +128,7 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('locationParameters', ({detail: {state}}) => {
       if (state.locationParameters.folderId) {
+        this._folderId = state.locationParameters.folderId;
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
       }
@@ -156,6 +160,22 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('isRenameItemLoading', ({detail: {state}}) => {
       this.fileList.isSelectedItemLoading = state.isRenameItemLoading;
+    });
+
+    this.onStateChanged('renameItemLoadingError', ({detail: {state}}) => {
+      const error = state.renameItemLoadingError;
+      if (error instanceof NotFoundError) {
+        alert('Error: ' + error.message);
+        this.stateManager.dispatch(new GetFilesAction(this._folderId));
+      } else if (error instanceof AuthorizationError) {
+        alert('Error: ' + error.message);
+        window.location.hash = AUTHENTICATION_ROUTE;
+      } else if (error instanceof GeneralServerError) {
+        alert('Error: ' + error.message);
+      } else {
+        alert('Unknown error. See the console for more details.')
+        console.error(error);
+      }
     });
   }
 

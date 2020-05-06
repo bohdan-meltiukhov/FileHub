@@ -104,6 +104,7 @@ export default class ApiService {
       return new GeneralServerError('Internal server error.');
     default:
       return response.text().then((text) => {
+        console.log('response text', text);
         return new Error(text);
       });
     }
@@ -167,9 +168,9 @@ export default class ApiService {
       body: {
         element: folder,
       },
-    }).then((response) => {
+    }).then(async (response) => {
       if (!response.ok) {
-        throw this._handleRequestErrors(response);
+        throw await this._handleRequestErrors(response);
       }
     });
   }
@@ -186,9 +187,9 @@ export default class ApiService {
       body: {
         element: file,
       },
-    }).then((response) => {
+    }).then(async (response) => {
       if (!response.ok) {
-        throw this._handleRequestErrors(response);
+        throw await this._handleRequestErrors(response);
       }
     });
   }

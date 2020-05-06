@@ -22,12 +22,13 @@ export default class UpdateItemAction extends Action {
 
   /** @inheritdoc */
   async apply(stateManager, apiService) {
-    const updateItemMethod = (this._item instanceof FolderItem) ? () => apiService.updateFolder(this._item) :
-      () => apiService.updateFile(this._item);
-
     stateManager.mutate(new IsRenameItemLoadingMutator(true));
     try {
-      await updateItemMethod();
+      if (this._item instanceof FolderItem) {
+        await apiService.updateFolder(this._item);
+      } else if (this._item instanceof FileItem) {
+        await apiService.updateFile(this._item);
+      }
       stateManager.dispatch(new GetFilesAction(this._item.parentId));
     } catch (e) {
       stateManager.mutate(new RenameItemLoadingErrorMutator(e));

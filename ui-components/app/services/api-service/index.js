@@ -104,7 +104,6 @@ export default class ApiService {
       return new GeneralServerError('Internal server error.');
     default:
       return response.text().then((text) => {
-        console.log('response text', text);
         return new Error(text);
       });
     }

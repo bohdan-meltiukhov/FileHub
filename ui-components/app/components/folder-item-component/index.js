@@ -1,5 +1,6 @@
 import ListItem from '../list-item';
 import FolderItem from '../../models/file-system-objects/folder-item';
+import {FILE_LIST_ROUTE} from '../../router/routes';
 
 /**
  * The component for displaying the folder item.
@@ -21,13 +22,14 @@ export default class FolderItemComponent extends ListItem {
 
   /** @inheritdoc */
   markup() {
+    const folderPath = FILE_LIST_ROUTE.replace(':folderId', this._parameters.id);
     return `
         <tr data-test="file-item">
             <td class="icon-cell" data-test="icon-cell"><span class="glyphicon glyphicon-menu-right"></span></td>
             <td class="filename">
                 <span class="glyphicon glyphicon-folder-close" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">
-                    <a title="${this._parameters.name}">${this._parameters.name}</a>
+                    <a href="#${folderPath}" title="${this._parameters.name}">${this._parameters.name}</a>
                 </span>
                 <div class="loader-small" data-test="loader-small"></div>
                 <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">

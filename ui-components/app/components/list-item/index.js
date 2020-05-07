@@ -30,29 +30,34 @@ export default class ListItem extends Component {
 
   /** @inheritdoc */
   addEventListeners() {
-    const input = this.rootElement.querySelector('[data-test="new-name-input"]');
+    const input = this._input;
 
-    this.rootElement.addEventListener('click', () => {
-      const classList = this.rootElement.classList;
-      if (classList.contains('selected') && !classList.contains('editing')) {
-        setTimeout(() => {
-          classList.add('editing');
-          input.focus();
-          input.selectionStart = input.selectionEnd = input.value.length;
-        }, 600);
+    let editModeCanceled = false;
+
+    this.rootElement.addEventListener('click', (event) => {
+      if (event.detail !== 1) {
+        return;
+      }
+
+      if (editModeCanceled) {
+        return editModeCanceled = false;
+      }
+
+      if (this.isSelected && !this.isEditing) {
+        this.isEditing = true;
       }
     });
 
     this.rootElement.addEventListener('click', () => this._onClickHandler());
 
     input.addEventListener('change', (event) => {
-      this._parameters.name = event.target.value;
+      this._parameters.name = input.value;
       this._onNameChanged(this._parameters);
     });
+
     input.addEventListener('blur', () => {
-      setTimeout(() => {
-        this.rootElement.classList.remove('editing');
-      }, 300);
+      editModeCanceled = true;
+      this.isEditing = false;
     });
   }
 
@@ -71,12 +76,59 @@ export default class ListItem extends Component {
    * @param {boolean} isSelected - The flag that shows whether the item is selected or not.
    */
   set isSelected(isSelected) {
+    const rootElement = this.rootElement;
+
     if (isSelected) {
-      this.rootElement.classList.add('selected');
+      rootElement.classList.add('selected');
     } else {
-      this.rootElement.classList.remove('selected');
-      this.rootElement.classList.remove('editing');
+      rootElement.classList.remove('selected');
     }
+  }
+
+  /**
+   * Shows whether the current element is selected or not.
+   *
+   * @returns {boolean} The value that shows if the current list item is selected.
+   */
+  get isSelected() {
+    return this.rootElement.classList.contains('selected');
+  }
+
+  /**
+   * Sets whether the current element is in editing mode or not.
+   *
+   * @param {boolean} isEditing - The flag that shows if the current list item is in editing mode or not.
+   */
+  set isEditing(isEditing) {
+    const rootElement = this.rootElement;
+
+    if (isEditing) {
+      rootElement.classList.add('editing');
+      this._focusOnInput();
+    } else {
+      rootElement.classList.remove('editing');
+    }
+  }
+
+  /**
+   * Focuses on the rename item input and moves the cursor to the end.
+   *
+   * @private
+   */
+  _focusOnInput() {
+    const input = this._input;
+
+    input.focus();
+    input.selectionStart = input.selectionEnd = input.value.length;
+  }
+
+  /**
+   * Shows whether the current element is being edited or not.
+   *
+   * @returns {boolean} The value that shows if the current list item is being edited.
+   */
+  get isEditing() {
+    return this.rootElement.classList.contains('editing');
   }
 
   /**

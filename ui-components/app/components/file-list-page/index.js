@@ -29,7 +29,6 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
-    this._folderId = properties.folderId;
     stateManager.dispatch(new GetFolderAction(properties.folderId));
     stateManager.dispatch(new GetFilesAction(properties.folderId));
   }
@@ -128,7 +127,6 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('locationParameters', ({detail: {state}}) => {
       if (state.locationParameters.folderId) {
-        this._folderId = state.locationParameters.folderId;
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
       }
@@ -166,7 +164,8 @@ export default class FileListPage extends StateAwareComponent {
       const error = state.renameItemLoadingError;
       if (error instanceof NotFoundError) {
         alert('Error: ' + error.message);
-        this.stateManager.dispatch(new GetFilesAction(this._folderId));
+        const folderId = state.locationParameters.folderId;
+        this.stateManager.dispatch(new GetFilesAction(folderId));
       } else if (error instanceof AuthorizationError) {
         alert('Error: ' + error.message);
         window.location.hash = AUTHENTICATION_ROUTE;

@@ -19,4 +19,13 @@ export default class ListItem extends Component {
     this.initNestedComponents();
     this.addEventListeners();
   }
+
+  /**
+   * Sets the function to call when the item is clicked.
+   *
+   * @param {Function} handler - The function to call when the item is clicked.
+   */
+  onClick(handler) {
+    this._onClickHandler = handler;
+  }
 }

@@ -144,7 +144,7 @@ export default class FetchMock {
 
       return 200;
     }, {
-      delay: 500,
+      delay: 2000,
     });
   }
 
@@ -171,6 +171,8 @@ export default class FetchMock {
       FileSystem.files.splice(index, 1);
 
       return 200;
+    }, {
+      delay: 2000,
     });
   }
 

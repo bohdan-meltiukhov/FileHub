@@ -1,6 +1,5 @@
 import GetFilesAction from '../../../../app/state/actions/get-files-action';
 import UpdateItemAction from '../../../../app/state/actions/update-item-action';
-import IsRenameItemLoadingMutator from '../../../../app/state/mutators/is-rename-item-loading-mutator';
 
 const {module, test} = QUnit;
 

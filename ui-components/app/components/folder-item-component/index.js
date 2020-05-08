@@ -14,7 +14,7 @@ export default class FolderItemComponent extends ListItem {
    * @param {FolderItem} parameters - The initial folder items configurations.
    */
   constructor(container, parameters) {
-    super(container);
+    super(container, parameters.id);
 
     this._parameters = parameters;
 
@@ -31,12 +31,15 @@ export default class FolderItemComponent extends ListItem {
                 <span class="name" data-test="filename">
                     <a title="${this._parameters.name}">${this._parameters.name}</a>
                 </span>
+                <div class="loader-small" data-test="loader-small"></div>
                 <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>
             <td class="count" data-test="cell-count">${this._parameters.itemsNumber} items</td>
             <td class="cell-actions" data-test="cell-actions">
-                <span class="glyphicon glyphicon-upload"></span>
-                <span class="glyphicon glyphicon-remove-circle"></span>
+                <span data-test="action-buttons">
+                    <span class="glyphicon glyphicon-upload"></span>
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </span>
             </td>
         </tr>
     `;

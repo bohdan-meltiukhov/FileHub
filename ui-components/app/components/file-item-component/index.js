@@ -14,7 +14,7 @@ export default class FileItemComponent extends ListItem {
    * @param {FileItem} parameters - The initial file items configurations.
    */
   constructor(container, parameters) {
-    super(container);
+    super(container, parameters.id);
 
     this._parameters = parameters;
 
@@ -29,12 +29,15 @@ export default class FileItemComponent extends ListItem {
             <td class="filename">
                 <span class="glyphicon" data-test="file-icon"></span>&nbsp;&nbsp;
                 <span class="name" data-test="filename">${this._parameters.name}</span>
+                <div class="loader-small" data-test="loader-small"></div>
                 <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
             </td>
             <td class="count" data-test="cell-count">${this._getReadableFileSizeString(this._parameters.size)}</td>
             <td class="cell-actions" data-test="cell-actions">
-                <span class="glyphicon glyphicon-download"></span>
-                <span class="glyphicon glyphicon-remove-circle"></span>
+                <span data-test="action-buttons">
+                    <span class="glyphicon glyphicon-download"></span>
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                </span>
             </td>
         </tr>
     `;
@@ -42,6 +45,8 @@ export default class FileItemComponent extends ListItem {
 
   /** @inheritdoc */
   initNestedComponents() {
+    super.initNestedComponents();
+
     const mimeTypes = {
       image: 'glyphicon-picture',
       book: 'glyphicon-book',

@@ -41,28 +41,17 @@ export default class FileList extends Component {
         this._fileItems.push(new FileItemComponent(row, item));
       }
     });
-
-    this._fileItems.forEach((item) => {
-      item.onClick(() => {
-        if (this._selectedItem && this._selectedItem !== item) {
-          this._selectedItem.isSelected = false;
-        }
-        item.isSelected = true;
-        this._selectedItem = item;
-      });
-    });
   }
 
   /**
-   * Sets whether the selected item is loading or not.
+   * Sets whether the specified item is loading or not.
    *
+   * @param {string} itemId - The identifier of the item that is loading.
    * @param {boolean} isLoading - The flag that shows if the selected item is loading or not.
    */
-  set isSelectedItemLoading(isLoading) {
-    if (isLoading) {
-      this._loadingItem = this._selectedItem;
-    }
-    this._loadingItem.isLoading = isLoading;
+  isItemLoading(itemId, isLoading) {
+    const item = this._fileItems.find((item) => item.id === itemId);
+    item.isLoading = isLoading;
   }
 
   /**

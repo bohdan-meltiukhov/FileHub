@@ -156,7 +156,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('isDeleteItemLoading', ({detail: {state}}) => {
-      this.fileList.isSelectedItemLoading = state.isRenameItemLoading;
+      this.fileList.isItemLoading(state.deleteItemId, state.isDeleteItemLoading);
     });
   }
 

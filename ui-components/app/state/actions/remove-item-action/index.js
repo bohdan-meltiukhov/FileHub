@@ -22,7 +22,7 @@ export default class RemoveItemAction extends Action {
 
   /** @inheritdoc */
   async apply(stateManager, apiService) {
-    stateManager.mutate(new IsDeleteItemLoadingMutator(true));
+    stateManager.mutate(new IsDeleteItemLoadingMutator(this._item.id, true));
 
     try {
       if (this._item instanceof FolderItem) {
@@ -35,18 +35,7 @@ export default class RemoveItemAction extends Action {
     } catch (e) {
       stateManager.mutate(new DeleteItemLoadingErrorMutator(e));
     } finally {
-      stateManager.mutate(new IsDeleteItemLoadingMutator(false));
+      stateManager.mutate(new IsDeleteItemLoadingMutator(this._item.id, false));
     }
-    // if (this._fileItem.type === 'folder') {
-    //   apiService.deleteFolder(this._fileItem.id)
-    //     .then(() => {
-    //       stateManager.dispatch(new GetFilesAction(this._fileItem.parentId));
-    //     });
-    // } else if (this._fileItem.type === 'file') {
-    //   apiService.deleteFile(this._fileItem.id)
-    //     .then(() => {
-    //       stateManager.dispatch(new GetFilesAction(this._fileItem.parentId));
-    //     });
-    // }
   }
 }

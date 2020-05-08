@@ -1,4 +1,6 @@
 import Component from '../component.js';
+import FileItem from '../../models/file-system-objects/file-item';
+import FolderItem from '../../models/file-system-objects/folder-item';
 
 /**
  * The general class for folder and file items.
@@ -6,6 +8,37 @@ import Component from '../component.js';
  * @abstract
  */
 export default class ListItem extends Component {
+  /**
+   * Creates an instance of the list item component with set container and properties.
+   *
+   * @param {Element} container - The parent element for the list item component.
+   * @param {FolderItem|FileItem} parameters - The initial list item's configurations.
+   */
+  constructor(container, parameters) {
+    super(container);
+
+    this._parameters = parameters;
+  }
+
+  /** @inheritdoc */
+  markup() {
+    return `
+        <tr data-test="file-item">
+            <td class="icon-cell" data-test="icon-cell"></td>
+            <td class="filename">
+                <span class="glyphicon" data-test="file-icon"></span>&nbsp;&nbsp;
+                <span class="name" data-test="filename">${this._parameters.name}</span>
+                <div class="loader-small" data-test="loader-small"></div>
+                <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
+            </td>
+            <td class="count" data-test="cell-count"></td>
+            <td class="cell-actions" data-test="cell-actions">
+                <span class="glyphicon glyphicon-remove-circle"></span>
+            </td>
+        </tr>
+    `;
+  }
+
   /** @inheritdoc */
   render() {
     const fakeElement = document.createElement('tbody');

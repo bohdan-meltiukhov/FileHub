@@ -13,7 +13,7 @@ export default class FolderItemComponent extends ListItem {
    * @param {FolderItem} parameters - The initial folder items configurations.
    */
   constructor(container, parameters) {
-    super(container);
+    super(container, parameters);
 
     this._parameters = parameters;
 
@@ -21,26 +21,26 @@ export default class FolderItemComponent extends ListItem {
   }
 
   /** @inheritdoc */
-  markup() {
+  initNestedComponents() {
+    super.initNestedComponents();
+
+    const iconCell = this.rootElement.querySelector('[data-test="icon-cell"]');
+    iconCell.innerHTML = '<span class="glyphicon glyphicon-menu-right"></span>';
+
+    const fileIcon = this.rootElement.querySelector('[data-test="file-icon"]');
+    fileIcon.classList.add('glyphicon-folder-close');
+
     const folderPath = FILE_LIST_ROUTE.replace(':folderId', this._parameters.id);
-    return `
-        <tr data-test="file-item">
-            <td class="icon-cell" data-test="icon-cell"><span class="glyphicon glyphicon-menu-right"></span></td>
-            <td class="filename">
-                <span class="glyphicon glyphicon-folder-close" data-test="file-icon"></span>&nbsp;&nbsp;
-                <span class="name" data-test="filename">
-                    <a href="#${folderPath}" title="${this._parameters.name}">${this._parameters.name}</a>
-                </span>
-                <div class="loader-small" data-test="loader-small"></div>
-                <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
-            </td>
-            <td class="count" data-test="cell-count">${this._parameters.itemsNumber} items</td>
-            <td class="cell-actions" data-test="cell-actions">
-                <span class="glyphicon glyphicon-upload"></span>
-                <span class="glyphicon glyphicon-remove-circle"></span>
-            </td>
-        </tr>
-    `;
+    this._filename.innerHTML = `<a href="#${folderPath}" title="${this._parameters.name}">${this._parameters.name}</a>`;
+
+    const cellCount = this.rootElement.querySelector('[data-test="cell-count"]');
+    cellCount.innerText = `${this._parameters.itemsNumber} items`;
+
+    const cellActions = this.rootElement.querySelector('[data-test="cell-actions"]');
+    const uploadButton = document.createElement('span');
+    uploadButton.classList.add('glyphicon');
+    uploadButton.classList.add('glyphicon-upload');
+    cellActions.prepend(uploadButton);
   }
 
   /** @inheritdoc */

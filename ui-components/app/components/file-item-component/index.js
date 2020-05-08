@@ -20,26 +20,6 @@ export default class FileItemComponent extends ListItem {
   }
 
   /** @inheritdoc */
-  markup() {
-    return `
-        <tr data-test="file-item">
-            <td class="icon-cell" data-test="icon-cell">&nbsp;</td>
-            <td class="filename">
-                <span class="glyphicon" data-test="file-icon"></span>&nbsp;&nbsp;
-                <span class="name" data-test="filename">${this._parameters.name}</span>
-                <div class="loader-small" data-test="loader-small"></div>
-                <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
-            </td>
-            <td class="count" data-test="cell-count">${this._getReadableFileSizeString(this._parameters.size)}</td>
-            <td class="cell-actions" data-test="cell-actions">
-                <span class="glyphicon glyphicon-download"></span>
-                <span class="glyphicon glyphicon-remove-circle"></span>
-            </td>
-        </tr>
-    `;
-  }
-
-  /** @inheritdoc */
   initNestedComponents() {
     super.initNestedComponents();
 
@@ -57,6 +37,15 @@ export default class FileItemComponent extends ListItem {
     } else {
       fileIcon.classList.add('glyphicon-file');
     }
+
+    const cellCount = this.rootElement.querySelector('[data-test="cell-count"]');
+    cellCount.innerText = this._getReadableFileSizeString(this._parameters.size);
+
+    const cellActions = this.rootElement.querySelector('[data-test="cell-actions"]');
+    const downloadButton = document.createElement('span');
+    downloadButton.classList.add('glyphicon');
+    downloadButton.classList.add('glyphicon-download');
+    cellActions.prepend(downloadButton);
   }
 
   /**

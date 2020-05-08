@@ -64,7 +64,7 @@ test('should register.', (assert) => {
 });
 
 test('should handle the 401 error.', async (assert) => {
-  assert.expect(4);
+  assert.expect(6);
 
   const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('admin', '1234');
@@ -90,6 +90,23 @@ test('should handle the 401 error.', async (assert) => {
     assert.strictEqual(e.message, 'The username or password is incorrect', 'The register() method should describe ' +
       'the issue correctly.');
   }
+
+  const folderId = 'root';
+  fetchMock.get(`/folder/${folderId}/content`, 401);
+
+  assert.rejects(
+    apiService.getFiles(folderId),
+    AuthorizationError,
+    'The getFiles() method should throw an AuthorizationError if the response status is 401.',
+  );
+
+  fetchMock.get(`/folder/${folderId}`, 401);
+
+  assert.rejects(
+    apiService.getFolder(folderId),
+    AuthorizationError,
+    'The getFolder() method should throw an AuthorizationError if the response status is 401',
+  );
 });
 
 test('should handle the 422 error.', async (assert) => {
@@ -138,7 +155,7 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
-  assert.expect(4);
+  assert.expect(6);
 
   fetchMock.post(/^\/(login|register)$/, 500);
 
@@ -161,6 +178,23 @@ test('should handle the 500 error.', async (assert) => {
     assert.strictEqual(e.message, 'Internal server error', 'The register() method should describe the issue ' +
       'correctly.');
   }
+
+  const folderId = 'root';
+  fetchMock.get(`/folder/${folderId}/content`, 500);
+
+  assert.rejects(
+    apiService.getFiles(folderId),
+    GeneralServerError,
+    'The getFiles() method should throw a GeneralServerError if the response status is 500.',
+  );
+
+  fetchMock.get(`/folder/${folderId}`, 500);
+
+  assert.rejects(
+    apiService.getFolder(folderId),
+    GeneralServerError,
+    'The getFolder() method should throw a GeneralServerError if the response status is 500',
+  );
 });
 
 test('should get files.', async (assert) => {

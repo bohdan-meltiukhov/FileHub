@@ -27,3 +27,4 @@ import * as isFolderLoadingMutator from './state/mutators/is-folder-loading-muta
 import * as updateItemAction from './state/actions/update-item-action';
 import * as isRenameItemLoadingMutator from './state/mutators/is-rename-item-loading-mutator';
 import * as renameItemLoadingErrorMutator from './state/mutators/rename-item-loading-error-mutator';
+import * as listItem from './components/list-item';

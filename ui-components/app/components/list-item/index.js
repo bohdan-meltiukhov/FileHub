@@ -4,8 +4,6 @@ import FolderItem from '../../models/file-system-objects/folder-item';
 
 /**
  * The general class for folder and file items.
- *
- * @abstract
  */
 export default class ListItem extends Component {
   /**
@@ -18,6 +16,8 @@ export default class ListItem extends Component {
     super(container);
 
     this._parameters = parameters;
+
+    this.render();
   }
 
   /** @inheritdoc */
@@ -109,6 +109,8 @@ export default class ListItem extends Component {
    * @param {boolean} isSelected - The flag that shows whether the item is selected or not.
    */
   set isSelected(isSelected) {
+    this._isSelected = isSelected;
+
     const rootElement = this.rootElement;
 
     if (isSelected) {
@@ -124,7 +126,7 @@ export default class ListItem extends Component {
    * @returns {boolean} The value that shows if the current list item is selected.
    */
   get isSelected() {
-    return this.rootElement.classList.contains('selected');
+    return this._isSelected;
   }
 
   /**
@@ -133,6 +135,8 @@ export default class ListItem extends Component {
    * @param {boolean} isEditing - The flag that shows if the current list item is in editing mode or not.
    */
   set isEditing(isEditing) {
+    this._isEditing = isEditing;
+
     const rootElement = this.rootElement;
 
     if (isEditing) {
@@ -161,7 +165,7 @@ export default class ListItem extends Component {
    * @returns {boolean} The value that shows if the current list item is being edited.
    */
   get isEditing() {
-    return this.rootElement.classList.contains('editing');
+    return this._isEditing;
   }
 
   /**

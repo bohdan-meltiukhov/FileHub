@@ -1,25 +1,10 @@
 import ListItem from '../list-item';
-import FolderItem from '../../models/file-system-objects/folder-item';
 import {FILE_LIST_ROUTE} from '../../router/routes';
 
 /**
  * The component for displaying the folder item.
  */
 export default class FolderItemComponent extends ListItem {
-  /**
-   * Creates an instance of the folder item component with set container and properties.
-   *
-   * @param {Element} container - The parent element for the folder item component.
-   * @param {FolderItem} parameters - The initial folder items configurations.
-   */
-  constructor(container, parameters) {
-    super(container, parameters);
-
-    this._parameters = parameters;
-
-    this.render();
-  }
-
   /** @inheritdoc */
   initNestedComponents() {
     super.initNestedComponents();

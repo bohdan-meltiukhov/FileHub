@@ -5,20 +5,6 @@ import FileItem from '../../models/file-system-objects/file-item';
  * The class for displaying the file item.
  */
 export default class FileItemComponent extends ListItem {
-  /**
-   * Creates an instance of the file item component with set container and properties.
-   *
-   * @param {Element} container - The parent element for the file item component.
-   * @param {FileItem} parameters - The initial file items configurations.
-   */
-  constructor(container, parameters) {
-    super(container);
-
-    this._parameters = parameters;
-
-    this.render();
-  }
-
   /** @inheritdoc */
   initNestedComponents() {
     super.initNestedComponents();

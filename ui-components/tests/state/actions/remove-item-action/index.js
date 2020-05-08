@@ -1,12 +1,13 @@
 import GetFilesAction from '../../../../app/state/actions/get-files-action';
 import RemoveItemAction from '../../../../app/state/actions/remove-item-action';
+import IsDeleteItemLoadingMutator from '../../../../app/state/mutators/is-delete-item-loading-mutator';
 
 const {module, test} = QUnit;
 
 module('The RemoveItemAction');
 
 test('should remove folders correctly.', (assert) => {
-  assert.expect(4);
+  assert.expect(6);
 
   const id = 'uExvhDL4YwkxnBVa';
 
@@ -23,12 +24,17 @@ test('should remove folders correctly.', (assert) => {
       assert.ok(action instanceof GetFilesAction, 'The RemoveItemAction should provide the GetFilesAction to ' +
         'the state manager.');
     },
+
+    mutate(mutator) {
+      assert.ok(mutator instanceof IsDeleteItemLoadingMutator, 'The RemoveItemAction should provide instances of the ' +
+        'IsDeleteItemLoadingMutator to the state manager.');
+      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
+    },
   };
 
   const apiServiceMock = {
     deleteFolder(folderId) {
       return new Promise((resolve) => {
-        assert.step('The folder is deleted.');
         assert.strictEqual(folderId, id, 'The RemoveItemAction should provide the correct folder id to the ' +
           'API Service.');
         resolve();
@@ -39,12 +45,14 @@ test('should remove folders correctly.', (assert) => {
   const action = new RemoveItemAction(folder);
   action.apply(stateManagerMock, apiServiceMock);
 
-  assert.verifySteps(['The folder is deleted.'], 'The RemoveItemAction should call the deleteFolder() method of the ' +
-    'API Service when the item type is folder.');
+  assert.verifySteps([
+    'IsDeleteItemLoadingMutator: true',
+    'IsDeleteItemLoadingMutator: false',
+  ], 'The RemoveItemAction should provide correct mutators to the state manager.');
 });
 
 test('should remove files correctly.', (assert) => {
-  assert.expect(4);
+  assert.expect(6);
 
   const id = 'ARqTPQ1XXUrFlaJe';
 
@@ -62,12 +70,17 @@ test('should remove files correctly.', (assert) => {
       assert.ok(action instanceof GetFilesAction, 'The RemoveItemAction should provide the GetFilesAction to ' +
         'the state manager.');
     },
+
+    mutate(mutator) {
+      assert.ok(mutator instanceof IsDeleteItemLoadingMutator, 'The RemoveItemAction should provide instances of the ' +
+        'IsDeleteItemLoadingMutator to the state manager.');
+      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
+    },
   };
 
   const apiServiceMock = {
     deleteFile(fileId) {
       return new Promise((resolve) => {
-        assert.step('The file is deleted.');
         assert.strictEqual(fileId, id, 'The RemoveItemAction should provide the correct file id to the ' +
           'API Service.');
         resolve();
@@ -78,6 +91,8 @@ test('should remove files correctly.', (assert) => {
   const action = new RemoveItemAction(file);
   action.apply(stateManagerMock, apiServiceMock);
 
-  assert.verifySteps(['The file is deleted.'], 'The RemoveItemAction should call the deleteFoile() method of the ' +
-    'API Service when the item type is file.');
+  assert.verifySteps([
+    'IsDeleteItemLoadingMutator: true',
+    'IsDeleteItemLoadingMutator: false',
+  ], 'The RemoveItemAction should provide correct mutators to the state manager.');
 });

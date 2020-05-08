@@ -11,6 +11,8 @@ import GetFolderAction from '../../state/actions/get-folder-action';
 import UrlProperties from '../../models/url-properties';
 import {ROOT_FOLDER_ID} from '../../models/root-folder';
 import NotFoundError from '../../models/errors/not-found-error';
+import AuthorizationError from '../../models/errors/authorization-error';
+import GeneralServerError from '../../models/errors/general-server-error';
 
 /**
  * The component for the File List Page.
@@ -125,6 +127,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('locationParameters', ({detail: {state}}) => {
+      console.log('locationParameters set!', state.locationParameters);
       if (state.locationParameters.folderId) {
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
@@ -157,6 +160,24 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('isDeleteItemLoading', ({detail: {state}}) => {
       this.fileList.isItemLoading(state.deleteItemId, state.isDeleteItemLoading);
+    });
+
+    this.onStateChanged('deleteItemLoadingError', ({detail: {state}}) => {
+      console.log('state.locationParameters', state.locationParameters);
+      const error = state.deleteItemLoadingError;
+      if (error instanceof NotFoundError) {
+        alert('Error: ' + error.message);
+        const folderId = state.locationParameters.folderId;
+        this.stateManager.dispatch(new GetFilesAction(folderId));
+      } else if (error instanceof AuthorizationError) {
+        alert('Error: ' + error.message);
+        window.location.hash = AUTHENTICATION_ROUTE;
+      } else if (error instanceof GeneralServerError) {
+        alert('Error: ' + error.message);
+      } else {
+        alert('Unknown error. See the console for more details.')
+        console.error(error);
+      }
     });
   }
 

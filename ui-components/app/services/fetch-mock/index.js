@@ -144,7 +144,7 @@ export default class FetchMock {
 
       return 200;
     }, {
-      delay: 2000,
+      delay: 500,
     });
   }
 
@@ -172,7 +172,7 @@ export default class FetchMock {
 
       return 200;
     }, {
-      delay: 2000,
+      delay: 500,
     });
   }
 

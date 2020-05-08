@@ -25,3 +25,4 @@ import * as folderMutator from './state/mutators/folder-mutator';
 import * as folderLoadingErrorMutator from './state/mutators/folder-loading-error-mutator';
 import * as isFolderLoadingMutator from './state/mutators/is-folder-loading-mutator';
 import * as removeItemAction from './state/actions/remove-item-action';
+import * as isDeleteItemLoadingMutator from './state/mutators/is-delete-item-loading-mutator';

@@ -23,6 +23,9 @@ export default class FileItemComponent extends ListItem {
   initNestedComponents() {
     super.initNestedComponents();
 
+    const iconCell = this.rootElement.querySelector('[data-test="icon-cell"]');
+    iconCell.innerHTML = '&nbsp;';
+
     const mimeTypes = {
       image: 'glyphicon-picture',
       book: 'glyphicon-book',

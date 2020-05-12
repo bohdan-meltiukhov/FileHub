@@ -103,14 +103,11 @@ export default class FileList extends Component {
       this._selectedItem.isSelected = false;
     }
 
-    const createdFolder = this._fileItems.find((item) => {
-      if (item.id === folderId) {
-        return true;
-      }
-    });
+    const createdFolder = this._fileItems.find((item) => (item.id === folderId));
 
     createdFolder.isSelected = true;
-    createdFolder.isEditing = true;
+    setTimeout(() => createdFolder.isEditing = true, 0);
+    this._selectedItem = createdFolder;
   }
 
   /**

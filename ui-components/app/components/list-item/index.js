@@ -199,6 +199,6 @@ export default class ListItem extends Component {
    * @returns {string} The ID of the current list item.
    */
   get id() {
-    return this._itemId;
+    return this._parameters.id;
   }
 }

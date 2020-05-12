@@ -128,14 +128,9 @@ export default class FetchMock {
    */
   static _deleteFolder() {
     fetchMock.delete('express:/folder/:folderId', (url) => {
-      return 404;
       const id = url.slice(8);
 
-      const folder = FileSystem.folders.find((folder) => {
-        if (folder.id === id) {
-          return true;
-        }
-      });
+      const folder = FileSystem.folders.find((folder) => folder.id === id);
 
       if (!folder) {
         return 404;
@@ -158,18 +153,13 @@ export default class FetchMock {
     fetchMock.delete('express:/file/:fileId', (url) => {
       const id = url.slice(6);
 
-      const file = FileSystem.files.find((file) => {
-        if (file.id === id) {
-          return true;
-        }
-      });
+      const fileIndex = FileSystem.files.findIndex((file) => file.id === id);
 
-      if (!file) {
+      if (fileIndex === -1) {
         return 404;
       }
 
-      const index = FileSystem.files.indexOf(file);
-      FileSystem.files.splice(index, 1);
+      FileSystem.files.splice(fileIndex, 1);
 
       return 200;
     }, {

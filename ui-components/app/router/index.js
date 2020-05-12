@@ -47,8 +47,6 @@ export default class Router {
    */
   onHashChanged(handler) {
     this._hashChangedHandlers.push(handler);
-
-    this._loadPage();
   }
 
   /**

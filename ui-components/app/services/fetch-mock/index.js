@@ -128,6 +128,7 @@ export default class FetchMock {
    */
   static _deleteFolder() {
     fetchMock.delete('express:/folder/:folderId', (url) => {
+      return 404;
       const id = url.slice(8);
 
       const folder = FileSystem.folders.find((folder) => {

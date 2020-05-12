@@ -29,6 +29,7 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
+    this._properties = properties;
     stateManager.dispatch(new GetFolderAction(properties.folderId));
     stateManager.dispatch(new GetFilesAction(properties.folderId));
   }
@@ -127,8 +128,8 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('locationParameters', ({detail: {state}}) => {
-      console.log('locationParameters set!', state.locationParameters);
       if (state.locationParameters.folderId) {
+        this._properties = state.locationParameters;
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
       }
@@ -163,11 +164,10 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('deleteItemLoadingError', ({detail: {state}}) => {
-      console.log('state.locationParameters', state.locationParameters);
       const error = state.deleteItemLoadingError;
       if (error instanceof NotFoundError) {
         alert('Error: ' + error.message);
-        const folderId = state.locationParameters.folderId;
+        const folderId = this._properties.folderId;
         this.stateManager.dispatch(new GetFilesAction(folderId));
       } else if (error instanceof AuthorizationError) {
         alert('Error: ' + error.message);
@@ -175,7 +175,7 @@ export default class FileListPage extends StateAwareComponent {
       } else if (error instanceof GeneralServerError) {
         alert('Error: ' + error.message);
       } else {
-        alert('Unknown error. See the console for more details.')
+        alert('Unknown error. See the console for more details.');
         console.error(error);
       }
     });

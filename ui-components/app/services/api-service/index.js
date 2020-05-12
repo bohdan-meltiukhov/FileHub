@@ -167,9 +167,9 @@ export default class ApiService {
       body: {
         element: folder,
       },
-    }).then((response) => {
+    }).then(async (response) => {
       if (!response.ok) {
-        throw this._handleRequestErrors(response);
+        throw await this._handleRequestErrors(response);
       }
     });
   }
@@ -186,9 +186,9 @@ export default class ApiService {
       body: {
         element: file,
       },
-    }).then((response) => {
+    }).then(async (response) => {
       if (!response.ok) {
-        throw this._handleRequestErrors(response);
+        throw await this._handleRequestErrors(response);
       }
     });
   }

@@ -1,26 +1,18 @@
 import Action from '../action';
 import GetFilesAction from '../get-files-action';
+import FileItem from '../../../models/file-system-objects/file-item';
+import FolderItem from '../../../models/file-system-objects/folder-item';
+import IsRenameItemLoadingMutator from '../../mutators/is-rename-item-loading-mutator';
+import RenameItemLoadingErrorMutator from '../../mutators/rename-item-loading-error-mutator';
 
 /**
  * The action that updates a file or a folder.
  */
 export default class UpdateItemAction extends Action {
   /**
-   * The object for defining the file item parameters.
-   *
-   * @typedef {object} Parameters
-   * @property {string} id - The identifier of the item.
-   * @property {string} name - The name of the item.
-   * @property {('image'|'book'|'video'|'audio'|'stylesheet'|'other')} [mimeType] - The type of the file.
-   * @property {number} [size] - The size of the file in bytes.
-   * @property {number} [itemsNumber] - The number of items inside.
-   * @property {('file'|'folder')} type - Shows whether it is a file or a folder.
-   */
-
-  /**
    * Creates an instance of the update item action with set item.
    *
-   * @param {Parameters} item - The new item.
+   * @param {FileItem|FolderItem} item - The new item.
    */
   constructor(item) {
     super();
@@ -29,17 +21,19 @@ export default class UpdateItemAction extends Action {
   }
 
   /** @inheritdoc */
-  apply(stateManager, apiService) {
-    if (this._item.type === 'folder') {
-      apiService.updateFolder(this._item)
-        .then(() => {
-          stateManager.dispatch(new GetFilesAction(this._item.parentId));
-        });
-    } else if (this._item.type === 'file') {
-      apiService.updateFile(this._item)
-        .then(() => {
-          stateManager.dispatch(new GetFilesAction(this._item.parentId));
-        });
+  async apply(stateManager, apiService) {
+    stateManager.mutate(new IsRenameItemLoadingMutator(true));
+    try {
+      if (this._item instanceof FolderItem) {
+        await apiService.updateFolder(this._item);
+      } else if (this._item instanceof FileItem) {
+        await apiService.updateFile(this._item);
+      }
+      stateManager.dispatch(new GetFilesAction(this._item.parentId));
+    } catch (e) {
+      stateManager.mutate(new RenameItemLoadingErrorMutator(e));
+    } finally {
+      stateManager.mutate(new IsRenameItemLoadingMutator(false));
     }
   }
 }

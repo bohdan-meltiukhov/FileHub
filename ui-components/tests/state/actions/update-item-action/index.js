@@ -6,6 +6,8 @@ const {module, test} = QUnit;
 module('The UpdateItemAction');
 
 test('should update folders correctly.', async (assert) => {
+  assert.expect(5);
+
   const folder = {
     id: '1',
     parentId: 'parent',
@@ -16,7 +18,6 @@ test('should update folders correctly.', async (assert) => {
 
   const updateFolder = (folderItem) => {
     return new Promise((resolve) => {
-      assert.step('The folder is updated.');
       assert.deepEqual(folderItem, folder, 'The UpdateItemAction should provide the correct folder to ' +
         'the API Service.');
       resolve();
@@ -31,6 +32,13 @@ test('should update folders correctly.', async (assert) => {
     dispatch: (action) => {
       assert.ok(action instanceof GetFilesAction, 'The UpdateItemAction should provide the GetFilesAction to the ' +
         'state manager.');
+
+      assert.strictEqual(action._folderId, folder.parentId, 'The UpdateItemAction should provide correct folderId to ' +
+        'the GetFilesAction.');
+    },
+
+    mutate: (mutator) => {
+      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
     },
   };
 
@@ -38,8 +46,10 @@ test('should update folders correctly.', async (assert) => {
   action.apply(stateManagerMock, apiServiceMock);
 
   await updateFolder;
-  assert.verifySteps(['The folder is updated.'], 'The UpdateItemAction should call the updateFolder() method of the ' +
-    'API Service when the item type is folder.');
+  assert.verifySteps([
+    'IsRenameItemLoadingMutator: true',
+    'IsRenameItemLoadingMutator: false',
+  ], 'The UpdateItemAction should provide correct mutators to the state manager.');
 });
 
 test('should update files correctly.', async (assert) => {
@@ -54,7 +64,6 @@ test('should update files correctly.', async (assert) => {
 
   const updateFile = (fileItem) => {
     return new Promise((resolve) => {
-      assert.step('The file is updated.');
       assert.deepEqual(fileItem, file, 'The UpdateItemAction should provide the correct file to ' +
         'the API Service.');
       resolve();
@@ -69,6 +78,13 @@ test('should update files correctly.', async (assert) => {
     dispatch: (action) => {
       assert.ok(action instanceof GetFilesAction, 'The UpdateItemAction should provide the GetFilesAction to the ' +
         'state manager.');
+
+      assert.strictEqual(action._folderId, file.parentId, 'The UpdateItemAction should provide correct folderId to ' +
+        'the GetFilesAction.');
+    },
+
+    mutate: (mutator) => {
+      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
     },
   };
 
@@ -76,6 +92,8 @@ test('should update files correctly.', async (assert) => {
   action.apply(stateManagerMock, apiServiceMock);
 
   await updateFile;
-  assert.verifySteps(['The file is updated.'], 'The UpdateItemAction should call the updateFile() method of the ' +
-    'API Service when the item type is file.');
+  assert.verifySteps([
+    'IsRenameItemLoadingMutator: true',
+    'IsRenameItemLoadingMutator: false',
+  ], 'The UpdateItemAction should provide correct mutators to the state manager.');
 });

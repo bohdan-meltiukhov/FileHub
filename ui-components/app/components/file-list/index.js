@@ -44,17 +44,29 @@ export default class FileList extends Component {
 
     this._fileItems.forEach((item) => {
       item.onClick(() => {
-        if (this._previousItem && this._previousItem !== item) {
-          this._previousItem.isSelected = false;
+        if (this._selectedItem && this._selectedItem !== item) {
+          this._selectedItem.isSelected = false;
         }
         item.isSelected = true;
-        this._previousItem = item;
+        this._selectedItem = item;
       });
     });
   }
 
   /**
-   * Adds a function to be called when any itm changes its name.
+   * Sets whether the selected item is loading or not.
+   *
+   * @param {boolean} isLoading - The flag that shows if the selected item is loading or not.
+   */
+  set isSelectedItemLoading(isLoading) {
+    if (isLoading) {
+      this._loadingItem = this._selectedItem;
+    }
+    this._loadingItem.isLoading = isLoading;
+  }
+
+  /**
+   * Adds a function to be called when any item changes its name.
    *
    * @param {Function} handler - The function to call when an item changes its name.
    */
@@ -62,6 +74,8 @@ export default class FileList extends Component {
     this._fileItems.forEach((item) => {
       item.onNameChanged(handler);
     });
+
+    this._onItemNameChangedHandler = handler;
   }
 
   /**
@@ -73,6 +87,10 @@ export default class FileList extends Component {
     this._files = fileList;
     this.rootElement.innerHTML = '';
     this.initNestedComponents();
+
+    this._fileItems.forEach((item) => {
+      item.onNameChanged(this._onItemNameChangedHandler);
+    });
   }
 
   /**
@@ -81,8 +99,8 @@ export default class FileList extends Component {
    * @param {string} folderId - The identifier of the required folder.
    */
   renameFolder(folderId) {
-    if (this._previousItem) {
-      this._previousItem.isSelected = false;
+    if (this._selectedItem) {
+      this._selectedItem.isSelected = false;
     }
 
     const createdFolder = this._fileItems.find((item) => {

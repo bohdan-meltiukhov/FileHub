@@ -5,6 +5,8 @@ import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import NotFoundError from '../../models/errors/not-found-error';
 import FetchMock from '../fetch-mock';
+import FolderItem from '../../models/file-system-objects/folder-item';
+import FileItem from '../../models/file-system-objects/file-item';
 
 let instance;
 
@@ -151,5 +153,43 @@ export default class ApiService {
           throw this._handleRequestErrors(response);
         }
       });
+  }
+
+  /**
+   * Updates the provided folder.
+   *
+   * @param {FolderItem} folder - The new folder properties.
+   * @returns {Promise} The promise that resolves if the folder is updated successfully.
+   */
+  updateFolder(folder) {
+    return fetch(`/folder/${folder.id}`, {
+      method: 'PUT',
+      body: {
+        element: folder,
+      },
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw await this._handleRequestErrors(response);
+      }
+    });
+  }
+
+  /**
+   * Updates the provided file.
+   *
+   * @param {FileItem} file - The new file properties.
+   * @returns {Promise} The promise that resolves if the file is updated successfully.
+   */
+  updateFile(file) {
+    return fetch(`/file/${file.id}`, {
+      method: 'PUT',
+      body: {
+        element: file,
+      },
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw await this._handleRequestErrors(response);
+      }
+    });
   }
 }

@@ -7,6 +7,8 @@ import FolderItem from '../../models/file-system-objects/folder-item';
  */
 export default class ListItem extends Component {
   _removeItemHandlers = [];
+  _onClickHandler = () => {
+  };
 
   /**
    * Creates an instance of the list item component with set container and properties.

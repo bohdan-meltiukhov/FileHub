@@ -118,8 +118,9 @@ test('should show the 404 page in case the route is not registered.', (assert) =
 });
 
 test('should call the hashChangedHandler.', (assert) => {
-  const windowMock = new WindowMock();
+  assert.expect(3);
 
+  const windowMock = new WindowMock();
   const rootElement = document.createElement('div');
 
   const hashChangedHandler = (staticPart) => {

@@ -48,32 +48,3 @@ test('should have the provided properties.', (assert) => {
   assert.strictEqual(firstAction.className, 'glyphicon glyphicon-upload', 'The folder item component should show the ' +
     'upload action.');
 });
-
-test('should call the onRemove handler.', async (assert) => {
-  assert.expect(3);
-
-  const folder = {
-    id: '1',
-    parentId: 'parent',
-    name,
-    itemsNumber: 26,
-    type: 'folder',
-  };
-
-  const handler = (parameters) => {
-    assert.step('Folder item is removed.');
-    assert.deepEqual(parameters, folder, 'The folder item should provide the correct folder to the onRemove handler.');
-  };
-
-  const folderItem = new FolderItem(row, folder);
-  const folderItemElement = fixture.firstElementChild;
-
-  folderItem.onRemoveItem(handler);
-
-  const removeButton = folderItemElement.querySelector('[data-test="cell-actions"] .glyphicon-remove-circle');
-  removeButton.click();
-
-  await handler;
-  assert.verifySteps(['Folder item is removed.'], 'The folder item should call the onRemove handler when the remove ' +
-    'button is pressed.');
-});

@@ -89,3 +89,34 @@ test('should handle the isEditing state.', (assert) => {
   assert.notOk(itemElement.classList.contains('editing'), 'The ListItem should remove the \'editing\' class when ' +
     'the isEditing setter receives false value.');
 });
+
+test('should call the onRemoveButtonClicked handler.', (assert) => {
+  assert.expect(3);
+
+  const fileItem = new FileItem({
+    id: 'rYol3zzsCYc561cV',
+    parentId: 'uExvhDL4YwkxnBVa',
+    name: 'Document.pdf',
+    mimeType: 'book',
+    size: 202,
+    type: 'file',
+  });
+
+  const item = new ListItem(row, fileItem);
+  const itemElement = fixture.firstElementChild;
+
+  const handler = (parameters) => {
+    assert.step('The removeButtonClicked handler is called.');
+    assert.deepEqual(parameters, fileItem, 'The ListItem should provide correct parameters to the ' +
+      'removeButtonClicked handler.');
+  };
+
+  item.onRemoveButtonClicked(handler);
+
+  const icon = itemElement.querySelector('[data-test="remove-item-button"]');
+  console.log('icon', icon);
+  icon.click();
+
+  assert.verifySteps(['The removeButtonClicked handler is called.'], 'The ListItem should call the ' +
+    'removeButtonClicked handler when the button is clicked.');
+});

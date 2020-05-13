@@ -2,8 +2,6 @@
  * The class that allows switching between different pages.
  */
 export default class Router {
-  _hashChangedHandlers = [];
-
   /**
    * The class for providing the router properties via the constructor.
    *
@@ -12,6 +10,7 @@ export default class Router {
    * @property {object.<string, Function>} pageMapping - The object that defines all the possible routes.
    * @property {string} defaultLocation - The location that should be opened in case the current location hash is empty.
    * @property {Function} notFoundPage - The page that should be displayed in case the route is incorrect.
+   * @property {Function} hashChangedHandler - The handler that should be called when the location hash changes.
    * @property {object} window - The window containing a DOM document.
    */
 
@@ -26,6 +25,7 @@ export default class Router {
     this._defaultLocation = properties.defaultLocation;
     this._notFoundPage = properties.notFoundPage;
     this._window = properties.window;
+    this._hashChangedHandler = properties.hashChangedHandler;
     this.init();
   }
 
@@ -87,9 +87,7 @@ export default class Router {
 
     const dynamicPartMap = this._getDynamicPart(urlTemplate, hash);
 
-    this._hashChangedHandlers.forEach((handler) => {
-      handler(staticPart, dynamicPartMap);
-    });
+    this._hashChangedHandler(staticPart, dynamicPartMap);
 
     if (staticPart !== this._previousStaticPart) {
       this._rootElement.innerHTML = '';

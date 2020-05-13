@@ -30,7 +30,6 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
-    this._properties = properties;
     stateManager.dispatch(new GetFolderAction(properties.folderId));
     stateManager.dispatch(new GetFilesAction(properties.folderId));
   }
@@ -117,6 +116,9 @@ export default class FileListPage extends StateAwareComponent {
   initState() {
     this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
+      if (state.itemsWithDeletionInProgress) {
+        this.fileList.loadingItems = state.itemsWithDeletionInProgress;
+      }
     });
 
     this.onStateChanged('isFileListLoading', ({detail: {state}}) => {
@@ -133,7 +135,6 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('locationParameters', ({detail: {state}}) => {
       if (state.locationParameters.folderId) {
-        this._properties = state.locationParameters;
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
       }
@@ -144,7 +145,6 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('folder', ({detail: {state}}) => {
-      this._folder = state.folder;
       this.breadcrumbs.folder = state.folder;
     });
 
@@ -184,15 +184,11 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    // this.onStateChanged('isDeleteItemLoading', ({detail: {state}}) => {
-    //   this.fileList.isItemLoading(state.deleteItemId, state.isDeleteItemLoading);
-    // });
-
     this.onStateChanged('deleteItemLoadingError', ({detail: {state}}) => {
       const error = state.deleteItemLoadingError;
       if (error instanceof NotFoundError) {
         alert('Error: ' + error.message);
-        const folderId = this._properties.folderId;
+        const folderId = state.locationParameters.folderId;
         this.stateManager.dispatch(new GetFilesAction(folderId));
       } else if (error instanceof AuthorizationError) {
         alert('Error: ' + error.message);
@@ -207,10 +203,6 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
       this.fileList.loadingItems = state.itemsWithDeletionInProgress;
-
-      if (state.itemsWithDeletionInProgress.length === 0) {
-        this.stateManager.dispatch(new GetFilesAction(this._properties.folderId));
-      }
     });
   }
 

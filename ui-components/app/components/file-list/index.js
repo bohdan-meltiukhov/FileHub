@@ -72,13 +72,7 @@ export default class FileList extends Component {
    */
   set loadingItems(itemIds) {
     this._fileItems.forEach((item) => {
-      if (itemIds.includes(item.id)) {
-        console.log('includes');
-        item.isLoading = true;
-      } else {
-        console.log('not includes');
-        item.isLoading = false;
-      }
+      item.isLoading = itemIds.includes(item.id);
     });
   }
 

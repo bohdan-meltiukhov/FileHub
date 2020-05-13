@@ -207,6 +207,10 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
       this.fileList.loadingItems = state.itemsWithDeletionInProgress;
+
+      if (state.itemsWithDeletionInProgress.length === 0) {
+        this.stateManager.dispatch(new GetFilesAction(this._properties.folderId));
+      }
     });
   }
 

@@ -1,4 +1,4 @@
-import IsDeleteItemLoadingMutator from '../../../../app/state/mutators/is-delete-item-loading-mutator';
+import IsDeleteItemLoadingMutator from '../../../../app/state/mutators/is-item-deletion-in-progress-mutator';
 
 const {module, test} = QUnit;
 

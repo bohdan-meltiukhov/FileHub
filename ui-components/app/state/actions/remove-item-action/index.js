@@ -2,7 +2,7 @@ import Action from '../action';
 import GetFilesAction from '../get-files-action';
 import FileItem from '../../../models/file-system-objects/file-item';
 import FolderItem from '../../../models/file-system-objects/folder-item';
-import IsDeleteItemLoadingMutator from '../../mutators/is-delete-item-loading-mutator';
+import IsItemDeletionInProgressMutator from '../../mutators/is-item-deletion-in-progress-mutator';
 import DeleteItemLoadingErrorMutator from '../../mutators/delete-item-loading-error-mutator';
 
 /**
@@ -22,7 +22,7 @@ export default class RemoveItemAction extends Action {
 
   /** @inheritdoc */
   async apply(stateManager, apiService) {
-    stateManager.mutate(new IsDeleteItemLoadingMutator(this._item.id, true));
+    stateManager.mutate(new IsItemDeletionInProgressMutator(this._item.id, true));
 
     try {
       if (this._item instanceof FolderItem) {
@@ -35,7 +35,7 @@ export default class RemoveItemAction extends Action {
     } catch (e) {
       stateManager.mutate(new DeleteItemLoadingErrorMutator(e));
     } finally {
-      stateManager.mutate(new IsDeleteItemLoadingMutator(this._item.id, false));
+      stateManager.mutate(new IsItemDeletionInProgressMutator(this._item.id, false));
     }
   }
 }

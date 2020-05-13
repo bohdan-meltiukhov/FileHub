@@ -65,6 +65,24 @@ export default class FileList extends Component {
   }
 
   /**
+   * Sets the loading state for the provided items and removes the loading state for the items that are not present
+   * in the provided array.
+   *
+   * @param {string[]} itemIds - Items that are currently loading.
+   */
+  set loadingItems(itemIds) {
+    this._fileItems.forEach((item) => {
+      if (itemIds.includes(item.id)) {
+        console.log('includes');
+        item.isLoading = true;
+      } else {
+        console.log('not includes');
+        item.isLoading = false;
+      }
+    });
+  }
+
+  /**
    * Adds a function that should be called when an item is deleted.
    *
    * @param {Function} handler - The function to call when the use wants to delete an item.

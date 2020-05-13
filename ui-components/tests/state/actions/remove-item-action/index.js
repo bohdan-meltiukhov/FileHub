@@ -1,6 +1,6 @@
 import GetFilesAction from '../../../../app/state/actions/get-files-action';
 import RemoveItemAction from '../../../../app/state/actions/remove-item-action';
-import IsDeleteItemLoadingMutator from '../../../../app/state/mutators/is-delete-item-loading-mutator';
+import IsDeleteItemLoadingMutator from '../../../../app/state/mutators/is-item-deletion-in-progress-mutator';
 
 const {module, test} = QUnit;
 

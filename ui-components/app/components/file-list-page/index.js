@@ -184,9 +184,9 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    this.onStateChanged('isDeleteItemLoading', ({detail: {state}}) => {
-      this.fileList.isItemLoading(state.deleteItemId, state.isDeleteItemLoading);
-    });
+    // this.onStateChanged('isDeleteItemLoading', ({detail: {state}}) => {
+    //   this.fileList.isItemLoading(state.deleteItemId, state.isDeleteItemLoading);
+    // });
 
     this.onStateChanged('deleteItemLoadingError', ({detail: {state}}) => {
       const error = state.deleteItemLoadingError;
@@ -203,6 +203,10 @@ export default class FileListPage extends StateAwareComponent {
         alert('Unknown error. See the console for more details.');
         console.error(error);
       }
+    });
+
+    this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
+      this.fileList.loadingItems = state.itemsWithDeletionInProgress;
     });
   }
 

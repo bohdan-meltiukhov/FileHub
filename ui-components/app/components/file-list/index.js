@@ -54,17 +54,6 @@ export default class FileList extends Component {
   }
 
   /**
-   * Sets whether the specified item is loading or not.
-   *
-   * @param {string} itemId - The identifier of the item that is loading.
-   * @param {boolean} isLoading - The flag that shows if the selected item is loading or not.
-   */
-  isItemLoading(itemId, isLoading) {
-    const item = this._fileItems.find((item) => item.id === itemId);
-    item.isLoading = isLoading;
-  }
-
-  /**
    * Sets the loading state for the provided items and removes the loading state for the items that are not present
    * in the provided array.
    *
@@ -81,9 +70,9 @@ export default class FileList extends Component {
    *
    * @param {Function} handler - The function to call when the use wants to delete an item.
    */
-  onRemoveItem(handler) {
+  onRemoveButtonClicked(handler) {
     this._fileItems.forEach((item) => {
-      item.onRemoveItem(handler);
+      item.onRemoveButtonClicked(handler);
     });
 
     this._onRemoveItemHandler = handler;
@@ -129,7 +118,7 @@ export default class FileList extends Component {
     });
 
     this._fileItems.forEach((item) => {
-      item.onRemoveItem(this._onRemoveItemHandler);
+      item.onRemoveButtonClicked(this._onRemoveItemHandler);
     });
   }
 

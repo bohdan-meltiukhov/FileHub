@@ -103,7 +103,7 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   addEventListeners() {
-    this.fileList.onRemoveItem((item) => {
+    this.fileList.onRemoveButtonClicked((item) => {
       this.stateManager.dispatch(new RemoveItemAction(item));
     });
 

@@ -223,7 +223,7 @@ export default class ListItem extends Component {
    *
    * @param {Function} handler - The function that will be called when the user wants to delete an item.
    */
-  onRemoveItem(handler) {
+  onRemoveButtonClicked(handler) {
     this._removeItemHandlers.push(handler);
   }
 }

@@ -1,6 +1,6 @@
 import GetFilesAction from '../../../../app/state/actions/get-files-action';
 import RemoveItemAction from '../../../../app/state/actions/remove-item-action';
-import IsDeleteItemLoadingMutator from '../../../../app/state/mutators/is-item-deletion-in-progress-mutator';
+import IsItemDeletionInProgressMutator from '../../../../app/state/mutators/is-item-deletion-in-progress-mutator';
 
 const {module, test} = QUnit;
 
@@ -26,9 +26,9 @@ test('should remove folders correctly.', (assert) => {
     },
 
     mutate(mutator) {
-      assert.ok(mutator instanceof IsDeleteItemLoadingMutator, 'The RemoveItemAction should provide instances of the ' +
-        'IsDeleteItemLoadingMutator to the state manager.');
-      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
+      assert.ok(mutator instanceof IsItemDeletionInProgressMutator, 'The RemoveItemAction should provide instances ' +
+        'of the IsItemDeletionInProgressMutator to the state manager.');
+      assert.step(mutator.constructor.name + ': ' + mutator._itemId + ', ' + mutator._isLoading);
     },
   };
 
@@ -46,8 +46,8 @@ test('should remove folders correctly.', (assert) => {
   action.apply(stateManagerMock, apiServiceMock);
 
   assert.verifySteps([
-    'IsDeleteItemLoadingMutator: true',
-    'IsDeleteItemLoadingMutator: false',
+    `IsItemDeletionInProgressMutator: ${folder.id}, true`,
+    `IsItemDeletionInProgressMutator: ${folder.id}, false`,
   ], 'The RemoveItemAction should provide correct mutators to the state manager.');
 });
 
@@ -72,9 +72,9 @@ test('should remove files correctly.', (assert) => {
     },
 
     mutate(mutator) {
-      assert.ok(mutator instanceof IsDeleteItemLoadingMutator, 'The RemoveItemAction should provide instances of the ' +
-        'IsDeleteItemLoadingMutator to the state manager.');
-      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
+      assert.ok(mutator instanceof IsItemDeletionInProgressMutator, 'The RemoveItemAction should provide instances ' +
+        'of the IsItemDeletionInProgressMutator to the state manager.');
+      assert.step(mutator.constructor.name + ': ' + mutator._itemId + ', ' + mutator._isLoading);
     },
   };
 
@@ -92,7 +92,7 @@ test('should remove files correctly.', (assert) => {
   action.apply(stateManagerMock, apiServiceMock);
 
   assert.verifySteps([
-    'IsDeleteItemLoadingMutator: true',
-    'IsDeleteItemLoadingMutator: false',
+    `IsItemDeletionInProgressMutator: ${file.id}, true`,
+    `IsItemDeletionInProgressMutator: ${file.id}, false`,
   ], 'The RemoveItemAction should provide correct mutators to the state manager.');
 });

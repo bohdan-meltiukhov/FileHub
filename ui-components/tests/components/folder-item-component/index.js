@@ -37,7 +37,7 @@ test('should have the provided properties.', (assert) => {
     'glyphicon-folder-close class.');
 
   const fileName = folderItem.querySelector('[data-test="filename"]');
-  assert.strictEqual(fileName.innerText, `${name} `, 'The folder item component should display the provided name.');
+  assert.strictEqual(fileName.innerText, name, 'The folder item component should display the provided name.');
 
   const itemsCount = folderItem.querySelector('[data-test="cell-count"]');
   assert.strictEqual(itemsCount.innerText, `${itemsNumber} items`, 'The folder item component should display ' +

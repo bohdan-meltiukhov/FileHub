@@ -64,7 +64,7 @@ test('should register.', (assert) => {
 });
 
 test('should handle the 401 error.', async (assert) => {
-  assert.expect(4);
+  assert.expect(6);
 
   const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('admin', '1234');
@@ -90,6 +90,23 @@ test('should handle the 401 error.', async (assert) => {
     assert.strictEqual(e.message, 'The username or password is incorrect', 'The register() method should describe ' +
       'the issue correctly.');
   }
+
+  const folderId = 'root';
+  fetchMock.get(`/folder/${folderId}/content`, 401);
+
+  assert.rejects(
+    apiService.getFiles(folderId),
+    AuthorizationError,
+    'The getFiles() method should throw an AuthorizationError if the response status is 401.',
+  );
+
+  fetchMock.get(`/folder/${folderId}`, 401);
+
+  assert.rejects(
+    apiService.getFolder(folderId),
+    AuthorizationError,
+    'The getFolder() method should throw an AuthorizationError if the response status is 401',
+  );
 });
 
 test('should handle the 422 error.', async (assert) => {
@@ -138,7 +155,7 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
-  assert.expect(4);
+  assert.expect(6);
 
   fetchMock.post(/^\/(login|register)$/, 500);
 
@@ -161,6 +178,23 @@ test('should handle the 500 error.', async (assert) => {
     assert.strictEqual(e.message, 'Internal server error', 'The register() method should describe the issue ' +
       'correctly.');
   }
+
+  const folderId = 'root';
+  fetchMock.get(`/folder/${folderId}/content`, 500);
+
+  assert.rejects(
+    apiService.getFiles(folderId),
+    GeneralServerError,
+    'The getFiles() method should throw a GeneralServerError if the response status is 500.',
+  );
+
+  fetchMock.get(`/folder/${folderId}`, 500);
+
+  assert.rejects(
+    apiService.getFolder(folderId),
+    GeneralServerError,
+    'The getFolder() method should throw a GeneralServerError if the response status is 500',
+  );
 });
 
 test('should get files.', async (assert) => {
@@ -228,6 +262,59 @@ test('should get a folder.', async (assert) => {
   assert.ok(fetchMock.called(`/folder/${folderId}`, {
     method: 'GET',
   }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
+});
+
+test('should update folders.', (assert) => {
+  assert.expect(2);
+
+  const folder = {
+    id: 'uExvhDL4YwkxnBVa',
+    parentId: '4Goz0J0Tz8xfDfsJ',
+    name: 'Documents',
+    itemsNumber: 20,
+    type: 'folder',
+  };
+
+  fetchMock.put(`/folder/${folder.id}`, (url, opts) => {
+    assert.deepEqual(opts.body.element, folder, 'The updateFolder() method should send a request with correct ' +
+      'folder object.');
+
+    return 200;
+  });
+
+  const apiService = ApiService.getInstance();
+  apiService.updateFolder(folder);
+
+  assert.ok(fetchMock.called(`/folder/${folder.id}`, {
+    method: 'PUT',
+  }), 'The updateFolder() method should send a PUT request to the \'/folder/:folderId\' URL.');
+});
+
+test('should update files.', (assert) => {
+  assert.expect(2);
+
+  const file = {
+    id: 'ARqTPQ1XXUrFlaJe',
+    parentId: 'tRZXiSHNRlgZluGQ',
+    name: 'Montenegro.jpg',
+    mimeType: 'image',
+    size: 162,
+    type: 'file',
+  };
+
+  fetchMock.put(`/file/${file.id}`, (url, opts) => {
+    assert.deepEqual(opts.body.element, file, 'The updateFile() method should send a request with correct ' +
+      'file object.');
+
+    return 200;
+  });
+
+  const apiService = ApiService.getInstance();
+  apiService.updateFile(file);
+
+  assert.ok(fetchMock.called(`/file/${file.id}`, {
+    method: 'PUT',
+  }), 'The updateFile() method should send a PUT request to the \'/file/:fileId\' URL.');
 });
 
 test('should delete folders.', (assert) => {

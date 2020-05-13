@@ -67,6 +67,8 @@ test('should render the correct page when the location hash changes.', (assert) 
     notFoundPage: function() {
     },
     window: windowMock,
+    hashChangedHandler: () => {
+    },
   };
 
   new Router(properties);
@@ -96,7 +98,7 @@ test('should show the 404 page in case the route is not registered.', (assert) =
   const rootElement = document.createElement('div');
 
   const properties = {
-    rootElement: rootElement,
+    rootElement,
     pageMapping: {
       '/default': function() {
       },
@@ -113,4 +115,42 @@ test('should show the 404 page in case the route is not registered.', (assert) =
   const notFoundPage = rootElement.firstElementChild.getAttribute('data-test');
   assert.strictEqual(notFoundPage, 'not-found', 'The router should open the 404 page in case the opened route is ' +
     'not registered.');
+});
+
+test('should call the hashChangedHandler.', (assert) => {
+  const windowMock = new WindowMock();
+
+  const rootElement = document.createElement('div');
+
+  const hashChangedHandler = (staticPart) => {
+    assert.step(staticPart);
+  };
+
+  const properties = {
+    rootElement,
+    pageMapping: {
+      '/first': function() {
+      },
+      '/second': function() {
+      },
+    },
+    defaultLocation: '/first',
+    notFoundPage: function() {
+    },
+    window: windowMock,
+    hashChangedHandler,
+  };
+
+  new Router(properties);
+
+  windowMock.location.hash = '#/second';
+  windowMock.dispatchEvent(new Event('hashchange'));
+
+  windowMock.location.hash = '#/first';
+  windowMock.dispatchEvent(new Event('hashchange'));
+
+  assert.verifySteps([
+    '/second',
+    '/first',
+  ], 'The Router should call the hashChangedHandler with correct static part when the location hash changes.');
 });

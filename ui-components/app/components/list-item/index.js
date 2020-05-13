@@ -6,6 +6,8 @@ import FolderItem from '../../models/file-system-objects/folder-item';
  * The general class for folder and file items.
  */
 export default class ListItem extends Component {
+  _removeItemHandlers = [];
+
   /**
    * Creates an instance of the list item component with set container and properties.
    *
@@ -33,7 +35,9 @@ export default class ListItem extends Component {
             </td>
             <td class="count" data-test="cell-count"></td>
             <td class="cell-actions" data-test="cell-actions">
-                <span class="glyphicon glyphicon-remove-circle"></span>
+                <div data-test="action-buttons">
+                    <span class="glyphicon glyphicon-remove-circle" data-test="remove-item-button"></span>
+                </div>
             </td>
         </tr>
     `;
@@ -82,7 +86,9 @@ export default class ListItem extends Component {
       }
     });
 
-    this.rootElement.addEventListener('click', () => this._onClickHandler());
+    this.rootElement.addEventListener('click', () => {
+      this._onClickHandler();
+    });
 
     input.addEventListener('change', (event) => {
       this._parameters.name = input.value;
@@ -92,6 +98,13 @@ export default class ListItem extends Component {
     input.addEventListener('blur', () => {
       editModeCanceled = true;
       this.isEditing = false;
+    });
+
+    const removeItemButton = this.rootElement.querySelector('[data-test="remove-item-button"]');
+    removeItemButton.addEventListener('click', () => {
+      this._removeItemHandlers.forEach((handler) => {
+        handler(this._parameters);
+      });
     });
   }
 
@@ -110,7 +123,7 @@ export default class ListItem extends Component {
    * @returns {string} - The identifier of the current item.
    */
   get id() {
-    return this._itemId;
+    return this._parameters.id;
   }
 
   /**
@@ -203,5 +216,14 @@ export default class ListItem extends Component {
    */
   onNameChanged(handler) {
     this._onNameChanged = handler;
+  }
+
+  /**
+   * Adds a function that should be called when the remove item button is pressed.
+   *
+   * @param {Function} handler - The function that will be called when the user wants to delete an item.
+   */
+  onRemoveItem(handler) {
+    this._removeItemHandlers.push(handler);
   }
 }

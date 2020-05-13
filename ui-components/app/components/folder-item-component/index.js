@@ -5,8 +5,6 @@ import {FILE_LIST_ROUTE} from '../../router/routes';
  * The component for displaying the folder item.
  */
 export default class FolderItemComponent extends ListItem {
-  _removeItemHandlers = [];
-
   /** @inheritdoc */
   initNestedComponents() {
     super.initNestedComponents();
@@ -23,36 +21,19 @@ export default class FolderItemComponent extends ListItem {
     const cellCount = this.rootElement.querySelector('[data-test="cell-count"]');
     cellCount.innerText = `${this._parameters.itemsNumber} items`;
 
-    const cellActions = this.rootElement.querySelector('[data-test="cell-actions"]');
+    const actionButtons = this.rootElement.querySelector('[data-test="action-buttons"]');
     const uploadButton = document.createElement('span');
     uploadButton.classList.add('glyphicon');
     uploadButton.classList.add('glyphicon-upload');
-    cellActions.prepend(uploadButton);
+    actionButtons.prepend(uploadButton);
   }
 
   /** @inheritdoc */
   addEventListeners() {
     super.addEventListeners();
 
-    const removeItemButton = this.rootElement
-      .querySelector('[data-test="cell-actions"] .glyphicon-remove-circle');
-    removeItemButton.addEventListener('click', () => {
-      this._removeItemHandlers.forEach((handler) => {
-        handler(this._parameters);
-      });
-    });
-
     this.rootElement.addEventListener('dblclick', () => {
       window.location.hash = `/file-list/${this._parameters.id}`;
     });
-  }
-
-  /**
-   * Adds a function that should be called when the remove item button is pressed.
-   *
-   * @param {Function} handler - The function that will be called when the user wants to delete an item.
-   */
-  onRemoveItem(handler) {
-    this._removeItemHandlers.push(handler);
   }
 }

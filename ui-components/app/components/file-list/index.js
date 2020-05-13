@@ -41,6 +41,16 @@ export default class FileList extends Component {
         this._fileItems.push(new FileItemComponent(row, item));
       }
     });
+
+    this._fileItems.forEach((item) => {
+      item.onClick(() => {
+        if (this._selectedItem && this._selectedItem !== item) {
+          this._selectedItem.isSelected = false;
+        }
+        item.isSelected = true;
+        this._selectedItem = item;
+      });
+    });
   }
 
   /**
@@ -64,15 +74,7 @@ export default class FileList extends Component {
       item.onRemoveItem(handler);
     });
 
-    this._fileItems.forEach((item) => {
-      item.onClick(() => {
-        if (this._selectedItem && this._selectedItem !== item) {
-          this._selectedItem.isSelected = false;
-        }
-        item.isSelected = true;
-        this._selectedItem = item;
-      });
-    });
+    this._onRemoveItemHandler = handler;
   }
 
   /**
@@ -112,6 +114,10 @@ export default class FileList extends Component {
 
     this._fileItems.forEach((item) => {
       item.onNameChanged(this._onItemNameChangedHandler);
+    });
+
+    this._fileItems.forEach((item) => {
+      item.onRemoveItem(this._onRemoveItemHandler);
     });
   }
 

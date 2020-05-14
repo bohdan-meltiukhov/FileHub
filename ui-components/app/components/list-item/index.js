@@ -77,7 +77,7 @@ export default class ListItem extends Component {
       }
 
       if (this.isSelected && !this.isEditing) {
-        this.isEditing = true;
+        this._setEditingState(this._parameters.id, true);
       }
     });
 
@@ -90,7 +90,7 @@ export default class ListItem extends Component {
 
     input.addEventListener('blur', () => {
       editModeCanceled = true;
-      this.isEditing = false;
+      this._setEditingState(this._parameters.id, false);
     });
   }
 
@@ -101,6 +101,15 @@ export default class ListItem extends Component {
    */
   onClick(handler) {
     this._onClickHandler = handler;
+  }
+
+  /**
+   * Sets the function to be called when the item wants to change its editing state.
+   *
+   * @param {Function} handler - The function to call to change the item editing state.
+   */
+  set editingStateSetter(handler) {
+    this._setEditingState = handler;
   }
 
   /**

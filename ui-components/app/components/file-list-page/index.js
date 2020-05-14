@@ -14,6 +14,7 @@ import {ROOT_FOLDER_ID} from '../../models/root-folder';
 import NotFoundError from '../../models/errors/not-found-error';
 import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
+import EditingItemAction from '../../state/actions/editing-item-action';
 
 /**
  * The component for the File List Page.
@@ -108,6 +109,10 @@ export default class FileListPage extends StateAwareComponent {
       this.stateManager.dispatch(new UpdateItemAction(item));
     });
 
+    this.fileList.editingStateSetter = (itemId, isEditing) => {
+      this.stateManager.dispatch(new EditingItemAction(itemId, isEditing));
+    };
+
     this.createFolderButton.addClickHandler(() => {
       this.stateManager.dispatch(new CreateFolderAction(this._folderId));
     });
@@ -118,9 +123,7 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
 
-      this.fileList.onItemNameChanged((item) => {
-        this.stateManager.dispatch(new UpdateItemAction(item));
-      });
+      this.fileList.editingItem = state.editingItem || '';
     });
 
     this.onStateChanged('isFileListLoading', ({detail: {state}}) => {
@@ -187,9 +190,13 @@ export default class FileListPage extends StateAwareComponent {
       } else if (error instanceof GeneralServerError) {
         alert('Error: ' + error.message);
       } else {
-        alert('Unknown error. See the console for more details.')
+        alert('Unknown error. See the console for more details.');
         console.error(error);
       }
+    });
+
+    this.onStateChanged('editingItem', ({detail: {state}}) => {
+      this.fileList.editingItem = state.editingItem;
     });
   }
 

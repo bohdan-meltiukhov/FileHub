@@ -66,6 +66,30 @@ export default class FileList extends Component {
   }
 
   /**
+   * Sets the function to be called when an item wants to change its editing state.
+   *
+   * @param {Function} handler - The function to call to change an item editing state.
+   */
+  set editingStateSetter(handler) {
+    this._fileItems.forEach((item) => {
+      item.editingStateSetter = handler;
+    });
+
+    this._editingStateSetter = handler;
+  }
+
+  /**
+   * Sets the item that is currently being edited.
+   *
+   * @param {string} itemId - The identifier of the item that is currently being edited.
+   */
+  set editingItem(itemId) {
+    this._fileItems.forEach((item) => {
+      item.isEditing = item.id === itemId;
+    });
+  }
+
+  /**
    * Adds a function to be called when any item changes its name.
    *
    * @param {Function} handler - The function to call when an item changes its name.
@@ -91,6 +115,10 @@ export default class FileList extends Component {
     this._fileItems.forEach((item) => {
       item.onNameChanged(this._onItemNameChangedHandler);
     });
+
+    this._fileItems.forEach((item) => {
+      item.editingStateSetter = this._editingStateSetter;
+    });
   }
 
   /**
@@ -98,15 +126,15 @@ export default class FileList extends Component {
    *
    * @param {string} folderId - The identifier of the required folder.
    */
-  renameFolder(folderId) {
+  async renameFolder(folderId) {
     if (this._selectedItem) {
       this._selectedItem.isSelected = false;
     }
 
-    const createdFolder = this._fileItems.find((item) => (item.id === folderId));
+    const createdFolder = await this._fileItems.find((item) => (item.id === folderId));
 
     createdFolder.isSelected = true;
-    setTimeout(() => createdFolder.isEditing = true, 0);
+    this._editingStateSetter(createdFolder.id, true);
     this._selectedItem = createdFolder;
   }
 

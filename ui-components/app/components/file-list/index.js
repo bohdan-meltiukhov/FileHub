@@ -149,7 +149,7 @@ export default class FileList extends Component {
   }
 
   /**
-   * Sets the function to be called when a the user wants to upload a file to a folder.
+   * Sets the function to be called when the user wants to upload a file to a folder.
    *
    * @param {Function} handler - The function to call when the user has picked a file from their computer and wants to
    * upload it.

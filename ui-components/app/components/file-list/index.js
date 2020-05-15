@@ -68,7 +68,9 @@ export default class FileList extends Component {
     });
 
     this._fileItems.forEach((item) => {
-      item.isLoading = this._loadingItems.includes(item.id);
+      if (this._loadingItems) {
+        item.isLoading = this._loadingItems.includes(item.id);
+      }
     });
   }
 

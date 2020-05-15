@@ -182,37 +182,11 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('renameItemLoadingError', ({detail: {state}}) => {
-      const error = state.renameItemLoadingError;
-      if (error instanceof NotFoundError) {
-        alert('Error: ' + error.message);
-        const folderId = state.locationParameters.folderId;
-        this.stateManager.dispatch(new GetFilesAction(folderId));
-      } else if (error instanceof AuthorizationError) {
-        alert('Error: ' + error.message);
-        window.location.hash = AUTHENTICATION_ROUTE;
-      } else if (error instanceof GeneralServerError) {
-        alert('Error: ' + error.message);
-      } else {
-        alert('Unknown error. See the console for more details.');
-        console.error(error);
-      }
+      this._handleError(state.renameItemLoadingError);
     });
 
     this.onStateChanged('deleteItemLoadingError', ({detail: {state}}) => {
-      const error = state.deleteItemLoadingError;
-      if (error instanceof NotFoundError) {
-        alert('Error: ' + error.message);
-        const folderId = state.locationParameters.folderId;
-        this.stateManager.dispatch(new GetFilesAction(folderId));
-      } else if (error instanceof AuthorizationError) {
-        alert('Error: ' + error.message);
-        window.location.hash = AUTHENTICATION_ROUTE;
-      } else if (error instanceof GeneralServerError) {
-        alert('Error: ' + error.message);
-      } else {
-        alert('Unknown error. See the console for more details.');
-        console.error(error);
-      }
+      this._handleError(state.deleteItemLoadingError);
     });
 
     this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
@@ -225,6 +199,33 @@ export default class FileListPage extends StateAwareComponent {
       this.uploadFileButton.isLoading = loadingFolders.includes(state.locationParameters.folderId);
       this.fileList.loadingItems = loadingFolders;
     });
+
+    this.onStateChanged('uploadFileError', ({detail: {state}}) => {
+      this._handleError(state.uploadFileError);
+    });
+  }
+
+  /**
+   * Handles the provided error.
+   *
+   * @param {NotFoundError|AuthorizationError|GeneralServerError|Error} error - The error that occurred during some
+   * process.
+   * @private
+   */
+  _handleError(error) {
+    if (error instanceof NotFoundError) {
+      alert('Error: ' + error.message);
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this.stateManager.dispatch(new GetFilesAction(folderId));
+    } else if (error instanceof AuthorizationError) {
+      alert('Error: ' + error.message);
+      window.location.hash = AUTHENTICATION_ROUTE;
+    } else if (error instanceof GeneralServerError) {
+      alert('Error: ' + error.message);
+    } else {
+      alert('Unknown error. See the console for more details.');
+      console.error(error);
+    }
   }
 
   /** @inheritdoc */

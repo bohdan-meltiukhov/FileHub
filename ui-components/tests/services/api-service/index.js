@@ -302,7 +302,10 @@ test('should upload files.', (assert) => {
 
   const formData = new FormData();
 
-  fetchMock.post(`/folder/${folderId}/file`, (url, opts) => {
+  fetchMock.once({
+    url: `/folder/${folderId}/file`,
+    method: 'POST',
+  }, (url, opts) => {
     const uploadedFile = opts.body;
 
     assert.strictEqual(uploadedFile, formData, 'The uploadFile() method should send a request with correct formData.');
@@ -313,7 +316,7 @@ test('should upload files.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.uploadFile(folderId, formData);
 
-  assert.ok(fetchMock.called(`/folder/${folderId}/file`, {
+  assert.ok(fetchMock.done(`/folder/${folderId}/file`, {
     method: 'POST',
   }), 'The uploadFile() method should send a POST request to the \'/folder/:folderId/file\' URL.');
 });

@@ -7,7 +7,7 @@ import FileListPage from '../file-list-page';
 import StateManager from '../../state/state-manager';
 import ApiService from '../../services/api-service';
 import HashChangedAction from '../../state/actions/hash-changed-action';
-import RouterBuilder from '../../router/router-builder';
+import Router from '../../router';
 
 /**
  * The component for the web application.
@@ -54,9 +54,9 @@ export default class Application extends Component {
       },
     };
 
-    const routerBuilder = new RouterBuilder();
+    const routerBuilder = Router.getBuilder();
 
-    const router = routerBuilder
+    routerBuilder
       .withRootElement(this.rootElement)
       .withPageMapping(pageMapping)
       .withDefaultLocation(AUTHENTICATION_ROUTE)
@@ -69,12 +69,6 @@ export default class Application extends Component {
         stateManager.dispatch(new HashChangedAction(staticPart, dynamicPart));
       })
       .build();
-
-    // router.onHashChanged(
-//   }
-//
-// )
-//   ;
   }
 
   /**

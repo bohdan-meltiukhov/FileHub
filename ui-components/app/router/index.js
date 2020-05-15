@@ -1,3 +1,5 @@
+import RouterBuilder from './router-builder';
+
 /**
  * The class that allows switching between different pages.
  */
@@ -150,5 +152,14 @@ export default class Router {
       accumulator[key] = urlParts[index];
       return accumulator;
     }, {});
+  }
+
+  /**
+   * Provides the builder for creating different instances of the router.
+   *
+   * @returns {RouterBuilder} The builder for creating routers.
+   */
+  static getBuilder() {
+    return new RouterBuilder();
   }
 }

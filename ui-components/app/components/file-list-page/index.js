@@ -133,9 +133,6 @@ export default class FileListPage extends StateAwareComponent {
   initState() {
     this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
-      if (state.itemsWithDeletionInProgress) {
-        this.fileList.loadingItems = state.itemsWithDeletionInProgress;
-      }
     });
 
     this.onStateChanged('isFileListLoading', ({detail: {state}}) => {

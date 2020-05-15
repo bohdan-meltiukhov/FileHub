@@ -108,7 +108,7 @@ export default class FileListPage extends StateAwareComponent {
       this.stateManager.dispatch(new RemoveItemAction(item));
     });
 
-    this.fileList.onFileSelected((folder, file) => {
+    this.fileList.onFileUploadInitiated((folder, file) => {
       this.stateManager.dispatch(new UploadFileAction(folder, file));
     });
 

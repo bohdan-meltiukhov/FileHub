@@ -62,7 +62,9 @@ export default class FileList extends Component {
     });
 
     this._fileItems.forEach((item) => {
-      item.onFileSelected(this._onFileSelectedHandler);
+      if (item instanceof FolderItemComponent) {
+        item.onFileUploadInitiated(this._onFileUploadInitiatedHandler);
+      }
     });
   }
 
@@ -141,15 +143,18 @@ export default class FileList extends Component {
   }
 
   /**
-   * Sets the function to be called when any item get selected file.
+   * Sets the function to be called when a the user wants to upload a file to a folder.
    *
-   * @param {Function} handler - The function to call when a folder gets a file uploaded.
+   * @param {Function} handler - The function to call when the user has picked a file from their computer and wants to
+   * upload it.
    */
-  onFileSelected(handler) {
+  onFileUploadInitiated(handler) {
     this._fileItems.forEach((item) => {
-      item.onFileSelected(handler);
+      if (item instanceof FolderItemComponent) {
+        item.onFileUploadInitiated(handler);
+      }
     });
 
-    this._onFileSelectedHandler = handler;
+    this._onFileUploadInitiatedHandler = handler;
   }
 }

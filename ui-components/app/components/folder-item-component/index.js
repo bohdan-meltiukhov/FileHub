@@ -51,12 +51,16 @@ export default class FolderItemComponent extends ListItem {
     input.click();
 
     input.addEventListener('change', () => {
-      this._fileSelectedHandler(this._parameters, input.files[0]);
+      this._fileUploadInitiatedHandler(this._parameters, input.files[0]);
     });
   }
 
-  /** @inheritdoc */
-  onFileSelected(handler) {
-    this._fileSelectedHandler = handler;
+  /**
+   * Sets the function to be called when the user wants to upload a file.
+   *
+   * @param {Function} handler -  The function to call when the user have chosen which file they want to upload.
+   */
+  onFileUploadInitiated(handler) {
+    this._fileUploadInitiatedHandler = handler;
   }
 }

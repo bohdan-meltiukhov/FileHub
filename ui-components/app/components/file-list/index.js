@@ -51,6 +51,14 @@ export default class FileList extends Component {
         this._selectedItem = item;
       });
     });
+
+    this._fileItems.forEach((item) => {
+      item.onNameChanged(this._onItemNameChangedHandler);
+    });
+
+    this._fileItems.forEach((item) => {
+      item.onRemoveButtonClicked(this._onRemoveItemHandler);
+    });
   }
 
   /**
@@ -112,14 +120,6 @@ export default class FileList extends Component {
     this._files = fileList;
     this.rootElement.innerHTML = '';
     this.initNestedComponents();
-
-    this._fileItems.forEach((item) => {
-      item.onNameChanged(this._onItemNameChangedHandler);
-    });
-
-    this._fileItems.forEach((item) => {
-      item.onRemoveButtonClicked(this._onRemoveItemHandler);
-    });
   }
 
   /**

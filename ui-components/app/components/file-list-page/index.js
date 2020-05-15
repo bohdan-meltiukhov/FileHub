@@ -6,11 +6,15 @@ import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
+import UpdateItemAction from '../../state/actions/update-item-action';
+import RemoveItemAction from '../../state/actions/remove-item-action';
 import UploadFileAction from '../../state/actions/upload-file-action';
 import GetFolderAction from '../../state/actions/get-folder-action';
 import UrlProperties from '../../models/url-properties';
 import {ROOT_FOLDER_ID} from '../../models/root-folder';
 import NotFoundError from '../../models/errors/not-found-error';
+import AuthorizationError from '../../models/errors/authorization-error';
+import GeneralServerError from '../../models/errors/general-server-error';
 
 /**
  * The component for the File List Page.
@@ -100,8 +104,16 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   addEventListeners() {
+    this.fileList.onRemoveButtonClicked((item) => {
+      this.stateManager.dispatch(new RemoveItemAction(item));
+    });
+
     this.fileList.onFileSelected((folder, file) => {
       this.stateManager.dispatch(new UploadFileAction(folder, file));
+    });
+
+    this.fileList.onItemNameChanged((item) => {
+      this.stateManager.dispatch(new UpdateItemAction(item));
     });
 
     this.uploadFileButton.addClickHandler(() => {
@@ -120,6 +132,9 @@ export default class FileListPage extends StateAwareComponent {
   initState() {
     this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
+      if (state.itemsWithDeletionInProgress) {
+        this.fileList.loadingItems = state.itemsWithDeletionInProgress;
+      }
 
       this.fileList.onFileSelected((folder, file) => {
         this.stateManager.dispatch(new UploadFileAction(folder, file));
@@ -150,7 +165,6 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('folder', ({detail: {state}}) => {
-      this._folder = state.folder;
       this.breadcrumbs.folder = state.folder;
     });
 
@@ -167,6 +181,48 @@ export default class FileListPage extends StateAwareComponent {
       if (error instanceof NotFoundError) {
         this.breadcrumbs.error = 'Not Found';
       }
+    });
+
+    this.onStateChanged('isRenameItemLoading', ({detail: {state}}) => {
+      this.fileList.isSelectedItemLoading = state.isRenameItemLoading;
+    });
+
+    this.onStateChanged('renameItemLoadingError', ({detail: {state}}) => {
+      const error = state.renameItemLoadingError;
+      if (error instanceof NotFoundError) {
+        alert('Error: ' + error.message);
+        const folderId = state.locationParameters.folderId;
+        this.stateManager.dispatch(new GetFilesAction(folderId));
+      } else if (error instanceof AuthorizationError) {
+        alert('Error: ' + error.message);
+        window.location.hash = AUTHENTICATION_ROUTE;
+      } else if (error instanceof GeneralServerError) {
+        alert('Error: ' + error.message);
+      } else {
+        alert('Unknown error. See the console for more details.');
+        console.error(error);
+      }
+    });
+
+    this.onStateChanged('deleteItemLoadingError', ({detail: {state}}) => {
+      const error = state.deleteItemLoadingError;
+      if (error instanceof NotFoundError) {
+        alert('Error: ' + error.message);
+        const folderId = state.locationParameters.folderId;
+        this.stateManager.dispatch(new GetFilesAction(folderId));
+      } else if (error instanceof AuthorizationError) {
+        alert('Error: ' + error.message);
+        window.location.hash = AUTHENTICATION_ROUTE;
+      } else if (error instanceof GeneralServerError) {
+        alert('Error: ' + error.message);
+      } else {
+        alert('Unknown error. See the console for more details.');
+        console.error(error);
+      }
+    });
+
+    this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
+      this.fileList.loadingItems = state.itemsWithDeletionInProgress;
     });
   }
 

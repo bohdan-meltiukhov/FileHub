@@ -32,6 +32,7 @@ export default class FileList extends Component {
   /** @inheritdoc */
   initNestedComponents() {
     this._fileItems = [];
+
     this._files.forEach((item) => {
       const row = document.createElement('tr');
       this.rootElement.appendChild(row);
@@ -41,17 +42,74 @@ export default class FileList extends Component {
         this._fileItems.push(new FileItemComponent(row, item));
       }
     });
+
+    this._fileItems.forEach((item) => {
+      item.onClick(() => {
+        if (this._selectedItem && this._selectedItem !== item) {
+          this._selectedItem.isSelected = false;
+        }
+        item.isSelected = true;
+        this._selectedItem = item;
+      });
+    });
+
+    this._fileItems.forEach((item) => {
+      item.onNameChanged(this._onItemNameChangedHandler);
+    });
+
+    this._fileItems.forEach((item) => {
+      item.onRemoveButtonClicked(this._onRemoveItemHandler);
+    });
   }
 
   /**
-   * Sets the function to be called when any item get selected file.
+   * Sets the loading state for the provided items and removes the loading state for the items that are not present
+   * in the provided array.
    *
-   * @param {Function} handler - The function to call when a folder gets a file uploaded.
+   * @param {string[]} itemIds - Items that are currently loading.
    */
-  onFileSelected(handler) {
+  set loadingItems(itemIds) {
     this._fileItems.forEach((item) => {
-      item.onFileSelected(handler);
+      item.isLoading = itemIds.includes(item.id);
     });
+  }
+
+  /**
+   * Adds a function that should be called when an item is deleted.
+   *
+   * @param {Function} handler - The function to call when the use wants to delete an item.
+   */
+  onRemoveButtonClicked(handler) {
+    this._fileItems.forEach((item) => {
+      item.onRemoveButtonClicked(handler);
+    });
+
+    this._onRemoveItemHandler = handler;
+  }
+
+  /**
+   * Sets whether the selected item is loading or not.
+   *
+   * @param {boolean} isLoading - The flag that shows if the selected item is loading or not.
+   */
+  set isSelectedItemLoading(isLoading) {
+    if (isLoading) {
+      this._loadingItem = this._selectedItem;
+    }
+    this._loadingItem.isLoading = isLoading;
+  }
+
+  /**
+   * Adds a function to be called when any item changes its name.
+   *
+   * @param {Function} handler - The function to call when an item changes its name.
+   */
+  onItemNameChanged(handler) {
+    this._fileItems.forEach((item) => {
+      item.onNameChanged(handler);
+    });
+
+    this._onItemNameChangedHandler = handler;
   }
 
   /**
@@ -76,5 +134,16 @@ export default class FileList extends Component {
     } else {
       this.rootElement.style.display = 'none';
     }
+  }
+
+  /**
+   * Sets the function to be called when any item get selected file.
+   *
+   * @param {Function} handler - The function to call when a folder gets a file uploaded.
+   */
+  onFileSelected(handler) {
+    this._fileItems.forEach((item) => {
+      item.onFileSelected(handler);
+    });
   }
 }

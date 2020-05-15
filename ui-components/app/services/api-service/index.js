@@ -5,7 +5,6 @@ import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import NotFoundError from '../../models/errors/not-found-error';
 import FetchMock from '../fetch-mock';
-import NotFoundError from '../../models/errors/NotFoundError';
 import FolderItem from '../../models/file-system-objects/folder-item';
 import FileItem from '../../models/file-system-objects/file-item';
 

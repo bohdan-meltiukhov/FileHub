@@ -60,6 +60,10 @@ export default class FileList extends Component {
     this._fileItems.forEach((item) => {
       item.onRemoveButtonClicked(this._onRemoveItemHandler);
     });
+
+    this._fileItems.forEach((item) => {
+      item.onFileSelected(this._onFileSelectedHandler);
+    });
   }
 
   /**
@@ -145,5 +149,7 @@ export default class FileList extends Component {
     this._fileItems.forEach((item) => {
       item.onFileSelected(handler);
     });
+
+    this._onFileSelectedHandler = handler;
   }
 }

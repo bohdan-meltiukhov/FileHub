@@ -121,9 +121,11 @@ export default class FileListPage extends StateAwareComponent {
       input.setAttribute('type', 'file');
       input.click();
 
+      const folderId = this.stateManager.state.locationParameters.folderId;
+
       input.addEventListener('change', async () => {
-        await this.stateManager.dispatch(new UploadFileAction(this._folder, input.files[0]));
-        this.stateManager.dispatch(new GetFilesAction(this._folder.id));
+        await this.stateManager.dispatch(new UploadFileAction(folderId, input.files[0]));
+        this.stateManager.dispatch(new GetFilesAction(folderId));
       });
     });
   }
@@ -135,10 +137,6 @@ export default class FileListPage extends StateAwareComponent {
       if (state.itemsWithDeletionInProgress) {
         this.fileList.loadingItems = state.itemsWithDeletionInProgress;
       }
-
-      this.fileList.onFileSelected((folder, file) => {
-        this.stateManager.dispatch(new UploadFileAction(folder, file));
-      });
     });
 
     this.onStateChanged('isFileListLoading', ({detail: {state}}) => {

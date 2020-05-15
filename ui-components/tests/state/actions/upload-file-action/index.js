@@ -1,35 +1,51 @@
 import UploadFileAction from '../../../../app/state/actions/upload-file-action';
+import IsUploadFileInProgressMutator from '../../../../app/state/mutators/is-upload-file-in-progress-mutator';
+import GetFilesAction from '../../../../app/state/actions/get-files-action';
 
 const {module, test} = QUnit;
 
 module('The UploadFileAction');
 
-test('should call the uploadFile() method of the API Service.', (assert) => {
-  assert.expect(4);
+test('should call the uploadFile() method of the API Service.', async (assert) => {
+  assert.expect(9);
 
-  const folder = {
-    id: 'tRZXiSHNRlgZluGQ',
-    parentId: '4Goz0J0Tz8xfDfsJ',
-    name: 'Images',
-    itemsNumber: 20,
-    type: 'folder',
-  };
+  const folderId = 'tRZXiSHNRlgZluGQ';
 
   const file = new File([], 'file.txt');
 
   const apiServiceMock = {
     uploadFile: (folderId, formData) => {
-      assert.step('The file is uploaded.');
-      assert.strictEqual(folderId, folder.id, 'The UploadFileAction should provide the correct folder ID to the API ' +
+      assert.strictEqual(folderId, folderId, 'The UploadFileAction should provide the correct folder ID to the API ' +
         'Service.');
       assert.strictEqual(formData.get('file'), file, 'The UploadFileAction should provide the correct file to the ' +
         'API Service.');
     },
   };
 
-  const action = new UploadFileAction(folder, file);
-  action.apply({}, apiServiceMock);
+  const stateManagerMock = {
+    mutate(mutator) {
+      assert.ok(mutator instanceof IsUploadFileInProgressMutator, 'The UploadFileAction should provide instances of ' +
+        'the IsUploadFileInProgressMutator to the state manager.');
+      assert.step(`${mutator._folderId} - ${mutator._isLoading}`);
+    },
 
-  assert.verifySteps(['The file is uploaded.'], 'The UploadFileAction should call the uploadFile() method of the ' +
-    'API Service.');
+    dispatch(action) {
+      assert.ok(action instanceof GetFilesAction, 'The UploadFileAction should provide an instance of the ' +
+        'GetFilesAction to the state manager in case the upload folder ID matches the current folder ID.');
+      assert.strictEqual(action._folderId, folderId, 'The UploadFileAction should provide correct folderId to the ' +
+        'GetFilesAction.');
+    },
+
+    state: {
+      locationParameters: {folderId},
+    },
+  };
+
+  const action = new UploadFileAction(folderId, file);
+  await action.apply(stateManagerMock, apiServiceMock);
+
+  assert.verifySteps([
+    `${folderId} - true`,
+    `${folderId} - false`,
+  ], 'The UploadFileAction should provide correct mutators to the state manager.');
 });

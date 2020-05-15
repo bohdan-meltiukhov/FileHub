@@ -56,4 +56,12 @@ export default class Button extends Component {
       this._clickHandlers.forEach((handler) => handler());
     });
   }
+
+  set isLoading(isLoading) {
+    if (isLoading) {
+      this.rootElement.innerHTML = '<div class="loader-small" data-test="loader-small"></div>';
+    } else {
+      this.rootElement.innerHTML = this._buttonText;
+    }
+  }
 }

@@ -248,6 +248,8 @@ export default class FetchMock {
       FileSystem.files.push(fileItem);
 
       return fileItem;
+    }, {
+      delay: 2000,
     });
   }
 

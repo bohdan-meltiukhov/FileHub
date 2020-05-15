@@ -51,7 +51,7 @@ export default class FolderItemComponent extends ListItem {
     input.click();
 
     input.addEventListener('change', () => {
-      this._fileUploadInitiatedHandler(this._parameters, input.files[0]);
+      this._fileUploadInitiatedHandler(this._parameters.id, input.files[0]);
     });
   }
 

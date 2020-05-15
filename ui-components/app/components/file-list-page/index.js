@@ -108,8 +108,8 @@ export default class FileListPage extends StateAwareComponent {
       this.stateManager.dispatch(new RemoveItemAction(item));
     });
 
-    this.fileList.onFileUploadInitiated((folder, file) => {
-      this.stateManager.dispatch(new UploadFileAction(folder, file));
+    this.fileList.onFileUploadInitiated((folderId, file) => {
+      this.stateManager.dispatch(new UploadFileAction(folderId, file));
     });
 
     this.fileList.onItemNameChanged((item) => {
@@ -123,9 +123,8 @@ export default class FileListPage extends StateAwareComponent {
 
       const folderId = this.stateManager.state.locationParameters.folderId;
 
-      input.addEventListener('change', async () => {
-        await this.stateManager.dispatch(new UploadFileAction(folderId, input.files[0]));
-        this.stateManager.dispatch(new GetFilesAction(folderId));
+      input.addEventListener('change', () => {
+        this.stateManager.dispatch(new UploadFileAction(folderId, input.files[0]));
       });
     });
   }
@@ -221,6 +220,13 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
       this.fileList.loadingItems = state.itemsWithDeletionInProgress;
+    });
+
+    this.onStateChanged('foldersWithFileUploadInProgress', ({detail: {state}}) => {
+      const loadingFolders = state.foldersWithFileUploadInProgress;
+
+      this.uploadFileButton.isLoading = loadingFolders.includes(state.locationParameters.folderId);
+      this.fileList.loadingItems = loadingFolders;
     });
   }
 

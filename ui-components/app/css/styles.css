@@ -202,6 +202,7 @@ a:hover {
 
 .current-directory .function-buttons .button {
     padding: 2px 12px 7px;
+    width: 135px;
 }
 
 .files tr.selected {

@@ -32,3 +32,5 @@ import * as listItem from './components/list-item';
 import * as removeItemAction from './state/actions/remove-item-action';
 import * as isDeleteItemLoadingMutator from './state/mutators/is-item-deletion-in-progress-mutator';
 import * as deleteItemLoadingErrorMutator from './state/mutators/delete-item-loading-error-mutator';
+import * as isUploadFileInProgressMutator from './state/mutators/is-upload-file-in-progress-mutator';
+import * as uploadFileErrorMutator from './state/mutators/upload-file-error-mutator';

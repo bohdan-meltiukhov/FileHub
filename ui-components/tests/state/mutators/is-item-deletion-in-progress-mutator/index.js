@@ -5,17 +5,20 @@ const {module, test} = QUnit;
 module('The IsItemDeletionInProgressMutator');
 
 test('should set the isLoading flag correctly.', (assert) => {
+  assert.expect(2);
+
   const itemId = 'folder';
-  const isLoading = true;
-
-  const mutator = new IsItemDeletionInProgressMutator(itemId, isLoading);
-
   const state = {};
 
+  const mutator = new IsItemDeletionInProgressMutator(itemId, true);
   mutator.apply(state);
 
-  assert.strictEqual(state.deleteItemId, itemId, 'The IsItemDeletionInProgressMutator should set the deleteItemId to ' +
-    'the provided state correctly.');
-  assert.strictEqual(state.isDeleteItemLoading, isLoading, 'The IsItemDeletionInProgressMutator should set the ' +
-    'isLoading flag to the provided state correctly.');
+  assert.deepEqual(state.itemsWithDeletionInProgress, [itemId], 'The IsItemDeletionInProgressMutator should add ' +
+    'the deleteItemId to the itemsWithDeletionInProgress state field correctly.');
+
+  const removeMutator = new IsItemDeletionInProgressMutator(itemId, false);
+  removeMutator.apply(state);
+
+  assert.deepEqual(state.itemsWithDeletionInProgress, [], 'The IsItemDeletionInProgressMutator should remove ' +
+    'the deleteItemId from the itemsWithDeletionInProgress state field correctly.');
 });

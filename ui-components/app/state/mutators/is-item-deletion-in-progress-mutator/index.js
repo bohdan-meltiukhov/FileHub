@@ -32,8 +32,5 @@ export default class IsItemDeletionInProgressMutator extends Mutator {
     }
 
     state.itemsWithDeletionInProgress = loadingItems;
-
-    state.deleteItemId = this._itemId;
-    state.isDeleteItemLoading = this._isLoading;
   }
 }

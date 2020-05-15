@@ -51,6 +51,39 @@ export default class FileList extends Component {
         this._selectedItem = item;
       });
     });
+
+    this._fileItems.forEach((item) => {
+      item.onNameChanged(this._onItemNameChangedHandler);
+    });
+
+    this._fileItems.forEach((item) => {
+      item.onRemoveButtonClicked(this._onRemoveItemHandler);
+    });
+  }
+
+  /**
+   * Sets the loading state for the provided items and removes the loading state for the items that are not present
+   * in the provided array.
+   *
+   * @param {string[]} itemIds - Items that are currently loading.
+   */
+  set loadingItems(itemIds) {
+    this._fileItems.forEach((item) => {
+      item.isLoading = itemIds.includes(item.id);
+    });
+  }
+
+  /**
+   * Adds a function that should be called when an item is deleted.
+   *
+   * @param {Function} handler - The function to call when the use wants to delete an item.
+   */
+  onRemoveButtonClicked(handler) {
+    this._fileItems.forEach((item) => {
+      item.onRemoveButtonClicked(handler);
+    });
+
+    this._onRemoveItemHandler = handler;
   }
 
   /**
@@ -87,10 +120,6 @@ export default class FileList extends Component {
     this._files = fileList;
     this.rootElement.innerHTML = '';
     this.initNestedComponents();
-
-    this._fileItems.forEach((item) => {
-      item.onNameChanged(this._onItemNameChangedHandler);
-    });
   }
 
   /**

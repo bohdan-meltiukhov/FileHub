@@ -21,11 +21,11 @@ export default class FolderItemComponent extends ListItem {
     const cellCount = this.rootElement.querySelector('[data-test="cell-count"]');
     cellCount.innerText = `${this._parameters.itemsNumber} items`;
 
-    const cellActions = this.rootElement.querySelector('[data-test="cell-actions"]');
+    const actionButtons = this.rootElement.querySelector('[data-test="action-buttons"]');
     const uploadButton = document.createElement('span');
     uploadButton.classList.add('glyphicon');
     uploadButton.classList.add('glyphicon-upload');
-    cellActions.prepend(uploadButton);
+    actionButtons.prepend(uploadButton);
   }
 
   /** @inheritdoc */

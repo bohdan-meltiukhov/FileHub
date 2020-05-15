@@ -6,6 +6,8 @@ import FolderItem from '../../models/file-system-objects/folder-item';
  * The general class for folder and file items.
  */
 export default class ListItem extends Component {
+  _onClickHandlers = [];
+
   /**
    * Creates an instance of the list item component with set container and properties.
    *
@@ -33,7 +35,9 @@ export default class ListItem extends Component {
             </td>
             <td class="count" data-test="cell-count"></td>
             <td class="cell-actions" data-test="cell-actions">
-                <span class="glyphicon glyphicon-remove-circle"></span>
+                <div data-test="action-buttons">
+                    <span class="glyphicon glyphicon-remove-circle" data-test="remove-item-button"></span>
+                </div>
             </td>
         </tr>
     `;
@@ -59,6 +63,7 @@ export default class ListItem extends Component {
     this._input = this.rootElement.querySelector('[data-test="new-name-input"]');
     this._loader = this.rootElement.querySelector('[data-test="loader-small"]');
     this._loader.style.display = 'none';
+    this._actionButtons = this.rootElement.querySelector('[data-test="action-buttons"]');
   }
 
   /** @inheritdoc */
@@ -81,7 +86,11 @@ export default class ListItem extends Component {
       }
     });
 
-    this.rootElement.addEventListener('click', () => this._onClickHandler());
+    this.rootElement.addEventListener('click', () => {
+      this._onClickHandlers.forEach((handler) => {
+        handler();
+      });
+    });
 
     input.addEventListener('change', (event) => {
       this._parameters.name = input.value;
@@ -92,6 +101,11 @@ export default class ListItem extends Component {
       editModeCanceled = true;
       this.isEditing = false;
     });
+
+    const removeItemButton = this.rootElement.querySelector('[data-test="remove-item-button"]');
+    removeItemButton.addEventListener('click', () => {
+      this._removeItemHandler(this._parameters);
+    });
   }
 
   /**
@@ -100,7 +114,16 @@ export default class ListItem extends Component {
    * @param {Function} handler - The function to call when the item is clicked.
    */
   onClick(handler) {
-    this._onClickHandler = handler;
+    this._onClickHandlers.push(handler);
+  }
+
+  /**
+   * Provides the identifier of the current list item.
+   *
+   * @returns {string} - The identifier of the current item.
+   */
+  get id() {
+    return this._parameters.id;
   }
 
   /**
@@ -177,10 +200,12 @@ export default class ListItem extends Component {
     if (value) {
       this._filename.style.display = 'none';
       this._input.style.display = 'none';
+      this._actionButtons.style.visibility = 'hidden';
       this._loader.style.display = 'inline-block';
     } else {
       this._loader.style.display = 'none';
       this._filename.style.display = 'inline';
+      this._actionButtons.style.visibility = 'visible';
     }
   }
 
@@ -191,5 +216,14 @@ export default class ListItem extends Component {
    */
   onNameChanged(handler) {
     this._onNameChanged = handler;
+  }
+
+  /**
+   * Adds a function that should be called when the remove item button is pressed.
+   *
+   * @param {Function} handler - The function that will be called when the user wants to delete an item.
+   */
+  onRemoveButtonClicked(handler) {
+    this._removeItemHandler = handler;
   }
 }

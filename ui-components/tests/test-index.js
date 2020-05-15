@@ -28,3 +28,6 @@ import * as updateItemAction from './state/actions/update-item-action';
 import * as isRenameItemLoadingMutator from './state/mutators/is-rename-item-loading-mutator';
 import * as renameItemLoadingErrorMutator from './state/mutators/rename-item-loading-error-mutator';
 import * as listItem from './components/list-item';
+import * as removeItemAction from './state/actions/remove-item-action';
+import * as isDeleteItemLoadingMutator from './state/mutators/is-item-deletion-in-progress-mutator';
+import * as deleteItemLoadingErrorMutator from './state/mutators/delete-item-loading-error-mutator';

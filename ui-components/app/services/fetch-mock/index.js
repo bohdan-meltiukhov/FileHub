@@ -1,5 +1,6 @@
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
 import FileSystem from './file-system';
+import FolderItem from '../../models/file-system-objects/folder-item';
 
 /**
  * The class for setting the fetch mock.
@@ -15,6 +16,8 @@ export default class FetchMock {
     FetchMock._getFolder();
     FetchMock._putFolder();
     FetchMock._putFile();
+    FetchMock._deleteFolder();
+    FetchMock._deleteFile();
   }
 
   /**
@@ -153,5 +156,73 @@ export default class FetchMock {
     }, {
       delay: 500,
     });
+  }
+
+  /**
+   * Sets a mock for the delete folder request.
+   *
+   * @private
+   */
+  static _deleteFolder() {
+    fetchMock.delete('express:/folder/:folderId', (url) => {
+      const id = url.slice(8);
+
+      const folder = FileSystem.folders.find((folder) => folder.id === id);
+
+      if (!folder) {
+        return 404;
+      }
+
+      FetchMock._deleteFolderRecursively(folder);
+
+      return 200;
+    }, {
+      delay: 2000,
+    });
+  }
+
+  /**
+   * Sets a mock for the delete file request.
+   *
+   * @private
+   */
+  static _deleteFile() {
+    fetchMock.delete('express:/file/:fileId', (url) => {
+      const id = url.slice(6);
+
+      const fileIndex = FileSystem.files.findIndex((file) => file.id === id);
+
+      if (fileIndex === -1) {
+        return 404;
+      }
+
+      FileSystem.files.splice(fileIndex, 1);
+
+      return 200;
+    }, {
+      delay: 2000,
+    });
+  }
+
+  /**
+   * Recursively deletes a folder and all its content.
+   *
+   * @param {FolderItem} folder - The folder to delete.
+   * @private
+   */
+  static _deleteFolderRecursively(folder) {
+    const childFolders = FileSystem.folders.filter((childFolder) => childFolder.parentId === folder.id);
+    childFolders.forEach((childFolder) => {
+      FetchMock._deleteFolder(childFolder);
+    });
+
+    const files = FileSystem.files.filter((file) => file.parentId === folder.id);
+    files.forEach((file) => {
+      const index = FileSystem.files.indexOf(file);
+      FileSystem.files.splice(index, 1);
+    });
+
+    const index = FileSystem.folders.indexOf(folder);
+    FileSystem.folders.splice(index, 1);
   }
 }

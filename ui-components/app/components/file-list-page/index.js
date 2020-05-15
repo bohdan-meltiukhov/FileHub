@@ -7,6 +7,7 @@ import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
 import UpdateItemAction from '../../state/actions/update-item-action';
+import RemoveItemAction from '../../state/actions/remove-item-action';
 import GetFolderAction from '../../state/actions/get-folder-action';
 import UrlProperties from '../../models/url-properties';
 import {ROOT_FOLDER_ID} from '../../models/root-folder';
@@ -102,6 +103,10 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   addEventListeners() {
+    this.fileList.onRemoveButtonClicked((item) => {
+      this.stateManager.dispatch(new RemoveItemAction(item));
+    });
+
     this.fileList.onItemNameChanged((item) => {
       this.stateManager.dispatch(new UpdateItemAction(item));
     });
@@ -111,6 +116,9 @@ export default class FileListPage extends StateAwareComponent {
   initState() {
     this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
+      if (state.itemsWithDeletionInProgress) {
+        this.fileList.loadingItems = state.itemsWithDeletionInProgress;
+      }
     });
 
     this.onStateChanged('isFileListLoading', ({detail: {state}}) => {
@@ -137,7 +145,6 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('folder', ({detail: {state}}) => {
-      this._folder = state.folder;
       this.breadcrumbs.folder = state.folder;
     });
 
@@ -172,9 +179,30 @@ export default class FileListPage extends StateAwareComponent {
       } else if (error instanceof GeneralServerError) {
         alert('Error: ' + error.message);
       } else {
-        alert('Unknown error. See the console for more details.')
+        alert('Unknown error. See the console for more details.');
         console.error(error);
       }
+    });
+
+    this.onStateChanged('deleteItemLoadingError', ({detail: {state}}) => {
+      const error = state.deleteItemLoadingError;
+      if (error instanceof NotFoundError) {
+        alert('Error: ' + error.message);
+        const folderId = state.locationParameters.folderId;
+        this.stateManager.dispatch(new GetFilesAction(folderId));
+      } else if (error instanceof AuthorizationError) {
+        alert('Error: ' + error.message);
+        window.location.hash = AUTHENTICATION_ROUTE;
+      } else if (error instanceof GeneralServerError) {
+        alert('Error: ' + error.message);
+      } else {
+        alert('Unknown error. See the console for more details.');
+        console.error(error);
+      }
+    });
+
+    this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
+      this.fileList.loadingItems = state.itemsWithDeletionInProgress;
     });
   }
 

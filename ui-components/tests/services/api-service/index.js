@@ -64,7 +64,7 @@ test('should register.', (assert) => {
 });
 
 test('should handle the 401 error.', async (assert) => {
-  assert.expect(6);
+  assert.expect(8);
 
   const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('admin', '1234');
@@ -91,21 +91,37 @@ test('should handle the 401 error.', async (assert) => {
       'the issue correctly.');
   }
 
-  const folderId = 'root';
-  fetchMock.get(`/folder/${folderId}/content`, 401);
+  const itemId = 'root';
+  fetchMock.get(`/folder/${itemId}/content`, 401);
 
   assert.rejects(
-    apiService.getFiles(folderId),
+    apiService.getFiles(itemId),
     AuthorizationError,
     'The getFiles() method should throw an AuthorizationError if the response status is 401.',
   );
 
-  fetchMock.get(`/folder/${folderId}`, 401);
+  fetchMock.get(`/folder/${itemId}`, 401);
 
   assert.rejects(
-    apiService.getFolder(folderId),
+    apiService.getFolder(itemId),
     AuthorizationError,
-    'The getFolder() method should throw an AuthorizationError if the response status is 401',
+    'The getFolder() method should throw an AuthorizationError if the response status is 401.',
+  );
+
+  fetchMock.delete(`/folder/${itemId}`, 401);
+
+  assert.rejects(
+    apiService.deleteFolder(itemId),
+    AuthorizationError,
+    'The deleteFolder() method should throw an AuthorizationError if the response status is 401.',
+  );
+
+  fetchMock.delete(`/file/${itemId}`, 401);
+
+  assert.rejects(
+    apiService.deleteFile(itemId),
+    AuthorizationError,
+    'The deleteFile() method should throw an AuthorizationError if the response status is 401.',
   );
 });
 
@@ -155,7 +171,7 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
-  assert.expect(6);
+  assert.expect(8);
 
   fetchMock.post(/^\/(login|register)$/, 500);
 
@@ -166,7 +182,7 @@ test('should handle the 500 error.', async (assert) => {
     await apiService.logIn(userCredentials);
   } catch (e) {
     assert.ok(e instanceof GeneralServerError, 'The login() method should throw a GeneralServerError if the response ' +
-      'status is 500');
+      'status is 500.');
     assert.strictEqual(e.message, 'Internal server error', 'The login() method should describe the issue correctly.');
   }
 
@@ -174,26 +190,43 @@ test('should handle the 500 error.', async (assert) => {
     await apiService.register(userCredentials);
   } catch (e) {
     assert.ok(e instanceof GeneralServerError, 'The register() method should throw a GeneralServerError if ' +
-      'the response status is 500');
+      'the response status is 500.');
     assert.strictEqual(e.message, 'Internal server error', 'The register() method should describe the issue ' +
       'correctly.');
   }
 
-  const folderId = 'root';
-  fetchMock.get(`/folder/${folderId}/content`, 500);
+  const itemId = 'root';
+
+  fetchMock.get(`/folder/${itemId}/content`, 500);
 
   assert.rejects(
-    apiService.getFiles(folderId),
+    apiService.getFiles(itemId),
     GeneralServerError,
     'The getFiles() method should throw a GeneralServerError if the response status is 500.',
   );
 
-  fetchMock.get(`/folder/${folderId}`, 500);
+  fetchMock.get(`/folder/${itemId}`, 500);
 
   assert.rejects(
-    apiService.getFolder(folderId),
+    apiService.getFolder(itemId),
     GeneralServerError,
-    'The getFolder() method should throw a GeneralServerError if the response status is 500',
+    'The getFolder() method should throw a GeneralServerError if the response status is 500.',
+  );
+
+  fetchMock.delete(`/folder/${itemId}`, 500);
+
+  assert.rejects(
+    apiService.deleteFolder(itemId),
+    GeneralServerError,
+    'The deleteFolder() method should throw a GeneralServerError if the response status is 500.',
+  );
+
+  fetchMock.delete(`/file/${itemId}`, 500);
+
+  assert.rejects(
+    apiService.deleteFile(itemId),
+    GeneralServerError,
+    'The deleteFile() method should throw a GeneralServerError if the response status is 500.',
   );
 });
 
@@ -315,4 +348,42 @@ test('should update files.', (assert) => {
   assert.ok(fetchMock.called(`/file/${file.id}`, {
     method: 'PUT',
   }), 'The updateFile() method should send a PUT request to the \'/file/:fileId\' URL.');
+});
+
+test('should delete folders.', (assert) => {
+  assert.expect(2);
+
+  const id = 'uExvhDL4YwkxnBVa';
+
+  fetchMock.delete(`/folder/${id}`, (url) => {
+    const folderId = url.slice(8);
+    assert.strictEqual(folderId, id, 'The deleteFolder() method should provide the correct folder id to the server.');
+    return 200;
+  });
+
+  const apiService = ApiService.getInstance();
+  apiService.deleteFolder(id);
+
+  assert.ok(fetchMock.called(`/folder/${id}`, {
+    method: 'DELETE',
+  }), 'The deleteFolder() method should send a DELETE request to the \'/folder/:id\' URL.');
+});
+
+test('should delete files.', (assert) => {
+  assert.expect(2);
+
+  const id = 'ARqTPQ1XXUrFlaJe';
+
+  fetchMock.delete(`/file/${id}`, (url) => {
+    const folderId = url.slice(6);
+    assert.strictEqual(folderId, id, 'The deleteFile() method should provide the correct file id to the server.');
+    return 200;
+  });
+
+  const apiService = ApiService.getInstance();
+  apiService.deleteFile(id);
+
+  assert.ok(fetchMock.called(`/file/${id}`, {
+    method: 'DELETE',
+  }), 'The deleteFile() method should send a DELETE request to the \'/file/:id\' URL.');
 });

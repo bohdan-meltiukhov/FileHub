@@ -1,5 +1,4 @@
 import ListItem from '../list-item';
-import FileItem from '../../models/file-system-objects/file-item';
 
 /**
  * The class for displaying the file item.
@@ -30,11 +29,11 @@ export default class FileItemComponent extends ListItem {
     const cellCount = this.rootElement.querySelector('[data-test="cell-count"]');
     cellCount.innerText = this._getReadableFileSizeString(this._parameters.size);
 
-    const cellActions = this.rootElement.querySelector('[data-test="cell-actions"]');
+    const actionButtons = this.rootElement.querySelector('[data-test="action-buttons"]');
     const downloadButton = document.createElement('span');
     downloadButton.classList.add('glyphicon');
     downloadButton.classList.add('glyphicon-download');
-    cellActions.prepend(downloadButton);
+    actionButtons.prepend(downloadButton);
   }
 
   /**

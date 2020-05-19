@@ -114,7 +114,6 @@ test('should call the onRemoveButtonClicked handler.', (assert) => {
   item.onRemoveButtonClicked(handler);
 
   const icon = itemElement.querySelector('[data-test="remove-item-button"]');
-  console.log('icon', icon);
   icon.click();
 
   assert.verifySteps(['The removeButtonClicked handler is called.'], 'The ListItem should call the ' +

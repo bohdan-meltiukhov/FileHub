@@ -18,6 +18,7 @@ export default class FetchMock {
     FetchMock._putFile();
     FetchMock._deleteFolder();
     FetchMock._deleteFile();
+    FetchMock._uploadFile();
   }
 
   /**
@@ -224,5 +225,71 @@ export default class FetchMock {
 
     const index = FileSystem.folders.indexOf(folder);
     FileSystem.folders.splice(index, 1);
+  }
+
+  /**
+   * Sets a mock for the upload file request.
+   *
+   * @private
+   */
+  static _uploadFile() {
+    fetchMock.post('express:/folder/:folderId/file', (url, options) => {
+      const id = url.slice(8, url.indexOf('/file'));
+      const file = options.body.get('file');
+      const fileItem = {
+        id: FetchMock._generateRandomId(16),
+        parentId: id,
+        name: file.name,
+        mimeType: FetchMock._getMimeType(file),
+        size: file.size,
+        type: 'file',
+      };
+
+      FileSystem.files.push(fileItem);
+
+      return fileItem;
+    }, {
+      delay: 2000,
+    });
+  }
+
+  /**
+   * Generates a random string identified.
+   *
+   * @param {number} length - The length of the required string.
+   * @returns {string} The generated string.
+   * @private
+   */
+  static _generateRandomId(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      result += Math.floor(Math.random() * characters.length);
+    }
+    return result;
+  }
+
+  /**
+   * Gets a mime type from the file type.
+   *
+   * @param {File} file - The uploaded file.
+   * @returns {string} The mime type of the file.
+   * @private
+   */
+  static _getMimeType(file) {
+    if (file.type.startsWith('image')) {
+      return 'image';
+    } else if (file.type === 'application/pdf') {
+      return 'book';
+    } else if (file.type.startsWith('video')) {
+      return 'video';
+    } else if (file.type.startsWith('audio')) {
+      return 'audio';
+    } else if (file.type === 'application/vnd.ms-excel') {
+      return 'stylesheet';
+    } else {
+      return 'other';
+    }
   }
 }

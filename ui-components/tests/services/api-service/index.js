@@ -64,7 +64,7 @@ test('should register.', (assert) => {
 });
 
 test('should handle the 401 error.', async (assert) => {
-  assert.expect(8);
+  assert.expect(9);
 
   const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('admin', '1234');
@@ -123,6 +123,14 @@ test('should handle the 401 error.', async (assert) => {
     AuthorizationError,
     'The deleteFile() method should throw an AuthorizationError if the response status is 401.',
   );
+
+  fetchMock.post('express:/folder/:folderId/file', 401);
+
+  assert.rejects(
+    apiService.uploadFile(itemId, new FormData()),
+    AuthorizationError,
+    'The uploadFile() method should throw an AuthorizationError if the response status is 401.',
+  );
 });
 
 test('should handle the 422 error.', async (assert) => {
@@ -171,7 +179,7 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
-  assert.expect(8);
+  assert.expect(9);
 
   fetchMock.post(/^\/(login|register)$/, 500);
 
@@ -227,6 +235,14 @@ test('should handle the 500 error.', async (assert) => {
     apiService.deleteFile(itemId),
     GeneralServerError,
     'The deleteFile() method should throw a GeneralServerError if the response status is 500.',
+  );
+
+  fetchMock.post('express:/folder/:folderId/file', 500);
+
+  assert.rejects(
+    apiService.uploadFile(itemId, new FormData()),
+    GeneralServerError,
+    'The uploadFile() method should throw a GeneralServerError if the response status is 500.',
   );
 });
 
@@ -294,7 +310,31 @@ test('should get a folder.', async (assert) => {
 
   assert.ok(fetchMock.called(`/folder/${folderId}`, {
     method: 'GET',
-  }), 'The getFolder() method should send a GET request to the \'/folder/:id\' URL.');
+  }), 'The getFolder() method should send a GET request to the \'/folder/:folderId\' URL.');
+});
+
+test('should upload files.', (assert) => {
+  const folderId = 'tRZXiSHNRlgZluGQ';
+
+  const formData = new FormData();
+
+  fetchMock.once({
+    url: `/folder/${folderId}/file`,
+    method: 'POST',
+  }, (url, opts) => {
+    const uploadedFile = opts.body;
+
+    assert.strictEqual(uploadedFile, formData, 'The uploadFile() method should send a request with correct formData.');
+
+    return 200;
+  });
+
+  const apiService = ApiService.getInstance();
+  apiService.uploadFile(folderId, formData);
+
+  assert.ok(fetchMock.done(`/folder/${folderId}/file`, {
+    method: 'POST',
+  }), 'The uploadFile() method should send a POST request to the \'/folder/:folderId/file\' URL.');
 });
 
 test('should update folders.', (assert) => {

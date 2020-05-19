@@ -226,4 +226,23 @@ export default class ApiService {
       }
     });
   }
+
+  /**
+   * Uploads the provided file.
+   *
+   * @param {string} folderId - The identifier of the folder to upload the file to.
+   * @param {FormData} formData - The form data with the file to upload.
+   * @returns {Promise} The promise that resolves if the file is uploaded successfully.
+   */
+  uploadFile(folderId, formData) {
+    return fetch(`/folder/${folderId}/file`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
 }

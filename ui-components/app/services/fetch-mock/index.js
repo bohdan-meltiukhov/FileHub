@@ -1,5 +1,6 @@
 import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
 import FileSystem from './file-system';
+import FolderItem from '../../models/file-system-objects/folder-item';
 
 /**
  * The class for setting the fetch mock.
@@ -15,6 +16,9 @@ export default class FetchMock {
     FetchMock._getFolder();
     FetchMock._putFolder();
     FetchMock._putFile();
+    FetchMock._deleteFolder();
+    FetchMock._deleteFile();
+    FetchMock._uploadFile();
     FetchMock._createFolder();
   }
 
@@ -157,6 +161,100 @@ export default class FetchMock {
   }
 
   /**
+   * Sets a mock for the delete folder request.
+   *
+   * @private
+   */
+  static _deleteFolder() {
+    fetchMock.delete('express:/folder/:folderId', (url) => {
+      const id = url.slice(8);
+
+      const folder = FileSystem.folders.find((folder) => folder.id === id);
+
+      if (!folder) {
+        return 404;
+      }
+
+      FetchMock._deleteFolderRecursively(folder);
+
+      return 200;
+    }, {
+      delay: 2000,
+    });
+  }
+
+  /**
+   * Sets a mock for the delete file request.
+   *
+   * @private
+   */
+  static _deleteFile() {
+    fetchMock.delete('express:/file/:fileId', (url) => {
+      const id = url.slice(6);
+
+      const fileIndex = FileSystem.files.findIndex((file) => file.id === id);
+
+      if (fileIndex === -1) {
+        return 404;
+      }
+
+      FileSystem.files.splice(fileIndex, 1);
+
+      return 200;
+    }, {
+      delay: 2000,
+    });
+  }
+
+  /**
+   * Recursively deletes a folder and all its content.
+   *
+   * @param {FolderItem} folder - The folder to delete.
+   * @private
+   */
+  static _deleteFolderRecursively(folder) {
+    const childFolders = FileSystem.folders.filter((childFolder) => childFolder.parentId === folder.id);
+    childFolders.forEach((childFolder) => {
+      FetchMock._deleteFolder(childFolder);
+    });
+
+    const files = FileSystem.files.filter((file) => file.parentId === folder.id);
+    files.forEach((file) => {
+      const index = FileSystem.files.indexOf(file);
+      FileSystem.files.splice(index, 1);
+    });
+
+    const index = FileSystem.folders.indexOf(folder);
+    FileSystem.folders.splice(index, 1);
+  }
+
+  /**
+   * Sets a mock for the upload file request.
+   *
+   * @private
+   */
+  static _uploadFile() {
+    fetchMock.post('express:/folder/:folderId/file', (url, options) => {
+      const id = url.slice(8, url.indexOf('/file'));
+      const file = options.body.get('file');
+      const fileItem = {
+        id: FetchMock._generateRandomId(16),
+        parentId: id,
+        name: file.name,
+        mimeType: FetchMock._getMimeType(file),
+        size: file.size,
+        type: 'file',
+      };
+
+      FileSystem.files.push(fileItem);
+
+      return fileItem;
+    }, {
+      delay: 2000,
+    });
+  }
+
+  /**
    * Sets a mock for the create folder request.
    *
    * @private
@@ -217,8 +315,49 @@ export default class FetchMock {
 
     let result = '';
     for (let i = 0; i < length; i++) {
+      result += Math.floor(Math.random() * characters.length);
+    }
+    return result;
+  }
+
+  /**
+   * Generates a random string identified.
+   *
+   * @param {number} length - The length of the required string.
+   * @returns {string} The generated string.
+   * @private
+   */
+  static _generateRandomIdV2(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    let result = '';
+    for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return result;
+  }
+
+
+  /**
+   * Gets a mime type from the file type.
+   *
+   * @param {File} file - The uploaded file.
+   * @returns {string} The mime type of the file.
+   * @private
+   */
+  static _getMimeType(file) {
+    if (file.type.startsWith('image')) {
+      return 'image';
+    } else if (file.type === 'application/pdf') {
+      return 'book';
+    } else if (file.type.startsWith('video')) {
+      return 'video';
+    } else if (file.type.startsWith('audio')) {
+      return 'audio';
+    } else if (file.type === 'application/vnd.ms-excel') {
+      return 'stylesheet';
+    } else {
+      return 'other';
+    }
   }
 }

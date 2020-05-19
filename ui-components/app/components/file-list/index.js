@@ -32,6 +32,7 @@ export default class FileList extends Component {
   /** @inheritdoc */
   initNestedComponents() {
     this._fileItems = [];
+
     this._files.forEach((item) => {
       const row = document.createElement('tr');
       this.rootElement.appendChild(row);
@@ -50,7 +51,46 @@ export default class FileList extends Component {
         item.isSelected = true;
         this._selectedItem = item;
       });
+
+      item.onNameChanged(this._onItemNameChangedHandler);
+
+      item.onRemoveButtonClicked(this._onRemoveItemHandler);
+
+      if (item instanceof FolderItemComponent) {
+        item.onFileUploadInitiated(this._onFileUploadInitiatedHandler);
+      }
+
+      if (this._loadingItems) {
+        item.isLoading = this._loadingItems.includes(item.id);
+      }
     });
+  }
+
+  /**
+   * Sets the loading state for the provided items and removes the loading state for the items that are not present
+   * in the provided array.
+   *
+   * @param {string[]} itemIds - Items that are currently loading.
+   */
+  set loadingItems(itemIds) {
+    this._fileItems.forEach((item) => {
+      item.isLoading = itemIds.includes(item.id);
+    });
+
+    this._loadingItems = itemIds;
+  }
+
+  /**
+   * Adds a function that should be called when an item is deleted.
+   *
+   * @param {Function} handler - The function to call when the use wants to delete an item.
+   */
+  onRemoveButtonClicked(handler) {
+    this._fileItems.forEach((item) => {
+      item.onRemoveButtonClicked(handler);
+    });
+
+    this._onRemoveItemHandler = handler;
   }
 
   /**
@@ -63,30 +103,6 @@ export default class FileList extends Component {
       this._loadingItem = this._selectedItem;
     }
     this._loadingItem.isLoading = isLoading;
-  }
-
-  /**
-   * Sets the function to be called when an item wants to change its editing state.
-   *
-   * @param {Function} handler - The function to call to change an item editing state.
-   */
-  set editingStateSetter(handler) {
-    this._fileItems.forEach((item) => {
-      item.editingStateSetter = handler;
-    });
-
-    this._editingStateSetter = handler;
-  }
-
-  /**
-   * Sets the item that is currently being edited.
-   *
-   * @param {string} itemId - The identifier of the item that is currently being edited.
-   */
-  set editingItem(itemId) {
-    this._fileItems.forEach((item) => {
-      item.isEditing = item.id === itemId;
-    });
   }
 
   /**
@@ -111,14 +127,6 @@ export default class FileList extends Component {
     this._files = fileList;
     this.rootElement.innerHTML = '';
     this.initNestedComponents();
-
-    this._fileItems.forEach((item) => {
-      item.onNameChanged(this._onItemNameChangedHandler);
-    });
-
-    this._fileItems.forEach((item) => {
-      item.editingStateSetter = this._editingStateSetter;
-    });
   }
 
   /**
@@ -149,5 +157,21 @@ export default class FileList extends Component {
     } else {
       this.rootElement.style.display = 'none';
     }
+  }
+
+  /**
+   * Sets the function to be called when the user wants to upload a file to a folder.
+   *
+   * @param {Function} handler - The function to call when the user has picked a file from their computer and wants to
+   * upload it.
+   */
+  onFileUploadInitiated(handler) {
+    this._fileItems.forEach((item) => {
+      if (item instanceof FolderItemComponent) {
+        item.onFileUploadInitiated(handler);
+      }
+    });
+
+    this._onFileUploadInitiatedHandler = handler;
   }
 }

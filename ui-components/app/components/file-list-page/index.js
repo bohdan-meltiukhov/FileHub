@@ -7,6 +7,8 @@ import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
 import UpdateItemAction from '../../state/actions/update-item-action';
+import RemoveItemAction from '../../state/actions/remove-item-action';
+import UploadFileAction from '../../state/actions/upload-file-action';
 import GetFolderAction from '../../state/actions/get-folder-action';
 import CreateFolderAction from '../../state/actions/create-folder-action';
 import UrlProperties from '../../models/url-properties';
@@ -14,7 +16,6 @@ import {ROOT_FOLDER_ID} from '../../models/root-folder';
 import NotFoundError from '../../models/errors/not-found-error';
 import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
-import EditingItemAction from '../../state/actions/editing-item-action';
 
 /**
  * The component for the File List Page.
@@ -31,7 +32,6 @@ export default class FileListPage extends StateAwareComponent {
     super(container, stateManager);
 
     this.render();
-    this._folderId = properties.folderId;
     stateManager.dispatch(new GetFolderAction(properties.folderId));
     stateManager.dispatch(new GetFilesAction(properties.folderId));
   }
@@ -105,13 +105,29 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   addEventListeners() {
+    this.fileList.onRemoveButtonClicked((item) => {
+      this.stateManager.dispatch(new RemoveItemAction(item));
+    });
+
+    this.fileList.onFileUploadInitiated((folderId, file) => {
+      this.stateManager.dispatch(new UploadFileAction(folderId, file));
+    });
+
     this.fileList.onItemNameChanged((item) => {
       this.stateManager.dispatch(new UpdateItemAction(item));
     });
 
-    this.fileList.editingStateSetter = (itemId, isEditing) => {
-      this.stateManager.dispatch(new EditingItemAction(itemId, isEditing));
-    };
+    this.uploadFileButton.addClickHandler(() => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.click();
+
+      const folderId = this.stateManager.state.locationParameters.folderId;
+
+      input.addEventListener('change', () => {
+        this.stateManager.dispatch(new UploadFileAction(folderId, input.files[0]));
+      });
+    });
 
     this.createFolderButton.addClickHandler(() => {
       this.stateManager.dispatch(new CreateFolderAction(this._folderId));
@@ -122,8 +138,6 @@ export default class FileListPage extends StateAwareComponent {
   initState() {
     this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
-
-      this.fileList.editingItem = state.editingItem || '';
     });
 
     this.onStateChanged('isFileListLoading', ({detail: {state}}) => {
@@ -140,7 +154,6 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('locationParameters', ({detail: {state}}) => {
       if (state.locationParameters.folderId) {
-        this._folderId = state.locationParameters.folderId;
         this.stateManager.dispatch(new GetFolderAction(state.locationParameters.folderId));
         this.stateManager.dispatch(new GetFilesAction(state.locationParameters.folderId));
       }
@@ -151,7 +164,6 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('folder', ({detail: {state}}) => {
-      this._folder = state.folder;
       this.breadcrumbs.folder = state.folder;
     });
 
@@ -179,25 +191,50 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('renameItemLoadingError', ({detail: {state}}) => {
-      const error = state.renameItemLoadingError;
-      if (error instanceof NotFoundError) {
-        alert('Error: ' + error.message);
-        const folderId = state.locationParameters.folderId;
-        this.stateManager.dispatch(new GetFilesAction(folderId));
-      } else if (error instanceof AuthorizationError) {
-        alert('Error: ' + error.message);
-        window.location.hash = AUTHENTICATION_ROUTE;
-      } else if (error instanceof GeneralServerError) {
-        alert('Error: ' + error.message);
-      } else {
-        alert('Unknown error. See the console for more details.');
-        console.error(error);
-      }
+      this._handleError(state.renameItemLoadingError);
     });
 
-    this.onStateChanged('editingItem', ({detail: {state}}) => {
-      this.fileList.editingItem = state.editingItem;
+    this.onStateChanged('deleteItemLoadingError', ({detail: {state}}) => {
+      this._handleError(state.deleteItemLoadingError);
     });
+
+    this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
+      this.fileList.loadingItems = state.itemsWithDeletionInProgress;
+    });
+
+    this.onStateChanged('foldersWithFileUploadInProgress', ({detail: {state}}) => {
+      const loadingFolders = state.foldersWithFileUploadInProgress;
+
+      this.uploadFileButton.isLoading = loadingFolders.includes(state.locationParameters.folderId);
+      this.fileList.loadingItems = loadingFolders;
+    });
+
+    this.onStateChanged('uploadFileError', ({detail: {state}}) => {
+      this._handleError(state.uploadFileError);
+    });
+  }
+
+  /**
+   * Handles the provided error.
+   *
+   * @param {NotFoundError|AuthorizationError|GeneralServerError|Error} error - The error that occurred during some
+   * process.
+   * @private
+   */
+  _handleError(error) {
+    if (error instanceof NotFoundError) {
+      alert('Error: ' + error.message);
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this.stateManager.dispatch(new GetFilesAction(folderId));
+    } else if (error instanceof AuthorizationError) {
+      alert('Error: ' + error.message);
+      window.location.hash = AUTHENTICATION_ROUTE;
+    } else if (error instanceof GeneralServerError) {
+      alert('Error: ' + error.message);
+    } else {
+      alert('Unknown error. See the console for more details.');
+      console.error(error);
+    }
   }
 
   /** @inheritdoc */

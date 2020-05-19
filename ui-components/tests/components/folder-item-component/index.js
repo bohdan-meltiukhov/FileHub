@@ -5,7 +5,7 @@ const {module, test} = QUnit;
 let fixture;
 let row;
 
-module('The FolderItem', {
+module('The FolderItemComponent', {
   beforeEach: function() {
     fixture = document.getElementById('qunit-fixture');
     row = document.createElement('tr');
@@ -17,14 +17,14 @@ test('should have the provided properties.', (assert) => {
   const name = 'Documents';
   const itemsNumber = 15;
 
-  const file = {
+  const folder = {
     id: '1',
     parentId: 'parent',
     name,
     itemsNumber,
     type: 'folder',
   };
-  new FolderItem(row, file);
+  new FolderItem(row, folder);
 
   const folderItem = fixture.firstElementChild;
 
@@ -43,7 +43,7 @@ test('should have the provided properties.', (assert) => {
   assert.strictEqual(itemsCount.innerText, `${itemsNumber} items`, 'The folder item component should display ' +
     'the provided number of items.');
 
-  const actions = folderItem.querySelector('[data-test="cell-actions"]');
+  const actions = folderItem.querySelector('[data-test="action-buttons"]');
   const firstAction = actions.firstElementChild;
   assert.strictEqual(firstAction.className, 'glyphicon glyphicon-upload', 'The folder item component should show the ' +
     'upload action.');

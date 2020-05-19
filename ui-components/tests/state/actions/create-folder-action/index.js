@@ -1,19 +1,27 @@
-import GetFilesAction from '../../../../app/state/actions/get-files-action';
 import CreateFolderAction from '../../../../app/state/actions/create-folder-action';
+import IsCreateFolderLoadingMutator from '../../../../app/state/mutators/is-create-folder-loading-mutator';
+import GetFilesAction from '../../../../app/state/actions/get-files-action';
 
 const {module, test} = QUnit;
 
 module('The CreateFolderAction');
 
 test('should create folders correctly.', async (assert) => {
-  assert.expect(4);
+  assert.expect(9);
   const folderId = '4Goz0J0Tz8xfDfsJ';
+  const folder = {
+    id: 'uExvhDL4YwkxnBVa',
+    parentId: '4Goz0J0Tz8xfDfsJ',
+    name: 'Documents',
+    itemsNumber: 20,
+    type: 'folder',
+  };
 
   const createFolder = (id) => {
     return new Promise((resolve) => {
       assert.strictEqual(id, folderId, 'The CreateFolderAction should provide the correct folderId to ' +
         'the apiService.');
-      resolve();
+      resolve(folder);
     });
   };
 
@@ -22,19 +30,29 @@ test('should create folders correctly.', async (assert) => {
   };
 
   const stateManagerMock = {
-    dispatch: (action) => {
-      assert.ok(action instanceof GetFilesAction, 'The CreateFolderAction should provide an instance of the ' +
-        'GetFilesAction to the state manager when the folder is created.');
-      assert.strictEqual(action._folderId, folderId, 'The CreateFolderAction should provide correct folderId to the ' +
-        'state manager.');
+    mutate: (mutator) => {
+      assert.step(mutator.constructor.name);
+      if (mutator instanceof IsCreateFolderLoadingMutator) {
+        assert.step(`Is Loading: ${mutator._isLoading}.`);
+      }
     },
 
-    onStateChanged: (field) => {
-      assert.strictEqual(field, 'fileList', 'The CreateFolderAction should subscribe to changes in the fileList ' +
-        'state field.');
+    dispatch: (action) => {
+      assert.ok(action instanceof GetFilesAction, 'The CreateFolderAction should provide an instance of the ' +
+        'GetFilesAction to the state manager.');
+      assert.strictEqual(action._folderId, folderId, 'The CreateFolderAction should provide correct folder ID ' +
+        'to the GetFilesAction');
     },
   };
 
   const action = new CreateFolderAction(folderId);
-  action.apply(stateManagerMock, apiServiceMock);
+  await action.apply(stateManagerMock, apiServiceMock);
+
+  assert.verifySteps([
+    'IsCreateFolderLoadingMutator',
+    'Is Loading: true.',
+    'RenameFolderMutator',
+    'IsCreateFolderLoadingMutator',
+    'Is Loading: false.',
+  ], 'The CreateFolderAction should provide mutators to the state manager in the correct order.');
 });

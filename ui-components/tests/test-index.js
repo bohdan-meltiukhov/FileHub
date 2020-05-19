@@ -37,3 +37,5 @@ import * as deleteItemLoadingErrorMutator from './state/mutators/delete-item-loa
 import * as uploadFileErrorMutator from './state/mutators/upload-file-error-mutator';
 import * as addUploadFileInProgressMutator from './state/mutators/add-upload-file-in-progress-mutator';
 import * as removeUploadFileInProgress from './state/mutators/remove-upload-file-in-progress-mutator';
+import * as isCreateFolderLoadingMutator from './state/mutators/is-create-folder-loading-mutator';
+import * as reateFolderLoadingErrorMutator from './state/mutators/create-folder-loading-error-mutator';

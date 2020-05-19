@@ -315,23 +315,6 @@ export default class FetchMock {
 
     let result = '';
     for (let i = 0; i < length; i++) {
-      result += Math.floor(Math.random() * characters.length);
-    }
-    return result;
-  }
-
-  /**
-   * Generates a random string identified.
-   *
-   * @param {number} length - The length of the required string.
-   * @returns {string} The generated string.
-   * @private
-   */
-  static _generateRandomIdV2(length) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    let result = '';
-    for (let i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return result;

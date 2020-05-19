@@ -267,7 +267,7 @@ export default class ApiService {
         if (response.ok) {
           return response.json();
         } else {
-          throw this._handleRequestErrors(response.status);
+          throw this._handleRequestErrors(response);
         }
       });
   }

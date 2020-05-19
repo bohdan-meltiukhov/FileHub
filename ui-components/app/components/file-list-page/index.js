@@ -130,7 +130,8 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.createFolderButton.addClickHandler(() => {
-      this.stateManager.dispatch(new CreateFolderAction(this._folderId));
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this.stateManager.dispatch(new CreateFolderAction(folderId));
     });
   }
 

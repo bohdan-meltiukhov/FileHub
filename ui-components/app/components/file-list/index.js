@@ -142,7 +142,7 @@ export default class FileList extends Component {
     const createdFolder = await this._fileItems.find((item) => (item.id === folderId));
 
     createdFolder.isSelected = true;
-    this._editingStateSetter(createdFolder.id, true);
+    createdFolder.isEditing = true;
     this._selectedItem = createdFolder;
   }
 

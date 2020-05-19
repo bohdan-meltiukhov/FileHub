@@ -1,7 +1,8 @@
 import Action from '../action';
-import IsUploadFileInProgressMutator from '../../mutators/is-upload-file-in-progress-mutator';
 import GetFilesAction from '../get-files-action';
 import UploadFileErrorMutator from '../../mutators/upload-file-error-mutator';
+import AddUploadFileInProgressMutator from '../../mutators/add-upload-file-in-progress-mutator';
+import RemoveUploadFileInProgressMutator from '../../mutators/remove-upload-file-in-progress-mutator';
 
 /**
  * The action that uploads the provided file.
@@ -22,7 +23,7 @@ export default class UploadFileAction extends Action {
 
   /** @inheritdoc */
   async apply(stateManager, apiService) {
-    stateManager.mutate(new IsUploadFileInProgressMutator(this._folderId, true));
+    stateManager.mutate(new AddUploadFileInProgressMutator(this._folderId));
     try {
       const formData = new FormData();
       formData.append('file', this._file);
@@ -33,7 +34,7 @@ export default class UploadFileAction extends Action {
     } catch (e) {
       stateManager.mutate(new UploadFileErrorMutator(e));
     } finally {
-      stateManager.mutate(new IsUploadFileInProgressMutator(this._folderId, false));
+      stateManager.mutate(new RemoveUploadFileInProgressMutator(this._folderId));
     }
   }
 }

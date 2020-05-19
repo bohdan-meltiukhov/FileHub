@@ -1,5 +1,4 @@
 import UploadFileAction from '../../../../app/state/actions/upload-file-action';
-import IsUploadFileInProgressMutator from '../../../../app/state/mutators/is-upload-file-in-progress-mutator';
 import GetFilesAction from '../../../../app/state/actions/get-files-action';
 
 const {module, test} = QUnit;
@@ -24,9 +23,10 @@ test('should call the uploadFile() method of the API Service.', async (assert) =
 
   const stateManagerMock = {
     mutate(mutator) {
-      assert.ok(mutator instanceof IsUploadFileInProgressMutator, 'The UploadFileAction should provide instances of ' +
-        'the IsUploadFileInProgressMutator to the state manager.');
-      assert.step(`${mutator._folderId} - ${mutator._isLoading}`);
+      assert.step(`${mutator.constructor.name}`);
+
+      assert.strictEqual(mutator._folderId, folderId, 'The UploadFileAction should provide correct folder IDs to the ' +
+        'mutators.');
     },
 
     dispatch(action) {
@@ -45,7 +45,7 @@ test('should call the uploadFile() method of the API Service.', async (assert) =
   await action.apply(stateManagerMock, apiServiceMock);
 
   assert.verifySteps([
-    `${folderId} - true`,
-    `${folderId} - false`,
-  ], 'The UploadFileAction should provide correct mutators to the state manager.');
+    'AddUploadFileInProgressMutator',
+    'RemoveUploadFileInProgressMutator',
+  ], 'The UploadFileAction should provide mutators to the state manager in the correct order.');
 });

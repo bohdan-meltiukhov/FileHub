@@ -64,7 +64,7 @@ test('should register.', (assert) => {
 });
 
 test('should handle the 401 error.', async (assert) => {
-  assert.expect(9);
+  assert.expect(10);
 
   const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('admin', '1234');
@@ -131,6 +131,14 @@ test('should handle the 401 error.', async (assert) => {
     AuthorizationError,
     'The uploadFile() method should throw an AuthorizationError if the response status is 401.',
   );
+
+  fetchMock.post('express:/folder/:folderId/folder', 401);
+
+  assert.rejects(
+    apiService.createFolder(itemId),
+    AuthorizationError,
+    'The createFolder() method should throw an AuthorizationError if the response status is 401.',
+  );
 });
 
 test('should handle the 422 error.', async (assert) => {
@@ -179,7 +187,7 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
-  assert.expect(9);
+  assert.expect(10);
 
   fetchMock.post(/^\/(login|register)$/, 500);
 
@@ -243,6 +251,14 @@ test('should handle the 500 error.', async (assert) => {
     apiService.uploadFile(itemId, new FormData()),
     GeneralServerError,
     'The uploadFile() method should throw a GeneralServerError if the response status is 500.',
+  );
+
+  fetchMock.post('express:/folder/:folderId/folder', 500);
+
+  assert.rejects(
+    apiService.createFolder(itemId),
+    GeneralServerError,
+    'The createFolder() method should throw a GeneralServerError if the response status is 500.',
   );
 });
 

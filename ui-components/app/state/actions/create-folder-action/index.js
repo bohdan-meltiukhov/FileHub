@@ -21,14 +21,8 @@ export default class CreateFolderAction extends Action {
   apply(stateManager, apiService) {
     apiService.createFolder(this._folderId)
       .then((createdFolder) => {
+        stateManager.mutate(new RenameFolderMutator(createdFolder.id));
         stateManager.dispatch(new GetFilesAction(this._folderId));
-
-        const renameFolderFunction = () => {
-          stateManager.mutate(new RenameFolderMutator(createdFolder.id));
-          stateManager.removeStateChangedListener('fileList', renameFolderFunction);
-        };
-
-        stateManager.onStateChanged('fileList', renameFolderFunction);
       });
   }
 }

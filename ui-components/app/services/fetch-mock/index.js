@@ -179,7 +179,7 @@ export default class FetchMock {
 
       return 200;
     }, {
-      delay: 2000,
+      delay: 500,
     });
   }
 
@@ -202,7 +202,7 @@ export default class FetchMock {
 
       return 200;
     }, {
-      delay: 2000,
+      delay: 500,
     });
   }
 
@@ -250,7 +250,7 @@ export default class FetchMock {
 
       return fileItem;
     }, {
-      delay: 2000,
+      delay: 500,
     });
   }
 
@@ -296,7 +296,7 @@ export default class FetchMock {
       FileSystem.folders.push(folder);
       return folder;
     }, {
-      delay: 2000,
+      delay: 500,
     });
   }
 

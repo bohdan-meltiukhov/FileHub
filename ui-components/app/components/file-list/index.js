@@ -63,6 +63,13 @@ export default class FileList extends Component {
       if (this._loadingItems) {
         item.isLoading = this._loadingItems.includes(item.id);
       }
+
+      if (item.id === this._renameFolderId) {
+        item.isSelected = true;
+        // item.isEditing = true;
+        setTimeout(() => item.isEditing = true, 0);
+        this._selectedItem = item;
+      }
     });
   }
 
@@ -134,16 +141,19 @@ export default class FileList extends Component {
    *
    * @param {string} folderId - The identifier of the required folder.
    */
-  async renameFolder(folderId) {
+  renameFolder(folderId) {
     if (this._selectedItem) {
       this._selectedItem.isSelected = false;
     }
 
-    const createdFolder = await this._fileItems.find((item) => (item.id === folderId));
+    this._renameFolderId = folderId;
+    const createdFolder = this._fileItems.find((item) => (item.id === folderId));
 
-    createdFolder.isSelected = true;
-    createdFolder.isEditing = true;
-    this._selectedItem = createdFolder;
+    if (createdFolder) {
+      createdFolder.isSelected = true;
+      createdFolder.isEditing = true;
+      this._selectedItem = createdFolder;
+    }
   }
 
   /**

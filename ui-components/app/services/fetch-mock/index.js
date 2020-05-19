@@ -263,23 +263,16 @@ export default class FetchMock {
     fetchMock.post('express:/folder/:folderId/folder', (url) => {
       const id = url.slice(8, url.lastIndexOf('/folder'));
 
-      const parentFolder = FileSystem.folders.find((folder) => {
-        if (folder.id === id) {
-          return true;
-        }
-      });
+      const parentFolder = FileSystem.folders.find((folder) => folder.id === id);
 
       if (!parentFolder) {
         return 404;
       }
 
-      const childFolders = FileSystem.folders.filter((folder) => {
-        if (folder.parentId === id) {
-          return true;
-        }
-      });
+      const childFolders = FileSystem.folders.filter((folder) => folder.parentId === id);
 
       const childFolderNames = childFolders.map((folder) => folder.name);
+
       let name = '';
       if (childFolderNames.includes('New folder')) {
         for (let i = 2; ; i++) {
@@ -291,6 +284,7 @@ export default class FetchMock {
       } else {
         name = 'New folder';
       }
+
       const folder = {
         id: FetchMock._generateRandomId(16),
         parentId: id,
@@ -298,8 +292,11 @@ export default class FetchMock {
         itemsNumber: 0,
         type: 'folder',
       };
+
       FileSystem.folders.push(folder);
       return folder;
+    }, {
+      delay: 2000,
     });
   }
 

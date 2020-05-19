@@ -51,23 +51,15 @@ export default class FileList extends Component {
         item.isSelected = true;
         this._selectedItem = item;
       });
-    });
 
-    this._fileItems.forEach((item) => {
       item.onNameChanged(this._onItemNameChangedHandler);
-    });
 
-    this._fileItems.forEach((item) => {
       item.onRemoveButtonClicked(this._onRemoveItemHandler);
-    });
 
-    this._fileItems.forEach((item) => {
       if (item instanceof FolderItemComponent) {
         item.onFileUploadInitiated(this._onFileUploadInitiatedHandler);
       }
-    });
 
-    this._fileItems.forEach((item) => {
       if (this._loadingItems) {
         item.isLoading = this._loadingItems.includes(item.id);
       }

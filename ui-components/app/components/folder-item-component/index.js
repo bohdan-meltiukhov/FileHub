@@ -1,43 +1,31 @@
 import ListItem from '../list-item';
-import FolderItem from '../../models/file-system-objects/folder-item';
+import {FILE_LIST_ROUTE} from '../../router/routes';
 
 /**
  * The component for displaying the folder item.
  */
 export default class FolderItemComponent extends ListItem {
-  /**
-   * Creates an instance of the folder item component with set container and properties.
-   *
-   * @param {Element} container - The parent element for the folder item component.
-   * @param {FolderItem} parameters - The initial folder items configurations.
-   */
-  constructor(container, parameters) {
-    super(container);
-
-    this._parameters = parameters;
-
-    this.render();
-  }
-
   /** @inheritdoc */
-  markup() {
-    return `
-        <tr data-test="file-item">
-            <td class="icon-cell" data-test="icon-cell"><span class="glyphicon glyphicon-menu-right"></span></td>
-            <td class="filename">
-                <span class="glyphicon glyphicon-folder-close" data-test="file-icon"></span>&nbsp;&nbsp;
-                <span class="name" data-test="filename">
-                    <a title="${this._parameters.name}">${this._parameters.name}</a>
-                </span>
-                <input type="text" class="input" value="${this._parameters.name}" data-test="new-name-input">
-            </td>
-            <td class="count" data-test="cell-count">${this._parameters.itemsNumber} items</td>
-            <td class="cell-actions" data-test="cell-actions">
-                <span class="glyphicon glyphicon-upload"></span>
-                <span class="glyphicon glyphicon-remove-circle"></span>
-            </td>
-        </tr>
-    `;
+  initNestedComponents() {
+    super.initNestedComponents();
+
+    const iconCell = this.rootElement.querySelector('[data-test="icon-cell"]');
+    iconCell.innerHTML = '<span class="glyphicon glyphicon-menu-right"></span>';
+
+    const fileIcon = this.rootElement.querySelector('[data-test="file-icon"]');
+    fileIcon.classList.add('glyphicon-folder-close');
+
+    const folderPath = FILE_LIST_ROUTE.replace(':folderId', this._parameters.id);
+    this._filename.innerHTML = `<a href="#${folderPath}" title="${this._parameters.name}">${this._parameters.name}</a>`;
+
+    const cellCount = this.rootElement.querySelector('[data-test="cell-count"]');
+    cellCount.innerText = `${this._parameters.itemsNumber} items`;
+
+    const actionButtons = this.rootElement.querySelector('[data-test="action-buttons"]');
+    const uploadButton = document.createElement('span');
+    uploadButton.classList.add('glyphicon');
+    uploadButton.classList.add('glyphicon-upload');
+    actionButtons.prepend(uploadButton);
   }
 
   /** @inheritdoc */
@@ -47,5 +35,32 @@ export default class FolderItemComponent extends ListItem {
     this.rootElement.addEventListener('dblclick', () => {
       window.location.hash = `/file-list/${this._parameters.id}`;
     });
+
+    const uploadButton = this.rootElement.querySelector('[data-test="cell-actions"] .glyphicon-upload');
+    uploadButton.addEventListener('click', () => this._openFileBrowser());
+  }
+
+  /**
+   * Opens the file upload menu.
+   *
+   * @private
+   */
+  _openFileBrowser() {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'file');
+    input.click();
+
+    input.addEventListener('change', () => {
+      this._fileUploadInitiatedHandler(this._parameters.id, input.files[0]);
+    });
+  }
+
+  /**
+   * Sets the function to be called when the user wants to upload a file.
+   *
+   * @param {Function} handler -  The function to call when the user have chosen which file they want to upload.
+   */
+  onFileUploadInitiated(handler) {
+    this._fileUploadInitiatedHandler = handler;
   }
 }

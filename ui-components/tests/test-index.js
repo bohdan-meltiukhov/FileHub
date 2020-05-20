@@ -37,3 +37,5 @@ import * as addUploadFileInProgressMutator from './state/mutators/add-upload-fil
 import * as removeUploadFileInProgress from './state/mutators/remove-upload-file-in-progress-mutator';
 import * as getUserAction from './state/actions/get-user-action';
 import * as userNameMutator from './state/mutators/user-name-mutator';
+import * as isUserNameLoadingMutator from './state/mutators/is-user-name-loading-mutator';
+import * as userNameLoadingErrorMutator from './state/mutators/user-name-loading-error-mutator';

@@ -203,6 +203,25 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('uploadFileError', ({detail: {state}}) => {
       this._handleError(state.uploadFileError);
     });
+
+    this.onStateChanged('username', ({detail: {state}}) => {
+      this.userDetails.username = state.username;
+    });
+
+    this.onStateChanged('isUserNameLoading', ({detail: {state}}) => {
+      this.userDetails.isLoading = state.isUserNameLoading;
+    });
+
+    this.onStateChanged('userNameLoadingError', ({detail: {state}}) => {
+      const error = state.userNameLoadingError;
+
+      if (error instanceof AuthorizationError) {
+        alert('Error: ' + error.message);
+        window.location.hash = AUTHENTICATION_ROUTE;
+      } else {
+        console.error('User Details Loading Error:', error);
+      }
+    });
   }
 
   /**
@@ -226,10 +245,6 @@ export default class FileListPage extends StateAwareComponent {
       alert('Unknown error. See the console for more details.');
       console.error(error);
     }
-
-    this.onStateChanged('username', ({detail: {state}}) => {
-      this.userDetails.username = state.username;
-    });
   }
 
   /** @inheritdoc */

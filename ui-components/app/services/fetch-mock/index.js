@@ -312,6 +312,8 @@ export default class FetchMock {
       } else {
         return 401;
       }
+    }, {
+      delay: 500,
     });
   }
 }

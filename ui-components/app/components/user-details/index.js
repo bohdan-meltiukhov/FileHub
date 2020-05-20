@@ -36,13 +36,30 @@ export default class UserDetails extends Component {
     `;
   }
 
+  /** @inheritdoc */
+  initNestedComponents() {
+    this._nameElement = this.rootElement.querySelector('[data-test="user-name"]');
+  }
+
   /**
    * Changes the displayed username.
    *
    * @param {string} value - The new username.
    */
   set username(value) {
-    const name = this.rootElement.querySelector('[data-test="user-name"]');
-    name.innerText = value;
+    this._username = value;
+  }
+
+  /**
+   * Sets whether the user name is currently loading or not.
+   *
+   * @param {boolean} isLoading - The flag that shows if the user name is being loading.
+   */
+  set isLoading(isLoading) {
+    if (isLoading) {
+      this._nameElement.innerText = 'Loading...';
+    } else {
+      this._nameElement.innerText = this._username;
+    }
   }
 }

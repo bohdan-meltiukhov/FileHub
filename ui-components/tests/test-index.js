@@ -39,3 +39,4 @@ import * as getUserAction from './state/actions/get-user-action';
 import * as userNameMutator from './state/mutators/user-name-mutator';
 import * as isUserNameLoadingMutator from './state/mutators/is-user-name-loading-mutator';
 import * as userNameLoadingErrorMutator from './state/mutators/user-name-loading-error-mutator';
+import * as userDetails from './components/user-details';

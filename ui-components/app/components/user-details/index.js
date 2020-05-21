@@ -32,6 +32,7 @@ export default class UserDetails extends Component {
         <span data-test="user-details">
             <span class="glyphicon glyphicon-user"></span>
             <span data-test="user-name">${this._username}</span>
+            <span data-test="loading-message">Loading...</span>
         </span>
     `;
   }
@@ -39,6 +40,8 @@ export default class UserDetails extends Component {
   /** @inheritdoc */
   initNestedComponents() {
     this._nameElement = this.rootElement.querySelector('[data-test="user-name"]');
+    this._loader = this.rootElement.querySelector('[data-test="loading-message"]');
+    this._loader.style.display = 'none';
   }
 
   /**
@@ -47,7 +50,7 @@ export default class UserDetails extends Component {
    * @param {string} value - The new username.
    */
   set username(value) {
-    this._username = value;
+    this._nameElement.innerText = value;
   }
 
   /**
@@ -57,9 +60,11 @@ export default class UserDetails extends Component {
    */
   set isLoading(isLoading) {
     if (isLoading) {
-      this._nameElement.innerText = 'Loading...';
+      this._nameElement.style.display = 'none';
+      this._loader.style.display = 'inline';
     } else {
-      this._nameElement.innerText = this._username;
+      this._loader.style.display = 'none';
+      this._nameElement.style.display = 'inline';
     }
   }
 }

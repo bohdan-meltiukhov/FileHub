@@ -12,6 +12,6 @@ export default class Action {
    * @param {ApiService} apiService - The ApiService to use.
    * @abstract
    */
-  apply(stateManager, apiService) {
+  async apply(stateManager, apiService) {
   }
 }

@@ -25,8 +25,8 @@ export default class CreateFolderAction extends Action {
     try {
       const createdFolder = await apiService.createFolder(this._folderId);
 
+      await stateManager.dispatch(new GetFilesAction(this._folderId));
       stateManager.mutate(new RenameFolderMutator(createdFolder.id));
-      stateManager.dispatch(new GetFilesAction(this._folderId));
     } catch (e) {
       console.log(e);
       stateManager.mutate(new CreateFolderLoadingErrorMutator(e));

@@ -56,7 +56,7 @@ export default class StateManager extends EventTarget {
    *
    * @param {Action} action - The action to be dispatched.
    */
-  dispatch(action) {
+  async dispatch(action) {
     action.apply(this, this.apiService);
   }
 

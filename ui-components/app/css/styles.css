@@ -227,6 +227,22 @@ a:hover {
     display: inline-block;
 }
 
+.files tr.loading td.filename .name, .files tr.loading td.filename .input {
+    display: none;
+}
+
+.files tr td.filename .loader-small {
+    display: none;
+}
+
+.files tr.loading td.filename .loader-small {
+    display: inline-block;
+}
+
+.files tr.loading td.cell-actions .action-buttons {
+    visibility: hidden;
+}
+
 .files td {
     vertical-align: middle;
     text-align: center;

@@ -54,6 +54,10 @@ export default class FileList extends Component {
 
       item.onNameChanged(this._onItemNameChangedHandler);
 
+      item.onNameChanged(() => {
+        this._renameFolderId = '';
+      });
+
       item.onRemoveButtonClicked(this._onRemoveItemHandler);
 
       if (item instanceof FolderItemComponent) {
@@ -66,8 +70,7 @@ export default class FileList extends Component {
 
       if (item.id === this._renameFolderId) {
         item.isSelected = true;
-        // item.isEditing = true;
-        setTimeout(() => item.isEditing = true, 0);
+        item.isEditing = true;
         this._selectedItem = item;
       }
     });
@@ -144,6 +147,7 @@ export default class FileList extends Component {
   renameFolder(folderId) {
     if (this._selectedItem) {
       this._selectedItem.isSelected = false;
+      this._selectedItem.isEditing = false;
     }
 
     this._renameFolderId = folderId;

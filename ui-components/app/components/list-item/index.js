@@ -7,6 +7,7 @@ import FolderItem from '../../models/file-system-objects/folder-item';
  */
 export default class ListItem extends Component {
   _onClickHandlers = [];
+  _onNameChangedHandlers = [];
 
   /**
    * Creates an instance of the list item component with set container and properties.
@@ -91,7 +92,10 @@ export default class ListItem extends Component {
 
     input.addEventListener('change', (event) => {
       this._parameters.name = input.value;
-      this._onNameChanged(this._parameters);
+      this._onNameChangedHandlers.forEach((handler) => {
+        handler(this._parameters);
+      });
+      // this._onNameChanged(this._parameters);
     });
 
     input.addEventListener('blur', () => {
@@ -207,7 +211,7 @@ export default class ListItem extends Component {
    * @param {Function} handler - The function to call when the item name changes.
    */
   onNameChanged(handler) {
-    this._onNameChanged = handler;
+    this._onNameChangedHandlers.push(handler);
   }
 
   /**

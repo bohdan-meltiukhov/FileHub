@@ -31,17 +31,10 @@ export default class UserDetails extends Component {
     return `
         <span data-test="user-details">
             <span class="glyphicon glyphicon-user"></span>
-            <span data-test="user-name">${this._username}</span>
-            <span data-test="loading-message">Loading...</span>
+            ${(this._isLoading) ? `<span data-test="loading-message">Loading...</span>` : `<span
+                data-test="user-name">${this._username}</span>`}
         </span>
     `;
-  }
-
-  /** @inheritdoc */
-  initNestedComponents() {
-    this._nameElement = this.rootElement.querySelector('[data-test="user-name"]');
-    this._loader = this.rootElement.querySelector('[data-test="loading-message"]');
-    this._loader.style.display = 'none';
   }
 
   /**
@@ -50,7 +43,8 @@ export default class UserDetails extends Component {
    * @param {string} value - The new username.
    */
   set username(value) {
-    this._nameElement.innerText = value;
+    this._username = value;
+    this.rerender();
   }
 
   /**
@@ -59,12 +53,7 @@ export default class UserDetails extends Component {
    * @param {boolean} isLoading - The flag that shows if the user name is being loading.
    */
   set isLoading(isLoading) {
-    if (isLoading) {
-      this._nameElement.style.display = 'none';
-      this._loader.style.display = 'inline';
-    } else {
-      this._loader.style.display = 'none';
-      this._nameElement.style.display = 'inline';
-    }
+    this._isLoading = isLoading;
+    this.rerender();
   }
 }

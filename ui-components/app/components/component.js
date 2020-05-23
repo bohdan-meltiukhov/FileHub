@@ -37,6 +37,14 @@ export default class Component {
   }
 
   /**
+   * Clears the component's content and renders it again.
+   */
+  rerender() {
+    this.rootElement.innerHTML = '';
+    this.render();
+  }
+
+  /**
    * Provides an HTML representation of the current component.
    *
    * @returns {string} An HTML code that represents the current component.

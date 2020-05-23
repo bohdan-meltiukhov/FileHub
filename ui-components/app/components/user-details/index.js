@@ -4,6 +4,8 @@ import Component from '../component.js';
  * The element for displaying the user details on the page.
  */
 export default class UserDetails extends Component {
+  _isLoading = false;
+
   /**
    * The object for providing the UserDetails configuration via the constructor.
    *

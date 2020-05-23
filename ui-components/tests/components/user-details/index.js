@@ -27,14 +27,23 @@ test('should display the provided name.', (assert) => {
   assert.strictEqual(userDetails.innerText, username, 'The UserDetails component should display the provided name.');
 });
 
-test('should change the name.', (assert) => {
+/**
+ *
+ */
+async function func() {
+  return new Promise((resolve) => {
+    setTimeout(function() {
+      resolve('fast');
+    }, 1000);
+  });
+}
+
+test('should change the name.', async (assert) => {
   const username = 'Bob';
 
   const userDetailsComponent = new UserDetails(fixture, {username: 'Alice'});
-  const userDetailsElement = fixture.querySelector('[data-test="user-details"]');
-
   userDetailsComponent.username = username;
-
+  const userDetailsElement = fixture.querySelector('[data-test="user-details"]');
   assert.strictEqual(userDetailsElement.innerText, username, 'The UserDetails component should change the user name ' +
     'correctly.');
 });
@@ -43,14 +52,15 @@ test('should toggle the loading state.', (assert) => {
   const username = 'Peter';
 
   const userDetailsComponent = new UserDetails(fixture, {username});
-  const userDetailsElement = fixture.querySelector('[data-test="user-details"]');
 
   userDetailsComponent.isLoading = true;
+  let userDetailsElement = fixture.querySelector('[data-test="user-details"]');
 
   assert.strictEqual(userDetailsElement.innerText, 'Loading...', 'The UserDetails component should show the loading ' +
     'message when the isLoading flag is set to true.');
 
   userDetailsComponent.isLoading = false;
+  userDetailsElement = fixture.querySelector('[data-test="user-details"]');
 
   assert.strictEqual(userDetailsElement.innerText, username, 'The UserDetails component should should the user name ' +
     'when the isLoading flag is set to false.');

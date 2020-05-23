@@ -40,7 +40,7 @@ export default class Component {
    * Clears the component's content and renders it again.
    */
   rerender() {
-    this.rootElement.innerHTML = '';
+    this.rootElement.remove();
     this.render();
   }
 

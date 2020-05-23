@@ -64,7 +64,7 @@ test('should register.', (assert) => {
 });
 
 test('should handle the 401 error.', async (assert) => {
-  assert.expect(9);
+  assert.expect(10);
 
   const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('admin', '1234');
@@ -131,6 +131,14 @@ test('should handle the 401 error.', async (assert) => {
     AuthorizationError,
     'The uploadFile() method should throw an AuthorizationError if the response status is 401.',
   );
+
+  fetchMock.post('express:/folder/:folderId/folder', 401);
+
+  assert.rejects(
+    apiService.createFolder(itemId),
+    AuthorizationError,
+    'The createFolder() method should throw an AuthorizationError if the response status is 401.',
+  );
 });
 
 test('should handle the 422 error.', async (assert) => {
@@ -179,7 +187,7 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
-  assert.expect(9);
+  assert.expect(10);
 
   fetchMock.post(/^\/(login|register)$/, 500);
 
@@ -243,6 +251,14 @@ test('should handle the 500 error.', async (assert) => {
     apiService.uploadFile(itemId, new FormData()),
     GeneralServerError,
     'The uploadFile() method should throw a GeneralServerError if the response status is 500.',
+  );
+
+  fetchMock.post('express:/folder/:folderId/folder', 500);
+
+  assert.rejects(
+    apiService.createFolder(itemId),
+    GeneralServerError,
+    'The createFolder() method should throw a GeneralServerError if the response status is 500.',
   );
 });
 
@@ -426,4 +442,27 @@ test('should delete files.', (assert) => {
   assert.ok(fetchMock.called(`/file/${id}`, {
     method: 'DELETE',
   }), 'The deleteFile() method should send a DELETE request to the \'/file/:id\' URL.');
+});
+
+test('should create folders.', async (assert) => {
+  assert.expect(2);
+
+  const parentId = '4Goz0J0Tz8xfDfsJ';
+  const folder = {
+    id: 'uExvhDL4YwkxnBVa',
+    parentId,
+    name: 'New Folder',
+    itemsNumber: 0,
+    type: 'folder',
+  };
+
+  fetchMock.post(`/folder/${parentId}/folder`, folder);
+
+  const apiService = ApiService.getInstance();
+  const response = await apiService.createFolder(parentId);
+  assert.deepEqual(response, folder, 'The createFolder() method should return the correct folder.');
+
+  assert.ok(fetchMock.called(`/folder/${parentId}/folder`, {
+    method: 'POST',
+  }), 'The createFolder() method should send a POST request to the \'/folder/:folderId/folder\' URL.');
 });

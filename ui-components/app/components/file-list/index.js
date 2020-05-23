@@ -54,6 +54,10 @@ export default class FileList extends Component {
 
       item.onNameChanged(this._onItemNameChangedHandler);
 
+      item.onNameChanged(() => {
+        this._renameFolderId = '';
+      });
+
       item.onRemoveButtonClicked(this._onRemoveItemHandler);
 
       if (item instanceof FolderItemComponent) {
@@ -62,6 +66,12 @@ export default class FileList extends Component {
 
       if (this._loadingItems) {
         item.isLoading = this._loadingItems.includes(item.id);
+      }
+
+      if (item.id === this._renameFolderId) {
+        item.isSelected = true;
+        item.isEditing = true;
+        this._selectedItem = item;
       }
     });
   }
@@ -127,6 +137,27 @@ export default class FileList extends Component {
     this._files = fileList;
     this.rootElement.innerHTML = '';
     this.initNestedComponents();
+  }
+
+  /**
+   * Sets the provided folder's status to editing name.
+   *
+   * @param {string} folderId - The identifier of the required folder.
+   */
+  renameFolder(folderId) {
+    if (this._selectedItem) {
+      this._selectedItem.isSelected = false;
+      this._selectedItem.isEditing = false;
+    }
+
+    this._renameFolderId = folderId;
+    const createdFolder = this._fileItems.find((item) => (item.id === folderId));
+
+    if (createdFolder) {
+      createdFolder.isSelected = true;
+      createdFolder.isEditing = true;
+      this._selectedItem = createdFolder;
+    }
   }
 
   /**

@@ -252,6 +252,32 @@ export default class ApiService {
   }
 
   /**
+   * Creates a folder.
+   *
+   * @param {string} id - The identifier of the parent folder.
+   * @returns {Promise} The promise that resolves if the folder is created successfully.
+   */
+  createFolder(id) {
+    return fetch(`/folder/${id}/folder`, {
+      method: 'POST',
+      body: {
+        folder: {
+          name: 'New folder',
+          itemsNumber: 0,
+          type: 'folder',
+        },
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
+
+  /**
    * Provides the current user's name.
    *
    * @returns {Promise} A promise that resolves with the current user's data.

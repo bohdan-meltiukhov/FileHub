@@ -10,6 +10,7 @@ import UpdateItemAction from '../../state/actions/update-item-action';
 import RemoveItemAction from '../../state/actions/remove-item-action';
 import UploadFileAction from '../../state/actions/upload-file-action';
 import GetFolderAction from '../../state/actions/get-folder-action';
+import CreateFolderAction from '../../state/actions/create-folder-action';
 import UrlProperties from '../../models/url-properties';
 import {ROOT_FOLDER_ID} from '../../models/root-folder';
 import NotFoundError from '../../models/errors/not-found-error';
@@ -127,6 +128,11 @@ export default class FileListPage extends StateAwareComponent {
         this.stateManager.dispatch(new UploadFileAction(folderId, input.files[0]));
       });
     });
+
+    this.createFolderButton.addClickHandler(() => {
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this.stateManager.dispatch(new CreateFolderAction(folderId));
+    });
   }
 
   /** @inheritdoc */
@@ -160,6 +166,10 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('folder', ({detail: {state}}) => {
       this.breadcrumbs.folder = state.folder;
+    });
+
+    this.onStateChanged('renameFolderId', ({detail: {state}}) => {
+      this.fileList.renameFolder(state.renameFolderId);
     });
 
     this.onStateChanged('fileListLoadingError', ({detail: {state}}) => {
@@ -202,6 +212,14 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('uploadFileError', ({detail: {state}}) => {
       this._handleError(state.uploadFileError);
+    });
+
+    this.onStateChanged('isCreateFolderLoading', ({detail: {state}}) => {
+      this.createFolderButton.isLoading = state.isCreateFolderLoading;
+    });
+
+    this.onStateChanged('createFolderLoadingError', ({detail: {state}}) => {
+      this._handleError(state.createFolderLoadingError);
     });
 
     this.onStateChanged('username', ({detail: {state}}) => {

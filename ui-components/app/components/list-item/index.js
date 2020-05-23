@@ -7,6 +7,7 @@ import FolderItem from '../../models/file-system-objects/folder-item';
  */
 export default class ListItem extends Component {
   _onClickHandlers = [];
+  _onNameChangedHandlers = [];
 
   /**
    * Creates an instance of the list item component with set container and properties.
@@ -35,7 +36,7 @@ export default class ListItem extends Component {
             </td>
             <td class="count" data-test="cell-count"></td>
             <td class="cell-actions" data-test="cell-actions">
-                <div data-test="action-buttons">
+                <div class="action-buttons" data-test="action-buttons">
                     <span class="glyphicon glyphicon-remove-circle" data-test="remove-item-button"></span>
                 </div>
             </td>
@@ -61,9 +62,6 @@ export default class ListItem extends Component {
   initNestedComponents() {
     this._filename = this.rootElement.querySelector('[data-test="filename"]');
     this._input = this.rootElement.querySelector('[data-test="new-name-input"]');
-    this._loader = this.rootElement.querySelector('[data-test="loader-small"]');
-    this._loader.style.display = 'none';
-    this._actionButtons = this.rootElement.querySelector('[data-test="action-buttons"]');
   }
 
   /** @inheritdoc */
@@ -94,7 +92,9 @@ export default class ListItem extends Component {
 
     input.addEventListener('change', (event) => {
       this._parameters.name = input.value;
-      this._onNameChanged(this._parameters);
+      this._onNameChangedHandlers.forEach((handler) => {
+        handler(this._parameters);
+      });
     });
 
     input.addEventListener('blur', () => {
@@ -198,14 +198,9 @@ export default class ListItem extends Component {
    */
   set isLoading(value) {
     if (value) {
-      this._filename.style.display = 'none';
-      this._input.style.display = 'none';
-      this._actionButtons.style.visibility = 'hidden';
-      this._loader.style.display = 'inline-block';
+      this.rootElement.classList.add('loading');
     } else {
-      this._loader.style.display = 'none';
-      this._filename.style.display = 'inline';
-      this._actionButtons.style.visibility = 'visible';
+      this.rootElement.classList.remove('loading');
     }
   }
 
@@ -215,7 +210,7 @@ export default class ListItem extends Component {
    * @param {Function} handler - The function to call when the item name changes.
    */
   onNameChanged(handler) {
-    this._onNameChanged = handler;
+    this._onNameChangedHandlers.push(handler);
   }
 
   /**

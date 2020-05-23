@@ -95,7 +95,6 @@ export default class ListItem extends Component {
       this._onNameChangedHandlers.forEach((handler) => {
         handler(this._parameters);
       });
-      // this._onNameChanged(this._parameters);
     });
 
     input.addEventListener('blur', () => {

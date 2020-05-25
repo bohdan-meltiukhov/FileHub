@@ -143,7 +143,7 @@ export default class FileListPage extends StateAwareComponent {
       this.stateManager.dispatch(new LogOutAction());
     });
 
-    this.fileList.onDownloadFile((id, name) => {
+    this.fileList.onDownloadButtonPressed((id, name) => {
       this._downloadedFileName = name;
       this.stateManager.dispatch(new DownloadFileAction(id));
     });
@@ -153,11 +153,6 @@ export default class FileListPage extends StateAwareComponent {
   initState() {
     this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
-
-      this.fileList.onDownloadFile((id, name) => {
-        this._downloadedFileName = name;
-        this.stateManager.dispatch(new DownloadFileAction(id));
-      });
     });
 
     this.onStateChanged('isFileListLoading', ({detail: {state}}) => {

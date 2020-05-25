@@ -221,12 +221,4 @@ export default class ListItem extends Component {
   onRemoveButtonClicked(handler) {
     this._removeItemHandler = handler;
   }
-
-  /**
-   * Sets the function to be called when the user wants to download the file.
-   *
-   * @param {Function} handler - The function to call when the user wants to download the file.
-   */
-  onDownloadFile(handler) {
-  }
 }

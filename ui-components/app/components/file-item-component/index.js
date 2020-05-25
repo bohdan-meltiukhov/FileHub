@@ -42,7 +42,7 @@ export default class FileItemComponent extends ListItem {
 
     const downloadButton = this.rootElement.querySelector('[data-test="cell-actions"] .glyphicon-download');
     downloadButton.addEventListener('click',
-      () => this._downloadFileHandler(this._parameters.id, this._parameters.name));
+      () => this._downloadButtonPressedHandler(this._parameters.id, this._parameters.name));
   }
 
   /**
@@ -50,8 +50,8 @@ export default class FileItemComponent extends ListItem {
    *
    * @param {Function} handler - The function to call when the user wants to download the file.
    */
-  onDownloadFile(handler) {
-    this._downloadFileHandler = handler;
+  onDownloadButtonPressed(handler) {
+    this._downloadButtonPressedHandler = handler;
   }
 
   /**

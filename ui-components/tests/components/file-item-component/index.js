@@ -113,7 +113,7 @@ test('should call the onDownload function.', (assert) => {
   const component = new FileItemComponent(row, file);
   const fileItemElement = fixture.firstElementChild;
 
-  component.onDownloadFile(onDownloadFunction);
+  component.onDownloadButtonPressed(onDownloadFunction);
 
   const downloadButton = fileItemElement.querySelector('[data-test="cell-actions"] .glyphicon-download');
   downloadButton.click();

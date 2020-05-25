@@ -469,6 +469,23 @@ test('should create folders.', async (assert) => {
   }), 'The createFolder() method should send a POST request to the \'/folder/:folderId/folder\' URL.');
 });
 
+test('should get the user', async (assert) => {
+  const user = {
+    name: 'John',
+  };
+
+  fetchMock.get('/user', user);
+
+  const apiService = ApiService.getInstance();
+  const response = await apiService.getUser();
+
+  assert.deepEqual(response, user, 'The getUser() method should provide correct user.');
+
+  assert.ok(fetchMock.called('/user'), {
+    method: 'GET',
+  }, 'The getUser() method should send a GET request to the \'/user\' URL.');
+});
+
 test('should log the current user out.', (assert) => {
   fetchMock.post('/logout', 200);
 

@@ -17,6 +17,7 @@ import {ROOT_FOLDER_ID} from '../../models/root-folder';
 import NotFoundError from '../../models/errors/not-found-error';
 import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
+import GetUserAction from '../../state/actions/get-user-action';
 
 /**
  * The component for the File List Page.
@@ -35,6 +36,7 @@ export default class FileListPage extends StateAwareComponent {
     this.render();
     stateManager.dispatch(new GetFolderAction(properties.folderId));
     stateManager.dispatch(new GetFilesAction(properties.folderId));
+    stateManager.dispatch(new GetUserAction());
   }
 
   /**
@@ -82,9 +84,7 @@ export default class FileListPage extends StateAwareComponent {
   /** @inheritdoc */
   initNestedComponents() {
     const userDetailsContainer = this.rootElement.querySelector('[data-test="user-details"]');
-    this.userDetails = new UserDetails(userDetailsContainer, {
-      username: 'John Doe',
-    });
+    this.userDetails = new UserDetails(userDetailsContainer);
 
     const breadcrumbsContainer = this.rootElement.querySelector('[data-test="breadcrumbs"]');
     this.breadcrumbs = new Breadcrumbs(breadcrumbsContainer);
@@ -225,12 +225,31 @@ export default class FileListPage extends StateAwareComponent {
       this._handleError(state.uploadFileError);
     });
 
-    this.onStateChanged('isCreateFolderLoading', ({detail: {state}}) => {
-      this.createFolderButton.isLoading = state.isCreateFolderLoading;
+    this.onStateChanged('isCreateFolderInProgress', ({detail: {state}}) => {
+      this.createFolderButton.isLoading = state.isCreateFolderInProgress;
     });
 
-    this.onStateChanged('createFolderLoadingError', ({detail: {state}}) => {
-      this._handleError(state.createFolderLoadingError);
+    this.onStateChanged('createFolderError', ({detail: {state}}) => {
+      this._handleError(state.createFolderError);
+    });
+
+    this.onStateChanged('username', ({detail: {state}}) => {
+      this.userDetails.username = state.username;
+    });
+
+    this.onStateChanged('isUserNameLoading', ({detail: {state}}) => {
+      this.userDetails.isLoading = state.isUserNameLoading;
+    });
+
+    this.onStateChanged('userNameLoadingError', ({detail: {state}}) => {
+      const error = state.userNameLoadingError;
+
+      if (error instanceof AuthorizationError) {
+        alert('Error: ' + error.message);
+        window.location.hash = AUTHENTICATION_ROUTE;
+      } else {
+        console.error('User Details Loading Error:', error);
+      }
     });
   }
 

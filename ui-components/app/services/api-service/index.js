@@ -278,6 +278,26 @@ export default class ApiService {
   }
 
   /**
+   * Provides the current user's name.
+   *
+   * @returns {Promise} A promise that resolves with the current user's data.
+   */
+  getUser() {
+    return fetch('/user', {
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
+
+  /**
    * Sends a request to log the current user out.
    *
    * @returns {Promise} The promise that resolves if the folder is created successfully.

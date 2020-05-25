@@ -214,12 +214,12 @@ export default class FileListPage extends StateAwareComponent {
       this._handleError(state.uploadFileError);
     });
 
-    this.onStateChanged('isCreateFolderLoading', ({detail: {state}}) => {
-      this.createFolderButton.isLoading = state.isCreateFolderLoading;
+    this.onStateChanged('isCreateFolderInProgress', ({detail: {state}}) => {
+      this.createFolderButton.isLoading = state.isCreateFolderInProgress;
     });
 
-    this.onStateChanged('createFolderLoadingError', ({detail: {state}}) => {
-      this._handleError(state.createFolderLoadingError);
+    this.onStateChanged('createFolderError', ({detail: {state}}) => {
+      this._handleError(state.createFolderError);
     });
 
     this.onStateChanged('username', ({detail: {state}}) => {

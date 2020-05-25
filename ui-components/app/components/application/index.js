@@ -1,5 +1,4 @@
 import Component from '../component.js';
-import Router from '../../router';
 import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE, REGISTRATION_ROUTE} from '../../router/routes';
 import NotFoundPage from '../not-found';
 import LoginPage from '../login-page';
@@ -8,6 +7,7 @@ import FileListPage from '../file-list-page';
 import StateManager from '../../state/state-manager';
 import ApiService from '../../services/api-service';
 import HashChangedAction from '../../state/actions/hash-changed-action';
+import Router from '../../router';
 
 /**
  * The component for the web application.
@@ -54,21 +54,21 @@ export default class Application extends Component {
       },
     };
 
-    const routerProperties = {
-      rootElement: this.rootElement,
-      pageMapping,
-      defaultLocation: AUTHENTICATION_ROUTE,
-      notFoundPage: () => {
+    const routerBuilder = Router.getBuilder();
+
+    routerBuilder
+      .withRootElement(this.rootElement)
+      .withPageMapping(pageMapping)
+      .withDefaultLocation(AUTHENTICATION_ROUTE)
+      .withNotFoundPage(() => {
         this._destroyPreviousPage();
         this._previousPage = new NotFoundPage(this.rootElement);
-      },
-      window,
-    };
-
-    const router = new Router(routerProperties);
-    router.onHashChanged((staticPart, dynamicPart) => {
-      stateManager.dispatch(new HashChangedAction(staticPart, dynamicPart));
-    });
+      })
+      .withWindow(window)
+      .withHashChangedHandler((staticPart, dynamicPart) => {
+        stateManager.dispatch(new HashChangedAction(staticPart, dynamicPart));
+      })
+      .build();
   }
 
   /**

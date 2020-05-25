@@ -42,7 +42,7 @@ test('should have the provided properties.', (assert) => {
   const fileSize = fileItem.querySelector('[data-test="cell-count"]');
   assert.strictEqual(fileSize.innerText, `40.5 KB`, 'The file item should display the provided size.');
 
-  const actions = fileItem.querySelector('[data-test="cell-actions"]');
+  const actions = fileItem.querySelector('[data-test="action-buttons"]');
   const firstAction = actions.firstElementChild;
   assert.strictEqual(firstAction.className, 'glyphicon glyphicon-download', 'The file item component should show the ' +
     'download action.');

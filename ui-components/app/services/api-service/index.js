@@ -296,4 +296,23 @@ export default class ApiService {
         }
       });
   }
+
+  /**
+   * Sends a request to log the current user out.
+   *
+   * @returns {Promise} The promise that resolves if the folder is created successfully.
+   */
+  logOut() {
+    return fetch('/logout', {
+      method: 'POST',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw this._handleRequestErrors(response);
+        }
+      })
+      .finally(() => {
+        localStorage.removeItem('token');
+      });
+  }
 }

@@ -7,6 +7,8 @@ import GeneralServerError from '../../../app/models/errors/general-server-error'
 
 const {module, test} = QUnit;
 
+const TOKEN = 'my-token';
+
 module('The ApiService', {
   afterEach: () => {
     fetchMock.reset();
@@ -28,7 +30,7 @@ test('should log in.', (assert) => {
       'the request body.');
     assert.strictEqual(credentials.password, password, 'The login() method should provide the correct password in ' +
       'the request body.');
-    return {token: 'my-token'};
+    return {token: TOKEN};
   });
 
   apiService.logIn(userCredentials);
@@ -64,7 +66,7 @@ test('should register.', (assert) => {
 });
 
 test('should handle the 401 error.', async (assert) => {
-  assert.expect(10);
+  assert.expect(11);
 
   const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('admin', '1234');
@@ -139,6 +141,14 @@ test('should handle the 401 error.', async (assert) => {
     AuthorizationError,
     'The createFolder() method should throw an AuthorizationError if the response status is 401.',
   );
+
+  fetchMock.post('/logout', 401);
+
+  assert.rejects(
+    apiService.logOut(),
+    AuthorizationError,
+    'The logOut() method should throw an AuthorizationError if the response status is 401.',
+  );
 });
 
 test('should handle the 422 error.', async (assert) => {
@@ -187,7 +197,7 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
-  assert.expect(10);
+  assert.expect(11);
 
   fetchMock.post(/^\/(login|register)$/, 500);
 
@@ -259,6 +269,14 @@ test('should handle the 500 error.', async (assert) => {
     apiService.createFolder(itemId),
     GeneralServerError,
     'The createFolder() method should throw a GeneralServerError if the response status is 500.',
+  );
+
+  fetchMock.post('/logout', 500);
+
+  assert.rejects(
+    apiService.logOut(),
+    GeneralServerError,
+    'The logOut() method should throw a GeneralServerError if the response status is 500.',
   );
 });
 
@@ -472,14 +490,31 @@ test('should get the user', async (assert) => {
     name: 'John',
   };
 
-  fetchMock.get('/user', user);
+  fetchMock.once({
+    method: 'GET',
+    url: '/user',
+  }, user);
 
   const apiService = ApiService.getInstance();
   const response = await apiService.getUser();
 
   assert.deepEqual(response, user, 'The getUser() method should provide correct user.');
 
-  assert.ok(fetchMock.called('/user'), {
+  assert.ok(fetchMock.done(('/user'), {
     method: 'GET',
-  }, 'The getUser() method should send a GET request to the \'/user\' URL.');
+  }), 'The getUser() method should send a GET request to the \'/user\' URL.');
+});
+
+test('should log the current user out.', (assert) => {
+  fetchMock.once({
+    method: 'POST',
+    url: '/logout',
+  }, 200);
+
+  const apiService = ApiService.getInstance();
+  apiService.logOut();
+
+  assert.ok(fetchMock.done(('/logout'), {
+    method: 'POST',
+  }), 'The logOut() method should send a POST request to the \'/logout\' URL.');
 });

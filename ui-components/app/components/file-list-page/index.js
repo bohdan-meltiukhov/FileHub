@@ -6,6 +6,7 @@ import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
+import LogOutAction from '../../state/actions/log-out-action';
 import UpdateItemAction from '../../state/actions/update-item-action';
 import RemoveItemAction from '../../state/actions/remove-item-action';
 import UploadFileAction from '../../state/actions/upload-file-action';
@@ -50,7 +51,9 @@ export default class FileListPage extends StateAwareComponent {
             <ul class="menu">
                 <li><span data-test="user-details"></li>
                 <li>
-                    <a href="#${AUTHENTICATION_ROUTE}">Log Out <span class="glyphicon glyphicon-log-out"></span></a>
+                    <a href="#${AUTHENTICATION_ROUTE}" data-test="log-out">
+                        Log Out <span class="glyphicon glyphicon-log-out"></span>
+                    </a>
                 </li>
             </ul>
             
@@ -132,6 +135,11 @@ export default class FileListPage extends StateAwareComponent {
     this.createFolderButton.addClickHandler(() => {
       const folderId = this.stateManager.state.locationParameters.folderId;
       this.stateManager.dispatch(new CreateFolderAction(folderId));
+    });
+
+    const logOutLink = this.rootElement.querySelector('[data-test="log-out"]');
+    logOutLink.addEventListener('click', () => {
+      this.stateManager.dispatch(new LogOutAction());
     });
   }
 

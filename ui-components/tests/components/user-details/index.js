@@ -27,17 +27,6 @@ test('should display the provided name.', (assert) => {
   assert.strictEqual(userDetails.innerText, username, 'The UserDetails component should display the provided name.');
 });
 
-/**
- *
- */
-async function func() {
-  return new Promise((resolve) => {
-    setTimeout(function() {
-      resolve('fast');
-    }, 1000);
-  });
-}
-
 test('should change the name.', async (assert) => {
   const username = 'Bob';
 

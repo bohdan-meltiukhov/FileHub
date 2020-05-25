@@ -1,5 +1,5 @@
 import CreateFolderAction from '../../../../app/state/actions/create-folder-action';
-import IsCreateFolderLoadingMutator from '../../../../app/state/mutators/is-create-folder-loading-mutator';
+import IsCreateFolderInProgressMutator from '../../../../app/state/mutators/is-create-folder-in-progress-mutator';
 import GetFilesAction from '../../../../app/state/actions/get-files-action';
 
 const {module, test} = QUnit;
@@ -32,8 +32,8 @@ test('should create folders correctly.', async (assert) => {
   const stateManagerMock = {
     mutate: (mutator) => {
       assert.step(mutator.constructor.name);
-      if (mutator instanceof IsCreateFolderLoadingMutator) {
-        assert.step(`Is Loading: ${mutator._isLoading}.`);
+      if (mutator instanceof IsCreateFolderInProgressMutator) {
+        assert.step(`Is in progress: ${mutator._isInProgress}.`);
       }
     },
 
@@ -49,10 +49,10 @@ test('should create folders correctly.', async (assert) => {
   await action.apply(stateManagerMock, apiServiceMock);
 
   assert.verifySteps([
-    'IsCreateFolderLoadingMutator',
-    'Is Loading: true.',
+    'IsCreateFolderInProgressMutator',
+    'Is in progress: true.',
     'RenameFolderMutator',
-    'IsCreateFolderLoadingMutator',
-    'Is Loading: false.',
+    'IsCreateFolderInProgressMutator',
+    'Is in progress: false.',
   ], 'The CreateFolderAction should provide mutators to the state manager in the correct order.');
 });

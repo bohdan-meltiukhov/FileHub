@@ -2,6 +2,8 @@ import fetchMock from '../../../node_modules/fetch-mock/esm/client.js';
 import FileSystem from './file-system';
 import FolderItem from '../../models/file-system-objects/folder-item';
 
+const TOKEN = 'my-token';
+
 /**
  * The class for setting the fetch mock.
  */
@@ -19,6 +21,7 @@ export default class FetchMock {
     FetchMock._deleteFolder();
     FetchMock._deleteFile();
     FetchMock._uploadFile();
+    FetchMock._getUser();
     FetchMock._createFolder();
   }
 
@@ -31,7 +34,7 @@ export default class FetchMock {
     fetchMock.post('/login', (url, options) => {
       const credentials = options.body;
       if (credentials.username === 'admin' && credentials.password === '1234') {
-        return {token: 'my-token'};
+        return {token: TOKEN};
       }
       return 401;
     });
@@ -317,7 +320,6 @@ export default class FetchMock {
     return result;
   }
 
-
   /**
    * Gets a mime type from the file type.
    *
@@ -339,5 +341,26 @@ export default class FetchMock {
     } else {
       return 'other';
     }
+  }
+
+  /**
+   * Sets a mock for the get user request.
+   *
+   * @private
+   */
+  static _getUser() {
+    fetchMock.get('/user', (url, opts) => {
+      if (opts.headers.Authentication === TOKEN) {
+        return {
+          body: {
+            name: 'John',
+          },
+        };
+      } else {
+        return 401;
+      }
+    }, {
+      delay: 500,
+    });
   }
 }

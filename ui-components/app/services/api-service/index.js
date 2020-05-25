@@ -37,7 +37,12 @@ export default class ApiService {
       body: userCredentials,
     })
       .then(async (response) => {
-        if (!response.ok) {
+        if (response.ok) {
+          response.json()
+            .then((body) => {
+              localStorage.setItem('token', body.token);
+            });
+        } else {
           throw await this._handleAuthenticationErrors(response);
         }
       });
@@ -261,6 +266,26 @@ export default class ApiService {
           itemsNumber: 0,
           type: 'folder',
         },
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
+
+  /**
+   * Provides the current user's name.
+   *
+   * @returns {Promise} A promise that resolves with the current user's data.
+   */
+  getUser() {
+    return fetch('/user', {
+      headers: {
+        Authentication: localStorage.getItem('token'),
       },
     })
       .then((response) => {

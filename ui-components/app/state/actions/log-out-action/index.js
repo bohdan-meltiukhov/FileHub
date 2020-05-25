@@ -5,7 +5,11 @@ import Action from '../action';
  */
 export default class LogOutAction extends Action {
   /** @inheritdoc */
-  apply(stateManager, apiService) {
-    apiService.logOut();
+  async apply(stateManager, apiService) {
+    try {
+      await apiService.logOut();
+    } catch (e) {
+      console.error(e);
+    }
   }
 }

@@ -348,6 +348,6 @@ export default class FetchMock {
    * @private
    */
   static _postLogOut() {
-    fetchMock.post('/logout', 200);
+    fetchMock.post('/logout', 200, {delay: 2000});
   }
 }

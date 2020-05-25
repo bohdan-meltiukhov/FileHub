@@ -139,7 +139,10 @@ export default class FileListPage extends StateAwareComponent {
 
     const logOutLink = this.rootElement.querySelector('[data-test="log-out"]');
     logOutLink.addEventListener('click', () => {
-      this.stateManager.dispatch(new LogOutAction());
+      this.stateManager.dispatch(new LogOutAction())
+        .finally(() => {
+          window.location.hash = AUTHENTICATION_ROUTE;
+        });
     });
   }
 

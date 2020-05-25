@@ -28,7 +28,6 @@ export default class CreateFolderAction extends Action {
       await stateManager.dispatch(new GetFilesAction(this._folderId));
       stateManager.mutate(new RenameFolderMutator(createdFolder.id));
     } catch (e) {
-      console.log(e);
       stateManager.mutate(new CreateFolderLoadingErrorMutator(e));
     } finally {
       stateManager.mutate(new IsCreateFolderLoadingMutator(false));

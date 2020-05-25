@@ -7,10 +7,16 @@ import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
 import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
 import LogOutAction from '../../state/actions/log-out-action';
+import UpdateItemAction from '../../state/actions/update-item-action';
+import RemoveItemAction from '../../state/actions/remove-item-action';
+import UploadFileAction from '../../state/actions/upload-file-action';
 import GetFolderAction from '../../state/actions/get-folder-action';
+import CreateFolderAction from '../../state/actions/create-folder-action';
 import UrlProperties from '../../models/url-properties';
 import {ROOT_FOLDER_ID} from '../../models/root-folder';
 import NotFoundError from '../../models/errors/not-found-error';
+import AuthorizationError from '../../models/errors/authorization-error';
+import GeneralServerError from '../../models/errors/general-server-error';
 
 /**
  * The component for the File List Page.
@@ -102,6 +108,35 @@ export default class FileListPage extends StateAwareComponent {
 
   /** @inheritdoc */
   addEventListeners() {
+    this.fileList.onRemoveButtonClicked((item) => {
+      this.stateManager.dispatch(new RemoveItemAction(item));
+    });
+
+    this.fileList.onFileUploadInitiated((folderId, file) => {
+      this.stateManager.dispatch(new UploadFileAction(folderId, file));
+    });
+
+    this.fileList.onItemNameChanged((item) => {
+      this.stateManager.dispatch(new UpdateItemAction(item));
+    });
+
+    this.uploadFileButton.addClickHandler(() => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.click();
+
+      const folderId = this.stateManager.state.locationParameters.folderId;
+
+      input.addEventListener('change', () => {
+        this.stateManager.dispatch(new UploadFileAction(folderId, input.files[0]));
+      });
+    });
+
+    this.createFolderButton.addClickHandler(() => {
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this.stateManager.dispatch(new CreateFolderAction(folderId));
+    });
+
     const logOutLink = this.rootElement.querySelector('[data-test="log-out"]');
     logOutLink.addEventListener('click', () => {
       this.stateManager.dispatch(new LogOutAction());
@@ -138,8 +173,11 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('folder', ({detail: {state}}) => {
-      this._folder = state.folder;
       this.breadcrumbs.folder = state.folder;
+    });
+
+    this.onStateChanged('renameFolderId', ({detail: {state}}) => {
+      this.fileList.renameFolder(state.renameFolderId);
     });
 
     this.onStateChanged('fileListLoadingError', ({detail: {state}}) => {
@@ -156,6 +194,64 @@ export default class FileListPage extends StateAwareComponent {
         this.breadcrumbs.error = 'Not Found';
       }
     });
+
+    this.onStateChanged('isRenameItemLoading', ({detail: {state}}) => {
+      this.fileList.isSelectedItemLoading = state.isRenameItemLoading;
+    });
+
+    this.onStateChanged('renameItemLoadingError', ({detail: {state}}) => {
+      this._handleError(state.renameItemLoadingError);
+    });
+
+    this.onStateChanged('deleteItemLoadingError', ({detail: {state}}) => {
+      this._handleError(state.deleteItemLoadingError);
+    });
+
+    this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
+      this.fileList.loadingItems = state.itemsWithDeletionInProgress;
+    });
+
+    this.onStateChanged('foldersWithFileUploadInProgress', ({detail: {state}}) => {
+      const loadingFolders = state.foldersWithFileUploadInProgress;
+
+      this.uploadFileButton.isLoading = loadingFolders.includes(state.locationParameters.folderId);
+      this.fileList.loadingItems = loadingFolders;
+    });
+
+    this.onStateChanged('uploadFileError', ({detail: {state}}) => {
+      this._handleError(state.uploadFileError);
+    });
+
+    this.onStateChanged('isCreateFolderLoading', ({detail: {state}}) => {
+      this.createFolderButton.isLoading = state.isCreateFolderLoading;
+    });
+
+    this.onStateChanged('createFolderLoadingError', ({detail: {state}}) => {
+      this._handleError(state.createFolderLoadingError);
+    });
+  }
+
+  /**
+   * Handles the provided error.
+   *
+   * @param {NotFoundError|AuthorizationError|GeneralServerError|Error} error - The error that occurred during some
+   * process.
+   * @private
+   */
+  _handleError(error) {
+    if (error instanceof NotFoundError) {
+      alert('Error: ' + error.message);
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this.stateManager.dispatch(new GetFilesAction(folderId));
+    } else if (error instanceof AuthorizationError) {
+      alert('Error: ' + error.message);
+      window.location.hash = AUTHENTICATION_ROUTE;
+    } else if (error instanceof GeneralServerError) {
+      alert('Error: ' + error.message);
+    } else {
+      alert('Unknown error. See the console for more details.');
+      console.error(error);
+    }
   }
 
   /** @inheritdoc */

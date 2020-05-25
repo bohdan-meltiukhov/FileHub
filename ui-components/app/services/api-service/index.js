@@ -5,6 +5,8 @@ import ServerValidationError from '../../models/errors/server-validation-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import NotFoundError from '../../models/errors/not-found-error';
 import FetchMock from '../fetch-mock';
+import FolderItem from '../../models/file-system-objects/folder-item';
+import FileItem from '../../models/file-system-objects/file-item';
 
 let instance;
 
@@ -149,6 +151,123 @@ export default class ApiService {
    */
   getFolder(id) {
     return fetch(`/folder/${id}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
+
+  /**
+   * Sends a request to delete a particular folder.
+   *
+   * @param {string} id - The identifier of the folder to be deleted.
+   * @returns {Promise} The promise that resolves if the folder is deleted successfully.
+   */
+  deleteFolder(id) {
+    return fetch(`/folder/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
+
+  /**
+   * Sends a request to delete a particular file.
+   *
+   * @param {string} id - The identifier of the file to delete.
+   * @returns {Promise} The promise that resolves if the file is deleted successfully.
+   */
+  deleteFile(id) {
+    return fetch(`/file/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
+
+  /**
+   * Updates the provided folder.
+   *
+   * @param {FolderItem} folder - The new folder properties.
+   * @returns {Promise} The promise that resolves if the folder is updated successfully.
+   */
+  updateFolder(folder) {
+    return fetch(`/folder/${folder.id}`, {
+      method: 'PUT',
+      body: {
+        element: folder,
+      },
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw await this._handleRequestErrors(response);
+      }
+    });
+  }
+
+  /**
+   * Updates the provided file.
+   *
+   * @param {FileItem} file - The new file properties.
+   * @returns {Promise} The promise that resolves if the file is updated successfully.
+   */
+  updateFile(file) {
+    return fetch(`/file/${file.id}`, {
+      method: 'PUT',
+      body: {
+        element: file,
+      },
+    }).then(async (response) => {
+      if (!response.ok) {
+        throw await this._handleRequestErrors(response);
+      }
+    });
+  }
+
+  /**
+   * Uploads the provided file.
+   *
+   * @param {string} folderId - The identifier of the folder to upload the file to.
+   * @param {FormData} formData - The form data with the file to upload.
+   * @returns {Promise} The promise that resolves if the file is uploaded successfully.
+   */
+  uploadFile(folderId, formData) {
+    return fetch(`/folder/${folderId}/file`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
+
+  /**
+   * Creates a folder.
+   *
+   * @param {string} id - The identifier of the parent folder.
+   * @returns {Promise} The promise that resolves if the folder is created successfully.
+   */
+  createFolder(id) {
+    return fetch(`/folder/${id}/folder`, {
+      method: 'POST',
+      body: {
+        folder: {
+          name: 'New folder',
+          itemsNumber: 0,
+          type: 'folder',
+        },
+      },
+    })
       .then((response) => {
         if (response.ok) {
           return response.json();

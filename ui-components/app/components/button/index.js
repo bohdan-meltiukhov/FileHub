@@ -53,7 +53,24 @@ export default class Button extends Component {
    */
   addEventListeners() {
     this.rootElement.addEventListener('click', () => {
-      this._clickHandlers.forEach((handler) => handler());
+      if (!this._isLoading) {
+        this._clickHandlers.forEach((handler) => handler());
+      }
     });
+  }
+
+  /**
+   * Sets whether the current button is currently loading or not.
+   *
+   * @param {boolean} isLoading - The flag that shows if the button is loading.
+   */
+  set isLoading(isLoading) {
+    this._isLoading = isLoading;
+
+    if (isLoading) {
+      this.rootElement.innerHTML = '<div class="loader-small" data-test="loader-small"></div>';
+    } else {
+      this.rootElement.innerHTML = this._buttonText;
+    }
   }
 }

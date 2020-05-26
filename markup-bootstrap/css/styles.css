@@ -154,9 +154,6 @@ a:hover {
 
 .table tbody tr td {
     border: 0;
-}
-
-.table tbody tr td {
     vertical-align: middle;
     padding: 13px 10px;
 }

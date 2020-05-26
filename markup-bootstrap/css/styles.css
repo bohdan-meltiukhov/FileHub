@@ -25,9 +25,9 @@ a:hover {
     margin-bottom: 12px;
 }
 
-.help-block {
-    margin-bottom: 0;
-}
+/*.help-block {*/
+/*    margin-bottom: 0;*/
+/*}*/
 
 .glyphicon {
     font-size: 20px;
@@ -95,9 +95,9 @@ a:hover {
     border-left: none;
 }
 
-.help-block {
-    color: #f00;
-}
+/*.help-block {*/
+/*    color: #f00;*/
+/*}*/
 
 .form-link {
     float: right;

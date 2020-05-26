@@ -25,10 +25,6 @@ a:hover {
     margin-bottom: 12px;
 }
 
-/*.help-block {*/
-/*    margin-bottom: 0;*/
-/*}*/
-
 .glyphicon {
     font-size: 20px;
     top: 4px;
@@ -95,10 +91,6 @@ a:hover {
     border-left: none;
 }
 
-/*.help-block {*/
-/*    color: #f00;*/
-/*}*/
-
 .form-link {
     float: right;
     margin-top: 9px;
@@ -110,7 +102,7 @@ a:hover {
 
 .file-list {
     height: 600px;
-    overflow: auto;
+    overflow-y: auto;
 }
 
 .table {

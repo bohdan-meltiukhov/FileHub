@@ -262,6 +262,10 @@ export default class FileListPage extends StateAwareComponent {
       anchor.setAttribute('href', url);
       anchor.click();
     });
+
+    this.onStateChanged('downloadFileError', ({detail: {state}}) => {
+      this._handleError(state.downloadFileError);
+    });
   }
 
   /**

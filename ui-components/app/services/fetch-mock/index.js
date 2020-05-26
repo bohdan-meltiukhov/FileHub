@@ -379,7 +379,7 @@ export default class FetchMock {
    * Sets a mock for the get file request.
    */
   static _getFile() {
-    fetchMock.get('glob:/file/*', (url) => {
+    fetchMock.get('express:/file/:fileId', (url) => {
       const id = url.slice(6);
       const file = FileSystem.files.find((file) => {
         if (file.id === id) {

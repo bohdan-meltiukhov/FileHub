@@ -46,4 +46,3 @@ import * as userNameLoadingErrorMutator from './state/mutators/user-name-loading
 import * as userDetails from './components/user-details';
 import * as logOutAction from './state/actions/log-out-action';
 import * as downloadFileAction from './state/actions/download-file-action';
-import * as downloadedFileMutator from './state/mutators/downloaded-file-mutator';

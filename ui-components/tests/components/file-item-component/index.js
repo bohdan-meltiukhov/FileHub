@@ -103,10 +103,9 @@ test('should call the onDownload function.', (assert) => {
     type: 'file',
   };
 
-  const onDownloadFunction = (id, name) => {
+  const onDownloadFunction = (fileItem) => {
     assert.step('The file is deleted.');
-    assert.strictEqual(id, file.id, 'The FileItem component should provide correct fileId to the onDownload handler.');
-    assert.strictEqual(name, file.name, 'The FileItem component should provide correct file name to the onDownload ' +
+    assert.strictEqual(fileItem, file, 'The FileItem component should provide correct file item to the onDownload ' +
       'handler.');
   };
 

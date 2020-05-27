@@ -2,6 +2,7 @@ import Action from '../action';
 import DownloadedFileMutator from '../../mutators/downloaded-file-mutator';
 import DownloadFileErrorMutator from '../../mutators/download-file-error-mutator';
 import AddDownloadFileInProgressMutator from '../../mutators/add-download-file-in-progress-mutator';
+import RemoveDownloadFileInProgressMutator from '../../mutators/remove-download-file-in-progress-mutator';
 
 /**
  * The action that downloads the required file.

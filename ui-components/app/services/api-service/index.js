@@ -325,6 +325,9 @@ export default class ApiService {
   getFile(id) {
     return fetch(`/file/${id}`, {
       method: 'GET',
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
     })
       .then((response) => {
         if (response.ok) {

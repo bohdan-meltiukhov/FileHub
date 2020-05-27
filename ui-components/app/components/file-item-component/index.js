@@ -43,7 +43,7 @@ export default class FileItemComponent extends ListItem {
 
     const downloadButton = this.rootElement.querySelector('[data-test="download-button"]');
     downloadButton.addEventListener('click',
-      () => this._downloadButtonPressedHandler(this._parameters.id, this._parameters.name));
+      () => this._downloadButtonPressedHandler(this._parameters));
   }
 
   /**

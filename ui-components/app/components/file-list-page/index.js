@@ -19,6 +19,7 @@ import NotFoundError from '../../models/errors/not-found-error';
 import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import GetUserAction from '../../state/actions/get-user-action';
+import DownloadFileService from '../../services/download-file-service';
 
 /**
  * The component for the File List Page.
@@ -143,9 +144,9 @@ export default class FileListPage extends StateAwareComponent {
       this.stateManager.dispatch(new LogOutAction());
     });
 
-    this.fileList.onDownloadButtonPressed((id, name) => {
-      this._downloadedFileName = name;
-      this.stateManager.dispatch(new DownloadFileAction(id));
+    this.fileList.onDownloadButtonPressed((file) => {
+      const downloadFileService = new DownloadFileService();
+      this.stateManager.dispatch(new DownloadFileAction(file, downloadFileService));
     });
   }
 
@@ -253,14 +254,6 @@ export default class FileListPage extends StateAwareComponent {
       } else {
         console.error('User Details Loading Error:', error);
       }
-    });
-
-    this.onStateChanged('downloadedFile', ({detail: {state}}) => {
-      const anchor = document.createElement('a');
-      anchor.setAttribute('download', this._downloadedFileName);
-      const url = URL.createObjectURL(state.downloadedFile);
-      anchor.setAttribute('href', url);
-      anchor.click();
     });
 
     this.onStateChanged('downloadFileError', ({detail: {state}}) => {

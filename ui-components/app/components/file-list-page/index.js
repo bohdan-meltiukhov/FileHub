@@ -185,6 +185,8 @@ export default class FileListPage extends StateAwareComponent {
       if (error instanceof NotFoundError) {
         this.fileList.files = [];
         this._notFoundMessage.style.display = 'block';
+      } else {
+        this._handleError(error);
       }
     });
 
@@ -192,6 +194,8 @@ export default class FileListPage extends StateAwareComponent {
       const error = state.folderLoadingError;
       if (error instanceof NotFoundError) {
         this.breadcrumbs.error = 'Not Found';
+      } else {
+        this._handleError(error);
       }
     });
 

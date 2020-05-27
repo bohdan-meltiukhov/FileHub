@@ -133,7 +133,11 @@ export default class ApiService {
    * @returns {Promise} - The promise that resolves with an array of files.
    */
   getFiles(folderId) {
-    return fetch(`/folder/${folderId}/content`)
+    return fetch(`/folder/${folderId}/content`, {
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
+    })
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -150,7 +154,11 @@ export default class ApiService {
    * @returns {Promise} The promise that resolves with information about the required folder.
    */
   getFolder(id) {
-    return fetch(`/folder/${id}`)
+    return fetch(`/folder/${id}`, {
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
+    })
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -169,6 +177,9 @@ export default class ApiService {
   deleteFolder(id) {
     return fetch(`/folder/${id}`, {
       method: 'DELETE',
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -186,6 +197,9 @@ export default class ApiService {
   deleteFile(id) {
     return fetch(`/file/${id}`, {
       method: 'DELETE',
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
     })
       .then((response) => {
         if (!response.ok) {
@@ -203,6 +217,9 @@ export default class ApiService {
   updateFolder(folder) {
     return fetch(`/folder/${folder.id}`, {
       method: 'PUT',
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
       body: {
         element: folder,
       },
@@ -222,6 +239,9 @@ export default class ApiService {
   updateFile(file) {
     return fetch(`/file/${file.id}`, {
       method: 'PUT',
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
       body: {
         element: file,
       },
@@ -242,6 +262,9 @@ export default class ApiService {
   uploadFile(folderId, formData) {
     return fetch(`/folder/${folderId}/file`, {
       method: 'POST',
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
       body: formData,
     })
       .then((response) => {
@@ -260,6 +283,9 @@ export default class ApiService {
   createFolder(id) {
     return fetch(`/folder/${id}/folder`, {
       method: 'POST',
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
       body: {
         folder: {
           name: 'New folder',

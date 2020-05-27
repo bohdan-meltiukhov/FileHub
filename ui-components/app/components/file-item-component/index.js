@@ -33,6 +33,7 @@ export default class FileItemComponent extends ListItem {
     const downloadButton = document.createElement('span');
     downloadButton.classList.add('glyphicon');
     downloadButton.classList.add('glyphicon-download');
+    downloadButton.setAttribute('data-test', 'download-button');
     actionButtons.prepend(downloadButton);
   }
 
@@ -40,7 +41,7 @@ export default class FileItemComponent extends ListItem {
   addEventListeners() {
     super.addEventListeners();
 
-    const downloadButton = this.rootElement.querySelector('[data-test="cell-actions"] .glyphicon-download');
+    const downloadButton = this.rootElement.querySelector('[data-test="download-button"]');
     downloadButton.addEventListener('click',
       () => this._downloadButtonPressedHandler(this._parameters.id, this._parameters.name));
   }

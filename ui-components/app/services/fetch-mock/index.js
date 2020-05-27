@@ -391,6 +391,9 @@ export default class FetchMock {
       } else {
         return 404;
       }
-    }, {sendAsJson: false});
+    }, {
+      delay: 2000,
+      sendAsJson: false,
+    });
   }
 }

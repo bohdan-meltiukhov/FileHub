@@ -8,12 +8,12 @@ module('The RemoveDownloadFileInProgressMutator');
 test('should add the provided file ID to the state.', (assert) => {
   const fileId = 'zHPz1GsbO9Kq8Xt0';
   const state = {
-    filesWithDownloadInProgress: [fileId],
+    filesWithDownloadInProgress: new Set([fileId]),
   };
 
   const mutator = new RemoveDownloadFileInProgressMutator(fileId);
   mutator.apply(state);
 
-  assert.deepEqual(state.filesWithDownloadInProgress, [], 'The RemoveDownloadFileInProgressMutator should remove the ' +
-    'file ID from the filesWithDownloadInProgress state field.');
+  assert.deepEqual(Array.from(state.filesWithDownloadInProgress), [], 'The RemoveDownloadFileInProgressMutator ' +
+    'should remove the file ID from the filesWithDownloadInProgress state field.');
 });

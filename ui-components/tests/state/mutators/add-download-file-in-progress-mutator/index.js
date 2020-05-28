@@ -11,6 +11,6 @@ test('should add the provided file ID to the state.', (assert) => {
   const mutator = new AddDownloadFileInProgressMutator(fileId);
   mutator.apply(state);
 
-  assert.deepEqual(state.filesWithDownloadInProgress, [fileId], 'The AddDownloadFileInProgressMutator should add ' +
-    'the file ID to the filesWithDownloadInProgress state field.');
+  assert.deepEqual(Array.from(state.filesWithDownloadInProgress), [fileId], 'The AddDownloadFileInProgressMutator ' +
+    'should add the file ID to the filesWithDownloadInProgress state field.');
 });

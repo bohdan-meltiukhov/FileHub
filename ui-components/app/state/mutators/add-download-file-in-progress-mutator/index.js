@@ -17,10 +17,10 @@ export default class AddDownloadFileInProgressMutator extends Mutator {
 
   /** @inheritdoc */
   apply(state) {
-    const itemsInProgress = state.filesWithDownloadInProgress || [];
+    let itemsInProgress = state.filesWithDownloadInProgress || new Set();
 
-    if (!itemsInProgress.includes(this._fileId)) {
-      itemsInProgress.push(this._fileId);
+    if (!itemsInProgress.has(this._fileId)) {
+      itemsInProgress = itemsInProgress.add(this._fileId);
 
       state.filesWithDownloadInProgress = itemsInProgress;
     }

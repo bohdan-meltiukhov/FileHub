@@ -261,7 +261,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('filesWithDownloadInProgress', ({detail: {state}}) => {
-      this.fileList.loadingItems = state.filesWithDownloadInProgress;
+      this.fileList.loadingItems = Array.from(state.filesWithDownloadInProgress);
     });
   }
 

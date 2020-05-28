@@ -17,12 +17,10 @@ export default class RemoveDownloadFileInProgressMutator extends Mutator {
 
   /** @inheritdoc */
   apply(state) {
-    const itemsInProgress = state.filesWithDownloadInProgress || [];
+    let itemsInProgress = state.filesWithDownloadInProgress || new Set();
 
-    const index = itemsInProgress.findIndex((fileId) => fileId === this._fileId);
-
-    if (index !== -1) {
-      itemsInProgress.splice(index, 1);
+    if (itemsInProgress.has(this._fileId)) {
+      itemsInProgress = new Set([...itemsInProgress].filter((fileId) => fileId !== this._fileId));
 
       state.filesWithDownloadInProgress = itemsInProgress;
     }

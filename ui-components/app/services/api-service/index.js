@@ -134,6 +134,7 @@ export default class ApiService {
    * @returns {Promise} - The promise that resolves with an array of files.
    */
   getFiles(folderId) {
+    console.log(localStorage.getItem('token'));
     return fetch(`/folder/${folderId}/content`, {
       headers: {
         Authentication: localStorage.getItem('token'),

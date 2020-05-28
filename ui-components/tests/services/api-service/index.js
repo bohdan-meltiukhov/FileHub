@@ -326,14 +326,20 @@ test('should get files.', async (assert) => {
     },
   ];
 
-  fetchMock.get(`/folder/${folderId}/content`, content);
+  localStorage.setItem('token', TOKEN);
+
+  fetchMock.once({
+    method: 'GET',
+    url: `/folder/${folderId}/content`,
+    headers: {Authentication: TOKEN},
+  }, content);
 
   const apiService = ApiService.getInstance();
   const files = await apiService.getFiles(folderId);
 
   assert.deepEqual(files, content, 'The getFiles() method should provide correct files.');
 
-  assert.ok(fetchMock.called(`/folder/${folderId}/content`, {
+  assert.ok(fetchMock.done(`/folder/${folderId}/content`, {
     method: 'GET',
   }), 'The getFiles() method should send a GET request to the \'/folder/:id/content\' URL.');
 });
@@ -351,14 +357,20 @@ test('should get a folder.', async (assert) => {
     type: 'folder',
   };
 
-  fetchMock.get(`/folder/${folderId}`, folder);
+  localStorage.setItem('token', TOKEN);
+
+  fetchMock.once({
+    method: 'GET',
+    url: `/folder/${folderId}`,
+    headers: {Authentication: TOKEN},
+  }, folder);
 
   const apiService = ApiService.getInstance();
   const response = await apiService.getFolder(folderId);
 
   assert.deepEqual(response, folder, 'The getFolder() method should provide the correct folder.');
 
-  assert.ok(fetchMock.called(`/folder/${folderId}`, {
+  assert.ok(fetchMock.done(`/folder/${folderId}`, {
     method: 'GET',
   }), 'The getFolder() method should send a GET request to the \'/folder/:folderId\' URL.');
 });
@@ -368,9 +380,12 @@ test('should upload files.', (assert) => {
 
   const formData = new FormData();
 
+  localStorage.setItem('token', TOKEN);
+
   fetchMock.once({
     url: `/folder/${folderId}/file`,
     method: 'POST',
+    headers: {Authentication: TOKEN},
   }, (url, opts) => {
     const uploadedFile = opts.body;
 
@@ -398,7 +413,13 @@ test('should update folders.', (assert) => {
     type: 'folder',
   };
 
-  fetchMock.put(`/folder/${folder.id}`, (url, opts) => {
+  localStorage.setItem('token', TOKEN);
+
+  fetchMock.once({
+    method: 'PUT',
+    url: `/folder/${folder.id}`,
+    headers: {Authentication: TOKEN},
+  }, (url, opts) => {
     assert.deepEqual(opts.body.element, folder, 'The updateFolder() method should send a request with correct ' +
       'folder object.');
 
@@ -408,7 +429,7 @@ test('should update folders.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.updateFolder(folder);
 
-  assert.ok(fetchMock.called(`/folder/${folder.id}`, {
+  assert.ok(fetchMock.done(`/folder/${folder.id}`, {
     method: 'PUT',
   }), 'The updateFolder() method should send a PUT request to the \'/folder/:folderId\' URL.');
 });
@@ -425,7 +446,13 @@ test('should update files.', (assert) => {
     type: 'file',
   };
 
-  fetchMock.put(`/file/${file.id}`, (url, opts) => {
+  localStorage.setItem('token', TOKEN);
+
+  fetchMock.once({
+    method: 'PUT',
+    url: `/file/${file.id}`,
+    headers: {Authentication: TOKEN},
+  }, (url, opts) => {
     assert.deepEqual(opts.body.element, file, 'The updateFile() method should send a request with correct ' +
       'file object.');
 
@@ -435,7 +462,7 @@ test('should update files.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.updateFile(file);
 
-  assert.ok(fetchMock.called(`/file/${file.id}`, {
+  assert.ok(fetchMock.done(`/file/${file.id}`, {
     method: 'PUT',
   }), 'The updateFile() method should send a PUT request to the \'/file/:fileId\' URL.');
 });
@@ -445,7 +472,13 @@ test('should delete folders.', (assert) => {
 
   const id = 'uExvhDL4YwkxnBVa';
 
-  fetchMock.delete(`/folder/${id}`, (url) => {
+  localStorage.setItem('token', TOKEN);
+
+  fetchMock.once({
+    method: 'DELETE',
+    url: `/folder/${id}`,
+    headers: {Authentication: TOKEN},
+  }, (url) => {
     const folderId = url.slice(8);
     assert.strictEqual(folderId, id, 'The deleteFolder() method should provide the correct folder id to the server.');
     return 200;
@@ -454,7 +487,7 @@ test('should delete folders.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.deleteFolder(id);
 
-  assert.ok(fetchMock.called(`/folder/${id}`, {
+  assert.ok(fetchMock.done(`/folder/${id}`, {
     method: 'DELETE',
   }), 'The deleteFolder() method should send a DELETE request to the \'/folder/:id\' URL.');
 });
@@ -464,7 +497,13 @@ test('should delete files.', (assert) => {
 
   const id = 'ARqTPQ1XXUrFlaJe';
 
-  fetchMock.delete(`/file/${id}`, (url) => {
+  localStorage.setItem('token', TOKEN);
+
+  fetchMock.once({
+    method: 'DELETE',
+    url: `/file/${id}`,
+    headers: {Authentication: TOKEN},
+  }, (url) => {
     const folderId = url.slice(6);
     assert.strictEqual(folderId, id, 'The deleteFile() method should provide the correct file id to the server.');
     return 200;
@@ -473,7 +512,7 @@ test('should delete files.', (assert) => {
   const apiService = ApiService.getInstance();
   apiService.deleteFile(id);
 
-  assert.ok(fetchMock.called(`/file/${id}`, {
+  assert.ok(fetchMock.done(`/file/${id}`, {
     method: 'DELETE',
   }), 'The deleteFile() method should send a DELETE request to the \'/file/:id\' URL.');
 });
@@ -490,13 +529,19 @@ test('should create folders.', async (assert) => {
     type: 'folder',
   };
 
-  fetchMock.post(`/folder/${parentId}/folder`, folder);
+  localStorage.setItem('token', TOKEN);
+
+  fetchMock.once({
+    method: 'POST',
+    url: `/folder/${parentId}/folder`,
+    headers: {Authentication: TOKEN},
+  }, folder);
 
   const apiService = ApiService.getInstance();
   const response = await apiService.createFolder(parentId);
   assert.deepEqual(response, folder, 'The createFolder() method should return the correct folder.');
 
-  assert.ok(fetchMock.called(`/folder/${parentId}/folder`, {
+  assert.ok(fetchMock.done(`/folder/${parentId}/folder`, {
     method: 'POST',
   }), 'The createFolder() method should send a POST request to the \'/folder/:folderId/folder\' URL.');
 });
@@ -506,9 +551,12 @@ test('should get the user', async (assert) => {
     name: 'John',
   };
 
+  localStorage.setItem('token', TOKEN);
+
   fetchMock.once({
     method: 'GET',
     url: '/user',
+    headers: {Authentication: TOKEN},
   }, user);
 
   const apiService = ApiService.getInstance();

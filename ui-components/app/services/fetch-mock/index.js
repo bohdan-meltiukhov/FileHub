@@ -74,7 +74,11 @@ export default class FetchMock {
    * @private
    */
   static _getFiles() {
-    fetchMock.get('express:/folder/:folderId/content', (url) => {
+    fetchMock.get('express:/folder/:folderId/content', (url, opts) => {
+      if (opts.headers.Authentication !== TOKEN) {
+        return 401;
+      }
+
       const id = url.slice(8, url.indexOf('/content'));
 
       const parentFolder = FileSystem.folders.find((folder) => folder.id === id);
@@ -103,7 +107,11 @@ export default class FetchMock {
    * @private
    */
   static _getFolder() {
-    fetchMock.get('express:/folder/:folderId', (url) => {
+    fetchMock.get('express:/folder/:folderId', (url, opts) => {
+      if (opts.headers.Authentication !== TOKEN) {
+        return 401;
+      }
+
       const id = url.slice(8);
 
       const folder = FileSystem.folders.find((folder) => folder.id === id);
@@ -128,7 +136,11 @@ export default class FetchMock {
    * @private
    */
   static _putFolder() {
-    fetchMock.put('express:/folder/:folderId', (url, options) => {
+    fetchMock.put('express:/folder/:folderId', (url, opts) => {
+      if (opts.headers.Authentication !== TOKEN) {
+        return 401;
+      }
+
       const id = url.slice(8);
       const index = FileSystem.folders.findIndex((folder) => folder.id === id);
 
@@ -136,7 +148,7 @@ export default class FetchMock {
         return 404;
       }
 
-      FileSystem.folders[index] = options.body.element;
+      FileSystem.folders[index] = opts.body.element;
       return FileSystem.folders[index];
     }, {
       delay: 500,
@@ -149,7 +161,11 @@ export default class FetchMock {
    * @private
    */
   static _putFile() {
-    fetchMock.put('express:/file/:fileId', (url, options) => {
+    fetchMock.put('express:/file/:fileId', (url, opts) => {
+      if (opts.headers.Authentication !== TOKEN) {
+        return 401;
+      }
+
       const id = url.slice(6);
 
       const index = FileSystem.files.findIndex((file) => file.id === id);
@@ -158,7 +174,7 @@ export default class FetchMock {
         return 404;
       }
 
-      FileSystem.files[index] = options.body.element;
+      FileSystem.files[index] = opts.body.element;
       return FileSystem.files[index];
     }, {
       delay: 500,
@@ -171,7 +187,11 @@ export default class FetchMock {
    * @private
    */
   static _deleteFolder() {
-    fetchMock.delete('express:/folder/:folderId', (url) => {
+    fetchMock.delete('express:/folder/:folderId', (url, opts) => {
+      if (opts.headers.Authentication !== TOKEN) {
+        return 401;
+      }
+
       const id = url.slice(8);
 
       const folder = FileSystem.folders.find((folder) => folder.id === id);
@@ -194,7 +214,11 @@ export default class FetchMock {
    * @private
    */
   static _deleteFile() {
-    fetchMock.delete('express:/file/:fileId', (url) => {
+    fetchMock.delete('express:/file/:fileId', (url, opts) => {
+      if (opts.headers.Authentication !== TOKEN) {
+        return 401;
+      }
+
       const id = url.slice(6);
 
       const fileIndex = FileSystem.files.findIndex((file) => file.id === id);
@@ -239,9 +263,13 @@ export default class FetchMock {
    * @private
    */
   static _uploadFile() {
-    fetchMock.post('express:/folder/:folderId/file', (url, options) => {
+    fetchMock.post('express:/folder/:folderId/file', (url, opts) => {
+      if (opts.headers.Authentication !== TOKEN) {
+        return 401;
+      }
+
       const id = url.slice(8, url.indexOf('/file'));
-      const file = options.body.get('file');
+      const file = opts.body.get('file');
       const fileItem = {
         id: FetchMock._generateRandomId(16),
         parentId: id,
@@ -265,7 +293,11 @@ export default class FetchMock {
    * @private
    */
   static _createFolder() {
-    fetchMock.post('express:/folder/:folderId/folder', (url) => {
+    fetchMock.post('express:/folder/:folderId/folder', (url, opts) => {
+      if (opts.headers.Authentication !== TOKEN) {
+        return 401;
+      }
+
       const id = url.slice(8, url.lastIndexOf('/folder'));
 
       const parentFolder = FileSystem.folders.find((folder) => folder.id === id);

@@ -239,8 +239,12 @@ a:hover {
     display: inline-block;
 }
 
-.files tr.loading td.cell-actions .action-buttons {
-    visibility: hidden;
+/*.files tr.loading td.cell-actions .action-buttons {*/
+/*    visibility: hidden;*/
+/*}*/
+
+.files .actions-loading .cell-actions .glyphicon {
+    color: #808080;
 }
 
 .files td {

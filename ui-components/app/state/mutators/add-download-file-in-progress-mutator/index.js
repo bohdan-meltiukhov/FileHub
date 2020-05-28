@@ -20,7 +20,7 @@ export default class AddDownloadFileInProgressMutator extends Mutator {
     let itemsInProgress = state.filesWithDownloadInProgress || new Set();
 
     if (!itemsInProgress.has(this._fileId)) {
-      itemsInProgress = itemsInProgress.add(this._fileId);
+      itemsInProgress = new Set([...itemsInProgress, this._fileId]);
 
       state.filesWithDownloadInProgress = itemsInProgress;
     }

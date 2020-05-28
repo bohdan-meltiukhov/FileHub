@@ -92,3 +92,31 @@ function clearFixture() {
   row = document.createElement('tr');
   fixture.appendChild(row);
 }
+
+test('should call the onDownload function.', (assert) => {
+  const file = {
+    id: '1csJkySJRhAbMLKG',
+    parentId: 'uExvhDL4YwkxnBVa',
+    name: 'photo.png',
+    mimeType: 'image',
+    size: 16,
+    type: 'file',
+  };
+
+  const onDownloadFunction = (fileItem) => {
+    assert.step('The file is deleted.');
+    assert.strictEqual(fileItem, file, 'The FileItem component should provide correct file item to the onDownload ' +
+      'handler.');
+  };
+
+  const component = new FileItemComponent(row, file);
+  const fileItemElement = fixture.firstElementChild;
+
+  component.onDownloadButtonPressed(onDownloadFunction);
+
+  const downloadButton = fileItemElement.querySelector('[data-test="cell-actions"] .glyphicon-download');
+  downloadButton.click();
+
+  assert.verifySteps(['The file is deleted.'], 'The FileItemComponent should call the onDownload handler when the ' +
+    'download button is presded.');
+});

@@ -66,7 +66,7 @@ test('should register.', (assert) => {
 });
 
 test('should handle the 401 error.', async (assert) => {
-  assert.expect(11);
+  assert.expect(12);
 
   const apiService = ApiService.getInstance();
   const userCredentials = new UserCredentials('admin', '1234');
@@ -149,6 +149,14 @@ test('should handle the 401 error.', async (assert) => {
     AuthorizationError,
     'The logOut() method should throw an AuthorizationError if the response status is 401.',
   );
+
+  fetchMock.get('express:/file/:fileId', 401);
+
+  assert.rejects(
+    apiService.getFile(itemId),
+    AuthorizationError,
+    'The getFile() method should throw an AuthorizationError if the response status is 401.',
+  );
 });
 
 test('should handle the 422 error.', async (assert) => {
@@ -197,7 +205,7 @@ test('should handle the 422 error.', async (assert) => {
 });
 
 test('should handle the 500 error.', async (assert) => {
-  assert.expect(11);
+  assert.expect(12);
 
   fetchMock.post(/^\/(login|register)$/, 500);
 
@@ -277,6 +285,14 @@ test('should handle the 500 error.', async (assert) => {
     apiService.logOut(),
     GeneralServerError,
     'The logOut() method should throw a GeneralServerError if the response status is 500.',
+  );
+
+  fetchMock.get('express:/file/:fileId', 500);
+
+  assert.rejects(
+    apiService.getFile(itemId),
+    GeneralServerError,
+    'The getFile() method should throw a GeneralServerError if the response status is 500.',
   );
 });
 
@@ -517,4 +533,24 @@ test('should log the current user out.', (assert) => {
   assert.ok(fetchMock.done(('/logout'), {
     method: 'POST',
   }), 'The logOut() method should send a POST request to the \'/logout\' URL.');
+});
+
+test('should get a file for download.', async (assert) => {
+  const fileId = '1csJkySJRhAbMLKG';
+
+  const file = new Blob(['Hello, world!'], {type: 'text/plain'});
+
+  fetchMock.once({
+    method: 'GET',
+    url: `/file/${fileId}`,
+  }, file, {sendAsJson: false});
+
+  const apiService = ApiService.getInstance();
+  const response = await apiService.getFile(fileId);
+
+  assert.deepEqual(response, file, 'The getFile() method should provide the correct file.');
+
+  assert.ok(fetchMock.done(`/file/${fileId}`, {
+    method: 'GET',
+  }), 'The getFile() method should send a GET request to the \'/file/:fileId\' URL.');
 });

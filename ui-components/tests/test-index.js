@@ -45,3 +45,7 @@ import * as isUserNameLoadingMutator from './state/mutators/is-user-name-loading
 import * as userNameLoadingErrorMutator from './state/mutators/user-name-loading-error-mutator';
 import * as userDetails from './components/user-details';
 import * as logOutAction from './state/actions/log-out-action';
+import * as downloadFileAction from './state/actions/download-file-action';
+import * as downloadFileErrorMutator from './state/mutators/download-file-error-mutator';
+import * as addDownloadFileInProgressMutator from './state/mutators/add-download-file-in-progress-mutator';
+import * as removeDownloadFileInProgressMutator from './state/mutators/remove-download-file-in-progress-mutator';

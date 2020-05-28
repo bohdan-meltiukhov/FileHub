@@ -315,4 +315,26 @@ export default class ApiService {
         localStorage.removeItem('token');
       });
   }
+
+  /**
+   * Provides the file to download.
+   *
+   * @param {string} id - The identifier of the required file.
+   * @returns {Promise} - The promise that resolves with the required file.
+   */
+  getFile(id) {
+    return fetch(`/file/${id}`, {
+      method: 'GET',
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.blob();
+        } else {
+          throw this._handleRequestErrors(response);
+        }
+      });
+  }
 }

@@ -24,6 +24,7 @@ export default class FetchMock {
     FetchMock._getUser();
     FetchMock._createFolder();
     FetchMock._postLogOut();
+    FetchMock._getFile();
   }
 
   /**
@@ -372,5 +373,31 @@ export default class FetchMock {
    */
   static _postLogOut() {
     fetchMock.post('/logout', 200, {delay: 2000});
+  }
+
+  /**
+   * Sets a mock for the get file request.
+   */
+  static _getFile() {
+    fetchMock.get('express:/file/:fileId', (url, opts) => {
+      if (opts.headers.Authentication !== TOKEN) {
+        return 401;
+      }
+
+      const id = url.slice(6);
+      const file = FileSystem.files.find((file) => {
+        if (file.id === id) {
+          return true;
+        }
+      });
+      if (file) {
+        return new Blob(['Hello, world!'], {type: 'text/plain'});
+      } else {
+        return 404;
+      }
+    }, {
+      delay: 1000,
+      sendAsJson: false,
+    });
   }
 }

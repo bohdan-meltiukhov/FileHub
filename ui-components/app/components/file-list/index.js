@@ -73,6 +73,10 @@ export default class FileList extends Component {
         item.isEditing = true;
         this._selectedItem = item;
       }
+
+      if (item instanceof FileItemComponent) {
+        item.onDownloadButtonPressed(this._onDownLoadButtonPressedHandler);
+      }
     });
   }
 
@@ -126,6 +130,21 @@ export default class FileList extends Component {
     });
 
     this._onItemNameChangedHandler = handler;
+  }
+
+  /**
+   * Sets the function to be called when the user wants to download the file.
+   *
+   * @param {Function} handler - The function to call when the user wants to download the file.
+   */
+  onDownloadButtonPressed(handler) {
+    this._onDownLoadButtonPressedHandler = handler;
+
+    this._fileItems.forEach((item) => {
+      if (item instanceof FileItemComponent) {
+        item.onDownloadButtonPressed(handler);
+      }
+    });
   }
 
   /**

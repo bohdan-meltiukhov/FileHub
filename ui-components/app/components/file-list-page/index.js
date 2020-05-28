@@ -5,6 +5,7 @@ import FileList from '../file-list';
 import StateManager from '../../state/state-manager';
 import StateAwareComponent from '../../state-aware-component';
 import GetFilesAction from '../../state/actions/get-files-action';
+import DownloadFileAction from '../../state/actions/download-file-action';
 import {AUTHENTICATION_ROUTE, FILE_LIST_ROUTE} from '../../router/routes';
 import LogOutAction from '../../state/actions/log-out-action';
 import UpdateItemAction from '../../state/actions/update-item-action';
@@ -18,6 +19,7 @@ import NotFoundError from '../../models/errors/not-found-error';
 import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import GetUserAction from '../../state/actions/get-user-action';
+import DownloadFileService from '../../services/download-file-service';
 
 /**
  * The component for the File List Page.
@@ -141,6 +143,11 @@ export default class FileListPage extends StateAwareComponent {
     logOutLink.addEventListener('click', () => {
       this.stateManager.dispatch(new LogOutAction());
     });
+
+    this.fileList.onDownloadButtonPressed((file) => {
+      const downloadFileService = new DownloadFileService();
+      this.stateManager.dispatch(new DownloadFileAction(file, downloadFileService));
+    });
   }
 
   /** @inheritdoc */
@@ -247,6 +254,19 @@ export default class FileListPage extends StateAwareComponent {
       } else {
         console.error('User Details Loading Error:', error);
       }
+    });
+
+    this.onStateChanged('downloadFileError', ({detail: {state}}) => {
+      const {fileItem, error} = state.downloadFileError;
+      if (error instanceof NotFoundError && fileItem.parentId !== state.locationParameters.folderId) {
+        alert('Error: ' + error.message);
+      } else {
+        this._handleError(error);
+      }
+    });
+
+    this.onStateChanged('filesWithDownloadInProgress', ({detail: {state}}) => {
+      this.fileList.loadingItems = Array.from(state.filesWithDownloadInProgress);
     });
   }
 

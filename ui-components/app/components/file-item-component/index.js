@@ -33,7 +33,26 @@ export default class FileItemComponent extends ListItem {
     const downloadButton = document.createElement('span');
     downloadButton.classList.add('glyphicon');
     downloadButton.classList.add('glyphicon-download');
+    downloadButton.setAttribute('data-test', 'download-button');
     actionButtons.prepend(downloadButton);
+  }
+
+  /** @inheritdoc */
+  addEventListeners() {
+    super.addEventListeners();
+
+    const downloadButton = this.rootElement.querySelector('[data-test="download-button"]');
+    downloadButton.addEventListener('click',
+      () => this._downloadButtonPressedHandler(this._parameters));
+  }
+
+  /**
+   * Sets the function to be called when the user wants to download the file.
+   *
+   * @param {Function} handler - The function to call when the user wants to download the file.
+   */
+  onDownloadButtonPressed(handler) {
+    this._downloadButtonPressedHandler = handler;
   }
 
   /**

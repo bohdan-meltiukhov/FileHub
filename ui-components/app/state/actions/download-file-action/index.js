@@ -30,7 +30,7 @@ export default class DownloadFileAction extends Action {
 
       this._downloadFileService.download(file, this._file.name);
     } catch (e) {
-      stateManager.mutate(new DownloadFileErrorMutator(e));
+      stateManager.mutate(new DownloadFileErrorMutator(this._file, e));
     } finally {
       stateManager.mutate(new RemoveDownloadFileInProgressMutator(this._file.id));
     }

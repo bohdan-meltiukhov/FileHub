@@ -257,7 +257,12 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('downloadFileError', ({detail: {state}}) => {
-      this._handleError(state.downloadFileError);
+      const {fileItem, error} = state.downloadFileError;
+      if (error instanceof NotFoundError && fileItem.parentId !== state.locationParameters.folderId) {
+        alert('Error: ' + error.message);
+      } else {
+        this._handleError(error);
+      }
     });
 
     this.onStateChanged('filesWithDownloadInProgress', ({detail: {state}}) => {

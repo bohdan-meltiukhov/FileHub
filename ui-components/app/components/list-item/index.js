@@ -38,6 +38,7 @@ export default class ListItem extends Component {
             <td class="cell-actions" data-test="cell-actions">
                 <div class="action-buttons" data-test="action-buttons">
                     <span class="glyphicon glyphicon-remove-circle" data-test="remove-item-button"></span>
+                    <div class="loader-small" data-test="actions-loader"></div>
                 </div>
             </td>
         </tr>

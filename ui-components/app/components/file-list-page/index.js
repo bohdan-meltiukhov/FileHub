@@ -20,6 +20,7 @@ import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import GetUserAction from '../../state/actions/get-user-action';
 import DownloadFileService from '../../services/download-file-service';
+import MessageService from '../../services/message-service';
 
 /**
  * The component for the File List Page.
@@ -282,8 +283,10 @@ export default class FileListPage extends StateAwareComponent {
    * @private
    */
   _handleError(error) {
+    const messageService = new MessageService();
     if (error instanceof NotFoundError) {
-      alert('Error: ' + error.message);
+      // alert('Error: ' + error.message);
+      messageService.showError(error.message);
       const folderId = this.stateManager.state.locationParameters.folderId;
       this.stateManager.dispatch(new GetFilesAction(folderId));
     } else if (error instanceof AuthorizationError) {

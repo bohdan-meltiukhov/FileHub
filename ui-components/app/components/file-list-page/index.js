@@ -207,7 +207,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('isRenameItemLoading', ({detail: {state}}) => {
-      this.fileList.isSelectedItemLoading = state.isRenameItemLoading;
+      this.fileList.isRenameItemInProgress = state.isRenameItemLoading;
     });
 
     this.onStateChanged('renameItemLoadingError', ({detail: {state}}) => {

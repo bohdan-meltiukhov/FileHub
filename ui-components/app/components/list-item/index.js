@@ -206,6 +206,19 @@ export default class ListItem extends Component {
   }
 
   /**
+   * Sets if the current item has action buttons loading or not.
+   *
+   * @param {boolean} value - The flag that shows whether the item's actions are loading.
+   */
+  set isLoadingActions(value) {
+    if (value) {
+      this.rootElement.classList.add('actions-loading');
+    } else {
+      this.rootElement.classList.remove('actions-loading');
+    }
+  }
+
+  /**
    * Sets the function to be called when the item name changes.
    *
    * @param {Function} handler - The function to call when the item name changes.

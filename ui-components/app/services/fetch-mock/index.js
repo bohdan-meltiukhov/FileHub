@@ -75,7 +75,6 @@ export default class FetchMock {
   static _getFiles() {
     fetchMock.get('express:/folder/:folderId/content', (url, opts) => {
       if (opts.headers.Authentication !== TOKEN) {
-        console.log('returning 401');
         return 401;
       }
 

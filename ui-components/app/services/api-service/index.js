@@ -102,6 +102,7 @@ export default class ApiService {
   _handleRequestErrors(response) {
     switch (response.status) {
     case 401:
+      localStorage.removeItem('token');
       return new AuthorizationError('Not authorized.');
     case 404:
       return new NotFoundError('This item does not exist.');

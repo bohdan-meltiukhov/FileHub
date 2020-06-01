@@ -212,9 +212,6 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    // this.onStateChanged('isRenameItemLoading', ({detail: {state}}) => {
-    //   this.fileList.isRenameItemInProgress = state.isRenameItemLoading;
-    // });
     this.onStateChanged('itemsWithRenameInProgress', ({detail: {state}}) => {
       this.fileList.itemsWithRenameInProgress = Array.from(state.itemsWithRenameInProgress);
     });
@@ -241,10 +238,6 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('uploadFileError', ({detail: {state}}) => {
       this._handleError(state.uploadFileError);
     });
-
-    // this.onStateChanged('isCreateFolderInProgress', ({detail: {state}}) => {
-    //   this.createFolderButton.isLoading = state.isCreateFolderInProgress;
-    // });
 
     this.onStateChanged('foldersWithCreateFolderInProgress', ({detail: {state}}) => {
       const loadingFolders = state.foldersWithCreateFolderInProgress;

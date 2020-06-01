@@ -154,9 +154,6 @@ export default class FileListPage extends StateAwareComponent {
   initState() {
     this.onStateChanged('fileList', ({detail: {state}}) => {
       this.fileList.files = state.fileList;
-
-      const loadingFolders = state.foldersWithFileUploadInProgress;
-      this.uploadFileButton.isLoading = loadingFolders.includes(state.locationParameters.folderId);
     });
 
     this.onStateChanged('isFileListLoading', ({detail: {state}}) => {
@@ -184,6 +181,13 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('folder', ({detail: {state}}) => {
       this.breadcrumbs.folder = state.folder;
+
+
+      const foldersWithFileUploadInProgress = state.foldersWithFileUploadInProgress || new Set();
+      this.uploadFileButton.isLoading = foldersWithFileUploadInProgress.has(state.locationParameters.folderId);
+
+      const foldersWithCreateFolderInProgress = state.foldersWithCreateFolderInProgress || new Set();
+      this.createFolderButton.isLoading = foldersWithCreateFolderInProgress.has(state.locationParameters.folderId);
     });
 
     this.onStateChanged('renameFolderId', ({detail: {state}}) => {
@@ -228,16 +232,21 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('foldersWithFileUploadInProgress', ({detail: {state}}) => {
       const loadingFolders = state.foldersWithFileUploadInProgress;
 
-      this.uploadFileButton.isLoading = loadingFolders.includes(state.locationParameters.folderId);
-      this.fileList.loadingItems = loadingFolders;
+      this.uploadFileButton.isLoading = loadingFolders.has(state.locationParameters.folderId);
+      this.fileList.loadingItems = Array.from(loadingFolders);
     });
 
     this.onStateChanged('uploadFileError', ({detail: {state}}) => {
       this._handleError(state.uploadFileError);
     });
 
-    this.onStateChanged('isCreateFolderInProgress', ({detail: {state}}) => {
-      this.createFolderButton.isLoading = state.isCreateFolderInProgress;
+    // this.onStateChanged('isCreateFolderInProgress', ({detail: {state}}) => {
+    //   this.createFolderButton.isLoading = state.isCreateFolderInProgress;
+    // });
+
+    this.onStateChanged('foldersWithCreateFolderInProgress', ({detail: {state}}) => {
+      const loadingFolders = state.foldersWithCreateFolderInProgress;
+      this.createFolderButton.isLoading = loadingFolders.has(state.locationParameters.folderId);
     });
 
     this.onStateChanged('createFolderError', ({detail: {state}}) => {

@@ -17,10 +17,10 @@ export default class AddUploadFileInProgressMutator extends Mutator {
 
   /** @inheritdoc */
   apply(state) {
-    const loadingItems = state.foldersWithFileUploadInProgress || [];
+    let loadingItems = state.foldersWithFileUploadInProgress || new Set();
 
-    if (!loadingItems.includes(this._folderId)) {
-      loadingItems.push(this._folderId);
+    if (!loadingItems.has(this._folderId)) {
+      loadingItems = new Set([...loadingItems, this._folderId]);
 
       state.foldersWithFileUploadInProgress = loadingItems;
     }

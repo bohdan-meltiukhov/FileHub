@@ -17,12 +17,10 @@ export default class RemoveUploadFileInProgressMutator extends Mutator {
 
   /** @inheritdoc */
   apply(state) {
-    const loadingItems = state.foldersWithFileUploadInProgress || [];
+    let loadingItems = state.foldersWithFileUploadInProgress || new Set();
 
-    const index = loadingItems.findIndex((folderId) => folderId === this._folderId);
-
-    if (index !== -1) {
-      loadingItems.splice(index, 1);
+    if (loadingItems.has(this._folderId)) {
+      loadingItems = new Set([...loadingItems].filter((fileId) => fileId !== this._folderId));
 
       state.foldersWithFileUploadInProgress = loadingItems;
     }

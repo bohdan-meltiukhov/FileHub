@@ -333,7 +333,7 @@ export default class FetchMock {
       FileSystem.folders.push(folder);
       return folder;
     }, {
-      delay: 500,
+      delay: 5000,
     });
   }
 

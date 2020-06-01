@@ -3,6 +3,8 @@ import GetFilesAction from '../get-files-action';
 import RenameFolderMutator from '../../mutators/rename-folder-mutator';
 import IsCreateFolderInProgressMutator from '../../mutators/is-create-folder-in-progress-mutator';
 import CreateFolderErrorMutator from '../../mutators/create-folder-error-mutator';
+import AddCreateFolderInProgressMutator from '../../mutators/add-create-folder-in-progress-mutator';
+import RemoveCreateFolderInProgressMutator from '../../mutators/remove-create-folder-in-progress-mutator';
 
 /**
  * The action that creates a folder.
@@ -21,16 +23,18 @@ export default class CreateFolderAction extends Action {
 
   /** @inheritdoc */
   async apply(stateManager, apiService) {
-    stateManager.mutate(new IsCreateFolderInProgressMutator(true));
+    stateManager.mutate(new AddCreateFolderInProgressMutator(this._folderId));
     try {
       const createdFolder = await apiService.createFolder(this._folderId);
 
-      await stateManager.dispatch(new GetFilesAction(this._folderId));
+      if (this._folderId === stateManager.state.locationParameters.folderId) {
+        await stateManager.dispatch(new GetFilesAction(this._folderId));
+      }
       stateManager.mutate(new RenameFolderMutator(createdFolder.id));
     } catch (e) {
       stateManager.mutate(new CreateFolderErrorMutator(e));
     } finally {
-      stateManager.mutate(new IsCreateFolderInProgressMutator(false));
+      stateManager.mutate(new RemoveCreateFolderInProgressMutator(this._folderId));
     }
   }
 }

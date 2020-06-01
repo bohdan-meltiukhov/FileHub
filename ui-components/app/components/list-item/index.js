@@ -198,11 +198,7 @@ export default class ListItem extends Component {
    * @param {boolean} value - The flag that shows whether the current list item is loading or not.
    */
   set isLoading(value) {
-    if (value) {
-      this.rootElement.classList.add('loading');
-    } else {
-      this.rootElement.classList.remove('loading');
-    }
+    this.rootElement.classList.toggle('loading', value);
   }
 
   /**
@@ -211,11 +207,7 @@ export default class ListItem extends Component {
    * @param {boolean} value - The flag that shows whether the item's actions are loading.
    */
   set isLoadingActions(value) {
-    if (value) {
-      this.rootElement.classList.add('actions-loading');
-    } else {
-      this.rootElement.classList.remove('actions-loading');
-    }
+    this.rootElement.classList.toggle('actions-loading', value);
   }
 
   /**

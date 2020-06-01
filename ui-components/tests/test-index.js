@@ -26,7 +26,6 @@ import * as folderLoadingErrorMutator from './state/mutators/folder-loading-erro
 import * as isFolderLoadingMutator from './state/mutators/is-folder-loading-mutator';
 import * as uploadFileAction from './state/actions/upload-file-action';
 import * as updateItemAction from './state/actions/update-item-action';
-import * as isRenameItemLoadingMutator from './state/mutators/is-rename-item-loading-mutator';
 import * as renameItemLoadingErrorMutator from './state/mutators/rename-item-loading-error-mutator';
 import * as listItem from './components/list-item';
 import * as createFolderAction from './state/actions/create-folder-action';
@@ -37,7 +36,6 @@ import * as deleteItemLoadingErrorMutator from './state/mutators/delete-item-loa
 import * as uploadFileErrorMutator from './state/mutators/upload-file-error-mutator';
 import * as addUploadFileInProgressMutator from './state/mutators/add-upload-file-in-progress-mutator';
 import * as removeUploadFileInProgress from './state/mutators/remove-upload-file-in-progress-mutator';
-import * as isCreateFolderInProgressMutator from './state/mutators/is-create-folder-in-progress-mutator';
 import * as createFolderErrorMutator from './state/mutators/create-folder-error-mutator';
 import * as getUserAction from './state/actions/get-user-action';
 import * as userNameMutator from './state/mutators/user-name-mutator';

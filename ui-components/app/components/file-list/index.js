@@ -88,7 +88,7 @@ export default class FileList extends Component {
    */
   set loadingItems(itemIds) {
     this._fileItems.forEach((item) => {
-      item.isLoading = itemIds.includes(item.id);
+      item.isLoadingActions = itemIds.includes(item.id);
     });
 
     this._loadingItems = itemIds;
@@ -112,7 +112,7 @@ export default class FileList extends Component {
    *
    * @param {boolean} isLoading - The flag that shows if the selected item is loading or not.
    */
-  set isSelectedItemLoading(isLoading) {
+  set isRenameItemInProgress(isLoading) {
     if (isLoading) {
       this._loadingItem = this._selectedItem;
     }

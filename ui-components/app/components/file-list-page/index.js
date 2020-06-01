@@ -182,7 +182,6 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('folder', ({detail: {state}}) => {
       this.breadcrumbs.folder = state.folder;
 
-
       const foldersWithFileUploadInProgress = state.foldersWithFileUploadInProgress || new Set();
       this.uploadFileButton.isLoading = foldersWithFileUploadInProgress.has(state.locationParameters.folderId);
 

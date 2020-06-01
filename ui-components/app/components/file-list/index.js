@@ -65,7 +65,7 @@ export default class FileList extends Component {
       }
 
       if (this._loadingItems) {
-        item.isLoading = this._loadingItems.includes(item.id);
+        item.isLoadingActions = this._loadingItems.includes(item.id);
       }
 
       if (item.id === this._renameFolderId) {

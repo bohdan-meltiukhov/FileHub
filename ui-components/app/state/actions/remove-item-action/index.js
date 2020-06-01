@@ -31,7 +31,9 @@ export default class RemoveItemAction extends Action {
         await apiService.deleteFile(this._item.id);
       }
 
-      stateManager.dispatch(new GetFilesAction(this._item.parentId));
+      if (this._item.parentId === stateManager.state.locationParameters.folderId) {
+        await stateManager.dispatch(new GetFilesAction(this._item.parentId));
+      }
     } catch (e) {
       stateManager.mutate(new DeleteItemLoadingErrorMutator(e));
     } finally {

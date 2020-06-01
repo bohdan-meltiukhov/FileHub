@@ -283,7 +283,7 @@ export default class FetchMock {
 
       return fileItem;
     }, {
-      delay: 500,
+      delay: 5000,
     });
   }
 

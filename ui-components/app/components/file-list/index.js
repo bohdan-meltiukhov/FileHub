@@ -68,6 +68,10 @@ export default class FileList extends Component {
         item.isLoadingActions = this._loadingItems.includes(item.id);
       }
 
+      if (this._itemsWithRenameInProgress) {
+        item.isLoading = this._itemsWithRenameInProgress.includes(item.id);
+      }
+
       if (item.id === this._renameFolderId) {
         item.isSelected = true;
         item.isEditing = true;
@@ -108,15 +112,21 @@ export default class FileList extends Component {
   }
 
   /**
-   * Sets whether the selected item is loading or not.
+   * Sets the provided items to renaming in progress state.
    *
-   * @param {boolean} isLoading - The flag that shows if the selected item is loading or not.
+   * @param {string[]} itemIds - An array of loading items' IDs.
    */
-  set isRenameItemInProgress(isLoading) {
-    if (isLoading) {
-      this._loadingItem = this._selectedItem;
-    }
-    this._loadingItem.isLoading = isLoading;
+  set itemsWithRenameInProgress(itemIds) {
+    this._fileItems.forEach((item) => {
+      item.isLoading = itemIds.includes(item.id);
+    });
+
+    this._itemsWithRenameInProgress = itemIds;
+    //
+    // if (isLoading) {
+    //   this._loadingItem = this._selectedItem;
+    // }
+    // this._loadingItem.isLoading = isLoading;
   }
 
   /**

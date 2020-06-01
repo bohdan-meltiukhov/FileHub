@@ -151,7 +151,7 @@ export default class FetchMock {
       FileSystem.folders[index] = opts.body.element;
       return FileSystem.folders[index];
     }, {
-      delay: 500,
+      delay: 8000,
     });
   }
 
@@ -177,7 +177,7 @@ export default class FetchMock {
       FileSystem.files[index] = opts.body.element;
       return FileSystem.files[index];
     }, {
-      delay: 500,
+      delay: 8000,
     });
   }
 

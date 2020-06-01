@@ -1,13 +1,13 @@
 import CreateFolderAction from '../../../../app/state/actions/create-folder-action';
-import IsCreateFolderInProgressMutator from '../../../../app/state/mutators/is-create-folder-in-progress-mutator';
 import GetFilesAction from '../../../../app/state/actions/get-files-action';
+import RenameFolderMutator from '../../../../app/state/mutators/rename-folder-mutator';
 
 const {module, test} = QUnit;
 
 module('The CreateFolderAction');
 
 test('should create folders correctly.', async (assert) => {
-  assert.expect(9);
+  assert.expect(8);
   const folderId = '4Goz0J0Tz8xfDfsJ';
   const folder = {
     id: 'uExvhDL4YwkxnBVa',
@@ -32,8 +32,9 @@ test('should create folders correctly.', async (assert) => {
   const stateManagerMock = {
     mutate: (mutator) => {
       assert.step(mutator.constructor.name);
-      if (mutator instanceof IsCreateFolderInProgressMutator) {
-        assert.step(`Is in progress: ${mutator._isInProgress}.`);
+      if (mutator instanceof RenameFolderMutator) {
+        assert.strictEqual(mutator._folderId, folder.id, 'The CreateFolderAction should provide correct folder ID to ' +
+          'the RenameFolderMutator.');
       }
     },
 
@@ -43,16 +44,20 @@ test('should create folders correctly.', async (assert) => {
       assert.strictEqual(action._folderId, folderId, 'The CreateFolderAction should provide correct folder ID ' +
         'to the GetFilesAction');
     },
+
+    state: {
+      locationParameters: {
+        folderId,
+      },
+    },
   };
 
   const action = new CreateFolderAction(folderId);
   await action.apply(stateManagerMock, apiServiceMock);
 
   assert.verifySteps([
-    'IsCreateFolderInProgressMutator',
-    'Is in progress: true.',
+    'AddCreateFolderInProgressMutator',
     'RenameFolderMutator',
-    'IsCreateFolderInProgressMutator',
-    'Is in progress: false.',
+    'RemoveCreateFolderInProgressMutator',
   ], 'The CreateFolderAction should provide mutators to the state manager in the correct order.');
 });

@@ -38,7 +38,13 @@ test('should update folders correctly.', async (assert) => {
     },
 
     mutate: (mutator) => {
-      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
+      assert.step(mutator.constructor.name);
+    },
+
+    state: {
+      locationParameters: {
+        folderId: folder.parentId,
+      },
     },
   };
 
@@ -47,8 +53,8 @@ test('should update folders correctly.', async (assert) => {
 
   await updateFolder;
   assert.verifySteps([
-    'IsRenameItemLoadingMutator: true',
-    'IsRenameItemLoadingMutator: false',
+    'AddRenameItemInProgressMutator',
+    'RemoveRenameItemInProgressMutator',
   ], 'The UpdateItemAction should provide correct mutators to the state manager.');
 });
 
@@ -84,7 +90,13 @@ test('should update files correctly.', async (assert) => {
     },
 
     mutate: (mutator) => {
-      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
+      assert.step(mutator.constructor.name);
+    },
+
+    state: {
+      locationParameters: {
+        folderId: file.parentId,
+      },
     },
   };
 
@@ -93,7 +105,7 @@ test('should update files correctly.', async (assert) => {
 
   await updateFile;
   assert.verifySteps([
-    'IsRenameItemLoadingMutator: true',
-    'IsRenameItemLoadingMutator: false',
+    'AddRenameItemInProgressMutator',
+    'RemoveRenameItemInProgressMutator',
   ], 'The UpdateItemAction should provide correct mutators to the state manager.');
 });

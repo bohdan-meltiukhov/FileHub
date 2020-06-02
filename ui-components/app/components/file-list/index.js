@@ -122,11 +122,6 @@ export default class FileList extends Component {
     });
 
     this._itemsWithRenameInProgress = itemIds;
-    //
-    // if (isLoading) {
-    //   this._loadingItem = this._selectedItem;
-    // }
-    // this._loadingItem.isLoading = isLoading;
   }
 
   /**

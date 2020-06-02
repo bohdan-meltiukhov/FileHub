@@ -31,7 +31,6 @@ export default class CreateFolderAction extends Action {
       }
       stateManager.mutate(new RenameFolderMutator(createdFolder.id));
     } catch (e) {
-      console.log(e);
       stateManager.mutate(new CreateFolderErrorMutator(e));
     } finally {
       stateManager.mutate(new RemoveCreateFolderInProgressMutator(this._folderId));

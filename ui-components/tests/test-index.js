@@ -50,3 +50,5 @@ import * as addCreateFolderInProgressMutator from './state/mutators/add-create-f
 import * as removeCreateFolderInProgressMutator from './state/mutators/remove-create-folder-in-progress-mutator';
 import * as addRenameItemInProgressMutator from './state/mutators/add-rename-item-in-progress-mutator';
 import * as removeRenameItemInProgressMutator from './state/mutators/remove-rename-item-in-progress-mutator';
+import * as addItemDeletionInProgressMutator from './state/mutators/add-item-deletion-in-progress-mutator';
+import * as removeItemDeletionInProgressMutator from './state/mutators/remove-item-deletion-in-progress-mutator';

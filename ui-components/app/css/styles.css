@@ -239,8 +239,8 @@ a:hover {
     display: inline-block;
 }
 
-.files .actions-loading .cell-actions .glyphicon {
-    color: #808080;
+.files .actions-loading .cell-actions .glyphicon, .files .loading .cell-actions .glyphicon {
+    visibility: hidden;
 }
 
 .files .actions-loading .cell-actions .loader-small {

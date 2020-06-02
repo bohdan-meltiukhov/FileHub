@@ -46,3 +46,7 @@ import * as downloadFileAction from './state/actions/download-file-action';
 import * as downloadFileErrorMutator from './state/mutators/download-file-error-mutator';
 import * as addDownloadFileInProgressMutator from './state/mutators/add-download-file-in-progress-mutator';
 import * as removeDownloadFileInProgressMutator from './state/mutators/remove-download-file-in-progress-mutator';
+import * as addCreateFolderInProgressMutator from './state/mutators/add-create-folder-in-progress-mutator';
+import * as removeCreateFolderInProgressMutator from './state/mutators/remove-create-folder-in-progress-mutator';
+import * as addRenameItemInProgressMutator from './state/mutators/add-rename-item-in-progress-mutator';
+import * as removeRenameItemInProgressMutator from './state/mutators/remove-rename-item-in-progress-mutator';

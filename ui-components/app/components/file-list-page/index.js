@@ -183,10 +183,10 @@ export default class FileListPage extends StateAwareComponent {
       this.breadcrumbs.folder = state.folder;
 
       const foldersWithFileUploadInProgress = state.foldersWithFileUploadInProgress || new Set();
-      this.uploadFileButton.isLoading = foldersWithFileUploadInProgress.has(state.locationParameters.folderId);
+      this._toggleButtonLoading(this.uploadFileButton, foldersWithFileUploadInProgress);
 
       const foldersWithCreateFolderInProgress = state.foldersWithCreateFolderInProgress || new Set();
-      this.createFolderButton.isLoading = foldersWithCreateFolderInProgress.has(state.locationParameters.folderId);
+      this._toggleButtonLoading(this.createFolderButton, foldersWithCreateFolderInProgress);
     });
 
     this.onStateChanged('renameFolderId', ({detail: {state}}) => {
@@ -231,7 +231,7 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('foldersWithFileUploadInProgress', ({detail: {state}}) => {
       const loadingFolders = state.foldersWithFileUploadInProgress;
 
-      this.uploadFileButton.isLoading = loadingFolders.has(state.locationParameters.folderId);
+      this._toggleButtonLoading(this.uploadFileButton, loadingFolders);
       this.fileList.loadingItems = Array.from(loadingFolders);
     });
 
@@ -240,8 +240,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('foldersWithCreateFolderInProgress', ({detail: {state}}) => {
-      const loadingFolders = state.foldersWithCreateFolderInProgress;
-      this.createFolderButton.isLoading = loadingFolders.has(state.locationParameters.folderId);
+      this._toggleButtonLoading(this.createFolderButton, state.foldersWithCreateFolderInProgress);
     });
 
     this.onStateChanged('createFolderError', ({detail: {state}}) => {
@@ -279,6 +278,18 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('filesWithDownloadInProgress', ({detail: {state}}) => {
       this.fileList.loadingItems = Array.from(state.filesWithDownloadInProgress);
     });
+  }
+
+  /**
+   * Sets the isLoading state for the provided button if the current folder is present in the provided array of loading
+   * items.
+   *
+   * @param {Button} button - The button that should be loading or not.
+   * @param {Set} loadingItems - A Set of IDs of folders that are currently in a particular loading state.
+   * @private
+   */
+  _toggleButtonLoading(button, loadingItems) {
+    button.isLoading = loadingItems.has(this.stateManager.state.locationParameters.folderId);
   }
 
   /**

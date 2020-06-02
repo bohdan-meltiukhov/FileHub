@@ -31,7 +31,6 @@ import * as listItem from './components/list-item';
 import * as createFolderAction from './state/actions/create-folder-action';
 import * as renameFolderMutator from './state/mutators/rename-folder-mutator';
 import * as removeItemAction from './state/actions/remove-item-action';
-import * as isDeleteItemLoadingMutator from './state/mutators/is-item-deletion-in-progress-mutator';
 import * as deleteItemLoadingErrorMutator from './state/mutators/delete-item-loading-error-mutator';
 import * as uploadFileErrorMutator from './state/mutators/upload-file-error-mutator';
 import * as addUploadFileInProgressMutator from './state/mutators/add-upload-file-in-progress-mutator';

@@ -2,8 +2,9 @@ import Action from '../action';
 import GetFilesAction from '../get-files-action';
 import FileItem from '../../../models/file-system-objects/file-item';
 import FolderItem from '../../../models/file-system-objects/folder-item';
-import IsItemDeletionInProgressMutator from '../../mutators/is-item-deletion-in-progress-mutator';
 import DeleteItemLoadingErrorMutator from '../../mutators/delete-item-loading-error-mutator';
+import AddItemDeletionInProgressMutator from '../../mutators/add-item-deletion-in-progress-mutator';
+import RemoveItemDeletionInProgressMutator from '../../mutators/remove-item-deletion-in-progress-mutator';
 
 /**
  * The action that removes a file or a folder.
@@ -22,7 +23,7 @@ export default class RemoveItemAction extends Action {
 
   /** @inheritdoc */
   async apply(stateManager, apiService) {
-    stateManager.mutate(new IsItemDeletionInProgressMutator(this._item.id, true));
+    stateManager.mutate(new AddItemDeletionInProgressMutator(this._item.id));
 
     try {
       if (this._item instanceof FolderItem) {
@@ -37,7 +38,7 @@ export default class RemoveItemAction extends Action {
     } catch (e) {
       stateManager.mutate(new DeleteItemLoadingErrorMutator(e));
     } finally {
-      stateManager.mutate(new IsItemDeletionInProgressMutator(this._item.id, false));
+      stateManager.mutate(new RemoveItemDeletionInProgressMutator(this._item.id));
     }
   }
 }

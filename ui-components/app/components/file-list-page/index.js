@@ -225,14 +225,14 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
-      this.fileList.loadingItems = state.itemsWithDeletionInProgress;
+      this.fileList.itemsWithDeletionInProgress = state.itemsWithDeletionInProgress;
     });
 
     this.onStateChanged('foldersWithFileUploadInProgress', ({detail: {state}}) => {
       const loadingFolders = state.foldersWithFileUploadInProgress;
 
       this._toggleButtonLoading(this.uploadFileButton, loadingFolders);
-      this.fileList.loadingItems = Array.from(loadingFolders);
+      this.fileList.foldersWithFileUploadInProgress = loadingFolders;
     });
 
     this.onStateChanged('uploadFileError', ({detail: {state}}) => {
@@ -276,7 +276,7 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('filesWithDownloadInProgress', ({detail: {state}}) => {
-      this.fileList.loadingItems = Array.from(state.filesWithDownloadInProgress);
+      this.fileList.filesWithDownloadInProgress = state.filesWithDownloadInProgress;
     });
   }
 

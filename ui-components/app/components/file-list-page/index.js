@@ -252,9 +252,10 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('userNameLoadingError', ({detail: {state}}) => {
       const error = state.userNameLoadingError;
+      const messageService = new MessageService();
 
       if (error instanceof AuthorizationError) {
-        alert('Error: ' + error.message);
+        messageService.showError('Error: ' + error.message);
         window.location.hash = AUTHENTICATION_ROUTE;
       } else {
         console.error('User Details Loading Error:', error);
@@ -263,8 +264,10 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('downloadFileError', ({detail: {state}}) => {
       const {fileItem, error} = state.downloadFileError;
+      const messageService = new MessageService();
+
       if (error instanceof NotFoundError && fileItem.parentId !== state.locationParameters.folderId) {
-        alert('Error: ' + error.message);
+        messageService.showError('Error: ' + error.message);
       } else {
         this._handleError(error);
       }
@@ -285,17 +288,18 @@ export default class FileListPage extends StateAwareComponent {
   _handleError(error) {
     const messageService = new MessageService();
     if (error instanceof NotFoundError) {
-      // alert('Error: ' + error.message);
-      messageService.showError(error.message);
-      const folderId = this.stateManager.state.locationParameters.folderId;
-      this.stateManager.dispatch(new GetFilesAction(folderId));
+      messageService.showError('Error: ' + error.message, () => {
+        const folderId = this.stateManager.state.locationParameters.folderId;
+        this.stateManager.dispatch(new GetFilesAction(folderId));
+      });
     } else if (error instanceof AuthorizationError) {
-      alert('Error: ' + error.message);
-      window.location.hash = AUTHENTICATION_ROUTE;
+      messageService.showError('Error: ' + error.message, () => {
+        window.location.hash = AUTHENTICATION_ROUTE;
+      });
     } else if (error instanceof GeneralServerError) {
-      alert('Error: ' + error.message);
+      messageService.showError('Error: ' + error.message);
     } else {
-      alert('Unknown error. See the console for more details.');
+      messageService.showError('Unknown error. See the console for more details.');
       console.error(error);
     }
   }

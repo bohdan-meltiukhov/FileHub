@@ -294,7 +294,6 @@ export default class FetchMock {
    */
   static _createFolder() {
     fetchMock.post('express:/folder/:folderId/folder', (url, opts) => {
-      return 404;
       if (opts.headers.Authentication !== TOKEN) {
         return 401;
       }

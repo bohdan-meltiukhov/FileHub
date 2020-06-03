@@ -40,7 +40,7 @@ export default module('The FileListPage', (hooks) => {
     assert.ok(uploadFileButton, 'The file list page should initialize the upload file button.');
   });
 
-  test('use the message service correctly.', async (assert) => {
+  test('should use the message service correctly.', async (assert) => {
     assert.expect(3);
 
     const authorizationErrorMessage = 'Not authorized.';

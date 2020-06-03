@@ -31,10 +31,12 @@ export default class FileListPage extends StateAwareComponent {
    *
    * @param {Element} container - The parent element for the page.
    * @param {StateManager} stateManager - The state manager to use.
+   * @param {MessageService} messageService - The service to show toast messages.
    * @param {UrlProperties} properties - The URL properties.
    */
-  constructor(container, stateManager, properties) {
+  constructor(container, stateManager, messageService, properties) {
     super(container, stateManager);
+    this._messageService = messageService;
 
     this.render();
     stateManager.dispatch(new GetFolderAction(properties.folderId));
@@ -261,10 +263,9 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('userNameLoadingError', ({detail: {state}}) => {
       const error = state.userNameLoadingError;
-      const messageService = new MessageService();
 
       if (error instanceof AuthorizationError) {
-        messageService.showError('Error: ' + error.message);
+        this._messageService.showError('Error: ' + error.message);
         window.location.hash = AUTHENTICATION_ROUTE;
       } else {
         console.error('User Details Loading Error:', error);
@@ -273,10 +274,9 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('downloadFileError', ({detail: {state}}) => {
       const {fileItem, error} = state.downloadFileError;
-      const messageService = new MessageService();
 
       if (error instanceof NotFoundError && fileItem.parentId !== state.locationParameters.folderId) {
-        messageService.showError('Error: ' + error.message);
+        this._messageService.showError('Error: ' + error.message);
       } else {
         this._handleError(error);
       }
@@ -308,16 +308,13 @@ export default class FileListPage extends StateAwareComponent {
    * @private
    */
   _handleError(error) {
-    const messageService = new MessageService();
     if (error instanceof NotFoundError) {
-      messageService.showError('Error: ' + error.message, () => {
-        const folderId = this.stateManager.state.locationParameters.folderId;
-        this.stateManager.dispatch(new GetFilesAction(folderId));
-      });
+      messageService.showError('Error: ' + error.message);
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this.stateManager.dispatch(new GetFilesAction(folderId));
     } else if (error instanceof AuthorizationError) {
-      messageService.showError('Error: ' + error.message, () => {
-        window.location.hash = AUTHENTICATION_ROUTE;
-      });
+      messageService.showError('Error: ' + error.message);
+      window.location.hash = AUTHENTICATION_ROUTE;
     } else if (error instanceof GeneralServerError) {
       messageService.showError('Error: ' + error.message);
     } else {

@@ -2,19 +2,19 @@ import LocationParametersMutator from '../../../../app/state/mutators/location-p
 
 const {module, test} = QUnit;
 
-module('The LocationParametersMutator');
+export default module('The LocationParametersMutator', () => {
+  test('should set location parameters to state correctly.', (assert) => {
+    const parameters = {
+      folderId: 'root',
+    };
 
-test('should set location parameters to state correctly.', (assert) => {
-  const parameters = {
-    folderId: 'root',
-  };
+    const mutator = new LocationParametersMutator(parameters);
 
-  const mutator = new LocationParametersMutator(parameters);
+    const state = {};
 
-  const state = {};
+    mutator.apply(state);
 
-  mutator.apply(state);
-
-  assert.strictEqual(state.locationParameters, parameters, 'The LocationParametersMutator should set the location ' +
-    'parameters to the provided state correctly.');
+    assert.strictEqual(state.locationParameters, parameters, 'The LocationParametersMutator should set the location ' +
+      'parameters to the provided state correctly.');
+  });
 });

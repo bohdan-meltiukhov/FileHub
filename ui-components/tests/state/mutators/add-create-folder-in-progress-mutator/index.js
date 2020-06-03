@@ -2,15 +2,15 @@ import AddCreateFolderInProgressMutator from '../../../../app/state/mutators/add
 
 const {module, test} = QUnit;
 
-module('The AddCreateFolderInProgressMutator');
+export default module('The AddCreateFolderInProgressMutator', () => {
+  test('should set the provided folder ID correctly.', (assert) => {
+    const folderId = 'tRZXiSHNRlgZluGQ';
+    const state = {};
 
-test('should set the provided folder ID correctly.', (assert) => {
-  const folderId = 'tRZXiSHNRlgZluGQ';
-  const state = {};
+    const mutator = new AddCreateFolderInProgressMutator(folderId);
+    mutator.apply(state);
 
-  const mutator = new AddCreateFolderInProgressMutator(folderId);
-  mutator.apply(state);
-
-  assert.deepEqual(Array.from(state.foldersWithCreateFolderInProgress), [folderId], 'The ' +
-    'AddCreateFolderInProgressMutator should add the folder ID to the provided state correctly.');
+    assert.deepEqual(Array.from(state.foldersWithCreateFolderInProgress), [folderId], 'The ' +
+      'AddCreateFolderInProgressMutator should add the folder ID to the provided state correctly.');
+  });
 });

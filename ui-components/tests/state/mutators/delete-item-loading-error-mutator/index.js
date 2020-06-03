@@ -2,17 +2,17 @@ import DeleteItemLoadingErrorMutator from '../../../../app/state/mutators/delete
 
 const {module, test} = QUnit;
 
-module('The DeleteItemLoadingErrorMutator');
+export default module('The DeleteItemLoadingErrorMutator', () => {
+  test('should set the error correctly.', (assert) => {
+    const error = new Error('Something went wrong');
 
-test('should set the error correctly.', (assert) => {
-  const error = new Error('Something went wrong');
+    const mutator = new DeleteItemLoadingErrorMutator(error);
 
-  const mutator = new DeleteItemLoadingErrorMutator(error);
+    const state = {};
 
-  const state = {};
+    mutator.apply(state);
 
-  mutator.apply(state);
-
-  assert.strictEqual(state.deleteItemLoadingError, error, 'The DeleteItemLoadingError should set the error to the ' +
-    'provided state correctly.');
+    assert.strictEqual(state.deleteItemLoadingError, error, 'The DeleteItemLoadingError should set the error to the ' +
+      'provided state correctly.');
+  });
 });

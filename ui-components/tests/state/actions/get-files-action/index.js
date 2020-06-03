@@ -5,62 +5,62 @@ import FileItem from '../../../../app/models/file-system-objects/file-item';
 
 const {module, test} = QUnit;
 
-module('The GetFilesAction');
+export default module('The GetFilesAction', () => {
+  test('should call the mutate method of the state manager.', async (assert) => {
+    assert.expect(8);
 
-test('should call the mutate method of the state manager.', async (assert) => {
-  assert.expect(8);
+    const parentId = 'tRZXiSHNRlgZluGQ';
 
-  const parentId = 'tRZXiSHNRlgZluGQ';
+    const files = [
+      new FileItem({
+        id: 'ARqTPQ1XXUrFlaJe',
+        parentId,
+        name: 'Montenegro.jpg',
+        mimeType: 'image',
+        size: 162,
+        type: 'file',
+      }),
+      new FileItem({
+        id: 'zHPz1GsbO9Kq8Xt0',
+        parentId,
+        name: 'my_friends.png',
+        mimeType: 'image',
+        size: 16,
+        type: 'file',
+      }),
+    ];
 
-  const files = [
-    new FileItem({
-      id: 'ARqTPQ1XXUrFlaJe',
-      parentId,
-      name: 'Montenegro.jpg',
-      mimeType: 'image',
-      size: 162,
-      type: 'file',
-    }),
-    new FileItem({
-      id: 'zHPz1GsbO9Kq8Xt0',
-      parentId,
-      name: 'my_friends.png',
-      mimeType: 'image',
-      size: 16,
-      type: 'file',
-    }),
-  ];
+    const getFiles = async (folderId) => {
+      assert.strictEqual(folderId, parentId, 'The GetFilesAction should provide correct folderId to the apiService.');
+      return {files};
+    };
 
-  const getFiles = async (folderId) => {
-    assert.strictEqual(folderId, parentId, 'The GetFilesAction should provide correct folderId to the apiService.');
-    return {files};
-  };
+    const apiServiceMock = {
+      getFiles,
+    };
 
-  const apiServiceMock = {
-    getFiles,
-  };
+    const stateManagerMock = {
+      mutate: (mutator) => {
+        assert.step(mutator.constructor.name);
+        if (mutator instanceof IsFileListLoadingMutator) {
+          assert.step('IsFileListLoadingMutator: ' + mutator._isLoading);
+        } else if (mutator instanceof FileListMutator) {
+          assert.deepEqual(mutator._fileList, files, 'The GetFilesAction should create an instance of the ' +
+            'FileListMutator with correct files.');
+        }
+      },
+    };
 
-  const stateManagerMock = {
-    mutate: (mutator) => {
-      assert.step(mutator.constructor.name);
-      if (mutator instanceof IsFileListLoadingMutator) {
-        assert.step('IsFileListLoadingMutator: ' + mutator._isLoading);
-      } else if (mutator instanceof FileListMutator) {
-        assert.deepEqual(mutator._fileList, files, 'The GetFilesAction should create an instance of the ' +
-          'FileListMutator with correct files.');
-      }
-    },
-  };
+    const action = new GetFilesAction(parentId);
+    action.apply(stateManagerMock, apiServiceMock);
 
-  const action = new GetFilesAction(parentId);
-  action.apply(stateManagerMock, apiServiceMock);
-
-  await getFiles;
-  assert.verifySteps([
-    'IsFileListLoadingMutator',
-    'IsFileListLoadingMutator: true',
-    'FileListMutator',
-    'IsFileListLoadingMutator',
-    'IsFileListLoadingMutator: false',
-  ], 'The GetFilesAction should provided mutators to the state manager in the correct order.');
+    await getFiles;
+    assert.verifySteps([
+      'IsFileListLoadingMutator',
+      'IsFileListLoadingMutator: true',
+      'FileListMutator',
+      'IsFileListLoadingMutator',
+      'IsFileListLoadingMutator: false',
+    ], 'The GetFilesAction should provided mutators to the state manager in the correct order.');
+  });
 });

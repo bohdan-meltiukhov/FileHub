@@ -2,15 +2,15 @@ import CreateFolderErrorMutator from '../../../../app/state/mutators/create-fold
 
 const {module, test} = QUnit;
 
-module('The CreateFolderErrorMutator');
+export default module('The CreateFolderErrorMutator', () => {
+  test('should set the provided error to the state correctly.', (assert) => {
+    const error = new Error('Something went wrong');
+    const state = {};
 
-test('should set the provided error to the state correctly.', (assert) => {
-  const error = new Error('Something went wrong');
-  const state = {};
+    const mutator = new CreateFolderErrorMutator(error);
+    mutator.apply(state);
 
-  const mutator = new CreateFolderErrorMutator(error);
-  mutator.apply(state);
-
-  assert.strictEqual(state.createFolderError, error, 'The CreateFolderErrorMutator should set the ' +
-    'error to the provided state correctly.');
+    assert.strictEqual(state.createFolderError, error, 'The CreateFolderErrorMutator should set the ' +
+      'error to the provided state correctly.');
+  });
 });

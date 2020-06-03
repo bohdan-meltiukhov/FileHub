@@ -2,17 +2,17 @@ import RemoveUploadFileInProgressMutator from '../../../../app/state/mutators/re
 
 const {module, test} = QUnit;
 
-module('The RemoveUploadFileInProgressMutator');
+export default module('The RemoveUploadFileInProgressMutator', () => {
+  test('should remove the provided folder ID correctly.', (assert) => {
+    const folderId = 'tRZXiSHNRlgZluGQ';
+    const state = {
+      foldersWithFileUploadInProgress: new Set([folderId]),
+    };
 
-test('should remove the provided folder ID correctly.', (assert) => {
-  const folderId = 'tRZXiSHNRlgZluGQ';
-  const state = {
-    foldersWithFileUploadInProgress: [folderId],
-  };
+    const mutator = new RemoveUploadFileInProgressMutator(folderId);
+    mutator.apply(state);
 
-  const mutator = new RemoveUploadFileInProgressMutator(folderId);
-  mutator.apply(state);
-
-  assert.deepEqual(state.foldersWithFileUploadInProgress, [], 'The RemoveUploadFileInProgressMutator should ' +
-    'remove the folder ID from the provided state correctly.');
+    assert.deepEqual(Array.from(state.foldersWithFileUploadInProgress), [], 'The RemoveUploadFileInProgressMutator ' +
+      'should remove the folder ID from the provided state correctly.');
+  });
 });

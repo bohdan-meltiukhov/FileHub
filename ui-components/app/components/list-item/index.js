@@ -38,6 +38,7 @@ export default class ListItem extends Component {
             <td class="cell-actions" data-test="cell-actions">
                 <div class="action-buttons" data-test="action-buttons">
                     <span class="glyphicon glyphicon-remove-circle" data-test="remove-item-button"></span>
+                    <div class="loader-small" data-test="actions-loader"></div>
                 </div>
             </td>
         </tr>
@@ -197,11 +198,16 @@ export default class ListItem extends Component {
    * @param {boolean} value - The flag that shows whether the current list item is loading or not.
    */
   set isLoading(value) {
-    if (value) {
-      this.rootElement.classList.add('loading');
-    } else {
-      this.rootElement.classList.remove('loading');
-    }
+    this.rootElement.classList.toggle('loading', value);
+  }
+
+  /**
+   * Sets if the current item has action buttons loading or not.
+   *
+   * @param {boolean} value - The flag that shows whether the item's actions are loading.
+   */
+  set isLoadingActions(value) {
+    this.rootElement.classList.toggle('actions-loading', value);
   }
 
   /**

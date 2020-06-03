@@ -8,6 +8,10 @@ import FolderItem from '../../models/file-system-objects/folder-item';
  * The component for displaying the file list.
  */
 export default class FileList extends Component {
+  _itemsWithDeletionInProgress = new Set();
+  _foldersWithFileUploadInProgress = new Set();
+  _filesWithDownloadInProgress = new Set();
+
   /**
    * Creates an instance of the file list with set container and file items.
    *
@@ -43,6 +47,12 @@ export default class FileList extends Component {
       }
     });
 
+    const loadingItems = new Set([
+      ...this._itemsWithDeletionInProgress,
+      ...this._foldersWithFileUploadInProgress,
+      ...this._filesWithDownloadInProgress,
+    ]);
+
     this._fileItems.forEach((item) => {
       item.onClick(() => {
         if (this._selectedItem && this._selectedItem !== item) {
@@ -64,8 +74,10 @@ export default class FileList extends Component {
         item.onFileUploadInitiated(this._onFileUploadInitiatedHandler);
       }
 
-      if (this._loadingItems) {
-        item.isLoading = this._loadingItems.includes(item.id);
+      item.isLoadingActions = loadingItems.has(item.id);
+
+      if (this._itemsWithRenameInProgress) {
+        item.isLoading = this._itemsWithRenameInProgress.includes(item.id);
       }
 
       if (item.id === this._renameFolderId) {
@@ -81,17 +93,36 @@ export default class FileList extends Component {
   }
 
   /**
-   * Sets the loading state for the provided items and removes the loading state for the items that are not present
-   * in the provided array.
+   * Sets the items that are currently being deleted.
    *
-   * @param {string[]} itemIds - Items that are currently loading.
+   * @param {Set} itemIds - A set of item IDs that currently have deletion in progress.
    */
-  set loadingItems(itemIds) {
-    this._fileItems.forEach((item) => {
-      item.isLoading = itemIds.includes(item.id);
-    });
+  set itemsWithDeletionInProgress(itemIds) {
+    this._itemsWithDeletionInProgress = itemIds;
 
-    this._loadingItems = itemIds;
+    this.rerender();
+  }
+
+  /**
+   * Sets the folders that currently have file upload in progress.
+   *
+   * @param {Set} folderIds - A set of folder IDs that currently have file upload in progress.
+   */
+  set foldersWithFileUploadInProgress(folderIds) {
+    this._foldersWithFileUploadInProgress = folderIds;
+
+    this.rerender();
+  }
+
+  /**
+   * Sets the files that are currently being downloaded.
+   *
+   * @param {Set} fileIds - A set of file IDs that currently have downloading in progress.
+   */
+  set filesWithDownloadInProgress(fileIds) {
+    this._filesWithDownloadInProgress = fileIds;
+
+    this.rerender();
   }
 
   /**
@@ -100,23 +131,20 @@ export default class FileList extends Component {
    * @param {Function} handler - The function to call when the use wants to delete an item.
    */
   onRemoveButtonClicked(handler) {
-    this._fileItems.forEach((item) => {
-      item.onRemoveButtonClicked(handler);
-    });
-
     this._onRemoveItemHandler = handler;
+
+    this.rerender();
   }
 
   /**
-   * Sets whether the selected item is loading or not.
+   * Sets the provided items to renaming in progress state.
    *
-   * @param {boolean} isLoading - The flag that shows if the selected item is loading or not.
+   * @param {string[]} itemIds - An array of loading items' IDs.
    */
-  set isSelectedItemLoading(isLoading) {
-    if (isLoading) {
-      this._loadingItem = this._selectedItem;
-    }
-    this._loadingItem.isLoading = isLoading;
+  set itemsWithRenameInProgress(itemIds) {
+    this._itemsWithRenameInProgress = itemIds;
+
+    this.rerender();
   }
 
   /**
@@ -125,11 +153,9 @@ export default class FileList extends Component {
    * @param {Function} handler - The function to call when an item changes its name.
    */
   onItemNameChanged(handler) {
-    this._fileItems.forEach((item) => {
-      item.onNameChanged(handler);
-    });
-
     this._onItemNameChangedHandler = handler;
+
+    this.rerender();
   }
 
   /**
@@ -140,11 +166,7 @@ export default class FileList extends Component {
   onDownloadButtonPressed(handler) {
     this._onDownLoadButtonPressedHandler = handler;
 
-    this._fileItems.forEach((item) => {
-      if (item instanceof FileItemComponent) {
-        item.onDownloadButtonPressed(handler);
-      }
-    });
+    this.rerender();
   }
 
   /**
@@ -154,8 +176,8 @@ export default class FileList extends Component {
    */
   set files(fileList) {
     this._files = fileList;
-    this.rootElement.innerHTML = '';
-    this.initNestedComponents();
+
+    this.rerender();
   }
 
   /**
@@ -170,13 +192,8 @@ export default class FileList extends Component {
     }
 
     this._renameFolderId = folderId;
-    const createdFolder = this._fileItems.find((item) => (item.id === folderId));
 
-    if (createdFolder) {
-      createdFolder.isSelected = true;
-      createdFolder.isEditing = true;
-      this._selectedItem = createdFolder;
-    }
+    this.rerender();
   }
 
   /**
@@ -199,12 +216,8 @@ export default class FileList extends Component {
    * upload it.
    */
   onFileUploadInitiated(handler) {
-    this._fileItems.forEach((item) => {
-      if (item instanceof FolderItemComponent) {
-        item.onFileUploadInitiated(handler);
-      }
-    });
-
     this._onFileUploadInitiatedHandler = handler;
+
+    this.rerender();
   }
 }

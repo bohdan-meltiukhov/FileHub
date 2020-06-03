@@ -2,17 +2,17 @@ import RenameItemLoadingErrorMutator from '../../../../app/state/mutators/rename
 
 const {module, test} = QUnit;
 
-module('The RenameItemLoadingErrorMutator');
+export default module('The RenameItemLoadingErrorMutator', () => {
+  test('should set the error to the state correctly.', (assert) => {
+    const error = new Error('Something went wrong.');
 
-test('should set the error to the state correctly.', (assert) => {
-  const error = new Error('Something went wrong.');
+    const mutator = new RenameItemLoadingErrorMutator(error);
 
-  const mutator = new RenameItemLoadingErrorMutator(error);
+    const state = {};
 
-  const state = {};
+    mutator.apply(state);
 
-  mutator.apply(state);
-
-  assert.strictEqual(state.renameItemLoadingError, error, 'The RenameItemLoadingErrorMutator should set the error to ' +
-    'the provided state correctly.');
+    assert.strictEqual(state.renameItemLoadingError, error, 'The RenameItemLoadingErrorMutator should set the error ' +
+      'to the provided state correctly.');
+  });
 });

@@ -28,6 +28,11 @@ a:hover {
     border-color: #1b3e5e;
 }
 
+.button .loader-small {
+    margin-top: 4px;
+    margin-bottom: -3px;
+}
+
 .application-box {
     box-sizing: border-box;
     background-color: #fff;
@@ -239,12 +244,21 @@ a:hover {
     display: inline-block;
 }
 
-/*.files tr.loading td.cell-actions .action-buttons {*/
-/*    visibility: hidden;*/
-/*}*/
+.files .actions-loading .cell-actions .glyphicon, .files .loading .cell-actions .glyphicon {
+    visibility: hidden;
+}
 
-.files .actions-loading .cell-actions .glyphicon {
-    color: #808080;
+.files .actions-loading .cell-actions .loader-small {
+    visibility: visible;
+}
+
+.files .cell-actions .loader-small {
+    visibility: hidden;
+    position: absolute;
+    left: 50%;
+    margin-left: -6px;
+    top: 50%;
+    margin-top: -6px;
 }
 
 .files td {
@@ -271,6 +285,7 @@ a:hover {
 
 .files td.cell-actions {
     width: 100px;
+    position: relative;
 }
 
 .files td.cell-actions .glyphicon {

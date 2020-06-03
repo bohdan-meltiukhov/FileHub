@@ -3,15 +3,15 @@ import GeneralServerError from '../../../../app/models/errors/general-server-err
 
 const {module, test} = QUnit;
 
-module('The UserNameLoadingErrorMutator');
+export default module('The UserNameLoadingErrorMutator', () => {
+  test('should set the provided error correctly.', (assert) => {
+    const error = new GeneralServerError('Internal server error');
+    const state = {};
 
-test('should set the provided error correctly.', (assert) => {
-  const error = new GeneralServerError('Internal server error');
-  const state = {};
+    const mutator = new UserNameLoadingErrorMutator(error);
+    mutator.apply(state);
 
-  const mutator = new UserNameLoadingErrorMutator(error);
-  mutator.apply(state);
-
-  assert.strictEqual(state.userNameLoadingError, error, 'The UserNameLoadingErrorMutator should set the error ' +
-    'to the provided state correctly.');
+    assert.strictEqual(state.userNameLoadingError, error, 'The UserNameLoadingErrorMutator should set the error ' +
+      'to the provided state correctly.');
+  });
 });

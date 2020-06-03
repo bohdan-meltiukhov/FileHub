@@ -2,15 +2,15 @@ import AddUploadFileInProgressMutator from '../../../../app/state/mutators/add-u
 
 const {module, test} = QUnit;
 
-module('The AddUploadFileInProgressMutator');
+export default module('The AddUploadFileInProgressMutator', () => {
+  test('should set the provided folder ID correctly.', (assert) => {
+    const folderId = 'tRZXiSHNRlgZluGQ';
+    const state = {};
 
-test('should set the provided folder ID correctly.', (assert) => {
-  const folderId = 'tRZXiSHNRlgZluGQ';
-  const state = {};
+    const mutator = new AddUploadFileInProgressMutator(folderId);
+    mutator.apply(state);
 
-  const mutator = new AddUploadFileInProgressMutator(folderId);
-  mutator.apply(state);
-
-  assert.deepEqual(state.foldersWithFileUploadInProgress, [folderId], 'The AddUploadFileInProgressMutator should ' +
-    'add the folder ID to the provided state correctly.');
+    assert.deepEqual(Array.from(state.foldersWithFileUploadInProgress), [folderId], 'The ' +
+      'AddUploadFileInProgressMutator should add the folder ID to the provided state correctly.');
+  });
 });

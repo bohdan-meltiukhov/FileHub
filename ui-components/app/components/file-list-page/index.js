@@ -181,12 +181,13 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('folder', ({detail: {state}}) => {
       this.breadcrumbs.folder = state.folder;
+      const folderId = this.stateManager.state.locationParameters.folderId;
 
       const foldersWithFileUploadInProgress = state.foldersWithFileUploadInProgress || new Set();
-      this._toggleButtonLoading(this.uploadFileButton, foldersWithFileUploadInProgress);
+      this._toggleButtonLoading(this.uploadFileButton, foldersWithFileUploadInProgress, folderId);
 
       const foldersWithCreateFolderInProgress = state.foldersWithCreateFolderInProgress || new Set();
-      this._toggleButtonLoading(this.createFolderButton, foldersWithCreateFolderInProgress);
+      this._toggleButtonLoading(this.createFolderButton, foldersWithCreateFolderInProgress, folderId);
     });
 
     this.onStateChanged('renameFolderId', ({detail: {state}}) => {
@@ -231,7 +232,8 @@ export default class FileListPage extends StateAwareComponent {
     this.onStateChanged('foldersWithFileUploadInProgress', ({detail: {state}}) => {
       const loadingFolders = state.foldersWithFileUploadInProgress;
 
-      this._toggleButtonLoading(this.uploadFileButton, loadingFolders);
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this._toggleButtonLoading(this.uploadFileButton, loadingFolders, folderId);
       this.fileList.foldersWithFileUploadInProgress = loadingFolders;
     });
 
@@ -240,7 +242,8 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('foldersWithCreateFolderInProgress', ({detail: {state}}) => {
-      this._toggleButtonLoading(this.createFolderButton, state.foldersWithCreateFolderInProgress);
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this._toggleButtonLoading(this.createFolderButton, state.foldersWithCreateFolderInProgress, folderId);
     });
 
     this.onStateChanged('createFolderError', ({detail: {state}}) => {
@@ -286,10 +289,11 @@ export default class FileListPage extends StateAwareComponent {
    *
    * @param {Button} button - The button that should be loading or not.
    * @param {Set} loadingItems - A Set of IDs of folders that are currently in a particular loading state.
+   * @param {string} folderId - The identifier of the current folder.
    * @private
    */
-  _toggleButtonLoading(button, loadingItems) {
-    button.isLoading = loadingItems.has(this.stateManager.state.locationParameters.folderId);
+  _toggleButtonLoading(button, loadingItems, folderId) {
+    button.isLoading = loadingItems.has(folderId);
   }
 
   /**

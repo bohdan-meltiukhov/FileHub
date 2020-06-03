@@ -28,6 +28,11 @@ a:hover {
     border-color: #1b3e5e;
 }
 
+.button .loader-small {
+    margin-top: 4px;
+    margin-bottom: -3px;
+}
+
 .application-box {
     box-sizing: border-box;
     background-color: #fff;

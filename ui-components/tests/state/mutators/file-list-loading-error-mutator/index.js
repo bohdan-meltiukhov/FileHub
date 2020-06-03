@@ -2,14 +2,14 @@ import FileListLoadingErrorMutator from '../../../../app/state/mutators/file-lis
 
 const {module, test} = QUnit;
 
-module('The FileListLoadingErrorMutator');
+export default module('The FileListLoadingErrorMutator', () => {
+  test('should apply the message.', (assert) => {
+    const message = 'General Error!';
+    const mutator = new FileListLoadingErrorMutator(message);
 
-test('should apply the message.', (assert) => {
-  const message = 'General Error!';
-  const mutator = new FileListLoadingErrorMutator(message);
-
-  const state = {};
-  mutator.apply(state);
-  assert.strictEqual(state.fileListLoadingError, message, 'The file list loading error mutator should apply the ' +
-    'provided message to the state.');
+    const state = {};
+    mutator.apply(state);
+    assert.strictEqual(state.fileListLoadingError, message, 'The file list loading error mutator should apply the ' +
+      'provided message to the state.');
+  });
 });

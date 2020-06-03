@@ -2,15 +2,15 @@ import AddItemDeletionInProgressMutator from '../../../../app/state/mutators/add
 
 const {module, test} = QUnit;
 
-module('The AddItemDeletionInProgressMutator');
+export default module('The AddItemDeletionInProgressMutator', () => {
+  test('should set the provided folder ID correctly.', (assert) => {
+    const itemId = 'tRZXiSHNRlgZluGQ';
+    const state = {};
 
-test('should set the provided folder ID correctly.', (assert) => {
-  const itemId = 'tRZXiSHNRlgZluGQ';
-  const state = {};
+    const mutator = new AddItemDeletionInProgressMutator(itemId);
+    mutator.apply(state);
 
-  const mutator = new AddItemDeletionInProgressMutator(itemId);
-  mutator.apply(state);
-
-  assert.deepEqual(Array.from(state.itemsWithDeletionInProgress), [itemId], 'The ' +
-    'AddItemDeletionInProgressMutator should add the item ID to the provided state correctly.');
+    assert.deepEqual(Array.from(state.itemsWithDeletionInProgress), [itemId], 'The ' +
+      'AddItemDeletionInProgressMutator should add the item ID to the provided state correctly.');
+  });
 });

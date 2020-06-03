@@ -3,17 +3,17 @@ import RemoveItemDeletionInProgressMutator
 
 const {module, test} = QUnit;
 
-module('The RemoveItemDeletionInProgressMutator');
+export default module('The RemoveItemDeletionInProgressMutator', () => {
+  test('should remove the provided folder ID correctly.', (assert) => {
+    const itemId = 'tRZXiSHNRlgZluGQ';
+    const state = {
+      itemsWithDeletionInProgress: new Set([itemId]),
+    };
 
-test('should remove the provided folder ID correctly.', (assert) => {
-  const itemId = 'tRZXiSHNRlgZluGQ';
-  const state = {
-    itemsWithDeletionInProgress: new Set([itemId]),
-  };
+    const mutator = new RemoveItemDeletionInProgressMutator(itemId);
+    mutator.apply(state);
 
-  const mutator = new RemoveItemDeletionInProgressMutator(itemId);
-  mutator.apply(state);
-
-  assert.deepEqual(Array.from(state.itemsWithDeletionInProgress), [], 'The RemoveItemDeletionInProgressMutator ' +
-    'should remove the item ID from the provided state correctly.');
+    assert.deepEqual(Array.from(state.itemsWithDeletionInProgress), [], 'The RemoveItemDeletionInProgressMutator ' +
+      'should remove the item ID from the provided state correctly.');
+  });
 });

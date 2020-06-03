@@ -2,17 +2,17 @@ import FolderLoadingErrorMutator from '../../../../app/state/mutators/folder-loa
 
 const {module, test} = QUnit;
 
-module('The FolderLoadingErrorMutator');
+export default module('The FolderLoadingErrorMutator', () => {
+  test('should set the error correctly.', (assert) => {
+    const errorMessage = 'Something went wrong';
 
-test('should set the error correctly.', (assert) => {
-  const errorMessage = 'Something went wrong';
+    const mutator = new FolderLoadingErrorMutator(errorMessage);
 
-  const mutator = new FolderLoadingErrorMutator(errorMessage);
+    const state = {};
 
-  const state = {};
+    mutator.apply(state);
 
-  mutator.apply(state);
-
-  assert.strictEqual(state.folderLoadingError, errorMessage, 'The FolderLoadingErrorMutator should set the error ' +
-    'message to the provided state correctly.');
+    assert.strictEqual(state.folderLoadingError, errorMessage, 'The FolderLoadingErrorMutator should set the error ' +
+      'message to the provided state correctly.');
+  });
 });

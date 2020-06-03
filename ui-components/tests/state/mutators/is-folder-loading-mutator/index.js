@@ -2,17 +2,17 @@ import IsFolderLoadingMutator from '../../../../app/state/mutators/is-folder-loa
 
 const {module, test} = QUnit;
 
-module('The IsFolderLoadingMutator');
+export default module('The IsFolderLoadingMutator', () => {
+  test('should set the isLoading flag to the state correctly.', (assert) => {
+    const isLoading = true;
 
-test('should set the isLoading flag to the state correctly.', (assert) => {
-  const isLoading = true;
+    const mutator = new IsFolderLoadingMutator(isLoading);
 
-  const mutator = new IsFolderLoadingMutator(isLoading);
+    const state = {};
 
-  const state = {};
+    mutator.apply(state);
 
-  mutator.apply(state);
-
-  assert.strictEqual(state.isFolderLoading, isLoading, 'The IsFolderLoadingMutator should set the isLoading flag to ' +
-    'the provided state correctly.');
+    assert.strictEqual(state.isFolderLoading, isLoading, 'The IsFolderLoadingMutator should set the isLoading flag ' +
+      'to the provided state correctly.');
+  });
 });

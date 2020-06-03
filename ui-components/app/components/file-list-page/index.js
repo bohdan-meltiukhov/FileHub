@@ -181,6 +181,13 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('folder', ({detail: {state}}) => {
       this.breadcrumbs.folder = state.folder;
+      const folderId = this.stateManager.state.locationParameters.folderId;
+
+      const foldersWithFileUploadInProgress = state.foldersWithFileUploadInProgress || new Set();
+      this._toggleButtonLoading(this.uploadFileButton, foldersWithFileUploadInProgress, folderId);
+
+      const foldersWithCreateFolderInProgress = state.foldersWithCreateFolderInProgress || new Set();
+      this._toggleButtonLoading(this.createFolderButton, foldersWithCreateFolderInProgress, folderId);
     });
 
     this.onStateChanged('renameFolderId', ({detail: {state}}) => {
@@ -206,8 +213,8 @@ export default class FileListPage extends StateAwareComponent {
       }
     });
 
-    this.onStateChanged('isRenameItemLoading', ({detail: {state}}) => {
-      this.fileList.isRenameItemInProgress = state.isRenameItemLoading;
+    this.onStateChanged('itemsWithRenameInProgress', ({detail: {state}}) => {
+      this.fileList.itemsWithRenameInProgress = Array.from(state.itemsWithRenameInProgress);
     });
 
     this.onStateChanged('renameItemLoadingError', ({detail: {state}}) => {
@@ -219,22 +226,24 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('itemsWithDeletionInProgress', ({detail: {state}}) => {
-      this.fileList.loadingItems = state.itemsWithDeletionInProgress;
+      this.fileList.itemsWithDeletionInProgress = state.itemsWithDeletionInProgress;
     });
 
     this.onStateChanged('foldersWithFileUploadInProgress', ({detail: {state}}) => {
       const loadingFolders = state.foldersWithFileUploadInProgress;
 
-      this.uploadFileButton.isLoading = loadingFolders.includes(state.locationParameters.folderId);
-      this.fileList.loadingItems = loadingFolders;
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this._toggleButtonLoading(this.uploadFileButton, loadingFolders, folderId);
+      this.fileList.foldersWithFileUploadInProgress = loadingFolders;
     });
 
     this.onStateChanged('uploadFileError', ({detail: {state}}) => {
       this._handleError(state.uploadFileError);
     });
 
-    this.onStateChanged('isCreateFolderInProgress', ({detail: {state}}) => {
-      this.createFolderButton.isLoading = state.isCreateFolderInProgress;
+    this.onStateChanged('foldersWithCreateFolderInProgress', ({detail: {state}}) => {
+      const folderId = this.stateManager.state.locationParameters.folderId;
+      this._toggleButtonLoading(this.createFolderButton, state.foldersWithCreateFolderInProgress, folderId);
     });
 
     this.onStateChanged('createFolderError', ({detail: {state}}) => {
@@ -270,8 +279,21 @@ export default class FileListPage extends StateAwareComponent {
     });
 
     this.onStateChanged('filesWithDownloadInProgress', ({detail: {state}}) => {
-      this.fileList.loadingItems = Array.from(state.filesWithDownloadInProgress);
+      this.fileList.filesWithDownloadInProgress = state.filesWithDownloadInProgress;
     });
+  }
+
+  /**
+   * Sets the isLoading state for the provided button if the current folder is present in the provided array of loading
+   * items.
+   *
+   * @param {Button} button - The button that should be loading or not.
+   * @param {Set} loadingItems - A Set of IDs of folders that are currently in a particular loading state.
+   * @param {string} folderId - The identifier of the current folder.
+   * @private
+   */
+  _toggleButtonLoading(button, loadingItems, folderId) {
+    button.isLoading = loadingItems.has(folderId);
   }
 
   /**

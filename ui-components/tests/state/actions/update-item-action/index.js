@@ -6,7 +6,7 @@ const {module, test} = QUnit;
 module('The UpdateItemAction');
 
 test('should update folders correctly.', async (assert) => {
-  assert.expect(5);
+  assert.expect(7);
 
   const folder = {
     id: '1',
@@ -38,7 +38,16 @@ test('should update folders correctly.', async (assert) => {
     },
 
     mutate: (mutator) => {
-      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
+      assert.step(mutator.constructor.name);
+
+      assert.strictEqual(mutator._itemId, folder.id, 'The UpdateItemAction should provide correct item ID to the ' +
+        'mutators.');
+    },
+
+    state: {
+      locationParameters: {
+        folderId: folder.parentId,
+      },
     },
   };
 
@@ -47,12 +56,14 @@ test('should update folders correctly.', async (assert) => {
 
   await updateFolder;
   assert.verifySteps([
-    'IsRenameItemLoadingMutator: true',
-    'IsRenameItemLoadingMutator: false',
+    'AddRenameItemInProgressMutator',
+    'RemoveRenameItemInProgressMutator',
   ], 'The UpdateItemAction should provide correct mutators to the state manager.');
 });
 
 test('should update files correctly.', async (assert) => {
+  assert.expect(7);
+
   const file = {
     id: 'rYol3zzsCYc561cV',
     parentId: 'uExvhDL4YwkxnBVa',
@@ -84,7 +95,16 @@ test('should update files correctly.', async (assert) => {
     },
 
     mutate: (mutator) => {
-      assert.step(mutator.constructor.name + ': ' + mutator._isLoading);
+      assert.step(mutator.constructor.name);
+
+      assert.strictEqual(mutator._itemId, file.id, 'The UpdateItemAction should provide correct item ID to the ' +
+        'mutators.');
+    },
+
+    state: {
+      locationParameters: {
+        folderId: file.parentId,
+      },
     },
   };
 
@@ -93,7 +113,7 @@ test('should update files correctly.', async (assert) => {
 
   await updateFile;
   assert.verifySteps([
-    'IsRenameItemLoadingMutator: true',
-    'IsRenameItemLoadingMutator: false',
+    'AddRenameItemInProgressMutator',
+    'RemoveRenameItemInProgressMutator',
   ], 'The UpdateItemAction should provide correct mutators to the state manager.');
 });

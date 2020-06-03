@@ -11,6 +11,6 @@ test('should set the provided folder ID correctly.', (assert) => {
   const mutator = new AddUploadFileInProgressMutator(folderId);
   mutator.apply(state);
 
-  assert.deepEqual(state.foldersWithFileUploadInProgress, [folderId], 'The AddUploadFileInProgressMutator should ' +
-    'add the folder ID to the provided state correctly.');
+  assert.deepEqual(Array.from(state.foldersWithFileUploadInProgress), [folderId], 'The AddUploadFileInProgressMutator' +
+    ' should add the folder ID to the provided state correctly.');
 });

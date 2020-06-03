@@ -309,16 +309,16 @@ export default class FileListPage extends StateAwareComponent {
    */
   _handleError(error) {
     if (error instanceof NotFoundError) {
-      messageService.showError('Error: ' + error.message);
+      this._messageService.showError('Error: ' + error.message);
       const folderId = this.stateManager.state.locationParameters.folderId;
       this.stateManager.dispatch(new GetFilesAction(folderId));
     } else if (error instanceof AuthorizationError) {
-      messageService.showError('Error: ' + error.message);
+      this._messageService.showError('Error: ' + error.message);
       window.location.hash = AUTHENTICATION_ROUTE;
     } else if (error instanceof GeneralServerError) {
-      messageService.showError('Error: ' + error.message);
+      this._messageService.showError('Error: ' + error.message);
     } else {
-      messageService.showError('Unknown error. See the console for more details.');
+      this._messageService.showError('Unknown error. See the console for more details.');
       console.error(error);
     }
   }

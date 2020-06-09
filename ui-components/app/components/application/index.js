@@ -8,6 +8,7 @@ import StateManager from '../../state/state-manager';
 import ApiService from '../../services/api-service';
 import HashChangedAction from '../../state/actions/hash-changed-action';
 import Router from '../../router';
+import MessageService from '../../services/message-service';
 
 /**
  * The component for the web application.
@@ -38,6 +39,7 @@ export default class Application extends Component {
    */
   initNestedComponents() {
     const stateManager = new StateManager({}, ApiService.getInstance());
+    const messageService = new MessageService();
 
     const pageMapping = {
       [AUTHENTICATION_ROUTE]: () => {
@@ -50,7 +52,7 @@ export default class Application extends Component {
       },
       [FILE_LIST_ROUTE]: (properties) => {
         this._destroyPreviousPage();
-        this._previousPage = new FileListPage(this.rootElement, stateManager, properties);
+        this._previousPage = new FileListPage(this.rootElement, stateManager, messageService, properties);
       },
     };
 

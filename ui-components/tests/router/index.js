@@ -5,6 +5,7 @@ import RegistrationPage from '../../app/components/registration-page';
 import FileListPage from '../../app/components/file-list-page';
 import NotFoundPage from '../../app/components/not-found';
 import UrlProperties from '../../app/models/url-properties';
+import MessageService from '../../app/services/message-service';
 
 const {module, test} = QUnit;
 
@@ -57,13 +58,14 @@ export default module('The Router', () => {
     };
 
     const urlProperties = new UrlProperties('root');
+    const messageService = new MessageService();
 
     const properties = {
       rootElement,
       pageMapping: {
         [AUTHENTICATION_ROUTE]: () => new LoginPage(rootElement),
         [REGISTRATION_ROUTE]: () => new RegistrationPage(rootElement),
-        [FILE_LIST_ROUTE]: () => new FileListPage(rootElement, stateManager, urlProperties),
+        [FILE_LIST_ROUTE]: () => new FileListPage(rootElement, stateManager, messageService, urlProperties),
       },
       defaultLocation: AUTHENTICATION_ROUTE,
       notFoundPage: function() {

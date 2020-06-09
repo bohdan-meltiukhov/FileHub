@@ -20,6 +20,7 @@ import AuthorizationError from '../../models/errors/authorization-error';
 import GeneralServerError from '../../models/errors/general-server-error';
 import GetUserAction from '../../state/actions/get-user-action';
 import DownloadFileService from '../../services/download-file-service';
+import MessageService from '../../services/message-service';
 
 /**
  * The component for the File List Page.
@@ -30,10 +31,12 @@ export default class FileListPage extends StateAwareComponent {
    *
    * @param {Element} container - The parent element for the page.
    * @param {StateManager} stateManager - The state manager to use.
+   * @param {MessageService} messageService - The service to show toast messages.
    * @param {UrlProperties} properties - The URL properties.
    */
-  constructor(container, stateManager, properties) {
+  constructor(container, stateManager, messageService, properties) {
     super(container, stateManager);
+    this._messageService = messageService;
 
     this.render();
     stateManager.dispatch(new GetFolderAction(properties.folderId));
@@ -262,7 +265,7 @@ export default class FileListPage extends StateAwareComponent {
       const error = state.userNameLoadingError;
 
       if (error instanceof AuthorizationError) {
-        alert('Error: ' + error.message);
+        this._messageService.showError('Error: ' + error.message);
         window.location.hash = AUTHENTICATION_ROUTE;
       } else {
         console.error('User Details Loading Error:', error);
@@ -271,8 +274,9 @@ export default class FileListPage extends StateAwareComponent {
 
     this.onStateChanged('downloadFileError', ({detail: {state}}) => {
       const {fileItem, error} = state.downloadFileError;
+
       if (error instanceof NotFoundError && fileItem.parentId !== state.locationParameters.folderId) {
-        alert('Error: ' + error.message);
+        this._messageService.showError('Error: ' + error.message);
       } else {
         this._handleError(error);
       }
@@ -305,16 +309,16 @@ export default class FileListPage extends StateAwareComponent {
    */
   _handleError(error) {
     if (error instanceof NotFoundError) {
-      alert('Error: ' + error.message);
+      this._messageService.showError('Error: ' + error.message);
       const folderId = this.stateManager.state.locationParameters.folderId;
       this.stateManager.dispatch(new GetFilesAction(folderId));
     } else if (error instanceof AuthorizationError) {
-      alert('Error: ' + error.message);
+      this._messageService.showError('Error: ' + error.message);
       window.location.hash = AUTHENTICATION_ROUTE;
     } else if (error instanceof GeneralServerError) {
-      alert('Error: ' + error.message);
+      this._messageService.showError('Error: ' + error.message);
     } else {
-      alert('Unknown error. See the console for more details.');
+      this._messageService.showError('Unknown error. See the console for more details.');
       console.error(error);
     }
   }

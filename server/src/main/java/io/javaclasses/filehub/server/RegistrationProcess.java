@@ -1,16 +1,21 @@
 package io.javaclasses.filehub.server;
 
+/**
+ * The process for registering users.
+ */
 public class RegistrationProcess {
 
-    private final RegistrationCommand command = new RegistrationCommand();
+    /**
+     * Registers a user using the provided command.
+     *
+     * @param command The command to use for the registration.
+     * @throws ValidationError In case the username or password violates the validation rules.
+     */
+    public void register(RegisterCommand command) throws ValidationError {
 
-    private final UserCredentials userCredentials;
+        if (command.getUsername().getValue().equals("admin")) {
 
-    public RegistrationProcess(UserCredentials userCredentials) {
-        this.userCredentials = userCredentials;
-    }
-
-    public void run() throws ValidationError {
-        command.register(userCredentials);
+            throw new ValidationError("The username is already taken.");
+        }
     }
 }

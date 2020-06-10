@@ -39,6 +39,7 @@ public class LogInCommand {
 
     /**
      * Provides the log in command password.
+     *
      * @return The stored password.
      */
     public Password getPassword() {

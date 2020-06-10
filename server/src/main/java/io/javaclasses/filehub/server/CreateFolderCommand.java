@@ -2,9 +2,9 @@ package io.javaclasses.filehub.server;
 
 public class CreateFolderCommand {
 
-    public FolderModel createFolder(Token token) {
+    public Folder createFolder(Token token) {
 
-        return new FolderModel(generateRandomId(16), "root", "New Folder", 0);
+        return new Folder(generateRandomId(16), "root", "New Folder", 0);
     }
 
     private static String generateRandomId(int length) {

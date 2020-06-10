@@ -1,5 +1,7 @@
 package io.javaclasses.filehub.server;
 
+import java.util.Objects;
+
 /**
  * The value object for a password.
  */
@@ -20,28 +22,38 @@ public final class Password {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object obj) {
-
-        if (!(obj instanceof Password)) {
-
-            return false;
-        }
-
-        Password password = (Password) obj;
-
-        return password.value.equals(value);
-    }
-
-    /**
-     * {@inheritDoc}
+     * Provides a string representation of the password.
+     *
+     * @return A string representation of the password.
      */
     @Override
     public String toString() {
 
         return "Password:" + value;
+    }
+
+    /**
+     * Indicates whether the provided object is a password and has the same value.
+     *
+     * @param o The object to compare with.
+     * @return True in case the provided object is a password with the same value.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Password)) return false;
+        Password password = (Password) o;
+        return value.equals(password.value);
+    }
+
+    /**
+     * Provides a hash code value for the password.
+     *
+     * @return The hash code that considers the password value.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 
     /**

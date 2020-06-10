@@ -7,7 +7,9 @@ import java.util.Objects;
  */
 public class Token {
 
-    /** The value of the token. */
+    /**
+     * The value of the token.
+     */
     private final String value;
 
     /**
@@ -28,7 +30,10 @@ public class Token {
     }
 
     /**
-     * {@inheritDoc}
+     * Indicates whether the provided object is a token with the same value.
+     *
+     * @param o The object to compare with.
+     * @return True in case the tokens are equal.
      */
     @Override
     public boolean equals(Object o) {
@@ -41,7 +46,9 @@ public class Token {
     }
 
     /**
-     * {@inheritDoc}
+     * Provides a hash code value for the token.
+     *
+     * @return A hash code that considers the token value.
      */
     @Override
     public int hashCode() {
@@ -49,11 +56,13 @@ public class Token {
         return Objects.hash(value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Provides a string representation of the token.
+     *
+     * @return A string representation of the token.
+     */
     @Override
     public String toString() {
-        return "Token{" +
-                "value='" + value + '\'' +
-                '}';
+        return "Token: " + value ;
     }
 }

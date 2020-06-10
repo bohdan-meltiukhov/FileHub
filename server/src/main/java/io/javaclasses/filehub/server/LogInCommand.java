@@ -1,24 +1,48 @@
 package io.javaclasses.filehub.server;
 
+/**
+ * The command that stores username and password provided during the authentication process.
+ */
 public class LogInCommand {
 
     /**
-     * Logs the current user in and provides a token or throws an AuthenticationError exception if the details do not
-     * match.
-     *
-     * @param userCredentials - The provided user account credentials.
-     * @return The token for the current user session.
-     * @throws AuthenticationError In case the provided details do not match.
+     * The username that user provided during the authentication process.
      */
-    Token logIn(UserCredentials userCredentials) throws AuthenticationError {
+    private final Username username;
 
-        if (userCredentials.getUsername().getValue().equals("admin") &&
-                userCredentials.getPassword().getValue().equals("1234")) {
+    /**
+     * The password that user provided during the authentication process.
+     */
+    private final Password password;
 
-            return new Token();
-        } else {
+    /**
+     * Creates an instance of the log in command with set username and password.
+     *
+     * @param username The provided username.
+     * @param password The provided password.
+     */
+    public LogInCommand(Username username, Password password) {
 
-            throw new AuthenticationError("The details do not match.");
-        }
+        this.username = username;
+        this.password = password;
+    }
+
+    /**
+     * Provides the log in command username.
+     *
+     * @return The stored username.
+     */
+    public Username getUsername() {
+
+        return username;
+    }
+
+    /**
+     * Provides the log in command password.
+     * @return The stored password.
+     */
+    public Password getPassword() {
+
+        return password;
     }
 }

@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.server;
+package io.javaclasses.filehub.server.register;
 
 /**
  * The error that can occur during the registration process in case any of the fields violates the validation rules.

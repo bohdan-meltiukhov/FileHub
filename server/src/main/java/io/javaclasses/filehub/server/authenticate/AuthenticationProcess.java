@@ -1,4 +1,6 @@
-package io.javaclasses.filehub.server;
+package io.javaclasses.filehub.server.authenticate;
+
+import io.javaclasses.filehub.server.Token;
 
 /**
  * The process for authenticating users.

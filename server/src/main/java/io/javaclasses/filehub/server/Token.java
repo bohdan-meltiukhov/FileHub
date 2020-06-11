@@ -63,6 +63,6 @@ public class Token {
      */
     @Override
     public String toString() {
-        return "Token: " + value ;
+        return "Token: " + value;
     }
 }

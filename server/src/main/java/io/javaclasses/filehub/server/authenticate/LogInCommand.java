@@ -1,4 +1,7 @@
-package io.javaclasses.filehub.server;
+package io.javaclasses.filehub.server.authenticate;
+
+import io.javaclasses.filehub.server.Password;
+import io.javaclasses.filehub.server.Username;
 
 /**
  * The command that stores username and password provided during the authentication process.
@@ -32,7 +35,7 @@ public class LogInCommand {
      *
      * @return The stored username.
      */
-    public Username getUsername() {
+    Username getUsername() {
 
         return username;
     }
@@ -42,7 +45,7 @@ public class LogInCommand {
      *
      * @return The stored password.
      */
-    public Password getPassword() {
+    Password getPassword() {
 
         return password;
     }

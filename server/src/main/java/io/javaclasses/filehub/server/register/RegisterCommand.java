@@ -1,4 +1,7 @@
-package io.javaclasses.filehub.server;
+package io.javaclasses.filehub.server.register;
+
+import io.javaclasses.filehub.server.Password;
+import io.javaclasses.filehub.server.Username;
 
 /**
  * The command that stores username and password provided during the registration process.
@@ -32,7 +35,7 @@ public class RegisterCommand {
      *
      * @return The stored username.
      */
-    public Username getUsername() {
+    Username getUsername() {
         return username;
     }
 
@@ -41,7 +44,7 @@ public class RegisterCommand {
      *
      * @return The stored password.
      */
-    public Password getPassword() {
+    Password getPassword() {
         return password;
     }
 }

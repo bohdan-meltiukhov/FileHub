@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.server;
+package io.javaclasses.filehub.server.register;
 
 /**
  * The process for registering users.

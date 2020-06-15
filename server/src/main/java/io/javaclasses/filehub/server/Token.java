@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.server;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The object for holding user tokens.
@@ -17,7 +18,7 @@ public class Token {
      */
     public Token() {
 
-        value = "my-token";
+        value = UUID.randomUUID().toString();
     }
 
     /**

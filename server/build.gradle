@@ -37,7 +37,3 @@ test {
 
     useJUnitPlatform()
 }
-
-task myJavadocs(type: Javadoc) {
-    source = sourceSets.main.allJava
-}

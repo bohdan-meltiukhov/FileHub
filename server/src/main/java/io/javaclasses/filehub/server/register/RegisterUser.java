@@ -1,12 +1,13 @@
 package io.javaclasses.filehub.server.register;
 
+import io.javaclasses.filehub.server.Command;
 import io.javaclasses.filehub.server.Password;
 import io.javaclasses.filehub.server.Username;
 
 /**
  * The command that stores username and password provided during the registration process.
  */
-public class RegisterCommand {
+public class RegisterUser implements Command {
 
     /**
      * The username that the user provided during the registration process.
@@ -19,15 +20,40 @@ public class RegisterCommand {
     private final Password password;
 
     /**
-     * Creates an instance of the register command with set username and password.
+     * Creates an instance of the register user command with set username and password.
      *
      * @param username The desired username.
      * @param password The desired account password.
      */
-    public RegisterCommand(Username username, Password password) {
+    public RegisterUser(Username username, Password password) {
+
+        validateCredentials(username, password);
 
         this.username = username;
         this.password = password;
+    }
+
+    private void validateCredentials(Username username, Password password) {
+
+        if (username == null) {
+
+            throw new ValidationError("The username is null.");
+        }
+
+        if (password == null) {
+
+            throw new ValidationError("The password is null.");
+        }
+
+        if (username.getValue().length() < 8) {
+
+            throw new ValidationError("The username is too short.");
+        }
+
+        if (password.getValue().length() < 8) {
+
+            throw new ValidationError("The password is too short.");
+        }
     }
 
     /**

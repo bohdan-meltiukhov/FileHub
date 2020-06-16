@@ -1,9 +1,11 @@
 package io.javaclasses.filehub.server.register;
 
+import io.javaclasses.filehub.server.Process;
+
 /**
  * The process for registering users.
  */
-public class RegistrationProcess {
+public class Registration implements Process {
 
     /**
      * Registers a user using the provided command.
@@ -11,7 +13,7 @@ public class RegistrationProcess {
      * @param command The command to use for the registration.
      * @throws ValidationError In case the username or password violates the validation rules.
      */
-    public void register(RegisterCommand command) throws ValidationError {
+    public void register(RegisterUser command) throws ValidationError {
 
         if (command.getUsername().getValue().equals("admin")) {
 

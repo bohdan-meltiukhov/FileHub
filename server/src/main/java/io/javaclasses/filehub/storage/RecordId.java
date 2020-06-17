@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.api;
+package io.javaclasses.filehub.storage;
 
 /**
  * The identifier for different storage records.

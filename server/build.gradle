@@ -31,6 +31,8 @@ dependencies {
     compile 'com.sparkjava:spark-core:2.8.0'
 
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
 }
 
 test {

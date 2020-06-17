@@ -11,11 +11,11 @@ public class Registration implements Process {
      * @param command The command to use for the registration.
      * @throws ValidationError In case the username or password violates the validation rules.
      */
-    public void register(RegisterUser command) throws ValidationError {
+    public void handle(RegisterUser command) throws ValidationError {
 
-        if (command.username().value().equals("admin")) {
+        if (command.username().value().equals("administrator")) {
 
-            throw new ValidationError("The username is already taken.");
+            throw new ValidationError("username", "The username is already taken.");
         }
     }
 }

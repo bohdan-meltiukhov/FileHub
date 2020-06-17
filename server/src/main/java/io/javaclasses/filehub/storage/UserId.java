@@ -1,4 +1,4 @@
-package io.javaclasses.filehub.api;
+package io.javaclasses.filehub.storage;
 
 import java.util.Objects;
 

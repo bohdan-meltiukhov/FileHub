@@ -33,22 +33,22 @@ public class RegisterUser implements Command {
 
         if (username == null) {
 
-            throw new ValidationError("The username is null.");
+            throw new ValidationError("username", "The username is null.");
         }
 
         if (password == null) {
 
-            throw new ValidationError("The password is null.");
+            throw new ValidationError("password", "The password is null.");
         }
 
         if (username.value().length() < 8) {
 
-            throw new ValidationError("The username is too short.");
+            throw new ValidationError("username", "The username is too short.");
         }
 
         if (password.value().length() < 8) {
 
-            throw new ValidationError("The password is too short.");
+            throw new ValidationError("password", "The password is too short.");
         }
     }
 

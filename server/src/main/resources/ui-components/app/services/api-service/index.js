@@ -81,7 +81,7 @@ export default class ApiService {
     case 422:
       return response.json().then((body) => {
         const errorCases = [];
-        body.errors.forEach((error) => {
+        body.forEach((error) => {
           errorCases.push(new ValidationErrorCase(error.field, error.message));
         });
         return new ServerValidationError(errorCases);

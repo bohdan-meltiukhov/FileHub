@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The identifier of a user.
@@ -14,12 +15,10 @@ public class UserId implements RecordId {
 
     /**
      * Creates an instance of the user ID with set identifier.
-     *
-     * @param id The identifier of a user.
      */
-    public UserId(String id) {
+    public UserId() {
 
-        this.id = id;
+        this.id = UUID.randomUUID().toString();
     }
 
     /**

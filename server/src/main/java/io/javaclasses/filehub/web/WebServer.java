@@ -2,6 +2,7 @@ package io.javaclasses.filehub.web;
 
 import com.google.gson.*;
 import io.javaclasses.filehub.api.*;
+import io.javaclasses.filehub.storage.UserStorage;
 
 import java.lang.reflect.Type;
 
@@ -14,6 +15,8 @@ public class WebServer {
 
         staticFileLocation("/ui-components");
 
+        UserStorage userStorage = new UserStorage();
+
         path("/api", () -> {
             post("/register", (request, response) -> {
 
@@ -25,7 +28,7 @@ public class WebServer {
                 Username username = new Username(credentials.username);
                 Password password = new Password(credentials.password);
 
-                Registration process = new Registration();
+                Registration process = new Registration(userStorage);
 
                 try {
 
@@ -99,6 +102,7 @@ public class WebServer {
          */
         @Override
         public String toString() {
+
             return "UserCredentials{" +
                     "username='" + username + '\'' +
                     ", password='" + password + '\'' +

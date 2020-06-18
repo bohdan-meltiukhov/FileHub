@@ -1,2 +1,4 @@
 rootProject.name = 'file-hub'
 include 'web-client'
+include 'server'
+

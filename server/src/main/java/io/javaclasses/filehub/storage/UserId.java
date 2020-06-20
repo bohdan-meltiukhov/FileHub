@@ -11,14 +11,14 @@ public class UserId implements RecordId {
     /**
      * The identifier of a user.
      */
-    private final String id;
+    private final String value;
 
     /**
      * Creates an instance of the user ID with set identifier.
      */
     public UserId() {
 
-        this.id = UUID.randomUUID().toString();
+        this.value = UUID.randomUUID().toString();
     }
 
     /**
@@ -29,7 +29,7 @@ public class UserId implements RecordId {
     @Override
     public String toString() {
 
-        return "UserId:" + id;
+        return "UserId:" + value;
     }
 
     /**
@@ -44,7 +44,7 @@ public class UserId implements RecordId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserId userId = (UserId) o;
-        return id.equals(userId.id);
+        return value.equals(userId.value);
     }
 
     /**
@@ -55,7 +55,7 @@ public class UserId implements RecordId {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id);
+        return Objects.hash(value);
     }
 
     /**
@@ -63,8 +63,8 @@ public class UserId implements RecordId {
      *
      * @return The stored identifier.
      */
-    public String id() {
+    public String value() {
 
-        return id;
+        return value;
     }
 }

@@ -6,6 +6,7 @@ import io.javaclasses.filehub.storage.UserStorage;
 
 import java.lang.reflect.Type;
 
+import static org.apache.commons.httpclient.HttpStatus.SC_OK;
 import static org.apache.commons.httpclient.HttpStatus.SC_UNPROCESSABLE_ENTITY;
 import static spark.Spark.*;
 
@@ -34,6 +35,10 @@ public class WebServer {
 
                     process.handle(new RegisterUser(username, password));
 
+                    response.status(SC_OK);
+
+                    return "The user is registered successfully.";
+
                 } catch (ValidationError error) {
 
                     GsonBuilder gsonBuilder = new GsonBuilder();
@@ -60,10 +65,6 @@ public class WebServer {
 
                     return json;
                 }
-
-                response.status(200);
-
-                return "The user is registered successfully.";
             });
         });
     }

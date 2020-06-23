@@ -38,10 +38,7 @@ public class Registration implements Process<RegisterUser, Void> {
 
         Preconditions.checkNotNull(command);
 
-        if (storage.readAll()
-                .stream()
-                .anyMatch(userRecord -> userRecord.username().equals(command.username()))
-        ) {
+        if (storage.containsUsername(command.username())) {
 
             throw new ValidationError("username", "The username is already taken.");
         }

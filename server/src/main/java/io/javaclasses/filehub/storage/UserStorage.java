@@ -1,5 +1,7 @@
 package io.javaclasses.filehub.storage;
 
+import io.javaclasses.filehub.api.Username;
+
 import java.util.*;
 
 /**
@@ -57,5 +59,18 @@ public class UserStorage implements Storage<UserId, UserRecord> {
     public List<UserRecord> readAll() {
 
         return new ArrayList<>(storage.values());
+    }
+
+    /**
+     * Indicates whether the user storage contain a user with the corresponding username or not.
+     *
+     * @param username The username to check.
+     * @return True in case there is a user with the provided name in the storage.
+     */
+    public boolean containsUsername(Username username) {
+
+        return storage.values()
+                .stream()
+                .anyMatch(userRecord -> userRecord.username().equals(username));
     }
 }

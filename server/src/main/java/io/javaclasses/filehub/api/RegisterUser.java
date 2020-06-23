@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.api;
 
-import jdk.internal.jline.internal.Preconditions;
+import com.google.common.base.Preconditions;
 
 /**
  * A command from a client application that holds username and password for the registration process.

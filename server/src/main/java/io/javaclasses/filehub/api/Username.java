@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.api;
 
-import jdk.internal.jline.internal.Preconditions;
+import com.google.common.base.Preconditions;
 
 import java.util.Objects;
 

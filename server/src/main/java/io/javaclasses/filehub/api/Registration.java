@@ -1,9 +1,9 @@
 package io.javaclasses.filehub.api;
 
+import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
-import jdk.internal.jline.internal.Preconditions;
 
 /**
  * The process for registering users.

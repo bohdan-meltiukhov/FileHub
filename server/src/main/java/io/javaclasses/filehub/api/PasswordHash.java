@@ -8,7 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
- * The class for storing the password hash.
+ * A value object for a hashed password.
  *
  * <p>Uses the MD5 hashing algorithm.
  *

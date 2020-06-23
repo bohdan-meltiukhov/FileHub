@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api;
 
 /**
- * An interface for commands that hold data required for different processes.
+ * A command from a client application that holds data required by a process.
  */
 public interface Command {
 }

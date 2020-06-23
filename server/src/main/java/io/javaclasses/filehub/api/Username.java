@@ -3,7 +3,7 @@ package io.javaclasses.filehub.api;
 import java.util.Objects;
 
 /**
- * The value object for username.
+ * A value object for a unique name of a user of the FileHub application.
  */
 public final class Username {
 

@@ -3,7 +3,7 @@ package io.javaclasses.filehub.api;
 import jdk.internal.jline.internal.Preconditions;
 
 /**
- * The command that stores username and password provided during the registration process.
+ * A command from a client application that holds username and password for the registration process.
  */
 public class RegisterUser implements Command {
 

@@ -7,7 +7,7 @@ import io.javaclasses.filehub.storage.UserStorage;
 /**
  * The process for registering users.
  */
-public class Registration implements Process {
+public class Registration implements Process<RegisterUser, Void> {
 
     /**
      * The storage for user records.
@@ -28,9 +28,10 @@ public class Registration implements Process {
      * Registers a user using the provided command.
      *
      * @param command The command to use for the registration.
+     * @return Void.
      * @throws ValidationError In case the username or password violates the validation rules.
      */
-    public void handle(RegisterUser command) throws ValidationError {
+    public Void handle(RegisterUser command) throws ValidationError {
 
         if (storage.readAll()
                 .stream()
@@ -41,5 +42,6 @@ public class Registration implements Process {
         }
 
         storage.put(new UserRecord(new UserId(), command.username(), new PasswordHash(command.password())));
+        return null;
     }
 }

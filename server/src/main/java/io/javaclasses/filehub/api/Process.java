@@ -3,7 +3,10 @@ package io.javaclasses.filehub.api;
 /**
  * The interface for different processes.
  *
- * <p>Implement this interface if your class handles a command.
+ * @param <C> The type of the command a process requires.
+ * @param <T> The return type of a process' handle() method.
  */
-public interface Process {
+public interface Process<C extends Command, T> {
+
+    T handle(C command);
 }

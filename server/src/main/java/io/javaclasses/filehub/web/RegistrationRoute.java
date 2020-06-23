@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import io.javaclasses.filehub.api.RegisterUser;
 import io.javaclasses.filehub.api.Registration;
-import io.javaclasses.filehub.api.ValidationError;
+import io.javaclasses.filehub.api.UsernameValidationException;
 import io.javaclasses.filehub.storage.UserStorage;
 import spark.Request;
 import spark.Response;
@@ -49,7 +49,7 @@ public class RegistrationRoute implements Route {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
         gsonBuilder.registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer());
-        gsonBuilder.registerTypeAdapter(ValidationError.class, new ValidationErrorSerializer());
+        gsonBuilder.registerTypeAdapter(UsernameValidationException.class, new ValidationErrorSerializer());
 
         Gson gson = gsonBuilder.create();
 
@@ -65,9 +65,9 @@ public class RegistrationRoute implements Route {
 
             return "The user is registered successfully.";
 
-        } catch (ValidationError error) {
+        } catch (UsernameValidationException error) {
 
-            ValidationError[] errors = {error};
+            UsernameValidationException[] errors = {error};
 
             JsonElement json = gson.toJsonTree(errors);
 

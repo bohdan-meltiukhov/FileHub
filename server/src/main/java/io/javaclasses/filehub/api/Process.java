@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api;
 
 /**
- * A process in the application which handles a {@link Command}.
+ * A process in the FileHub server application which handles a {@link Command}.
  *
  * @param <C> The type of the command a process requires.
  * @param <T> The return type of a process' handle() method.

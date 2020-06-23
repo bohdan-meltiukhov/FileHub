@@ -4,14 +4,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import io.javaclasses.filehub.api.ValidationError;
+import io.javaclasses.filehub.api.UsernameValidationException;
 
 import java.lang.reflect.Type;
 
 /**
  * The class for turning validation errors into JSON elements.
  */
-public class ValidationErrorSerializer implements JsonSerializer<ValidationError> {
+public class ValidationErrorSerializer implements JsonSerializer<UsernameValidationException> {
 
     /**
      * Creates a JSON element from a validation error.
@@ -21,7 +21,7 @@ public class ValidationErrorSerializer implements JsonSerializer<ValidationError
      * @return A JsonElement corresponding to the provided Validation error.
      */
     @Override
-    public JsonElement serialize(ValidationError src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(UsernameValidationException src, Type typeOfSrc, JsonSerializationContext context) {
 
         JsonObject jsonValidationError = new JsonObject();
 

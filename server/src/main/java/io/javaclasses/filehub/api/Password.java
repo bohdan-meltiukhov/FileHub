@@ -25,7 +25,7 @@ public final class Password {
 
         if (value.length() < 8) {
 
-            throw new ValidationError("password", "The password should have at least 8 characters.");
+            throw new PasswordValidationException("The password should have at least 8 characters.");
         }
 
         this.value = value;

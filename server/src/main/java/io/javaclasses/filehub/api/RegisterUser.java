@@ -3,7 +3,7 @@ package io.javaclasses.filehub.api;
 import com.google.common.base.Preconditions;
 
 /**
- * A command from a client application that holds username and password for the registration process.
+ * A command from a client application that holds username and password for the {@link Registration} process.
  */
 public class RegisterUser implements Command {
 

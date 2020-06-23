@@ -6,7 +6,7 @@ import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
 
 /**
- * The process for registering users.
+ * The process that handles a {@link RegisterUser} command.
  */
 public class Registration implements Process<RegisterUser, Void> {
 
@@ -32,15 +32,15 @@ public class Registration implements Process<RegisterUser, Void> {
      *
      * @param command The command to use for the registration.
      * @return Void.
-     * @throws ValidationError In case the username or password violates the validation rules.
+     * @throws UsernameValidationException In case the username or password violates the validation rules.
      */
-    public Void handle(RegisterUser command) throws ValidationError {
+    public Void handle(RegisterUser command) throws UsernameValidationException {
 
         Preconditions.checkNotNull(command);
 
         if (storage.containsUsername(command.username())) {
 
-            throw new ValidationError("username", "The username is already taken.");
+            throw new UsernameValidationException("The username is already taken.");
         }
 
         storage.put(new UserRecord(new UserId(), command.username(), new PasswordHash(command.password())));

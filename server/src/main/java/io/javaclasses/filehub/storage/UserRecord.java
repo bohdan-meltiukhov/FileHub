@@ -15,12 +15,12 @@ public class UserRecord implements Record<UserId> {
     /**
      * The name of the user.
      */
-    private Username username;
+    private final Username username;
 
     /**
      * The user's password hash.
      */
-    private PasswordHash passwordHash;
+    private final PasswordHash passwordHash;
 
     /**
      * Creates an instance of the user record with set user ID, username and password hash.
@@ -107,25 +107,5 @@ public class UserRecord implements Record<UserId> {
     public UserId id() {
 
         return userId;
-    }
-
-    /**
-     * Changes the name of the user.
-     *
-     * @param username The new username.
-     */
-    public void setUsername(Username username) {
-
-        this.username = username;
-    }
-
-    /**
-     * Changes the password hash.
-     *
-     * @param passwordHash The new password hash.
-     */
-    public void setPasswordHash(PasswordHash passwordHash) {
-
-        this.passwordHash = passwordHash;
     }
 }

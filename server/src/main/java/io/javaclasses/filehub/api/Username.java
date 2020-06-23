@@ -1,12 +1,14 @@
 package io.javaclasses.filehub.api;
 
 import com.google.common.base.Preconditions;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.util.Objects;
 
 /**
  * A value object for a unique name of a user of the FileHub application.
  */
+@Immutable
 public final class Username {
 
     /**
@@ -25,7 +27,7 @@ public final class Username {
 
         if (value.length() < 8) {
 
-            throw new UsernameValidationException("username", "The username should have at least 8 characters.");
+            throw new UsernameValidationException("The username should have at least 8 characters.");
         }
 
         this.value = value;

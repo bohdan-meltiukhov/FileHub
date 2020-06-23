@@ -1,11 +1,14 @@
 package io.javaclasses.filehub.api;
 
 import com.google.common.base.Preconditions;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+
+import static com.google.common.base.Charsets.UTF_8;
 
 /**
  * A value object for a hashed password.
@@ -14,6 +17,7 @@ import java.util.Arrays;
  *
  * @see <a href="https://en.wikipedia.org/wiki/MD5">MD5 - Wikipedia</a>
  */
+@Immutable
 public final class PasswordHash {
 
     /**
@@ -33,7 +37,7 @@ public final class PasswordHash {
         try {
 
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            messageDigest.update(password.value().getBytes());
+            messageDigest.update(password.value().getBytes(UTF_8));
             digest = messageDigest.digest();
 
         } catch (NoSuchAlgorithmException e) {

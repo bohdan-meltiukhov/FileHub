@@ -49,7 +49,7 @@ public class RegistrationRoute implements Route {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
         gsonBuilder.registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer());
-        gsonBuilder.registerTypeAdapter(UsernameValidationException.class, new ValidationErrorSerializer());
+        gsonBuilder.registerTypeAdapter(UsernameValidationException.class, new UsernameValidationErrorSerializer());
 
         Gson gson = gsonBuilder.create();
 

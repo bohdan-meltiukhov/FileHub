@@ -4,11 +4,13 @@ import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
  * The process that handles a {@link RegisterUser} command.
  */
-public class Registration implements Process<RegisterUser, Void> {
+@Immutable
+public class Registration implements Progress<RegisterUser, Void> {
 
     /**
      * The storage for user records.
@@ -34,6 +36,7 @@ public class Registration implements Process<RegisterUser, Void> {
      * @return Void.
      * @throws UsernameValidationException In case the username or password violates the validation rules.
      */
+    @Override
     public Void handle(RegisterUser command) throws UsernameValidationException {
 
         Preconditions.checkNotNull(command);

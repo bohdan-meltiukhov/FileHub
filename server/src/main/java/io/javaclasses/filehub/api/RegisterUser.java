@@ -1,10 +1,12 @@
 package io.javaclasses.filehub.api;
 
 import com.google.common.base.Preconditions;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 /**
  * A command from a client application that holds username and password for the {@link Registration} process.
  */
+@Immutable
 public class RegisterUser implements Command {
 
     /**

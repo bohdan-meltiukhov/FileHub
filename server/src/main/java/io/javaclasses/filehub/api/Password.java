@@ -1,12 +1,14 @@
 package io.javaclasses.filehub.api;
 
 import com.google.common.base.Preconditions;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.util.Objects;
 
 /**
  * A memorized string used to confirm the identity of a user.
  */
+@Immutable
 public final class Password {
 
     /**

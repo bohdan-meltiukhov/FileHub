@@ -1,5 +1,7 @@
 package io.javaclasses.filehub.api;
 
+import jdk.internal.jline.internal.Preconditions;
+
 /**
  * The command that stores username and password provided during the registration process.
  */
@@ -23,33 +25,11 @@ public class RegisterUser implements Command {
      */
     public RegisterUser(Username username, Password password) {
 
-        validateCredentials(username, password);
+        Preconditions.checkNotNull(username);
+        Preconditions.checkNotNull(password);
 
         this.username = username;
         this.password = password;
-    }
-
-    private void validateCredentials(Username username, Password password) {
-
-        if (username == null) {
-
-            throw new ValidationError("username", "The username is null.");
-        }
-
-        if (password == null) {
-
-            throw new ValidationError("password", "The password is null.");
-        }
-
-        if (username.value().length() < 8) {
-
-            throw new ValidationError("username", "The username is too short.");
-        }
-
-        if (password.value().length() < 8) {
-
-            throw new ValidationError("password", "The password is too short.");
-        }
     }
 
     /**

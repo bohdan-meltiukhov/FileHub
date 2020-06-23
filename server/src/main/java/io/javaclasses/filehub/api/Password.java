@@ -3,12 +3,12 @@ package io.javaclasses.filehub.api;
 import java.util.Objects;
 
 /**
- * The value object for a password.
+ * A memorized string used to confirm the identity of a user.
  */
 public final class Password {
 
     /**
-     * The password for a user's account.
+     * The password value as it is.
      */
     private final String value;
 
@@ -18,6 +18,11 @@ public final class Password {
      * @param value The password for a user's account.
      */
     public Password(String value) {
+
+        if (value.length() < 8) {
+
+            throw new ValidationError("password", "The password should have at least 8 characters.");
+        }
 
         this.value = value;
     }

@@ -1,5 +1,7 @@
 package io.javaclasses.filehub.api;
 
+import jdk.internal.jline.internal.Preconditions;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,6 +27,8 @@ public final class PasswordHash {
      * @param password The password to hash.
      */
     public PasswordHash(Password password) {
+
+        Preconditions.checkNotNull(password);
 
         try {
 

@@ -1,5 +1,7 @@
 package io.javaclasses.filehub.api;
 
+import jdk.internal.jline.internal.Preconditions;
+
 import java.util.Objects;
 
 /**
@@ -18,6 +20,8 @@ public final class Password {
      * @param value The password for a user's account.
      */
     public Password(String value) {
+
+        Preconditions.checkNotNull(value);
 
         if (value.length() < 8) {
 

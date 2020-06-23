@@ -3,6 +3,7 @@ package io.javaclasses.filehub.api;
 import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
+import jdk.internal.jline.internal.Preconditions;
 
 /**
  * The process for registering users.
@@ -21,6 +22,8 @@ public class Registration implements Process<RegisterUser, Void> {
      */
     public Registration(UserStorage storage) {
 
+        Preconditions.checkNotNull(storage);
+
         this.storage = storage;
     }
 
@@ -32,6 +35,8 @@ public class Registration implements Process<RegisterUser, Void> {
      * @throws ValidationError In case the username or password violates the validation rules.
      */
     public Void handle(RegisterUser command) throws ValidationError {
+
+        Preconditions.checkNotNull(command);
 
         if (storage.readAll()
                 .stream()

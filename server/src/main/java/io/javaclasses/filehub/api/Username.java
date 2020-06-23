@@ -1,5 +1,7 @@
 package io.javaclasses.filehub.api;
 
+import jdk.internal.jline.internal.Preconditions;
+
 import java.util.Objects;
 
 /**
@@ -18,6 +20,8 @@ public final class Username {
      * @param value - The name of a user.
      */
     public Username(String value) {
+
+        Preconditions.checkNotNull(value);
 
         if (value.length() < 8) {
 

@@ -3,7 +3,7 @@ package io.javaclasses.filehub.storage;
 import java.util.List;
 
 /**
- * A general interface for different storage classes in the FileHub server.
+ * An abstract base for persistent storage in the FileHub server application.
  *
  * @param <I> The type of the record identifier.
  * @param <R> The type of the record.

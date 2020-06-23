@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 /**
- * An object that should be saved in a particular storage.
+ * A data structure to save in a {@link Storage}.
  *
  * @param <I> The type of the record identifier.
  */

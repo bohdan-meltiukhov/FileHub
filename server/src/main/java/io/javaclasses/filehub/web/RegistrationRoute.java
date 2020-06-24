@@ -3,11 +3,10 @@ package io.javaclasses.filehub.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
-import io.javaclasses.filehub.api.PasswordValidationException;
-import io.javaclasses.filehub.api.RegisterUser;
-import io.javaclasses.filehub.api.Registration;
-import io.javaclasses.filehub.api.UsernameValidationException;
+import io.javaclasses.filehub.api.*;
 import io.javaclasses.filehub.storage.UserStorage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -45,6 +44,7 @@ public class RegistrationRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
 
+        Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
         response.type("application/json");
 
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -52,23 +52,74 @@ public class RegistrationRoute implements Route {
         gsonBuilder.registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer());
         gsonBuilder.registerTypeAdapter(UsernameValidationException.class, new UsernameValidationErrorSerializer());
         gsonBuilder.registerTypeAdapter(PasswordValidationException.class, new PasswordValidationErrorSerializer());
+        gsonBuilder.registerTypeAdapter(UsernameAlreadyTakenException.class,
+                new UsernameAlreadyTakenExceptionSerializer());
 
         Gson gson = gsonBuilder.create();
+        if (logger.isDebugEnabled()) {
+            logger.debug("Gson object with custom type adapters created.");
+        }
 
         RegisterUser command = gson.fromJson(request.body(), RegisterUser.class);
+        if (logger.isDebugEnabled()) {
+            logger.debug("RegisterUser command is parsed from request body.");
+        }
         Registration process = new Registration(userStorage);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Registration process created.");
+        }
 
         try {
 
             process.handle(command);
+            if (logger.isDebugEnabled()) {
+                logger.debug("The process handled the command successfully.");
+            }
 
             response.status(SC_OK);
             return "The user is registered successfully.";
 
-        } catch (UsernameValidationException error) {
+        } catch (UsernameValidationException exception) {
 
-            UsernameValidationException[] errors = {error};
+            if (logger.isDebugEnabled()) {
+                logger.debug("A UsernameValidationException occurred: {}.", exception.toString());
+            }
+
+            UsernameValidationException[] errors = {exception};
             JsonElement json = gson.toJsonTree(errors);
+            if (logger.isDebugEnabled()) {
+                logger.debug("JSON with validation error generated: {}", json);
+            }
+
+            response.status(SC_UNPROCESSABLE_ENTITY);
+            return json;
+
+        } catch (PasswordValidationException exception) {
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("A PasswordValidationException occurred: {}.", exception.toString());
+            }
+
+            PasswordValidationException[] errors = {exception};
+            JsonElement json = gson.toJsonTree(errors);
+            if (logger.isDebugEnabled()) {
+                logger.debug("JSON with validation error generated: {}", json);
+            }
+
+            response.status(SC_UNPROCESSABLE_ENTITY);
+            return json;
+
+        } catch (UsernameAlreadyTakenException exception) {
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("A UsernameAlreadyTakenException occurred: {}", exception.toString());
+            }
+
+            UsernameAlreadyTakenException[] errors = {exception};
+            JsonElement json = gson.toJsonTree(errors);
+            if (logger.isDebugEnabled()) {
+                logger.debug("JSON with UsernameAlreadyTakenException generated: {}", json);
+            }
 
             response.status(SC_UNPROCESSABLE_ENTITY);
             return json;

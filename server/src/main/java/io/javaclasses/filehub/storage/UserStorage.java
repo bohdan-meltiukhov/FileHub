@@ -2,8 +2,8 @@ package io.javaclasses.filehub.storage;
 
 import io.javaclasses.filehub.api.Username;
 import jdk.nashorn.internal.ir.annotations.Immutable;
-
-import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The in-memory storage for user records.
@@ -19,6 +19,11 @@ public class UserStorage extends InMemoryStorage<UserId, UserRecord> {
      */
     public boolean containsUsername(Username username) {
 
+        Logger logger = LoggerFactory.getLogger(UserStorage.class);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Checking if username {} already exists.", username);
+        }
         return getAll().stream()
                 .anyMatch(userRecord -> userRecord.username().equals(username));
     }

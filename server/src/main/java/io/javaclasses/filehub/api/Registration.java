@@ -4,8 +4,13 @@ import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
 import jdk.nashorn.internal.ir.annotations.Immutable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.BlockingDeque;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * The process that handles a {@link RegisterUser} command.
@@ -38,14 +43,31 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
     @Override
     public Void handle(RegisterUser command) throws UsernameValidationException {
 
+        Logger logger = getLogger(Registration.class);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Starting the registration process.");
+        }
+
         checkNotNull(command);
+        if (logger.isDebugEnabled()) {
+            logger.debug("The RegisterUser command is not null.");
+        }
 
         if (storage.containsUsername(command.username())) {
 
             throw new UsernameValidationException("The username is already taken.");
         }
+        if (logger.isDebugEnabled()) {
+            logger.debug("The username is available.");
+        }
 
-        storage.put(new UserRecord(new UserId(), command.username(), new PasswordHash(command.password())));
+        UserRecord userRecord = new UserRecord(new UserId(), command.username(), new PasswordHash(command.password()));
+
+        storage.put(userRecord);
+        if (logger.isDebugEnabled()) {
+            logger.debug("New user is added successfully: {}.", userRecord);
+        }
         return null;
     }
 }

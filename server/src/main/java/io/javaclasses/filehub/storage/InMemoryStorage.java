@@ -1,6 +1,8 @@
 package io.javaclasses.filehub.storage;
 
 import jdk.nashorn.internal.ir.annotations.Immutable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -16,6 +18,11 @@ import java.util.*;
 public class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> implements Storage<I, R> {
 
     /**
+     * The object for logging messages.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(InMemoryStorage.class);
+
+    /**
      * A map with all stored records.
      */
     private final Map<I, R> storage = Collections.synchronizedMap(new HashMap<>());
@@ -29,6 +36,9 @@ public class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> imp
     @Override
     public R get(I recordId) {
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("Getting a record with ID {}.", recordId);
+        }
         return storage.get(recordId);
     }
 
@@ -40,6 +50,9 @@ public class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> imp
     @Override
     public void put(R record) {
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("Putting a record to the storage: {}.", record);
+        }
         storage.put(record.id(), record);
     }
 
@@ -51,6 +64,9 @@ public class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> imp
     @Override
     public void remove(I recordId) {
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("Removing the record with ID {}.", recordId);
+        }
         storage.remove(recordId);
     }
 
@@ -62,6 +78,9 @@ public class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> imp
     @Override
     public List<R> getAll() {
 
+        if (logger.isDebugEnabled()) {
+            logger.debug("Providing all stored records.");
+        }
         return new ArrayList<>(storage.values());
     }
 }

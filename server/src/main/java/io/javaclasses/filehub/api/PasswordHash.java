@@ -80,7 +80,7 @@ public final class PasswordHash {
     @Override
     public String toString() {
 
-        String hash = String.format("%032x%n", new BigInteger(1, digest));
+        String hash = String.format("%032x", new BigInteger(1, digest));
 
         return "PasswordHash:" + hash;
     }

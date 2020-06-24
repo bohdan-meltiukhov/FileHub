@@ -6,7 +6,7 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 import java.util.*;
 
 /**
- * The class for storing user records.
+ * The in-memory storage for user records.
  */
 @Immutable
 public class UserStorage extends InMemoryStorage<UserId, UserRecord> {

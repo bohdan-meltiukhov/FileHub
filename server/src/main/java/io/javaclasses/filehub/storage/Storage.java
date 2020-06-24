@@ -22,9 +22,8 @@ public interface Storage<I extends RecordId, R extends StorageRecord<I>> {
      * Saves the specified record in the storage. If the storage previously contained the record, updates it.
      *
      * @param record The new record.
-     * @return The added record.
      */
-    R put(R record);
+    void put(R record);
 
     /**
      * Removes the record with the specified ID from the storage.

@@ -16,7 +16,7 @@ public interface Storage<I extends RecordId, R extends StorageRecord<I>> {
      * @param recordId The identifier of the required record.
      * @return The needed record.
      */
-    R read(I recordId);
+    R get(I recordId);
 
     /**
      * Saves the specified record in the storage. If the storage previously contained the record, updates it.
@@ -31,12 +31,12 @@ public interface Storage<I extends RecordId, R extends StorageRecord<I>> {
      *
      * @param recordId The identifier of the record to remove.
      */
-    void delete(I recordId);
+    void remove(I recordId);
 
     /**
      * Provides all the stored records.
      *
      * @return A list of all the records from the storage.
      */
-    List<R> readAll();
+    List<R> getAll();
 }

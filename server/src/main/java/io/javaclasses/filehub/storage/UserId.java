@@ -1,11 +1,14 @@
 package io.javaclasses.filehub.storage;
 
+import jdk.nashorn.internal.ir.annotations.Immutable;
+
 import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The identifier of a user.
  */
+@Immutable
 public class UserId implements RecordId {
 
     /**

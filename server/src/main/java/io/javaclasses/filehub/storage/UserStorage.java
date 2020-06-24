@@ -1,12 +1,14 @@
 package io.javaclasses.filehub.storage;
 
 import io.javaclasses.filehub.api.Username;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.util.*;
 
 /**
  * The class for storing user records.
  */
+@Immutable
 public class UserStorage implements Storage<UserId, UserRecord> {
 
     /**
@@ -21,7 +23,7 @@ public class UserStorage implements Storage<UserId, UserRecord> {
      * @return The required user.
      */
     @Override
-    public UserRecord read(UserId recordId) {
+    public UserRecord get(UserId recordId) {
 
         return storage.get(recordId);
     }
@@ -45,7 +47,7 @@ public class UserStorage implements Storage<UserId, UserRecord> {
      * @param recordId The identifier of the record to remove.
      */
     @Override
-    public void delete(UserId recordId) {
+    public void remove(UserId recordId) {
 
         storage.remove(recordId);
     }
@@ -56,7 +58,7 @@ public class UserStorage implements Storage<UserId, UserRecord> {
      * @return A list of all the records.
      */
     @Override
-    public List<UserRecord> readAll() {
+    public List<UserRecord> getAll() {
 
         return new ArrayList<>(storage.values());
     }

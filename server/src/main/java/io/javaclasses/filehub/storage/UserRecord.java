@@ -2,12 +2,14 @@ package io.javaclasses.filehub.storage;
 
 import io.javaclasses.filehub.api.PasswordHash;
 import io.javaclasses.filehub.api.Username;
+import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.util.Objects;
 
 /**
  * A record about a particular user. Should be saved in a UserStorage.
  */
+@Immutable
 public class UserRecord implements StorageRecord<UserId> {
 
     /**

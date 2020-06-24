@@ -6,6 +6,8 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * A record about a particular user. Should be saved in a UserStorage.
  */
@@ -36,9 +38,9 @@ public class UserRecord implements StorageRecord<UserId> {
      */
     public UserRecord(UserId userId, Username username, PasswordHash passwordHash) {
 
-        this.userId = userId;
-        this.username = username;
-        this.passwordHash = passwordHash;
+        this.userId = checkNotNull(userId);
+        this.username = checkNotNull(username);
+        this.passwordHash = checkNotNull(passwordHash);
     }
 
     /**

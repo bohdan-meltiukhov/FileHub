@@ -1,7 +1,8 @@
 package io.javaclasses.filehub.api;
 
-import com.google.common.base.Preconditions;
 import jdk.nashorn.internal.ir.annotations.Immutable;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A command from a client application that holds username and password for the {@link Registration} process.
@@ -27,11 +28,8 @@ public class RegisterUser implements Command {
      */
     public RegisterUser(Username username, Password password) {
 
-        Preconditions.checkNotNull(username);
-        Preconditions.checkNotNull(password);
-
-        this.username = username;
-        this.password = password;
+        this.username = checkNotNull(username);
+        this.password = checkNotNull(password);
     }
 
     /**

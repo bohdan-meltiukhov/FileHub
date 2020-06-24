@@ -1,10 +1,11 @@
 package io.javaclasses.filehub.api;
 
-import com.google.common.base.Preconditions;
 import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
 import jdk.nashorn.internal.ir.annotations.Immutable;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * The process that handles a {@link RegisterUser} command.
@@ -24,9 +25,7 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
      */
     public Registration(UserStorage storage) {
 
-        Preconditions.checkNotNull(storage);
-
-        this.storage = storage;
+        this.storage = checkNotNull(storage);
     }
 
     /**
@@ -39,7 +38,7 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
     @Override
     public Void handle(RegisterUser command) throws UsernameValidationException {
 
-        Preconditions.checkNotNull(command);
+        checkNotNull(command);
 
         if (storage.containsUsername(command.username())) {
 

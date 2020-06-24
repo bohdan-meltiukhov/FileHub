@@ -1,9 +1,10 @@
 package io.javaclasses.filehub.api;
 
-import com.google.common.base.Preconditions;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A memorized string used to confirm the identity of a user.
@@ -23,7 +24,7 @@ public final class Password {
      */
     public Password(String value) {
 
-        Preconditions.checkNotNull(value);
+        checkNotNull(value);
 
         if (value.length() < 8) {
 

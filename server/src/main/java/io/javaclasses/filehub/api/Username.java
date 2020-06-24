@@ -1,9 +1,10 @@
 package io.javaclasses.filehub.api;
 
-import com.google.common.base.Preconditions;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A value object for a unique name of a user of the FileHub application.
@@ -23,7 +24,7 @@ public final class Username {
      */
     public Username(String value) {
 
-        Preconditions.checkNotNull(value);
+        checkNotNull(value);
 
         if (value.length() < 8) {
 

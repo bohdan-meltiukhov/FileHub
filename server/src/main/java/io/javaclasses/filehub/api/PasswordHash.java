@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.api;
 
-import com.google.common.base.Preconditions;
 import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.math.BigInteger;
@@ -9,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import static com.google.common.base.Charsets.UTF_8;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * A value object for a hashed password.
@@ -32,7 +32,7 @@ public final class PasswordHash {
      */
     public PasswordHash(Password password) {
 
-        Preconditions.checkNotNull(password);
+        checkNotNull(password);
 
         try {
 

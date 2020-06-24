@@ -3,6 +3,7 @@ package io.javaclasses.filehub.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import io.javaclasses.filehub.api.PasswordValidationException;
 import io.javaclasses.filehub.api.RegisterUser;
 import io.javaclasses.filehub.api.Registration;
 import io.javaclasses.filehub.api.UsernameValidationException;
@@ -50,11 +51,11 @@ public class RegistrationRoute implements Route {
 
         gsonBuilder.registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer());
         gsonBuilder.registerTypeAdapter(UsernameValidationException.class, new UsernameValidationErrorSerializer());
+        gsonBuilder.registerTypeAdapter(PasswordValidationException.class, new PasswordValidationErrorSerializer());
 
         Gson gson = gsonBuilder.create();
 
         RegisterUser command = gson.fromJson(request.body(), RegisterUser.class);
-
         Registration process = new Registration(userStorage);
 
         try {
@@ -62,17 +63,14 @@ public class RegistrationRoute implements Route {
             process.handle(command);
 
             response.status(SC_OK);
-
             return "The user is registered successfully.";
 
         } catch (UsernameValidationException error) {
 
             UsernameValidationException[] errors = {error};
-
             JsonElement json = gson.toJsonTree(errors);
 
             response.status(SC_UNPROCESSABLE_ENTITY);
-
             return json;
         }
     }

@@ -10,7 +10,7 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
  * The process that handles a {@link RegisterUser} command.
  */
 @Immutable
-public class Registration implements Progress<RegisterUser, Void> {
+public class Registration implements ApplicationProcess<RegisterUser, Void> {
 
     /**
      * The storage for user records.

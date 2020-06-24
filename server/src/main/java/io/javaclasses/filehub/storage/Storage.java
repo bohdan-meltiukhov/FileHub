@@ -8,7 +8,7 @@ import java.util.List;
  * @param <I> The type of the record identifier.
  * @param <R> The type of the record.
  */
-public interface Storage<I extends RecordId, R extends Record<I>> {
+public interface Storage<I extends RecordId, R extends StorageRecord<I>> {
 
     /**
      * Provides the record with the provided identifier.

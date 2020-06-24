@@ -5,7 +5,7 @@ package io.javaclasses.filehub.storage;
  *
  * @param <I> The type of the record identifier.
  */
-public interface Record<I extends RecordId> {
+public interface StorageRecord<I extends RecordId> {
 
     /**
      * Provides the identifier of the record.

@@ -42,7 +42,7 @@ public class UserId implements RecordId {
     public boolean equals(Object o) {
 
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof UserId)) return false;
         UserId userId = (UserId) o;
         return value.equals(userId.value);
     }
@@ -63,6 +63,7 @@ public class UserId implements RecordId {
      *
      * @return The stored identifier.
      */
+    @Override
     public String value() {
 
         return value;

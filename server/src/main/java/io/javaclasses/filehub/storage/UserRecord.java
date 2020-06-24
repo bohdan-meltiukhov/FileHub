@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * A record about a particular user. Should be saved in a UserStorage.
  */
-public class UserRecord implements Record<UserId> {
+public class UserRecord implements StorageRecord<UserId> {
 
     /**
      * The identifier of a user.

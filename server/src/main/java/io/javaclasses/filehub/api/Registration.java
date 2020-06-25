@@ -56,7 +56,7 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
 
         if (storage.containsUsername(command.username())) {
 
-            throw new UsernameValidationException("The username is already taken.");
+            throw new UsernameAlreadyTakenException("The username is already taken.");
         }
         if (logger.isDebugEnabled()) {
             logger.debug("The username is available.");

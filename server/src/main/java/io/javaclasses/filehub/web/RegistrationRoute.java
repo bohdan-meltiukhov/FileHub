@@ -11,6 +11,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.commons.httpclient.HttpStatus.SC_OK;
 import static org.apache.commons.httpclient.HttpStatus.SC_UNPROCESSABLE_ENTITY;
 
@@ -31,7 +32,7 @@ public class RegistrationRoute implements Route {
      */
     public RegistrationRoute(UserStorage userStorage) {
 
-        this.userStorage = userStorage;
+        this.userStorage = checkNotNull(userStorage);
     }
 
     /**
@@ -43,6 +44,9 @@ public class RegistrationRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
+
+        checkNotNull(request);
+        checkNotNull(response);
 
         Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
         response.type("application/json");

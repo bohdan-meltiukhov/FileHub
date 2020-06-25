@@ -8,6 +8,8 @@ import io.javaclasses.filehub.api.UsernameValidationException;
 
 import java.lang.reflect.Type;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * The class for turning username validation errors into JSON elements.
  */
@@ -22,6 +24,10 @@ public class UsernameValidationErrorSerializer implements JsonSerializer<Usernam
      */
     @Override
     public JsonElement serialize(UsernameValidationException src, Type typeOfSrc, JsonSerializationContext context) {
+
+        checkNotNull(src);
+        checkNotNull(typeOfSrc);
+        checkNotNull(context);
 
         JsonObject jsonValidationError = new JsonObject();
 

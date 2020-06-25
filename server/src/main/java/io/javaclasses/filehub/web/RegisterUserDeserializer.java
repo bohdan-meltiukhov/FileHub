@@ -7,6 +7,8 @@ import io.javaclasses.filehub.api.Username;
 
 import java.lang.reflect.Type;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * The class for turning JSON elements into RegisterUser commands.
  */
@@ -23,6 +25,10 @@ public class RegisterUserDeserializer implements JsonDeserializer<RegisterUser> 
     @Override
     public RegisterUser deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
             throws JsonParseException {
+
+        checkNotNull(json);
+        checkNotNull(typeOfT);
+        checkNotNull(context);
 
         JsonObject jsonObject = json.getAsJsonObject();
 

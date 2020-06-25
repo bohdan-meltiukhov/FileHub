@@ -8,6 +8,8 @@ import io.javaclasses.filehub.api.PasswordValidationException;
 
 import java.lang.reflect.Type;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * The class for turning password validation errors into JSON elements.
  */
@@ -22,6 +24,10 @@ public class PasswordValidationErrorSerializer implements JsonSerializer<Passwor
      */
     @Override
     public JsonElement serialize(PasswordValidationException src, Type typeOfSrc, JsonSerializationContext context) {
+
+        checkNotNull(src);
+        checkNotNull(typeOfSrc);
+        checkNotNull(context);
 
         JsonObject jsonValidationError = new JsonObject();
 

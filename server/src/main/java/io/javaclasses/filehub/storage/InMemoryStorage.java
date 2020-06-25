@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * An in-memory storage for records in the FileHub server application.
  *
@@ -15,7 +17,7 @@ import java.util.*;
  * @param <R> The type of the records.
  */
 @Immutable
-public class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> implements Storage<I, R> {
+public abstract class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> implements Storage<I, R> {
 
     /**
      * The object for logging messages.
@@ -36,6 +38,8 @@ public class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> imp
     @Override
     public R get(I recordId) {
 
+        checkNotNull(recordId);
+
         if (logger.isDebugEnabled()) {
             logger.debug("Getting a record with ID {}.", recordId);
         }
@@ -50,6 +54,8 @@ public class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> imp
     @Override
     public void put(R record) {
 
+        checkNotNull(record);
+
         if (logger.isDebugEnabled()) {
             logger.debug("Putting a record to the storage: {}.", record);
         }
@@ -63,6 +69,8 @@ public class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> imp
      */
     @Override
     public void remove(I recordId) {
+
+        checkNotNull(recordId);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Removing the record with ID {}.", recordId);

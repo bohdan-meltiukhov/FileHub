@@ -35,6 +35,8 @@ dependencies {
 
     errorprone "com.google.errorprone:error_prone_core:2.4.0"
     errorproneJavac "com.google.errorprone:error_prone_core:2.4.0"
+
+    testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '3.4.1'
 }
 
 test {

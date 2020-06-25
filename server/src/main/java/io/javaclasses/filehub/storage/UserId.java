@@ -9,7 +9,7 @@ import java.util.UUID;
  * The identifier of a user.
  */
 @Immutable
-public class UserId implements RecordId {
+public final class UserId implements RecordId {
 
     /**
      * The identifier of a user.

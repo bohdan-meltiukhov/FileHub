@@ -5,6 +5,8 @@ import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * The in-memory storage for user records.
  */
@@ -18,6 +20,8 @@ public class UserStorage extends InMemoryStorage<UserId, UserRecord> {
      * @return True in case there is a user with the provided name in the storage.
      */
     public boolean containsUsername(Username username) {
+
+        checkNotNull(username);
 
         Logger logger = LoggerFactory.getLogger(UserStorage.class);
 

@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * A record about a particular user. Should be saved in a UserStorage.
  */
 @Immutable
-public class UserRecord implements StorageRecord<UserId> {
+public final class UserRecord implements StorageRecord<UserId> {
 
     /**
      * The identifier of a user.

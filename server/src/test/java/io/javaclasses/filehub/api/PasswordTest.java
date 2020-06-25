@@ -1,10 +1,12 @@
 package io.javaclasses.filehub.api;
 
 import com.google.common.testing.NullPointerTester;
+import nl.jqno.equalsverifier.Warning;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DisplayName("The Password should")
@@ -44,5 +46,14 @@ class PasswordTest {
 
         tester.testAllPublicConstructors(Password.class);
         tester.testAllPublicInstanceMethods(new Password("Clementine"));
+    }
+
+    @Test
+    @DisplayName("fulfill the equals() and hashCode() contract.")
+    void testEqualsContract() {
+
+        forClass(Password.class)
+                .suppress(Warning.NULL_FIELDS)
+                .verify();
     }
 }

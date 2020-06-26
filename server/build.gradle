@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+
+    id("net.ltgt.errorprone") version "1.1.0"
 }
 
 group 'io.javaclasses'
@@ -15,7 +17,7 @@ dependencies {
 
     implementation 'com.google.guava:guava:28.1-jre'
 
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
     testImplementation "com.google.truth:truth:1.0.1"
@@ -30,6 +32,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 
     compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
+
+    errorprone "com.google.errorprone:error_prone_core:2.4.0"
+    errorproneJavac "com.google.errorprone:error_prone_core:2.4.0"
+
+    testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '3.4.1'
 }
 
 test {

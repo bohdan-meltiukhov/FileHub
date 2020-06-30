@@ -45,16 +45,14 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
         }
 
         checkNotNull(command);
-        if (logger.isDebugEnabled()) {
-            logger.debug("The RegisterUser command is not null.");
-        }
 
         if (storage.contains(command.username())) {
 
-            throw new UsernameAlreadyTakenException("The username is already taken.");
+            throw new UsernameAlreadyTakenException(
+                    String.format("The username %s is already taken.", command.username()));
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("The username is available.");
+            logger.debug("The username {} is available.", command.username());
         }
 
         UserRecord userRecord = new UserRecord(new UserId(IdGenerator.generate()), command.username(),

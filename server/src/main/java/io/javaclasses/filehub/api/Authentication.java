@@ -78,7 +78,7 @@ public class Authentication implements ApplicationProcess<AuthenticateUser, Toke
         tokenStorage.put(tokenRecord);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Created a saved token record: {}.", tokenRecord);
+            logger.debug("Created and saved a token record: {}.", tokenRecord);
         }
 
         return tokenRecord.token();

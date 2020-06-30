@@ -4,90 +4,93 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import io.javaclasses.filehub.api.*;
+import io.javaclasses.filehub.storage.TokenStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.http.HttpStatus.SC_OK;
-import static org.apache.http.HttpStatus.SC_UNPROCESSABLE_ENTITY;
+import static org.apache.http.HttpStatus.*;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * The {@link Route} for handling requests on the registration path.
+ * A {@link Route} that handles the authentication request.
  */
-public class RegistrationRoute implements Route {
+public class AuthenticationRoute implements Route {
 
     /**
-     * The storage with all registered users.
+     * A storage with all registered users.
      */
     private final UserStorage userStorage;
 
     /**
-     * A utility for serializing and deserializing Java objects into JSON elements.
+     * A storage with all created authentication tokens.
+     */
+    private final TokenStorage tokenStorage;
+
+    /**
+     * A utility to serialize and deserialize Java objects into JSON elements.
      */
     private final Gson gson;
 
     /**
-     * Creates an instance of the registration route with set user storage.
+     * Creates an instance of the Authentication route with set user and token storage.
      *
-     * @param userStorage The storage with registered users.
+     * @param userStorage  A storage with all application users.
+     * @param tokenStorage A storage with all authentication tokens.
      */
-    public RegistrationRoute(UserStorage userStorage) {
+    public AuthenticationRoute(UserStorage userStorage, TokenStorage tokenStorage) {
 
         this.userStorage = checkNotNull(userStorage);
+        this.tokenStorage = checkNotNull(tokenStorage);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
 
-        gsonBuilder.registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer());
+        gsonBuilder.registerTypeAdapter(AuthenticateUser.class, new AuthenticateUserDeserializer());
         gsonBuilder.registerTypeAdapter(UsernameIsNotValidException.class, new UsernameIsNotValidErrorSerializer());
         gsonBuilder.registerTypeAdapter(PasswordIsNotValidException.class, new PasswordIsNotValidErrorSerializer());
-        gsonBuilder.registerTypeAdapter(UsernameAlreadyTakenException.class,
-                new UsernameAlreadyTakenExceptionSerializer());
 
         gson = gsonBuilder.create();
     }
 
     /**
-     * Handles the registration request.
+     * Handles the authentication request.
      *
-     * @param request  The request object providing information about the HTTP request.
-     * @param response The response object providing functionality for modifying the response.
-     * @return The content to be set in the response.
+     * @param request  The request from the client.
+     * @param response The server response.
+     * @return The response body.
      */
     @Override
     public Object handle(Request request, Response response) {
 
-        Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
-        if (logger.isInfoEnabled()) {
-            logger.info("Received an '/api/register' request with body: {}", request.body());
-        }
-
         checkNotNull(request);
         checkNotNull(response);
 
+        Logger logger = getLogger(AuthenticationRoute.class);
+        if (logger.isInfoEnabled()) {
+            logger.info("Received an '/api/login' request with body: {}", request.body());
+        }
+
         response.type("application/json");
 
-        RegisterUser command = gson.fromJson(request.body(), RegisterUser.class);
+        AuthenticateUser command = gson.fromJson(request.body(), AuthenticateUser.class);
         if (logger.isDebugEnabled()) {
-            logger.debug("RegisterUser command is parsed from request body.");
+            logger.debug("AuthenticateUser command is parsed from request body: {}", command);
         }
-        Registration process = new Registration(userStorage);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Registration process created.");
-        }
+
+        Authentication process = new Authentication(userStorage, tokenStorage);
 
         try {
 
-            process.handle(command);
+            Token token = process.handle(command);
             if (logger.isDebugEnabled()) {
-                logger.debug("The Registration process handled the command successfully.");
+                logger.debug("The Authentication process handled the command successfully.");
             }
 
             response.status(SC_OK);
-            return "The user is registered successfully.";
+            return gson.toJson(token, Token.class);
 
         } catch (UsernameIsNotValidException exception) {
 
@@ -119,20 +122,14 @@ public class RegistrationRoute implements Route {
             response.status(SC_UNPROCESSABLE_ENTITY);
             return json;
 
-        } catch (UsernameAlreadyTakenException exception) {
+        } catch (CredentialsAreNotValidException exception) {
 
             if (logger.isDebugEnabled()) {
-                logger.debug("A UsernameAlreadyTakenException occurred: {}", exception.toString());
+                logger.debug("A CredentialsAreNotValidException occurred: {}", exception.toString());
             }
 
-            UsernameAlreadyTakenException[] errors = {exception};
-            JsonElement json = gson.toJsonTree(errors);
-            if (logger.isDebugEnabled()) {
-                logger.debug("JSON with UsernameAlreadyTakenException generated: {}", json);
-            }
-
-            response.status(SC_UNPROCESSABLE_ENTITY);
-            return json;
+            response.status(SC_UNAUTHORIZED);
+            return exception.getMessage();
         }
     }
 }

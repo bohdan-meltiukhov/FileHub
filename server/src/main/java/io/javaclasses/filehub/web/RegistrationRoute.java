@@ -54,8 +54,8 @@ public class RegistrationRoute implements Route {
         GsonBuilder gsonBuilder = new GsonBuilder();
 
         gsonBuilder.registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer());
-        gsonBuilder.registerTypeAdapter(UsernameValidationException.class, new UsernameValidationErrorSerializer());
-        gsonBuilder.registerTypeAdapter(PasswordValidationException.class, new PasswordValidationErrorSerializer());
+        gsonBuilder.registerTypeAdapter(UsernameIsNotValidException.class, new UsernameIsNotValidErrorSerializer());
+        gsonBuilder.registerTypeAdapter(PasswordIsNotValidException.class, new PasswordIsNotValidErrorSerializer());
         gsonBuilder.registerTypeAdapter(UsernameAlreadyTakenException.class,
                 new UsernameAlreadyTakenExceptionSerializer());
 
@@ -83,13 +83,13 @@ public class RegistrationRoute implements Route {
             response.status(SC_OK);
             return "The user is registered successfully.";
 
-        } catch (UsernameValidationException exception) {
+        } catch (UsernameIsNotValidException exception) {
 
             if (logger.isDebugEnabled()) {
                 logger.debug("A UsernameValidationException occurred: {}.", exception.toString());
             }
 
-            UsernameValidationException[] errors = {exception};
+            UsernameIsNotValidException[] errors = {exception};
             JsonElement json = gson.toJsonTree(errors);
             if (logger.isDebugEnabled()) {
                 logger.debug("JSON with validation error generated: {}", json);
@@ -98,13 +98,13 @@ public class RegistrationRoute implements Route {
             response.status(SC_UNPROCESSABLE_ENTITY);
             return json;
 
-        } catch (PasswordValidationException exception) {
+        } catch (PasswordIsNotValidException exception) {
 
             if (logger.isDebugEnabled()) {
                 logger.debug("A PasswordValidationException occurred: {}.", exception.toString());
             }
 
-            PasswordValidationException[] errors = {exception};
+            PasswordIsNotValidException[] errors = {exception};
             JsonElement json = gson.toJsonTree(errors);
             if (logger.isDebugEnabled()) {
                 logger.debug("JSON with validation error generated: {}", json);

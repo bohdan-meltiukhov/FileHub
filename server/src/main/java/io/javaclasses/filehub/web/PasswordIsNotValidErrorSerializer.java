@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import io.javaclasses.filehub.api.PasswordValidationException;
+import io.javaclasses.filehub.api.PasswordIsNotValidException;
 
 import java.lang.reflect.Type;
 
@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * The class for turning password validation errors into JSON elements.
  */
-public class PasswordValidationErrorSerializer implements JsonSerializer<PasswordValidationException> {
+public class PasswordIsNotValidErrorSerializer implements JsonSerializer<PasswordIsNotValidException> {
 
     /**
      * Creates a JSON element from a password validation error.
@@ -23,7 +23,7 @@ public class PasswordValidationErrorSerializer implements JsonSerializer<Passwor
      * @return A JsonElement corresponding to the provided Validation error.
      */
     @Override
-    public JsonElement serialize(PasswordValidationException src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(PasswordIsNotValidException src, Type typeOfSrc, JsonSerializationContext context) {
 
         checkNotNull(src);
         checkNotNull(typeOfSrc);

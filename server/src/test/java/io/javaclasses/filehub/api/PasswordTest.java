@@ -25,7 +25,7 @@ class PasswordTest {
     @DisplayName("not accept string values shorter than 8 characters.")
     void testShortValues() {
 
-        assertThrows(PasswordValidationException.class, () -> new Password("1234567"),
+        assertThrows(PasswordIsNotValidException.class, () -> new Password("1234567"),
                 "The Password did not throw a PasswordValidationError when it received a 7-characters string.");
     }
 

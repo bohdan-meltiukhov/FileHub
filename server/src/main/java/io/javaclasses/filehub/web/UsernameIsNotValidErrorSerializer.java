@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import io.javaclasses.filehub.api.UsernameValidationException;
+import io.javaclasses.filehub.api.UsernameIsNotValidException;
 
 import java.lang.reflect.Type;
 
@@ -13,7 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * The class for turning username validation errors into JSON elements.
  */
-public class UsernameValidationErrorSerializer implements JsonSerializer<UsernameValidationException> {
+public class UsernameIsNotValidErrorSerializer implements JsonSerializer<UsernameIsNotValidException> {
 
     /**
      * Creates a JSON element from a username validation error.
@@ -23,7 +23,7 @@ public class UsernameValidationErrorSerializer implements JsonSerializer<Usernam
      * @return A JsonElement corresponding to the provided Validation error.
      */
     @Override
-    public JsonElement serialize(UsernameValidationException src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(UsernameIsNotValidException src, Type typeOfSrc, JsonSerializationContext context) {
 
         checkNotNull(src);
         checkNotNull(typeOfSrc);

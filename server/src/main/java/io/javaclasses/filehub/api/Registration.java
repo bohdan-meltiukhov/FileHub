@@ -33,10 +33,10 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
      *
      * @param command The command to use for the registration.
      * @return Void.
-     * @throws UsernameValidationException In case the username or password violates the validation rules.
+     * @throws UsernameIsNotValidException In case the username or password violates the validation rules.
      */
     @Override
-    public Void handle(RegisterUser command) throws UsernameValidationException {
+    public Void handle(RegisterUser command) throws UsernameIsNotValidException {
 
         Logger logger = getLogger(Registration.class);
 

@@ -28,7 +28,7 @@ public final class Username {
 
         if (value.length() < 8) {
 
-            throw new UsernameValidationException("The username should have at least 8 characters.");
+            throw new UsernameIsNotValidException("The username should have at least 8 characters.");
         }
 
         this.value = value;

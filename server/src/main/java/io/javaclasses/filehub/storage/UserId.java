@@ -3,7 +3,6 @@ package io.javaclasses.filehub.storage;
 import com.google.errorprone.annotations.Immutable;
 
 import java.util.Objects;
-import java.util.UUID;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

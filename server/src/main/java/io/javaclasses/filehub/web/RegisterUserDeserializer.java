@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The class for turning JSON elements into RegisterUser commands.
+ * A deserializer for turning JSON elements into RegisterUser commands.
  */
 public class RegisterUserDeserializer implements JsonDeserializer<RegisterUser> {
 

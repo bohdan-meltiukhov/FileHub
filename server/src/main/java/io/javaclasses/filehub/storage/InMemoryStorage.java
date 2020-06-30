@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * An in-memory storage for records in the FileHub server application.
  *
- * <p>This storage implementation uses an in-memory {@link HashMap} to store values.
+ * <p>This storage implementation uses a {@link HashMap} to store values.
  *
  * @param <I> The type of the records' identifiers.
  * @param <R> The type of the records.

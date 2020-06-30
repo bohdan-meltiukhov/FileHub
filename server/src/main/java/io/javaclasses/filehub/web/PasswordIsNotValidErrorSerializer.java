@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The class for turning password validation errors into JSON elements.
+ * A serializer for turning password validation errors into JSON elements.
  */
 public class PasswordIsNotValidErrorSerializer implements JsonSerializer<PasswordIsNotValidException> {
 

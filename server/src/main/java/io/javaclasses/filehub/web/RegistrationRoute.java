@@ -16,7 +16,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNPROCESSABLE_ENTITY;
 
 /**
- * The route for handling requests on the registration path.
+ * The {@link Route} for handling requests on the registration path.
  */
 public class RegistrationRoute implements Route {
 
@@ -26,6 +26,11 @@ public class RegistrationRoute implements Route {
     private final UserStorage userStorage;
 
     /**
+     * A utility for serializing and deserializing Java objects into JSON elements.
+     */
+    private final Gson gson;
+
+    /**
      * Creates an instance of the registration route with set user storage.
      *
      * @param userStorage The storage with registered users.
@@ -33,10 +38,20 @@ public class RegistrationRoute implements Route {
     public RegistrationRoute(UserStorage userStorage) {
 
         this.userStorage = checkNotNull(userStorage);
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        gsonBuilder.registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer());
+        gsonBuilder.registerTypeAdapter(UsernameIsNotValidException.class, new UsernameIsNotValidErrorSerializer());
+        gsonBuilder.registerTypeAdapter(PasswordIsNotValidException.class, new PasswordIsNotValidErrorSerializer());
+        gsonBuilder.registerTypeAdapter(UsernameAlreadyTakenException.class,
+                new UsernameAlreadyTakenExceptionSerializer());
+
+        gson = gsonBuilder.create();
     }
 
     /**
-     * Invoked when a request is made on the registration path.
+     * Handles the registration request.
      *
      * @param request  The request object providing information about the HTTP request.
      * @param response The response object providing functionality for modifying the response.
@@ -51,15 +66,6 @@ public class RegistrationRoute implements Route {
         Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
         response.type("application/json");
 
-        GsonBuilder gsonBuilder = new GsonBuilder();
-
-        gsonBuilder.registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer());
-        gsonBuilder.registerTypeAdapter(UsernameIsNotValidException.class, new UsernameIsNotValidErrorSerializer());
-        gsonBuilder.registerTypeAdapter(PasswordIsNotValidException.class, new PasswordIsNotValidErrorSerializer());
-        gsonBuilder.registerTypeAdapter(UsernameAlreadyTakenException.class,
-                new UsernameAlreadyTakenExceptionSerializer());
-
-        Gson gson = gsonBuilder.create();
         if (logger.isDebugEnabled()) {
             logger.debug("Gson object with custom type adapters created.");
         }

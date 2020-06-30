@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The class for turning username validation errors into JSON elements.
+ * A serializer for turning username validation errors into JSON elements.
  */
 public class UsernameIsNotValidErrorSerializer implements JsonSerializer<UsernameIsNotValidException> {
 

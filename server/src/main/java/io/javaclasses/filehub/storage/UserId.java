@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.storage;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
+import com.google.errorprone.annotations.Immutable;
 
 import java.util.Objects;
 import java.util.UUID;

@@ -1,8 +1,8 @@
 package io.javaclasses.filehub.storage;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.PasswordHash;
 import io.javaclasses.filehub.api.Username;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 
 import java.util.Objects;
 

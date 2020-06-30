@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.api;
 
-import jdk.nashorn.internal.ir.annotations.Immutable;
+import com.google.errorprone.annotations.Immutable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

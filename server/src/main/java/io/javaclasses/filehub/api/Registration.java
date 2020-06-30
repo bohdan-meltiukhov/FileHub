@@ -1,9 +1,9 @@
 package io.javaclasses.filehub.api;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
-import jdk.nashorn.internal.ir.annotations.Immutable;
 import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;

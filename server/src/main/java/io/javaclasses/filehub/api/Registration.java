@@ -49,7 +49,7 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
             logger.debug("The RegisterUser command is not null.");
         }
 
-        if (storage.containsUsername(command.username())) {
+        if (storage.contains(command.username())) {
 
             throw new UsernameAlreadyTakenException("The username is already taken.");
         }

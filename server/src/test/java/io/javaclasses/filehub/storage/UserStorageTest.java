@@ -30,12 +30,12 @@ class UserStorageTest {
 
         assertWithMessage("The UserStorage.containsUsername() method did not return true when the " +
                 "provided username existed.")
-                .that(userStorage.containsUsername(username))
+                .that(userStorage.contains(username))
                 .isTrue();
 
         assertWithMessage("The UserStorage.containsUsername() method did not return false when the " +
                 "provided username did not exist.")
-                .that(userStorage.containsUsername(new Username("Benedict")))
+                .that(userStorage.contains(new Username("Benedict")))
                 .isFalse();
     }
 

@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.api.IdGenerator;
 import io.javaclasses.filehub.api.Password;
 import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.Username;
@@ -15,7 +16,8 @@ class UserStorageTest {
     private UserStorage prepareUserStorage(Username username) {
 
         UserStorage userStorage = new UserStorage();
-        userStorage.put(new UserRecord(new UserId(), username, PasswordHasher.hash(new Password("Qazxsw123"))));
+        userStorage.put(new UserRecord(new UserId(IdGenerator.generate()), username,
+                PasswordHasher.hash(new Password("Qazxsw123"))));
         return userStorage;
     }
 

@@ -13,6 +13,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * The hasher for {@link Password}.
  *
  * <p>This hasher uses the <a href="https://en.wikipedia.org/wiki/MD5">MD5</a> hashing algorithm.
+ *
+ * <p>The hasher is thread-safe.
  */
 @Immutable
 public class PasswordHasher {

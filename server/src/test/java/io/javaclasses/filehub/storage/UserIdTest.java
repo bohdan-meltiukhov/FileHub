@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.api.IdGenerator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class UserIdTest {
         NullPointerTester tester = new NullPointerTester();
 
         tester.testAllPublicConstructors(UserId.class);
-        tester.testAllPublicInstanceMethods(new UserId());
+        tester.testAllPublicInstanceMethods(new UserId(IdGenerator.generate()));
     }
 
     @Test

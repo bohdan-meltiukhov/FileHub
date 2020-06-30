@@ -57,7 +57,7 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
             logger.debug("The username is available.");
         }
 
-        UserRecord userRecord = new UserRecord(new UserId(), command.username(),
+        UserRecord userRecord = new UserRecord(new UserId(IdGenerator.generate()), command.username(),
                 PasswordHasher.hash(command.password()));
 
         storage.put(userRecord);

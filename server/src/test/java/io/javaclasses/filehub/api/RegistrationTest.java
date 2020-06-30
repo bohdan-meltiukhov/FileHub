@@ -17,7 +17,7 @@ class RegistrationTest {
     private UserStorage prepareUserStorage(Username username) {
 
         UserStorage storage = new UserStorage();
-        UserRecord userRecord = new UserRecord(new UserId(), username,
+        UserRecord userRecord = new UserRecord(new UserId(IdGenerator.generate()), username,
                 PasswordHasher.hash(new Password("Qazxsw123")));
         storage.put(userRecord);
         return storage;

@@ -5,6 +5,8 @@ import com.google.errorprone.annotations.Immutable;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * The identifier of a user.
  */
@@ -19,9 +21,9 @@ public final class UserId implements RecordId {
     /**
      * Creates an instance of the user ID with set identifier.
      */
-    public UserId() {
+    public UserId(String value) {
 
-        this.value = UUID.randomUUID().toString();
+        this.value = checkNotNull(value);
     }
 
     /**

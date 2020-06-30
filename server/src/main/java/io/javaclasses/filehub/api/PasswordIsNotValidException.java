@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api;
 
 /**
- * The exception that can occur in case the password field violates the validation rules.
+ * The exception that should be raised in case the password field violates the validation rules.
  */
 public class PasswordIsNotValidException extends RuntimeException {
 

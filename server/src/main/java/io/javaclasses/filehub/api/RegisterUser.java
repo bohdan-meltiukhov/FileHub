@@ -5,7 +5,9 @@ import com.google.errorprone.annotations.Immutable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A command from a client application that holds username and password for the {@link Registration} process.
+ * A command from a client application that represents intention of a client to register a user.
+ *
+ * <p>Holds a {@link Username} and a {@link Password} for the {@link Registration} process.
  */
 @Immutable
 public class RegisterUser implements Command {

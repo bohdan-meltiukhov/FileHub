@@ -17,8 +17,8 @@ class RegistrationTest {
     private UserStorage prepareUserStorage(Username username) {
 
         UserStorage storage = new UserStorage();
-        PasswordHash passwordHash = new PasswordHash(new Password("Qazxsw123"));
-        UserRecord userRecord = new UserRecord(new UserId(), username, passwordHash);
+        UserRecord userRecord = new UserRecord(new UserId(), username,
+                PasswordHasher.hash(new Password("Qazxsw123")));
         storage.put(userRecord);
         return storage;
     }
@@ -51,8 +51,8 @@ class RegistrationTest {
 
             assertWithMessage("The Registration process should add a user record with correct " +
                     "password hash.")
-                    .that(userRecord.passwordHash())
-                    .isEqualTo(new PasswordHash(command.password()));
+                    .that(userRecord.hashedPassword())
+                    .isEqualTo(PasswordHasher.hash(command.password()));
 
         } catch (IndexOutOfBoundsException exception) {
 

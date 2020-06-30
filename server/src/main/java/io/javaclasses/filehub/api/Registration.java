@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.api;
 
-import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
@@ -12,7 +11,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * The process that handles a {@link RegisterUser} command.
  */
-@Immutable
 public class Registration implements ApplicationProcess<RegisterUser, Void> {
 
     /**
@@ -59,7 +57,8 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
             logger.debug("The username is available.");
         }
 
-        UserRecord userRecord = new UserRecord(new UserId(), command.username(), new PasswordHash(command.password()));
+        UserRecord userRecord = new UserRecord(new UserId(), command.username(),
+                PasswordHasher.hash(command.password()));
 
         storage.put(userRecord);
         if (logger.isDebugEnabled()) {

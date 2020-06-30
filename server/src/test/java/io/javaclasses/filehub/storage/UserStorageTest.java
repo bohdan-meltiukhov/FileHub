@@ -2,7 +2,7 @@ package io.javaclasses.filehub.storage;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.Password;
-import io.javaclasses.filehub.api.PasswordHash;
+import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.Username;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ class UserStorageTest {
     private UserStorage prepareUserStorage(Username username) {
 
         UserStorage userStorage = new UserStorage();
-        userStorage.put(new UserRecord(new UserId(), username, new PasswordHash(new Password("Qazxsw123"))));
+        userStorage.put(new UserRecord(new UserId(), username, PasswordHasher.hash(new Password("Qazxsw123"))));
         return userStorage;
     }
 

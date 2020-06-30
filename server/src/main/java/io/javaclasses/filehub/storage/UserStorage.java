@@ -10,7 +10,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * The in-memory storage for user records.
  */
-@Immutable
 public class UserStorage extends InMemoryStorage<UserId, UserRecord> {
 
     /**

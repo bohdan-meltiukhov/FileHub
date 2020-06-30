@@ -16,7 +16,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @param <I> The type of the records' identifiers.
  * @param <R> The type of the records.
  */
-@Immutable
 public abstract class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> implements Storage<I, R> {
 
     /**

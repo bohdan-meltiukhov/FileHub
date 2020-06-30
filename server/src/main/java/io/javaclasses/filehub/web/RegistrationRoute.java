@@ -12,8 +12,8 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.commons.httpclient.HttpStatus.SC_OK;
-import static org.apache.commons.httpclient.HttpStatus.SC_UNPROCESSABLE_ENTITY;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.SC_UNPROCESSABLE_ENTITY;
 
 /**
  * The route for handling requests on the registration path.

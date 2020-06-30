@@ -10,7 +10,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A {@link StorageRecord} for saving {@link Token}.
  */
-public final class TokenRecord implements StorageRecord<RecordId> {
+public final class TokenRecord implements StorageRecord<TokenId> {
 
     /**
      * An identifier of the token.

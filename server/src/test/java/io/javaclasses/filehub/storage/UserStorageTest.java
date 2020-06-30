@@ -28,13 +28,13 @@ class UserStorageTest {
         Username username = new Username("administrator");
         UserStorage userStorage = prepareUserStorage(username);
 
-        assertWithMessage("The UserStorage.containsUsername() method should return true if the " +
-                "provided username exists.")
+        assertWithMessage("The UserStorage.containsUsername() method did not return true when the " +
+                "provided username existed.")
                 .that(userStorage.containsUsername(username))
                 .isTrue();
 
-        assertWithMessage("The UserStorage.containsUsername() method should return false if the " +
-                "provided username does not exist.")
+        assertWithMessage("The UserStorage.containsUsername() method did not return false when the " +
+                "provided username did not exist.")
                 .that(userStorage.containsUsername(new Username("Benedict")))
                 .isFalse();
     }

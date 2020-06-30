@@ -27,6 +27,7 @@ public class UserRecordTest {
         NullPointerTester tester = new NullPointerTester();
         UserRecord userRecord = prepareUserRecord();
         tester.setDefault(Username.class, userRecord.username());
+        tester.setDefault(UserId.class, new UserId(IdGenerator.generate()));
 
         tester.testAllPublicConstructors(UserRecord.class);
         tester.testAllPublicInstanceMethods(userRecord);

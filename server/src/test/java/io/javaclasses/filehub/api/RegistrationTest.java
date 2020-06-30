@@ -44,19 +44,19 @@ class RegistrationTest {
 
             UserRecord userRecord = storage.getAll().get(0);
 
-            assertWithMessage("The Registration process should add a user record with correct " +
+            assertWithMessage("The Registration process added a user record with incorrect " +
                     "username.")
                     .that(userRecord.username())
                     .isEqualTo(command.username());
 
-            assertWithMessage("The Registration process should add a user record with correct " +
+            assertWithMessage("The Registration process added a user record with incorrect " +
                     "password hash.")
                     .that(userRecord.hashedPassword())
                     .isEqualTo(PasswordHasher.hash(command.password()));
 
         } catch (IndexOutOfBoundsException exception) {
 
-            fail("The Registration process should add a record to the storage.");
+            fail("The Registration process did not add a record to the storage.");
         }
     }
 
@@ -67,10 +67,10 @@ class RegistrationTest {
         Username username = new Username("administrator");
         Registration process = new Registration(prepareUserStorage(username));
 
-        assertThrows(UsernameAlreadyTakenException.class, () -> {
-            process.handle(new RegisterUser(username, new Password("Qazxsw123")));
-        }, "The Registration process should throw a UsernameAlreadyTakenException in case a user with the " +
-                "provided username already exists in the storage.");
+        assertThrows(UsernameAlreadyTakenException.class, () ->
+                process.handle(new RegisterUser(username, new Password("Qazxsw123"))),
+                "The Registration process did not throw a UsernameAlreadyTakenException in case a user " +
+                        "with the provided username already existed in the storage, though it should have.");
     }
 
     @Test

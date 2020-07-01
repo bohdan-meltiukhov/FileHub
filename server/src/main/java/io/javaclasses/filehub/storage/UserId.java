@@ -5,7 +5,7 @@ import com.google.errorprone.annotations.Immutable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The identifier of a user.
+ * The identifier of a {@link UserRecord}.
  */
 @Immutable
 public final class UserId extends RecordId {

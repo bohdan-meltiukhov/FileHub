@@ -7,7 +7,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A value object for for authentication tokens.
+ * A value object for authentication tokens.
  *
  * <p>A token is a secure string used to identify and authorize users.
  */

@@ -28,7 +28,7 @@ public abstract class RecordId {
     /**
      * Indicates whether the provided object is a record ID and has the same value.
      *
-     * @param o The object with with to compare.
+     * @param o The object with which to compare.
      * @return True if the record identifiers are equal.
      */
     @Override

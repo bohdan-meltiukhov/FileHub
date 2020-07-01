@@ -14,9 +14,10 @@ class FolderMetadataRecordTest {
     @DisplayName("not accept null values.")
     void testNullPointers() {
         NullPointerTester tester = new NullPointerTester();
+        tester.setDefault(FolderId.class, new FolderId(""));
+        tester.setDefault(UserId.class, new UserId(""));
 
         tester.testAllPublicConstructors(FolderMetadataRecord.class);
-
         tester.testAllPublicInstanceMethods(new FolderMetadataRecord(new FolderId(""), new FolderId(""),
                 new UserId(""), "", 0));
     }

@@ -1,9 +1,16 @@
 package io.javaclasses.filehub.storage;
 
+import com.google.errorprone.annotations.Immutable;
+
+import java.util.Objects;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * A {@link StorageRecord} with metadata about a folder in the FileHub web application.
  */
-public class FolderMetadataRecord implements StorageRecord<FolderId> {
+@Immutable
+public final class FolderMetadataRecord implements StorageRecord<FolderId> {
 
     /**
      * An identifier of the folder.
@@ -13,7 +20,7 @@ public class FolderMetadataRecord implements StorageRecord<FolderId> {
     /**
      * An identifier of the parent folder.
      */
-    private FolderId parentFolderId;
+    private final FolderId parentFolderId;
 
     /**
      * An identifier of the folder owner.
@@ -23,12 +30,12 @@ public class FolderMetadataRecord implements StorageRecord<FolderId> {
     /**
      * The name of the folder.
      */
-    private String folderName;
+    private final String folderName;
 
     /**
      * The number of nested files or folders this folder contains.
      */
-    private int itemsNumber;
+    private final int itemsNumber;
 
     /**
      * Creates an instance of the folder metadata record with set properties.
@@ -42,11 +49,41 @@ public class FolderMetadataRecord implements StorageRecord<FolderId> {
     public FolderMetadataRecord(FolderId folderId, FolderId parentFolderId, UserId userId, String folderName,
                                 int itemsNumber) {
 
-        this.folderId = folderId;
-        this.parentFolderId = parentFolderId;
-        this.userId = userId;
-        this.folderName = folderName;
+        this.folderId = checkNotNull(folderId);
+        this.parentFolderId = checkNotNull(parentFolderId);
+        this.userId = checkNotNull(userId);
+        this.folderName = checkNotNull(folderName);
         this.itemsNumber = itemsNumber;
+    }
+
+    /**
+     * Indicates whether the provided object is a folder metadata record with the same fields.
+     *
+     * @param o The object to compare with.
+     * @return True in case both objects are folders with the same fields.
+     */
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (!(o instanceof FolderMetadataRecord)) return false;
+        FolderMetadataRecord that = (FolderMetadataRecord) o;
+        return itemsNumber == that.itemsNumber &&
+                folderId.equals(that.folderId) &&
+                parentFolderId.equals(that.parentFolderId) &&
+                userId.equals(that.userId) &&
+                folderName.equals(that.folderName);
+    }
+
+    /**
+     * Provides a hash code value of the folder metadata record.
+     *
+     * @return A hash code value that considers the folder fields.
+     */
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(folderId, parentFolderId, userId, folderName, itemsNumber);
     }
 
     /**
@@ -71,16 +108,6 @@ public class FolderMetadataRecord implements StorageRecord<FolderId> {
     }
 
     /**
-     * Changes the parent folder ID.
-     *
-     * @param parentFolderId The new parent folder identifier.
-     */
-    public void setParentFolderId(FolderId parentFolderId) {
-
-        this.parentFolderId = parentFolderId;
-    }
-
-    /**
      * Provides the user identifier.
      *
      * @return The identifier of the folder owner.
@@ -101,16 +128,6 @@ public class FolderMetadataRecord implements StorageRecord<FolderId> {
     }
 
     /**
-     * Changes the folder name.
-     *
-     * @param folderName The new folder name.
-     */
-    public void setFolderName(String folderName) {
-
-        this.folderName = folderName;
-    }
-
-    /**
      * Provides the number of nested items.
      *
      * @return The number of nested items.
@@ -118,14 +135,5 @@ public class FolderMetadataRecord implements StorageRecord<FolderId> {
     public int itemsNumber() {
 
         return itemsNumber;
-    }
-
-    /**
-     * Changes the number of nested items.
-     *
-     * @param itemsNumber The new number of nested items.
-     */
-    public void setItemsNumber(int itemsNumber) {
-        this.itemsNumber = itemsNumber;
     }
 }

@@ -42,38 +42,19 @@ class UserStorageTest {
     }
 
     @Test
-    @DisplayName("indicate whether a pair of a username and a password exists.")
-    void testContainsUsernameAndPassword() {
-
-        Username username = new Username("administrator");
-        String password = "secure-password";
-
-        UserStorage userStorage = prepareUserStorage(username, password);
-
-        assertWithMessage("The UserStorage.contains() method did not return true when the " +
-                "provided username and password existed.")
-                .that(userStorage.contains(username, password))
-                .isTrue();
-
-        assertWithMessage("The UserStorage.contains() method did not return false when the " +
-                "provided username and password did not exist.")
-                .that(userStorage.contains(new Username("Benedict"), "wrong-password"))
-                .isFalse();
-    }
-
-    @Test
-    @DisplayName("provide users by username.")
+    @DisplayName("provide users by username and password.")
     void testGet() {
 
         Username username = new Username("administrator");
-        UserStorage userStorage = prepareUserStorage(username);
+        String password = "secure-password";
+        UserStorage userStorage = prepareUserStorage(username, password);
 
         assertWithMessage("The UserStorage.get(username) method didn't find the user.")
-                .that(userStorage.get(username))
+                .that(userStorage.get(username, password))
                 .isNotNull();
 
         assertWithMessage("The UserStorage.get(username) method found a user with incorrect username.")
-                .that(userStorage.get(username).username())
+                .that(userStorage.get(username, password).username())
                 .isEqualTo(username);
     }
 

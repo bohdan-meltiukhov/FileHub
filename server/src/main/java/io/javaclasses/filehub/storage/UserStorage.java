@@ -41,6 +41,7 @@ public class UserStorage extends InMemoryStorage<UserId, UserRecord> {
     public UserRecord get(Username username, String password) {
 
         checkNotNull(username);
+        checkNotNull(password);
 
         if (logger.isDebugEnabled()) {
             logger.debug("Getting a user with name {} and password.", username);

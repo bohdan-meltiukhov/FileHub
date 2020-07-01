@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
 import static nl.jqno.equalsverifier.Warning.NULL_FIELDS;
 
+@DisplayName("The Token should")
 class TokenTest {
 
     @Test

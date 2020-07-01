@@ -1,8 +1,6 @@
 package io.javaclasses.filehub.web;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.google.gson.*;
 import io.javaclasses.filehub.api.*;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
@@ -12,8 +10,7 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.http.HttpStatus.SC_OK;
-import static org.apache.http.HttpStatus.SC_UNPROCESSABLE_ENTITY;
+import static org.apache.http.HttpStatus.*;
 
 /**
  * The {@link Route} for handling requests on the registration path.
@@ -66,20 +63,14 @@ public class RegistrationRoute implements Route {
         Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
         response.type("application/json");
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Gson object with custom type adapters created.");
-        }
-
-        RegisterUser command = gson.fromJson(request.body(), RegisterUser.class);
-        if (logger.isDebugEnabled()) {
-            logger.debug("RegisterUser command is parsed from request body.");
-        }
-        Registration process = new Registration(userStorage);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Registration process created.");
-        }
 
         try {
+
+            RegisterUser command = gson.fromJson(request.body(), RegisterUser.class);
+            if (logger.isDebugEnabled()) {
+                logger.debug("RegisterUser command is parsed from request body.");
+            }
+            Registration process = new Registration(userStorage);
 
             process.handle(command);
             if (logger.isDebugEnabled()) {
@@ -89,40 +80,35 @@ public class RegistrationRoute implements Route {
             response.status(SC_OK);
             return "The user is registered successfully.";
 
-        } catch (UsernameIsNotValidException exception) {
+        } catch (JsonParseException exception) {
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("A UsernameValidationException occurred: {}.", exception.toString());
+            if (logger.isInfoEnabled()) {
+                logger.info("A JsonParseException occurred: {}", exception.getMessage());
             }
 
-            UsernameIsNotValidException[] errors = {exception};
-            JsonElement json = gson.toJsonTree(errors);
-            if (logger.isDebugEnabled()) {
-                logger.debug("JSON with validation error generated: {}", json);
+            response.status(SC_BAD_REQUEST);
+            return "Unfortunately, we didn't manage to recognize the request.";
+
+        } catch (UsernameIsNotValidException | PasswordIsNotValidException exception) {
+
+            if (logger.isInfoEnabled()) {
+                logger.info("A {} occurred: {}.", exception.getClass().getSimpleName(), exception.getMessage());
             }
 
-            response.status(SC_UNPROCESSABLE_ENTITY);
-            return json;
-
-        } catch (PasswordIsNotValidException exception) {
+            JsonArray errors = new JsonArray();
+            errors.add(gson.toJsonTree(exception));
 
             if (logger.isDebugEnabled()) {
-                logger.debug("A PasswordValidationException occurred: {}.", exception.toString());
-            }
-
-            PasswordIsNotValidException[] errors = {exception};
-            JsonElement json = gson.toJsonTree(errors);
-            if (logger.isDebugEnabled()) {
-                logger.debug("JSON with validation error generated: {}", json);
+                logger.debug("JSON with validation error generated: {}", errors);
             }
 
             response.status(SC_UNPROCESSABLE_ENTITY);
-            return json;
+            return errors;
 
         } catch (UsernameAlreadyTakenException exception) {
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("A UsernameAlreadyTakenException occurred: {}", exception.toString());
+            if (logger.isInfoEnabled()) {
+                logger.info("A UsernameAlreadyTakenException occurred: {}", exception.getMessage());
             }
 
             UsernameAlreadyTakenException[] errors = {exception};

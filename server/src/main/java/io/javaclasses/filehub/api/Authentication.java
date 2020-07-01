@@ -12,7 +12,7 @@ import static io.javaclasses.filehub.api.PasswordHasher.hash;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * The process that authenticates a user in the FileHu web application.
+ * The process that authenticates a user in the FileHub web application.
  */
 public class Authentication implements ApplicationProcess<AuthenticateUser, Token> {
 
@@ -55,16 +55,16 @@ public class Authentication implements ApplicationProcess<AuthenticateUser, Toke
 
         checkNotNull(command);
 
-        if (!userStorage.contains(command.username(), hash(command.password()))) {
+        UserRecord userRecord = userStorage.get(command.username(), hash(command.password()));
+
+        if (userRecord == null) {
 
             if (logger.isDebugEnabled()) {
-                logger.debug("The command {} contains invalid credentials.", command);
+                logger.debug("The command {} contains incorrect credentials.", command);
             }
 
-            throw new CredentialsAreNotValidException("The username or password are incorrect.");
+            throw new UnauthorizedException("The username or password you entered is incorrect.");
         }
-
-        UserRecord userRecord = userStorage.get(command.username());
 
         if (logger.isDebugEnabled()) {
             logger.debug("Found a user {}.", userRecord);

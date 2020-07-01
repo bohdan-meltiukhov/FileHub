@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.storage;
 
-import io.javaclasses.filehub.api.CredentialsAreNotValidException;
+import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.api.Username;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,43 +32,24 @@ public class UserStorage extends InMemoryStorage<UserId, UserRecord> {
     }
 
     /**
-     * Indicates whether the user storage contains a user record with provided username and password.
-     *
-     * @param username The username to check.
-     * @param password The password to check.
-     * @return True in case a user record with the specified username and password exists.
-     */
-    public boolean contains(Username username, String password) {
-
-        checkNotNull(username);
-        checkNotNull(password);
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Checking if a user with username {} and password {} exists.", username, password);
-        }
-
-        return getAll().stream()
-                .anyMatch(userRecord -> userRecord.username().equals(username) &&
-                        userRecord.hashedPassword().equals(password));
-    }
-
-    /**
-     * Provides a user record with the specified username.
+     * Provides a user record with the specified username and password. Returns null if there is no such user.
      *
      * @param username The name of the required user record.
+     * @param password The password of the needed user.
      * @return The required user record.
      */
-    public UserRecord get(Username username) {
+    public UserRecord get(Username username, String password) {
 
         checkNotNull(username);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Getting a user with name {}.", username);
+            logger.debug("Getting a user with name {} and password.", username);
         }
 
         return getAll().stream()
-                .filter(userRecord -> userRecord.username().equals(username))
+                .filter(userRecord -> userRecord.username().equals(username) &&
+                        userRecord.hashedPassword().equals(password))
                 .findFirst()
-                .orElseThrow(() -> new CredentialsAreNotValidException("The username or password are invalid."));
+                .orElse(null);
     }
 }

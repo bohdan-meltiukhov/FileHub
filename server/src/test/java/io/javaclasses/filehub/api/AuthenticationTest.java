@@ -61,7 +61,7 @@ class AuthenticationTest {
         AuthenticateUser command = new AuthenticateUser(new Username("hackerman"),
                 new Password("wrong-password"));
 
-        assertThrows(CredentialsAreNotValidException.class, () -> process.handle(command),
+        assertThrows(UnauthorizedException.class, () -> process.handle(command),
                 "The Authentication process didn't throw a CredentialsAreNotValidException with invalid " +
                         "credentials, though it should have.");
     }

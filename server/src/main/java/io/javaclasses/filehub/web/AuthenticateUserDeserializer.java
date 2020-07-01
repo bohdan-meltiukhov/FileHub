@@ -30,11 +30,18 @@ public class AuthenticateUserDeserializer implements JsonDeserializer<Authentica
         checkNotNull(typeOfT);
         checkNotNull(context);
 
-        JsonObject jsonObject = json.getAsJsonObject();
+        try {
 
-        Username username = new Username(jsonObject.get("username").getAsString());
-        Password password = new Password(jsonObject.get("password").getAsString());
+            JsonObject jsonObject = json.getAsJsonObject();
 
-        return new AuthenticateUser(username, password);
+            Username username = new Username(jsonObject.get("username").getAsString());
+            Password password = new Password(jsonObject.get("password").getAsString());
+
+            return new AuthenticateUser(username, password);
+
+        } catch (NullPointerException exception) {
+
+            throw new JsonParseException(exception);
+        }
     }
 }

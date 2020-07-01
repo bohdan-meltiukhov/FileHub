@@ -1,8 +1,6 @@
 package io.javaclasses.filehub.web;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.google.gson.*;
 import io.javaclasses.filehub.api.*;
 import io.javaclasses.filehub.storage.TokenStorage;
 import io.javaclasses.filehub.storage.UserStorage;
@@ -75,14 +73,14 @@ public class AuthenticationRoute implements Route {
 
         response.type("application/json");
 
-        AuthenticateUser command = gson.fromJson(request.body(), AuthenticateUser.class);
-        if (logger.isDebugEnabled()) {
-            logger.debug("AuthenticateUser command is parsed from request body: {}", command);
-        }
-
         Authentication process = new Authentication(userStorage, tokenStorage);
 
         try {
+
+            AuthenticateUser command = gson.fromJson(request.body(), AuthenticateUser.class);
+            if (logger.isDebugEnabled()) {
+                logger.debug("AuthenticateUser command is parsed from request body: {}", command);
+            }
 
             Token token = process.handle(command);
             if (logger.isDebugEnabled()) {
@@ -92,40 +90,34 @@ public class AuthenticationRoute implements Route {
             response.status(SC_OK);
             return gson.toJson(token, Token.class);
 
-        } catch (UsernameIsNotValidException exception) {
+        } catch (JsonParseException exception) {
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("A UsernameValidationException occurred: {}.", exception.toString());
+            if (logger.isInfoEnabled()) {
+                logger.info("A JsonParseException occurred: {}", exception.getMessage());
             }
 
-            UsernameIsNotValidException[] errors = {exception};
-            JsonElement json = gson.toJsonTree(errors);
-            if (logger.isDebugEnabled()) {
-                logger.debug("JSON with validation error generated: {}", json);
+            response.status(SC_BAD_REQUEST);
+            return "Unfortunately, we didn't manage to recognize the request.";
+
+        } catch (UsernameIsNotValidException | PasswordIsNotValidException exception) {
+
+            if (logger.isInfoEnabled()) {
+                logger.info("A {} occurred: {}.", exception.getClass().getSimpleName(), exception.getMessage());
             }
 
-            response.status(SC_UNPROCESSABLE_ENTITY);
-            return json;
-
-        } catch (PasswordIsNotValidException exception) {
-
+            JsonArray errors = new JsonArray();
+            errors.add(gson.toJsonTree(exception));
             if (logger.isDebugEnabled()) {
-                logger.debug("A PasswordValidationException occurred: {}.", exception.toString());
-            }
-
-            PasswordIsNotValidException[] errors = {exception};
-            JsonElement json = gson.toJsonTree(errors);
-            if (logger.isDebugEnabled()) {
-                logger.debug("JSON with validation error generated: {}", json);
+                logger.debug("JSON with validation error generated: {}", errors);
             }
 
             response.status(SC_UNPROCESSABLE_ENTITY);
-            return json;
+            return errors;
 
-        } catch (CredentialsAreNotValidException exception) {
+        } catch (UnauthorizedException exception) {
 
             if (logger.isDebugEnabled()) {
-                logger.debug("A CredentialsAreNotValidException occurred: {}", exception.toString());
+                logger.debug("An UnauthorizedException occurred: {}", exception.getMessage());
             }
 
             response.status(SC_UNAUTHORIZED);

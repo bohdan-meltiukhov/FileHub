@@ -30,11 +30,18 @@ public class RegisterUserDeserializer implements JsonDeserializer<RegisterUser> 
         checkNotNull(typeOfT);
         checkNotNull(context);
 
-        JsonObject jsonObject = json.getAsJsonObject();
+        try {
 
-        Username username = new Username(jsonObject.get("username").getAsString());
-        Password password = new Password(jsonObject.get("password").getAsString());
+            JsonObject jsonObject = json.getAsJsonObject();
 
-        return new RegisterUser(username, password);
+            Username username = new Username(jsonObject.get("username").getAsString());
+            Password password = new Password(jsonObject.get("password").getAsString());
+
+            return new RegisterUser(username, password);
+
+        } catch (NullPointerException exception) {
+
+            throw new JsonParseException(exception);
+        }
     }
 }

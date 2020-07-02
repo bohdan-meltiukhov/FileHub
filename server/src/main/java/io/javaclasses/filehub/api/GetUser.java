@@ -5,7 +5,7 @@ import com.google.errorprone.annotations.Immutable;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The command that represents intention of a client to get the current user.
+ * A {@link Command} that represents intention of a client to get the current user.
  */
 @Immutable
 public class GetUser implements Command {

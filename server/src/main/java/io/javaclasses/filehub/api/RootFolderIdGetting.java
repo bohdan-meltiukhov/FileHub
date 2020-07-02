@@ -4,6 +4,7 @@ import io.javaclasses.filehub.storage.*;
 import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.javaclasses.filehub.api.FindUserService.findUser;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -49,27 +50,7 @@ public class RootFolderIdGetting implements ApplicationProcess<GetRootFolderId, 
             logger.debug("Starting the RootFolderIdGetting process.");
         }
 
-        TokenRecord tokenRecord = tokenStorage.get(command.getToken());
-
-        if (tokenRecord == null) {
-
-            throw new UnauthorizedException("Authentication required. Please log in.");
-        }
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Found the token record {}.", tokenRecord);
-        }
-
-        UserRecord userRecord = userStorage.get(tokenRecord.userId());
-
-        if (userRecord == null) {
-
-            throw new UnauthorizedException("Authentication required. Please log in.");
-        }
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Found the user record {}.", userRecord);
-        }
+        UserRecord userRecord = findUser(tokenStorage, userStorage, command.token());
 
         return userRecord.rootFolderId();
     }

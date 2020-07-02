@@ -40,7 +40,7 @@ public class GetRootFolderId implements Command {
      *
      * @return The stored authentication token.
      */
-    public Token getToken() {
+    public Token token() {
 
         return token;
     }

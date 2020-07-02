@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.storage.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,10 @@ class RegistrationRouteTest {
         tester.setDefault(Response.class, new Response() {
         });
         tester.setDefault(Request.class, new Request() {
+            @Override
+            public String body() {
+                return null;
+            }
         });
 
         return tester;
@@ -27,6 +32,6 @@ class RegistrationRouteTest {
         NullPointerTester tester = prepareTester();
 
         tester.testAllPublicConstructors(RegistrationRoute.class);
-        tester.testAllPublicInstanceMethods(new RegistrationRoute(new UserStorage()));
+        tester.testAllPublicInstanceMethods(new RegistrationRoute(new UserStorage(), new FolderMetadataStorage()));
     }
 }

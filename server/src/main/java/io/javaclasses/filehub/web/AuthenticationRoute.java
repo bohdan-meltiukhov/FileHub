@@ -68,8 +68,8 @@ public class AuthenticationRoute implements Route {
         checkNotNull(response);
 
         Logger logger = getLogger(AuthenticationRoute.class);
-        if (logger.isInfoEnabled()) {
-            logger.info("Received a '{}' request with body: {}", request.matchedPath(), request.body());
+        if (logger.isDebugEnabled()) {
+            logger.debug("Received a '{}' request with body: {}", request.matchedPath(), request.body());
         }
 
         response.type("application/json");

@@ -1,10 +1,7 @@
 package io.javaclasses.filehub.api;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.FolderId;
-import io.javaclasses.filehub.storage.UserId;
-import io.javaclasses.filehub.storage.UserRecord;
-import io.javaclasses.filehub.storage.UserStorage;
+import io.javaclasses.filehub.storage.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -35,15 +32,16 @@ class RegistrationTest {
     @DisplayName("add a user to an empty storage.")
     void testAddUser() {
 
-        UserStorage storage = new UserStorage();
-        Registration process = new Registration(storage);
+        UserStorage userStorage = new UserStorage();
+        FolderMetadataStorage folderStorage = new FolderMetadataStorage();
+        Registration process = new Registration(userStorage, folderStorage);
         RegisterUser command = prepareCommand();
 
         process.handle(command);
 
         try {
 
-            UserRecord userRecord = storage.getAll().get(0);
+            UserRecord userRecord = userStorage.getAll().get(0);
 
             assertWithMessage("The Registration process added a user record with incorrect " +
                     "username.")
@@ -66,7 +64,8 @@ class RegistrationTest {
     void testUserExists() {
 
         Username username = new Username("administrator");
-        Registration process = new Registration(prepareUserStorage(username));
+        FolderMetadataStorage folderStorage = new FolderMetadataStorage();
+        Registration process = new Registration(prepareUserStorage(username), folderStorage);
 
         assertThrows(UsernameAlreadyTakenException.class, () ->
                 process.handle(new RegisterUser(username, new Password("Qazxsw123"))),
@@ -81,6 +80,6 @@ class RegistrationTest {
         NullPointerTester tester = new NullPointerTester();
 
         tester.testAllPublicConstructors(Registration.class);
-        tester.testAllPublicInstanceMethods(new Registration(new UserStorage()));
+        tester.testAllPublicInstanceMethods(new Registration(new UserStorage(), new FolderMetadataStorage()));
     }
 }

@@ -16,16 +16,23 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
     /**
      * The storage for user records.
      */
-    private final UserStorage storage;
+    private final UserStorage userStorage;
+
+    /**
+     * A storage with all folders.
+     */
+    private final FolderMetadataStorage folderMetadataStorage;
 
     /**
      * Creates an instance of the registration process with set storage.
      *
-     * @param storage The storage for user records.
+     * @param userStorage           The storage for user records.
+     * @param folderMetadataStorage The storage with all folders.
      */
-    public Registration(UserStorage storage) {
+    public Registration(UserStorage userStorage, FolderMetadataStorage folderMetadataStorage) {
 
-        this.storage = checkNotNull(storage);
+        this.userStorage = checkNotNull(userStorage);
+        this.folderMetadataStorage = checkNotNull(folderMetadataStorage);
     }
 
     /**
@@ -46,7 +53,7 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
 
         checkNotNull(command);
 
-        if (storage.contains(command.username())) {
+        if (userStorage.contains(command.username())) {
 
             throw new UsernameAlreadyTakenException(
                     String.format("The username '%s' is already taken.", command.username().value()));
@@ -61,9 +68,11 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
         FolderMetadataRecord folder = new FolderMetadataRecord(new FolderId(generate()), null,
                 userId, "New Folder", 0);
 
+        folderMetadataStorage.put(folder);
+
         UserRecord userRecord = new UserRecord(userId, command.username(), hashedPassword, folder.id());
 
-        storage.put(userRecord);
+        userStorage.put(userRecord);
         if (logger.isDebugEnabled()) {
             logger.debug("New user is added successfully: {}.", userRecord);
         }

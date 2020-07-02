@@ -56,8 +56,8 @@ public class RootFolderIdRoute implements Route {
         try {
 
             Token token = new Token(request.headers("Authentication"));
-            if (logger.isInfoEnabled()) {
-                logger.info("Received a '{}' request with token {}.", request.matchedPath(), token);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Received a '{}' request with token {}.", request.matchedPath(), token);
             }
 
             GetRootFolderId command = new GetRootFolderId(token);

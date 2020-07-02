@@ -2,6 +2,7 @@ package io.javaclasses.filehub.web;
 
 import com.google.gson.*;
 import io.javaclasses.filehub.api.*;
+import io.javaclasses.filehub.storage.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,11 @@ public class RegistrationRoute implements Route {
     private final UserStorage userStorage;
 
     /**
+     * A storage with all folders.
+     */
+    private final FolderMetadataStorage folderStorage;
+
+    /**
      * A utility for serializing and deserializing Java objects into JSON elements.
      */
     private final Gson gson;
@@ -30,11 +36,13 @@ public class RegistrationRoute implements Route {
     /**
      * Creates an instance of the registration route with set user storage.
      *
-     * @param userStorage The storage with registered users.
+     * @param userStorage   The storage with registered users.
+     * @param folderStorage The storage with all folders.
      */
-    public RegistrationRoute(UserStorage userStorage) {
+    public RegistrationRoute(UserStorage userStorage, FolderMetadataStorage folderStorage) {
 
         this.userStorage = checkNotNull(userStorage);
+        this.folderStorage = checkNotNull(folderStorage);
 
         gson = createGson();
     }
@@ -68,8 +76,8 @@ public class RegistrationRoute implements Route {
     public Object handle(Request request, Response response) {
 
         Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
-        if (logger.isInfoEnabled()) {
-            logger.info("Received a '{}' request with body: {}", request.matchedPath(), request.body());
+        if (logger.isDebugEnabled()) {
+            logger.debug("Received a '{}' request with body: {}", request.matchedPath(), request.body());
         }
 
         checkNotNull(request);
@@ -84,7 +92,7 @@ public class RegistrationRoute implements Route {
             if (logger.isDebugEnabled()) {
                 logger.debug("RegisterUser command is parsed from request body.");
             }
-            Registration process = new Registration(userStorage);
+            Registration process = new Registration(userStorage, folderStorage);
 
             process.handle(command);
             if (logger.isDebugEnabled()) {

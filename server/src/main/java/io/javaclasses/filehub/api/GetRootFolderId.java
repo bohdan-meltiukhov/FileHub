@@ -23,6 +23,19 @@ public class GetRootFolderId implements Command {
     }
 
     /**
+     * Provides a string representation of the command.
+     *
+     * @return A string representation of the command.
+     */
+    @Override
+    public String toString() {
+
+        return "GetRootFolderId{" +
+                "token=" + token +
+                '}';
+    }
+
+    /**
      * Provides the command token.
      *
      * @return The stored authentication token.

@@ -2,6 +2,7 @@ package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.storage.TokenStorage;
 import io.javaclasses.filehub.storage.UserStorage;
+import spark.Filter;
 
 import static spark.Spark.*;
 
@@ -24,9 +25,15 @@ public class WebApplication {
         UserStorage userStorage = new UserStorage();
         TokenStorage tokenStorage = new TokenStorage();
 
+        Filter filter = new AuthenticationFilter(tokenStorage);
+
         path("/api", () -> {
+
             post("/register", new RegistrationRoute(userStorage));
             post("/login", new AuthenticationRoute(userStorage, tokenStorage));
+
+            before("/root-folder", filter);
+            get("/root-folder", new RootFolderIdRoute(tokenStorage, userStorage));
         });
     }
 

@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.storage;
 
-import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.api.Username;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

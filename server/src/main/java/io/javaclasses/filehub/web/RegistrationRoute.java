@@ -59,7 +59,7 @@ public class RegistrationRoute implements Route {
 
         Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
         if (logger.isInfoEnabled()) {
-            logger.info("Received an '/api/register' request with body: {}", request.body());
+            logger.info("Received a '{}' request with body: {}", request.matchedPath(), request.body());
         }
 
         checkNotNull(request);

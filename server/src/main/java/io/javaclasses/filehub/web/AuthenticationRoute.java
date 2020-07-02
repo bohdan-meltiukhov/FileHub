@@ -49,6 +49,7 @@ public class AuthenticationRoute implements Route {
         gsonBuilder.registerTypeAdapter(AuthenticateUser.class, new AuthenticateUserDeserializer());
         gsonBuilder.registerTypeAdapter(UsernameIsNotValidException.class, new UsernameIsNotValidErrorSerializer());
         gsonBuilder.registerTypeAdapter(PasswordIsNotValidException.class, new PasswordIsNotValidErrorSerializer());
+        gsonBuilder.registerTypeAdapter(Token.class, new TokenSerializer());
 
         gson = gsonBuilder.create();
     }
@@ -68,7 +69,7 @@ public class AuthenticationRoute implements Route {
 
         Logger logger = getLogger(AuthenticationRoute.class);
         if (logger.isInfoEnabled()) {
-            logger.info("Received an '/api/login' request with body: {}", request.body());
+            logger.info("Received a '{}' request with body: {}", request.matchedPath(), request.body());
         }
 
         response.type("application/json");

@@ -17,4 +17,14 @@ public final class UserId extends RecordId {
 
         super(checkNotNull(value));
     }
+
+    /**
+     * Provides a string representation of the user ID.
+     *
+     * @return A string representation of the user ID.
+     */
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

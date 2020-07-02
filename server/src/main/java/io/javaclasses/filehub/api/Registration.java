@@ -1,11 +1,10 @@
 package io.javaclasses.filehub.api;
 
-import io.javaclasses.filehub.storage.UserId;
-import io.javaclasses.filehub.storage.UserRecord;
-import io.javaclasses.filehub.storage.UserStorage;
+import io.javaclasses.filehub.storage.*;
 import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.javaclasses.filehub.api.IdGenerator.generate;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -55,8 +54,13 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
             logger.debug("The username {} is available.", command.username());
         }
 
-        UserRecord userRecord = new UserRecord(new UserId(IdGenerator.generate()), command.username(),
-                PasswordHasher.hash(command.password()));
+        UserId userId = new UserId(generate());
+
+        FolderMetadataRecord folder = new FolderMetadataRecord(new FolderId(generate()), null,
+                userId, "New Folder", 0);
+
+        UserRecord userRecord = new UserRecord(userId, command.username(), PasswordHasher.hash(command.password()),
+                folder.id());
 
         storage.put(userRecord);
         if (logger.isDebugEnabled()) {

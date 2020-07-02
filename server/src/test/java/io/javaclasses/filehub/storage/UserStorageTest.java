@@ -19,7 +19,7 @@ class UserStorageTest {
     private UserStorage prepareUserStorage(Username username, String password) {
 
         UserStorage userStorage = new UserStorage();
-        userStorage.put(new UserRecord(new UserId(IdGenerator.generate()), username, password));
+        userStorage.put(new UserRecord(new UserId(IdGenerator.generate()), username, password, new FolderId("")));
         return userStorage;
     }
 

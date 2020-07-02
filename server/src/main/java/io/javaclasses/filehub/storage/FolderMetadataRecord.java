@@ -2,6 +2,7 @@ package io.javaclasses.filehub.storage;
 
 import com.google.errorprone.annotations.Immutable;
 
+import javax.annotation.Nullable;
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -46,11 +47,11 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
      * @param folderName     The name of the folder.
      * @param itemsNumber    The number of nested elements.
      */
-    public FolderMetadataRecord(FolderId folderId, FolderId parentFolderId, UserId userId, String folderName,
+    public FolderMetadataRecord(FolderId folderId, @Nullable FolderId parentFolderId, UserId userId, String folderName,
                                 int itemsNumber) {
 
         this.folderId = checkNotNull(folderId);
-        this.parentFolderId = checkNotNull(parentFolderId);
+        this.parentFolderId = parentFolderId;
         this.userId = checkNotNull(userId);
         this.folderName = checkNotNull(folderName);
         this.itemsNumber = itemsNumber;

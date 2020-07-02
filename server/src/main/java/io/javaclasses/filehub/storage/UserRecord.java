@@ -29,17 +29,24 @@ public final class UserRecord implements StorageRecord<UserId> {
     private final String hashedPassword;
 
     /**
+     * The identifier of the root folder.
+     */
+    private final FolderId rootFolderId;
+
+    /**
      * Creates an instance of the user record with set user ID, username and password hash.
      *
      * @param userId         The identifier of a user.
      * @param username       The name of the user.
      * @param hashedPassword The password hash of the user.
+     * @param rootFolderId   The identifier of the root folder.
      */
-    public UserRecord(UserId userId, Username username, String hashedPassword) {
+    public UserRecord(UserId userId, Username username, String hashedPassword, FolderId rootFolderId) {
 
         this.userId = checkNotNull(userId);
         this.username = checkNotNull(username);
         this.hashedPassword = checkNotNull(hashedPassword);
+        this.rootFolderId = checkNotNull(rootFolderId);
     }
 
     /**
@@ -50,13 +57,13 @@ public final class UserRecord implements StorageRecord<UserId> {
      */
     @Override
     public boolean equals(Object o) {
-
         if (this == o) return true;
         if (!(o instanceof UserRecord)) return false;
         UserRecord that = (UserRecord) o;
         return userId.equals(that.userId) &&
                 username.equals(that.username) &&
-                hashedPassword.equals(that.hashedPassword);
+                hashedPassword.equals(that.hashedPassword) &&
+                rootFolderId.equals(that.rootFolderId);
     }
 
     /**
@@ -66,8 +73,7 @@ public final class UserRecord implements StorageRecord<UserId> {
      */
     @Override
     public int hashCode() {
-
-        return Objects.hash(userId, username, hashedPassword);
+        return Objects.hash(userId, username, hashedPassword, rootFolderId);
     }
 
     /**
@@ -80,7 +86,8 @@ public final class UserRecord implements StorageRecord<UserId> {
         return "UserRecord{" +
                 "userId=" + userId +
                 ", username=" + username +
-                ", passwordHash=" + hashedPassword +
+                ", hashedPassword='" + hashedPassword + '\'' +
+                ", rootFolderId=" + rootFolderId +
                 '}';
     }
 
@@ -113,5 +120,15 @@ public final class UserRecord implements StorageRecord<UserId> {
     public UserId id() {
 
         return userId;
+    }
+
+    /**
+     * Provides the identifier of the root folder.
+     *
+     * @return The identifier of the root folder.
+     */
+    public FolderId rootFolderId() {
+
+        return rootFolderId;
     }
 }

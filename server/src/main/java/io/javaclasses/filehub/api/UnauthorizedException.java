@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.api;
 
 /**
- * An exception that should be raised in case the user's login credentials are incorrect.
+ * An exception that should be raised in case the user is not authenticated.
  */
 public class UnauthorizedException extends RuntimeException {
 

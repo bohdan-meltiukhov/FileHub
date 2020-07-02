@@ -67,10 +67,14 @@ public class RegistrationRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
 
+        Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
+        if (logger.isInfoEnabled()) {
+            logger.info("Received an '/api/register' request with body: {}", request.body());
+        }
+
         checkNotNull(request);
         checkNotNull(response);
 
-        Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
         response.type("application/json");
 
 
@@ -84,7 +88,7 @@ public class RegistrationRoute implements Route {
 
             process.handle(command);
             if (logger.isDebugEnabled()) {
-                logger.debug("The process handled the command successfully.");
+                logger.debug("The Registration process handled the command successfully.");
             }
 
             response.status(SC_OK);

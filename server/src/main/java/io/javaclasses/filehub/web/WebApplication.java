@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.storage.TokenStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 
 import static spark.Spark.*;
@@ -21,9 +22,11 @@ public class WebApplication {
         staticFileLocation("/ui-components");
 
         UserStorage userStorage = new UserStorage();
+        TokenStorage tokenStorage = new TokenStorage();
 
         path("/api", () -> {
             post("/register", new RegistrationRoute(userStorage));
+            post("/login", new AuthenticationRoute(userStorage, tokenStorage));
         });
     }
 

@@ -35,7 +35,7 @@ export default class ApiService {
   logIn(userCredentials) {
     return fetch(API_PATH + '/login', {
       method: 'POST',
-      body: userCredentials,
+      body: JSON.stringify(userCredentials),
     })
       .then(async (response) => {
         if (response.ok) {

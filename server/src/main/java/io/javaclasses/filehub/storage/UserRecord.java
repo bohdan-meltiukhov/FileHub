@@ -34,7 +34,7 @@ public final class UserRecord implements StorageRecord<UserId> {
     private final FolderId rootFolderId;
 
     /**
-     * Creates an instance of the user record with set user ID, username and password hash.
+     * Creates an instance of the user record.
      *
      * @param userId         The identifier of a user.
      * @param username       The name of the user.
@@ -57,6 +57,7 @@ public final class UserRecord implements StorageRecord<UserId> {
      */
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         if (!(o instanceof UserRecord)) return false;
         UserRecord that = (UserRecord) o;

@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
+import static io.javaclasses.filehub.api.PasswordHasher.hash;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -55,12 +56,12 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
         }
 
         UserId userId = new UserId(generate());
+        String hashedPassword = hash(command.password());
 
         FolderMetadataRecord folder = new FolderMetadataRecord(new FolderId(generate()), null,
                 userId, "New Folder", 0);
 
-        UserRecord userRecord = new UserRecord(userId, command.username(), PasswordHasher.hash(command.password()),
-                folder.id());
+        UserRecord userRecord = new UserRecord(userId, command.username(), hashedPassword, folder.id());
 
         storage.put(userRecord);
         if (logger.isDebugEnabled()) {

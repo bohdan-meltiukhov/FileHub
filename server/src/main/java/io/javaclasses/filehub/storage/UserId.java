@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class UserId extends RecordId {
 
     /**
-     * Creates an instance of the user ID with set identifier.
+     * Creates an instance of the user ID.
      */
     public UserId(String value) {
 

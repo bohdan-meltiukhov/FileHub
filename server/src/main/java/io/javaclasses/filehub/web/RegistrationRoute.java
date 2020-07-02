@@ -36,6 +36,16 @@ public class RegistrationRoute implements Route {
 
         this.userStorage = checkNotNull(userStorage);
 
+        gson = createGson();
+    }
+
+    /**
+     * Creates a Gson object with registered type adapters.
+     *
+     * @return A configured Gson utility.
+     */
+    private Gson createGson() {
+
         GsonBuilder gsonBuilder = new GsonBuilder();
 
         gsonBuilder.registerTypeAdapter(RegisterUser.class, new RegisterUserDeserializer());
@@ -44,7 +54,7 @@ public class RegistrationRoute implements Route {
         gsonBuilder.registerTypeAdapter(UsernameAlreadyTakenException.class,
                 new UsernameAlreadyTakenExceptionSerializer());
 
-        gson = gsonBuilder.create();
+        return gsonBuilder.create();
     }
 
     /**

@@ -7,7 +7,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A value object for a memorized string used to confirm the identity of a user.
+ * A value object for a user password.
  */
 @Immutable
 public final class Password {

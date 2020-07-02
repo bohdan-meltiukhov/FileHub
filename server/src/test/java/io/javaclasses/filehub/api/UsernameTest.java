@@ -26,7 +26,7 @@ class UsernameTest {
     void testShortValues() {
 
         assertThrows(UsernameIsNotValidException.class, () -> new Username("William"),
-                "The Username did not throw a UsernameValidationError when it received a 7-characters " +
+                "The Username did not throw an exception when it received a 7-characters " +
                         "string, though it should have.");
     }
 

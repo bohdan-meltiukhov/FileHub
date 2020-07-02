@@ -7,7 +7,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A value object for a unique name of a user of the FileHub application.
+ * A value object for a name of a user in the FileHub application.
  */
 @Immutable
 public final class Username {
@@ -28,7 +28,7 @@ public final class Username {
 
         if (value.length() < 8) {
 
-            throw new UsernameValidationException("The username should have at least 8 characters.");
+            throw new UsernameIsNotValidException("The username should have at least 8 characters.");
         }
 
         this.value = value;

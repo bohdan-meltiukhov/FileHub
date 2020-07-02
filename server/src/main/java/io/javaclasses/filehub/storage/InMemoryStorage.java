@@ -9,14 +9,13 @@ import java.util.*;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * An in-memory storage for records in the FileHub server application.
+ * An in-memory storage for records in the FileHub web application.
  *
- * <p>This storage implementation uses an in-memory {@link HashMap} to store values.
+ * <p>This storage implementation uses a {@link HashMap} to store values.
  *
- * @param <I> The type of the records' identifiers.
- * @param <R> The type of the records.
+ * @param <I> The type of a {@link Record} identifier.
+ * @param <R> The type of a {@link Record}.
  */
-@Immutable
 public abstract class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> implements Storage<I, R> {
 
     /**

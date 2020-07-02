@@ -1,7 +1,6 @@
 package io.javaclasses.filehub.storage;
 
 import com.google.errorprone.annotations.Immutable;
-import io.javaclasses.filehub.api.PasswordHash;
 import io.javaclasses.filehub.api.Username;
 
 import java.util.Objects;
@@ -9,7 +8,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A record about a particular user. Should be saved in a UserStorage.
+ * A {@link StorageRecord} about a particular user. Should be saved in a {@link UserStorage}.
  */
 @Immutable
 public final class UserRecord implements StorageRecord<UserId> {
@@ -25,22 +24,22 @@ public final class UserRecord implements StorageRecord<UserId> {
     private final Username username;
 
     /**
-     * The user's password hash.
+     * The user's hashed password.
      */
-    private final PasswordHash passwordHash;
+    private final String hashedPassword;
 
     /**
-     * Creates an instance of the user record with set user ID, username and password hash.
+     * Creates an instance of the user record.
      *
-     * @param userId       The identifier of a user.
-     * @param username     The name of the user.
-     * @param passwordHash The password hash of the user.
+     * @param userId         The identifier of a user.
+     * @param username       The name of the user.
+     * @param hashedPassword The password hash of the user.
      */
-    public UserRecord(UserId userId, Username username, PasswordHash passwordHash) {
+    public UserRecord(UserId userId, Username username, String hashedPassword) {
 
         this.userId = checkNotNull(userId);
         this.username = checkNotNull(username);
-        this.passwordHash = checkNotNull(passwordHash);
+        this.hashedPassword = checkNotNull(hashedPassword);
     }
 
     /**
@@ -57,7 +56,7 @@ public final class UserRecord implements StorageRecord<UserId> {
         UserRecord that = (UserRecord) o;
         return userId.equals(that.userId) &&
                 username.equals(that.username) &&
-                passwordHash.equals(that.passwordHash);
+                hashedPassword.equals(that.hashedPassword);
     }
 
     /**
@@ -68,7 +67,7 @@ public final class UserRecord implements StorageRecord<UserId> {
     @Override
     public int hashCode() {
 
-        return Objects.hash(userId, username, passwordHash);
+        return Objects.hash(userId, username, hashedPassword);
     }
 
     /**
@@ -81,7 +80,7 @@ public final class UserRecord implements StorageRecord<UserId> {
         return "UserRecord{" +
                 "userId=" + userId +
                 ", username=" + username +
-                ", passwordHash=" + passwordHash +
+                ", passwordHash=" + hashedPassword +
                 '}';
     }
 
@@ -100,9 +99,9 @@ public final class UserRecord implements StorageRecord<UserId> {
      *
      * @return The password hash of the user.
      */
-    public PasswordHash passwordHash() {
+    public String hashedPassword() {
 
-        return passwordHash;
+        return hashedPassword;
     }
 
     /**

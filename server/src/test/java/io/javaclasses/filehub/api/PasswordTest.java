@@ -16,12 +16,8 @@ class PasswordTest {
     @DisplayName("accept string values with length 8 or more.")
     void testLongValues() {
 
-        assertWithMessage("The Password should accept a 8-characters string.")
+        assertWithMessage("The Password did not accept a 8-characters string.")
                 .that(new Password("12345678"))
-                .isNotNull();
-
-        assertWithMessage("The Password should accept a 10-characters string.")
-                .that(new Password("1234567890"))
                 .isNotNull();
     }
 
@@ -29,14 +25,8 @@ class PasswordTest {
     @DisplayName("not accept string values shorter than 8 characters.")
     void testShortValues() {
 
-        assertThrows(PasswordValidationException.class, () -> new Password("1234567"),
-                "The Password should throw a PasswordValidationError if it receives a 7-characters string.");
-
-        assertThrows(PasswordValidationException.class, () -> new Password("123"),
-                "The Password should throw a PasswordValidationError if it receives a 3-characters string.");
-
-        assertThrows(PasswordValidationException.class, () -> new Password(""),
-                "The Password should throw a PasswordValidationError if it receives an empty string.");
+        assertThrows(PasswordIsNotValidException.class, () -> new Password("1234567"),
+                "The Password did not throw a PasswordValidationError when it received a 7-characters string.");
     }
 
     @Test

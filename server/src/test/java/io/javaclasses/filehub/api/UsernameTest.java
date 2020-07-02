@@ -16,12 +16,8 @@ class UsernameTest {
     @DisplayName("accept string values with length 8 or more.")
     void testLongValues() {
 
-        assertWithMessage("The Username should accept a 8-characters string.")
+        assertWithMessage("The Username did not accept a 8-characters string.")
                 .that(new Username("Benedict"))
-                .isNotNull();
-
-        assertWithMessage("The Username should accept a 10-characters string.")
-                .that(new Username("Clementine"))
                 .isNotNull();
     }
 
@@ -29,14 +25,9 @@ class UsernameTest {
     @DisplayName("not accept string values shorter than 8 characters.")
     void testShortValues() {
 
-        assertThrows(UsernameValidationException.class, () -> new Username("William"),
-                "The Username should throw a UsernameValidationError if it receives a 7-characters string.");
-
-        assertThrows(UsernameValidationException.class, () -> new Username("Bob"),
-                "The Username should throw a UsernameValidationError if it receives a 3-characters string.");
-
-        assertThrows(UsernameValidationException.class, () -> new Username(""),
-                "The Username should throw a UsernameValidationError if it receives an empty string.");
+        assertThrows(UsernameIsNotValidException.class, () -> new Username("William"),
+                "The Username did not throw an exception when it received a 7-characters " +
+                        "string, though it should have.");
     }
 
     @Test

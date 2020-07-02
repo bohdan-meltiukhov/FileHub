@@ -1,8 +1,9 @@
 package io.javaclasses.filehub.storage;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.api.IdGenerator;
 import io.javaclasses.filehub.api.Password;
-import io.javaclasses.filehub.api.PasswordHash;
+import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.Username;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,8 @@ class UserStorageTest {
     private UserStorage prepareUserStorage(Username username) {
 
         UserStorage userStorage = new UserStorage();
-        userStorage.put(new UserRecord(new UserId(), username, new PasswordHash(new Password("Qazxsw123"))));
+        userStorage.put(new UserRecord(new UserId(IdGenerator.generate()), username,
+                PasswordHasher.hash(new Password("Qazxsw123"))));
         return userStorage;
     }
 
@@ -26,14 +28,14 @@ class UserStorageTest {
         Username username = new Username("administrator");
         UserStorage userStorage = prepareUserStorage(username);
 
-        assertWithMessage("The UserStorage.containsUsername() method should return true if the " +
-                "provided username exists.")
-                .that(userStorage.containsUsername(username))
+        assertWithMessage("The UserStorage.containsUsername() method did not return true when the " +
+                "provided username existed.")
+                .that(userStorage.contains(username))
                 .isTrue();
 
-        assertWithMessage("The UserStorage.containsUsername() method should return false if the " +
-                "provided username does not exist.")
-                .that(userStorage.containsUsername(new Username("Benedict")))
+        assertWithMessage("The UserStorage.containsUsername() method did not return false when the " +
+                "provided username did not exist.")
+                .that(userStorage.contains(new Username("Benedict")))
                 .isFalse();
     }
 

@@ -1,16 +1,16 @@
 package io.javaclasses.filehub.api;
 
 /**
- * The error that can occur in case the username field violates the validation rules.
+ * The error that should be raised in case the username is invalid.
  */
-public class UsernameValidationException extends RuntimeException {
+public class UsernameIsNotValidException extends RuntimeException {
 
     /**
      * Creates an instance of the username validation exception with set error message.
      *
      * @param message The message that describes the issue.
      */
-    public UsernameValidationException(String message) {
+    public UsernameIsNotValidException(String message) {
 
         super(message);
     }

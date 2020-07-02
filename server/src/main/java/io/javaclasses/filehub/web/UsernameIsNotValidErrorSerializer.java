@@ -4,26 +4,26 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import io.javaclasses.filehub.api.PasswordValidationException;
+import io.javaclasses.filehub.api.UsernameIsNotValidException;
 
 import java.lang.reflect.Type;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The class for turning password validation errors into JSON elements.
+ * A serializer for turning username validation errors into JSON elements.
  */
-public class PasswordValidationErrorSerializer implements JsonSerializer<PasswordValidationException> {
+public class UsernameIsNotValidErrorSerializer implements JsonSerializer<UsernameIsNotValidException> {
 
     /**
-     * Creates a JSON element from a password validation error.
+     * Creates a JSON element from a username validation error.
      *
-     * @param src       The object that needs to be converted to Json.
+     * @param src The object that needs to be converted to Json.
      * @param typeOfSrc The actual type of the source object.
      * @return A JsonElement corresponding to the provided Validation error.
      */
     @Override
-    public JsonElement serialize(PasswordValidationException src, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(UsernameIsNotValidException src, Type typeOfSrc, JsonSerializationContext context) {
 
         checkNotNull(src);
         checkNotNull(typeOfSrc);
@@ -31,7 +31,7 @@ public class PasswordValidationErrorSerializer implements JsonSerializer<Passwor
 
         JsonObject jsonValidationError = new JsonObject();
 
-        jsonValidationError.addProperty("field", "password");
+        jsonValidationError.addProperty("field", "username");
         jsonValidationError.addProperty("message", src.getMessage());
 
         return jsonValidationError;

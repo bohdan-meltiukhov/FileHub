@@ -1,18 +1,18 @@
 package io.javaclasses.filehub.api;
 
-import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.javaclasses.filehub.api.IdGenerator.generate;
+import static io.javaclasses.filehub.api.PasswordHasher.hash;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * The process that handles a {@link RegisterUser} command.
  */
-@Immutable
 public class Registration implements ApplicationProcess<RegisterUser, Void> {
 
     /**
@@ -35,10 +35,10 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
      *
      * @param command The command to use for the registration.
      * @return Void.
-     * @throws UsernameValidationException In case the username or password violates the validation rules.
+     * @throws UsernameIsNotValidException In case the username or password violates the validation rules.
      */
     @Override
-    public Void handle(RegisterUser command) throws UsernameValidationException {
+    public Void handle(RegisterUser command) throws UsernameIsNotValidException {
 
         Logger logger = getLogger(Registration.class);
 
@@ -47,19 +47,20 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
         }
 
         checkNotNull(command);
-        if (logger.isDebugEnabled()) {
-            logger.debug("The RegisterUser command is not null.");
-        }
 
-        if (storage.containsUsername(command.username())) {
+        if (storage.contains(command.username())) {
 
-            throw new UsernameAlreadyTakenException("The username is already taken.");
+            throw new UsernameAlreadyTakenException(
+                    String.format("The username '%s' is already taken.", command.username().value()));
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("The username is available.");
+            logger.debug("The username {} is available.", command.username());
         }
 
-        UserRecord userRecord = new UserRecord(new UserId(), command.username(), new PasswordHash(command.password()));
+        UserId userId = new UserId(generate());
+        String hashedPassword = hash(command.password());
+
+        UserRecord userRecord = new UserRecord(userId, command.username(), hashedPassword);
 
         storage.put(userRecord);
         if (logger.isDebugEnabled()) {

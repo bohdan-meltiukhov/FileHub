@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 /**
- * A unique identifier for a {@link StorageRecord}.
+ * An identifier for a {@link StorageRecord}.
  */
 public interface RecordId {
 

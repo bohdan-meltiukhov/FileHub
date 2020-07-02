@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.storage;
 
-import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.Username;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,9 +7,8 @@ import org.slf4j.LoggerFactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The in-memory storage for user records.
+ * The in-memory storage for {@link UserRecord}.
  */
-@Immutable
 public class UserStorage extends InMemoryStorage<UserId, UserRecord> {
 
     /**
@@ -19,7 +17,7 @@ public class UserStorage extends InMemoryStorage<UserId, UserRecord> {
      * @param username The username to check.
      * @return True in case there is a user with the provided name in the storage.
      */
-    public boolean containsUsername(Username username) {
+    public boolean contains(Username username) {
 
         checkNotNull(username);
 

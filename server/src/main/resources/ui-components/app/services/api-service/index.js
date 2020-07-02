@@ -39,10 +39,8 @@ export default class ApiService {
     })
       .then(async (response) => {
         if (response.ok) {
-          response.json()
-            .then((body) => {
-              localStorage.setItem('token', body.token);
-            });
+          const body = await response.json();
+          localStorage.setItem('token', body.token);
         } else {
           throw await this._handleAuthenticationErrors(response);
         }
@@ -126,6 +124,26 @@ export default class ApiService {
       instance = new this();
     }
     return instance;
+  }
+
+  /**
+   * Sends a request to get the identifier of the root folder.
+   *
+   * @returns {Promise<Response>} The promise that resolves with the root folder identifier.
+   */
+  getRootFolderId() {
+    return fetch(API_PATH + `/root-folder`, {
+      headers: {
+        Authentication: localStorage.getItem('token'),
+      },
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          return await response.text();
+        } else {
+          throw this._handleRequestErrors(response);
+        }
+      });
   }
 
   /**

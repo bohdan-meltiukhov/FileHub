@@ -2,8 +2,10 @@ package io.javaclasses.filehub.web;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.javaclasses.filehub.api.*;
-import io.javaclasses.filehub.storage.FolderId;
+import io.javaclasses.filehub.api.GetUser;
+import io.javaclasses.filehub.api.GettingUser;
+import io.javaclasses.filehub.api.Token;
+import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.storage.TokenStorage;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;

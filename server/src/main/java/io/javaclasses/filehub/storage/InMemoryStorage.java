@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.storage;
 
-import com.google.errorprone.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

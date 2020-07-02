@@ -18,7 +18,7 @@ public final class UserId implements RecordId {
     private final String value;
 
     /**
-     * Creates an instance of the user ID with set identifier.
+     * Creates an instance of the user ID.
      */
     public UserId(String value) {
 

@@ -29,7 +29,7 @@ public final class UserRecord implements StorageRecord<UserId> {
     private final String hashedPassword;
 
     /**
-     * Creates an instance of the user record with set user ID, username and password hash.
+     * Creates an instance of the user record.
      *
      * @param userId         The identifier of a user.
      * @param username       The name of the user.

@@ -3,7 +3,7 @@ package io.javaclasses.filehub.api;
 import java.util.UUID;
 
 /**
- * The generate of random unique identifiers.
+ * The generator of unique {@link Record} identifiers.
  *
  * <p>The generator is thread-safe.
  */

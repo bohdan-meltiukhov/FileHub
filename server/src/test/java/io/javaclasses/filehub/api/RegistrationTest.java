@@ -69,7 +69,7 @@ class RegistrationTest {
 
         assertThrows(UsernameAlreadyTakenException.class, () ->
                 process.handle(new RegisterUser(username, new Password("Qazxsw123"))),
-                "The Registration process did not throw a UsernameAlreadyTakenException in case a user " +
+                "The Registration process did not throw an exception in case a user " +
                         "with the provided username already existed in the storage, though it should have.");
     }
 

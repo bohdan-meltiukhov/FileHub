@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * The in-memory storage for user records.
+ * The in-memory storage for {@link UserRecord}.
  */
 public class UserStorage extends InMemoryStorage<UserId, UserRecord> {
 

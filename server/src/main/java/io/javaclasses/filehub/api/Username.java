@@ -7,7 +7,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A value object for a name of a user of the FileHub application.
+ * A value object for a name of a user in the FileHub application.
  */
 @Immutable
 public final class Username {

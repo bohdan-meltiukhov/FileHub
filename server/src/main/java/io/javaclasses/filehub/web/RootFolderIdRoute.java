@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.GetRootFolderId;
-import io.javaclasses.filehub.api.RootFolderIdGetting;
+import io.javaclasses.filehub.api.RootFolderIdView;
 import io.javaclasses.filehub.api.Token;
 import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.storage.FolderId;
@@ -66,11 +66,11 @@ public class RootFolderIdRoute implements Route {
                 logger.debug("Created a command {}.", command);
             }
 
-            RootFolderIdGetting process = new RootFolderIdGetting(tokenStorage, userStorage);
-            FolderId folderId = process.handle(command);
+            RootFolderIdView view = new RootFolderIdView(tokenStorage, userStorage);
+            FolderId folderId = view.process(command);
 
             if (logger.isDebugEnabled()) {
-                logger.debug("The process handled the command successfully. Folder ID: {}", folderId);
+                logger.debug("The view handled the command successfully. Folder ID: {}", folderId);
             }
 
             response.status(SC_OK);

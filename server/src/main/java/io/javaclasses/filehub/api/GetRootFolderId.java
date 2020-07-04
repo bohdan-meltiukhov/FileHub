@@ -3,9 +3,9 @@ package io.javaclasses.filehub.api;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A {@link Command} that represents intention of a client to get the identifier of the root folder.
+ * A {@link Query} that represents intention of a client to get the identifier of the root folder.
  */
-public class GetRootFolderId implements Command {
+public class GetRootFolderId implements Query {
 
     /**
      * The provided authentication token.
@@ -13,7 +13,7 @@ public class GetRootFolderId implements Command {
     private final Token token;
 
     /**
-     * Creates an instance of the GetRootFolderId command with set token.
+     * Creates an instance of the GetRootFolderId query with set token.
      *
      * @param token The authentication token from the client.
      */

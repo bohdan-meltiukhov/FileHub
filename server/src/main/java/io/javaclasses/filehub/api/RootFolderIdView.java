@@ -11,9 +11,14 @@ import static io.javaclasses.filehub.api.FindUserService.findUser;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * An {@link ApplicationProcess} that provides the identifier of the root folder for the current user.
+ * An {@link View} that provides the identifier of the root folder for the current user.
  */
-public class RootFolderIdGetting implements ApplicationProcess<GetRootFolderId, FolderId> {
+public class RootFolderIdView implements View<GetRootFolderId, FolderId> {
+
+    /**
+     * An SLF4J logger.
+     */
+    private static Logger logger = getLogger(RootFolderIdView.class);
 
     /**
      * A storage with all active authentication tokens.
@@ -31,7 +36,7 @@ public class RootFolderIdGetting implements ApplicationProcess<GetRootFolderId, 
      * @param tokenStorage A storage with all tokens.
      * @param userStorage  A storage with all users.
      */
-    public RootFolderIdGetting(TokenStorage tokenStorage, UserStorage userStorage) {
+    public RootFolderIdView(TokenStorage tokenStorage, UserStorage userStorage) {
 
         this.tokenStorage = checkNotNull(tokenStorage);
         this.userStorage = checkNotNull(userStorage);
@@ -44,11 +49,10 @@ public class RootFolderIdGetting implements ApplicationProcess<GetRootFolderId, 
      * @return The required identifier.
      */
     @Override
-    public FolderId handle(GetRootFolderId command) {
+    public FolderId process(GetRootFolderId command) {
 
         checkNotNull(command);
 
-        Logger logger = getLogger(RootFolderIdGetting.class);
         if (logger.isDebugEnabled()) {
             logger.debug("Starting the RootFolderIdGetting process.");
         }

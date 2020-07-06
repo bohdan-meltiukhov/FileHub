@@ -13,6 +13,11 @@ import static io.javaclasses.filehub.api.IdGenerator.generate;
 @DisplayName("The TokenStorage should")
 class TokenStorageTest {
 
+    private LocalDateTime prepareExpirationDate() {
+
+        return LocalDateTime.now(ZoneId.systemDefault()).plusDays(30);
+    }
+
     @Test
     @DisplayName("provide the token record by the token value object.")
     void testGetByToken() {
@@ -21,7 +26,7 @@ class TokenStorageTest {
 
         TokenStorage tokenStorage = new TokenStorage();
         TokenRecord tokenRecord = new TokenRecord(new TokenId(generate()), token, new UserId(generate()),
-                LocalDateTime.now(ZoneId.systemDefault()).plusDays(30));
+                prepareExpirationDate());
         tokenStorage.put(tokenRecord);
 
         assertWithMessage("The TokenStorage provided incorrect token record " +

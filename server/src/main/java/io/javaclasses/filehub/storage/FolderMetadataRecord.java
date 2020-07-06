@@ -106,7 +106,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     }
 
     /**
-     * The getter for the parent folder ID.
+     * The getter for the parent folder identifier.
      *
      * @return The identifier of the parent folder.
      */

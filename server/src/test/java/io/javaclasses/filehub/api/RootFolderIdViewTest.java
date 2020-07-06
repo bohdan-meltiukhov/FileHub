@@ -26,13 +26,13 @@ class RootFolderIdViewTest {
     }
 
     @Test
-    @DisplayName("provide correct folder ID.")
+    @DisplayName("provide correct folder identifier.")
     void testHandle() {
 
         FolderId folderId = new FolderId(generate());
         RootFolderIdView view = prepareView(folderId);
 
-        assertWithMessage("The RootFolderIdGetting view provided incorrect folder ID.")
+        assertWithMessage("The RootFolderIdGetting view provided incorrect folder identifier.")
                 .that(view.process(new GetRootFolderId()))
                 .isEqualTo(folderId);
     }

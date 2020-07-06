@@ -12,9 +12,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class TokenId extends RecordId {
 
     /**
-     * Creates an instance of the token ID with set value.
+     * Creates an instance of the token identifier with set value.
      *
-     * @param value The token ID value.
+     * @param value The token identifier value.
      */
     public TokenId(String value) {
 

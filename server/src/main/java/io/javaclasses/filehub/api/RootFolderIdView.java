@@ -22,6 +22,6 @@ public class RootFolderIdView implements View<GetRootFolderId, FolderId> {
     @Override
     public FolderId process(GetRootFolderId command) {
 
-        return command.currentUser().get().rootFolderId();
+        return command.currentUser().rootFolderId();
     }
 }

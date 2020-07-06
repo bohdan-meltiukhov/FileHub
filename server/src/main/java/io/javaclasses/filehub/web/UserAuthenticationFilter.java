@@ -1,9 +1,12 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.api.CurrentUser;
 import io.javaclasses.filehub.api.Token;
 import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.storage.TokenRecord;
 import io.javaclasses.filehub.storage.TokenStorage;
+import io.javaclasses.filehub.storage.UserRecord;
+import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 import spark.Filter;
 import spark.Request;
@@ -20,7 +23,7 @@ import static spark.Spark.halt;
 /**
  * A filter that checks if the request is authorized and provides the current user.
  */
-public class AuthenticationFilter implements Filter {
+public class UserAuthenticationFilter implements Filter {
 
     /**
      * A storage with all tokens.
@@ -28,13 +31,20 @@ public class AuthenticationFilter implements Filter {
     private final TokenStorage tokenStorage;
 
     /**
+     * A storage with all registered users.
+     */
+    private final UserStorage userStorage;
+
+    /**
      * Creates an instance of the AuthenticationFilter with set token and user storage.
      *
      * @param tokenStorage The storage with all authentication tokens.
+     * @param userStorage The storage with all users.
      */
-    public AuthenticationFilter(TokenStorage tokenStorage) {
+    public UserAuthenticationFilter(TokenStorage tokenStorage, UserStorage userStorage) {
 
         this.tokenStorage = checkNotNull(tokenStorage);
+        this.userStorage = checkNotNull(userStorage);
     }
 
     /**
@@ -50,7 +60,7 @@ public class AuthenticationFilter implements Filter {
         checkNotNull(request);
         checkNotNull(response);
 
-        Logger logger = getLogger(AuthenticationFilter.class);
+        Logger logger = getLogger(UserAuthenticationFilter.class);
 
         if (logger.isInfoEnabled()) {
             logger.info("Starting the authentication filter.");
@@ -83,6 +93,14 @@ public class AuthenticationFilter implements Filter {
             if (logger.isDebugEnabled()) {
                 logger.debug("The token didn't expire: {}.", tokenRecord);
             }
+
+            UserRecord userRecord = userStorage.get(tokenRecord.userId());
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("Found a token owner: {}.", userRecord);
+            }
+
+            CurrentUser.set(userRecord);
 
         } catch (NullPointerException exception) {
 

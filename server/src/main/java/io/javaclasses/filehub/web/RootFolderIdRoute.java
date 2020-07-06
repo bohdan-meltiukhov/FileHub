@@ -1,12 +1,11 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.api.CurrentUser;
 import io.javaclasses.filehub.api.GetRootFolderId;
 import io.javaclasses.filehub.api.RootFolderIdView;
 import io.javaclasses.filehub.api.Token;
 import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.storage.FolderId;
-import io.javaclasses.filehub.storage.TokenStorage;
-import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 import spark.Request;
 import spark.Response;
@@ -23,27 +22,12 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class RootFolderIdRoute implements Route {
 
     /**
-     * A storage with all tokens.
-     */
-    private final TokenStorage tokenStorage;
-
-    /**
-     * A storage with all registered users.
-     */
-    private final UserStorage userStorage;
-
-    /**
-     * Creates an instance of the RootFolderIdRoute with set token and user storage.
+     * Handles the get root folder identifier request.
      *
-     * @param tokenStorage A storage with all tokens.
-     * @param userStorage  A storage with all users.
+     * @param request  The request from the client.
+     * @param response The object for creating the response.
+     * @return The response content.
      */
-    public RootFolderIdRoute(TokenStorage tokenStorage, UserStorage userStorage) {
-
-        this.tokenStorage = checkNotNull(tokenStorage);
-        this.userStorage = checkNotNull(userStorage);
-    }
-
     @Override
     public Object handle(Request request, Response response) {
 
@@ -52,7 +36,6 @@ public class RootFolderIdRoute implements Route {
 
         Logger logger = getLogger(RootFolderIdRoute.class);
 
-
         try {
 
             Token token = new Token(request.headers("Authentication"));
@@ -60,13 +43,13 @@ public class RootFolderIdRoute implements Route {
                 logger.debug("Received a '{}' request with token {}.", request.matchedPath(), token);
             }
 
-            GetRootFolderId command = new GetRootFolderId(token);
+            GetRootFolderId command = new GetRootFolderId();
 
             if (logger.isDebugEnabled()) {
                 logger.debug("Created a command {}.", command);
             }
 
-            RootFolderIdView view = new RootFolderIdView(tokenStorage, userStorage);
+            RootFolderIdView view = new RootFolderIdView();
             FolderId folderId = view.process(command);
 
             if (logger.isDebugEnabled()) {

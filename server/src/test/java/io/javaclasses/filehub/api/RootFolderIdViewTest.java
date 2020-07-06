@@ -2,6 +2,7 @@ package io.javaclasses.filehub.api;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.storage.*;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,42 +16,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("The RootFolderIdView process should")
 class RootFolderIdViewTest {
 
-    private TokenStorage prepareTokenStorage(Token token, UserId userId) {
+    private RootFolderIdView prepareView(FolderId folderId) {
 
-        TokenStorage tokenStorage = new TokenStorage();
-        tokenStorage.put(new TokenRecord(new TokenId(""), token, userId,
-                LocalDateTime.now(ZoneId.systemDefault()).plusDays(30)));
-        return tokenStorage;
-    }
+        UserRecord userRecord = new UserRecord(new UserId(generate()), new Username("administrator"),
+                "", folderId);
+        CurrentUser.set(userRecord);
 
-    private UserStorage prepareUserStorage(UserId userId, FolderId folderId) {
-
-        UserStorage userStorage = new UserStorage();
-        userStorage.put(new UserRecord(userId, new Username("administrator"), "", folderId));
-        return userStorage;
-    }
-
-    private RootFolderIdView prepareProcess(Token token, FolderId folderId) {
-
-        UserId userId = new UserId(generate());
-
-        TokenStorage tokenStorage = prepareTokenStorage(token, userId);
-        UserStorage userStorage = prepareUserStorage(userId, folderId);
-
-        return new RootFolderIdView(tokenStorage, userStorage);
+        return new RootFolderIdView();
     }
 
     @Test
     @DisplayName("provide correct folder ID when the token is valid.")
-    void testValidToken() {
+    void testHandle() {
 
-        Token token = new Token(generate());
         FolderId folderId = new FolderId(generate());
 
-        RootFolderIdView view = prepareProcess(token, folderId);
+        RootFolderIdView view = prepareView(folderId);
 
         assertWithMessage("The RootFolderIdGetting view provided incorrect folder ID.")
-                .that(view.process(new GetRootFolderId(token)))
+                .that(view.process(new GetRootFolderId()))
                 .isEqualTo(folderId);
     }
 
@@ -60,6 +44,6 @@ class RootFolderIdViewTest {
         NullPointerTester tester = new NullPointerTester();
 
         tester.testAllPublicConstructors(RootFolderIdView.class);
-        tester.testAllPublicInstanceMethods(new RootFolderIdView(new TokenStorage(), new UserStorage()));
+        tester.testAllPublicInstanceMethods(new RootFolderIdView());
     }
 }

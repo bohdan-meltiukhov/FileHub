@@ -19,7 +19,7 @@ public final class CurrentUser {
      *
      * @param userRecord The new record.
      */
-    public void set(UserRecord userRecord) {
+    public static void set(UserRecord userRecord) {
 
         localStorage.set(userRecord);
     }
@@ -29,8 +29,16 @@ public final class CurrentUser {
      *
      * @return The current {@link UserRecord}.
      */
-    public UserRecord get() {
+    public static UserRecord get() {
 
         return localStorage.get();
+    }
+
+    /**
+     * Clears the current user storage to avoid memory leaks.
+     */
+    public static void clear() {
+
+        localStorage.remove();
     }
 }

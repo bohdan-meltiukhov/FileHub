@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.api.CurrentUser;
 import io.javaclasses.filehub.storage.TokenStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.junit.jupiter.api.DisplayName;
@@ -21,6 +22,6 @@ class RootFolderIdRouteTest {
         });
 
         tester.testAllPublicConstructors(RootFolderIdRoute.class);
-        tester.testAllPublicInstanceMethods(new RootFolderIdRoute(new TokenStorage(), new UserStorage()));
+        tester.testAllPublicInstanceMethods(new RootFolderIdRoute());
     }
 }

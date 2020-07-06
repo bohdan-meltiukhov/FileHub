@@ -18,8 +18,8 @@ class FolderMetadataRecordTest {
         tester.setDefault(UserId.class, new UserId(""));
 
         tester.testAllPublicConstructors(FolderMetadataRecord.class);
-        tester.testAllPublicInstanceMethods(new FolderMetadataRecord(new FolderId(""), new FolderId(""),
-                new UserId(""), ""));
+        tester.testAllPublicInstanceMethods(new FolderMetadataRecord(new FolderId(""), new UserId(""), "", new FolderId("")
+        ));
     }
 
     @Test

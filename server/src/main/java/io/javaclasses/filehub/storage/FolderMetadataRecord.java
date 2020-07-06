@@ -37,17 +37,30 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
      * Creates an instance of the folder metadata record with set properties.
      *
      * @param folderId       The identifier of the folder.
-     * @param parentFolderId The identifier of the parent folder.
      * @param userId         The identifier of the folder owner.
      * @param folderName     The name of the folder.
+     * @param parentFolderId The identifier of the parent folder.
      */
-    public FolderMetadataRecord(FolderId folderId, @Nullable FolderId parentFolderId, UserId userId,
-                                String folderName) {
+    public FolderMetadataRecord(FolderId folderId, UserId userId, String folderName, @Nullable FolderId parentFolderId) {
 
         this.folderId = checkNotNull(folderId);
         this.parentFolderId = parentFolderId;
         this.userId = checkNotNull(userId);
         this.folderName = checkNotNull(folderName);
+    }
+
+    /**
+     * Creates an instance of the folder metadata record with null parent.
+     *
+     * <p>This constructor should be user to create parent folders.
+     *
+     * @param folderId   The identifier of the folder.
+     * @param userId     An identifier of the folder owner.
+     * @param folderName The name of the folder.
+     */
+    public FolderMetadataRecord(FolderId folderId, UserId userId, String folderName) {
+
+        this(folderId, userId, folderName, null);
     }
 
     /**

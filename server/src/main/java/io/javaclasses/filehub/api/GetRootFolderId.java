@@ -8,18 +8,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class GetRootFolderId implements Query {
 
     /**
-     * The provided authentication token.
+     * The current user of the application.
      */
-    private final Token token;
+    private final CurrentUser currentUser;
 
     /**
-     * Creates an instance of the GetRootFolderId query with set token.
+     * Creates an instance of the GetRootFolderId query.
      *
-     * @param token The authentication token from the client.
+     * @param currentUser The current user of the application.
      */
-    public GetRootFolderId(Token token) {
+    public GetRootFolderId(CurrentUser currentUser) {
 
-        this.token = checkNotNull(token);
+        this.currentUser = checkNotNull(currentUser);
     }
 
     /**
@@ -29,19 +29,18 @@ public class GetRootFolderId implements Query {
      */
     @Override
     public String toString() {
-
         return "GetRootFolderId{" +
-                "token=" + token +
+                "currentUser=" + currentUser +
                 '}';
     }
 
     /**
-     * Provides the command token.
+     * Provides the current user.
      *
-     * @return The stored authentication token.
+     * @return The current user.
      */
-    public Token getToken() {
+    public CurrentUser currentUser() {
 
-        return token;
+        return currentUser;
     }
 }

@@ -21,7 +21,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 import static spark.Spark.halt;
 
 /**
- * A filter that checks if the request is authorized and provides the current user.
+ * A filter that checks if the request is authenticated and provides the current user.
  */
 public class UserAuthenticationFilter implements Filter {
 
@@ -41,15 +41,15 @@ public class UserAuthenticationFilter implements Filter {
     private final UserStorage userStorage;
 
     /**
-     * Creates an instance of the AuthenticationFilter with set token and user storage.
+     * Creates an instance of the UserAuthenticationFilter with set token and user storage.
      *
      * @param tokenStorage The storage with all authentication tokens.
      * @param userStorage  The storage with all users.
      */
     public UserAuthenticationFilter(TokenStorage tokenStorage, UserStorage userStorage) {
 
-        this.tokenStorage = checkNotNull(tokenStorage);
-        this.userStorage = checkNotNull(userStorage);
+        this.tokenStorage = tokenStorage;
+        this.userStorage = userStorage;
     }
 
     /**

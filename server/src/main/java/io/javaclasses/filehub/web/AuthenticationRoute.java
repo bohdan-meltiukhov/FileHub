@@ -19,6 +19,11 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class AuthenticationRoute implements Route {
 
     /**
+     * An slf4j logger.
+     */
+    private static final Logger logger = getLogger(AuthenticationRoute.class);
+
+    /**
      * A storage with all registered users.
      */
     private final UserStorage userStorage;
@@ -66,11 +71,6 @@ public class AuthenticationRoute implements Route {
 
         checkNotNull(request);
         checkNotNull(response);
-
-        Logger logger = getLogger(AuthenticationRoute.class);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Received a '{}' request with body: {}", request.matchedPath(), request.body());
-        }
 
         response.type("application/json");
 

@@ -26,6 +26,11 @@ import static spark.Spark.halt;
 public class UserAuthenticationFilter implements Filter {
 
     /**
+     * An slf4j logger.
+     */
+    private static final Logger logger = getLogger(UserAuthenticationFilter.class);
+
+    /**
      * A storage with all tokens.
      */
     private final TokenStorage tokenStorage;
@@ -39,7 +44,7 @@ public class UserAuthenticationFilter implements Filter {
      * Creates an instance of the AuthenticationFilter with set token and user storage.
      *
      * @param tokenStorage The storage with all authentication tokens.
-     * @param userStorage The storage with all users.
+     * @param userStorage  The storage with all users.
      */
     public UserAuthenticationFilter(TokenStorage tokenStorage, UserStorage userStorage) {
 
@@ -60,11 +65,6 @@ public class UserAuthenticationFilter implements Filter {
         checkNotNull(request);
         checkNotNull(response);
 
-        Logger logger = getLogger(UserAuthenticationFilter.class);
-
-        if (logger.isInfoEnabled()) {
-            logger.info("Starting the authentication filter.");
-        }
 
         try {
 

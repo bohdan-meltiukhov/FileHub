@@ -26,6 +26,11 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class RootFolderIdRoute implements Route {
 
     /**
+     * An slf4j logger.
+     */
+    private static final Logger logger = getLogger(RootFolderIdRoute.class);
+
+    /**
      * Handles the get root folder identifier request.
      *
      * @param request  The request from the client.
@@ -38,14 +43,7 @@ public class RootFolderIdRoute implements Route {
         checkNotNull(request);
         checkNotNull(response);
 
-        Logger logger = getLogger(RootFolderIdRoute.class);
-
         try {
-
-            Token token = new Token(request.headers("Authentication"));
-            if (logger.isDebugEnabled()) {
-                logger.debug("Received a '{}' request with token {}.", request.matchedPath(), token);
-            }
 
             GetRootFolderId command = new GetRootFolderId();
 

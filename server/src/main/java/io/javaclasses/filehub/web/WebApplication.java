@@ -34,6 +34,9 @@ public class WebApplication {
         FolderMetadataStorage folderStorage = new FolderMetadataStorage();
 
         Filter filter = new UserAuthenticationFilter(tokenStorage, userStorage);
+        Filter logRequestDataFilter = new LogRequestDataFilter();
+
+        before("/api/*", logRequestDataFilter);
 
         path("/api", () -> {
 

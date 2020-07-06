@@ -15,7 +15,7 @@ import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * A {@link Route} that handles the get-root-folder-id request.
+ * A {@link Route} that handles the get-root-folder-id {@link Request}.
  *
  * <p>Provides the identifier of the root folder of the current user.
  *
@@ -29,7 +29,7 @@ public class RootFolderIdRoute implements Route {
     private static final Logger logger = getLogger(RootFolderIdRoute.class);
 
     /**
-     * Handles the get root folder identifier request.
+     * Handles the get root folder identifier {@link Request}.
      *
      * @param request  The request from the client.
      * @param response The object for creating the response.
@@ -37,9 +37,6 @@ public class RootFolderIdRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-
-        checkNotNull(request);
-        checkNotNull(response);
 
         try {
 

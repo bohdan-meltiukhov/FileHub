@@ -1,9 +1,10 @@
 package io.javaclasses.filehub.api;
 
 import io.javaclasses.filehub.storage.FolderId;
+import io.javaclasses.filehub.storage.FolderMetadataRecord;
 
 /**
- * An {@link View} that provides the identifier of the root folder for the current user.
+ * A {@link View} that provides the identifier of the root {@link FolderMetadataRecord} for the {@link CurrentUser}.
  */
 public class RootFolderIdView implements View<GetRootFolderId, FolderId> {
 

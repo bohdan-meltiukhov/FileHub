@@ -3,7 +3,6 @@ package io.javaclasses.filehub.storage;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.IdGenerator;
 import io.javaclasses.filehub.api.Password;
-import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.Username;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

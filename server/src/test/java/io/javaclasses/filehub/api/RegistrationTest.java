@@ -1,7 +1,11 @@
 package io.javaclasses.filehub.api;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.*;
+import io.javaclasses.filehub.storage.FolderId;
+import io.javaclasses.filehub.storage.FolderMetadataStorage;
+import io.javaclasses.filehub.storage.UserId;
+import io.javaclasses.filehub.storage.UserRecord;
+import io.javaclasses.filehub.storage.UserStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

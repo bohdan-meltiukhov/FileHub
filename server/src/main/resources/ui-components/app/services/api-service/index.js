@@ -132,7 +132,7 @@ export default class ApiService {
    * @returns {Promise<Response>} The promise that resolves with the root folder identifier.
    */
   getRootFolderId() {
-    return fetch(API_PATH + `/root-folder`, {
+    return fetch(API_PATH + '/root-folder', {
       headers: {
         Authentication: localStorage.getItem('token'),
       },

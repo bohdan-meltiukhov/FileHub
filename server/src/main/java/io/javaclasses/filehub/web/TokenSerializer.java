@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import io.javaclasses.filehub.api.Token;
+import io.javaclasses.filehub.storage.Token;
 
 import java.lang.reflect.Type;
 

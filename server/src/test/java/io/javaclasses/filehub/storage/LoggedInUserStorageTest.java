@@ -1,6 +1,5 @@
 package io.javaclasses.filehub.storage;
 
-import io.javaclasses.filehub.api.Token;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +10,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
 
 @DisplayName("The TokenStorage should")
-class TokenStorageTest {
+class LoggedInUserStorageTest {
 
     private LocalDateTime prepareExpirationDate() {
 
@@ -24,14 +23,14 @@ class TokenStorageTest {
 
         Token token = new Token(generate());
 
-        TokenStorage tokenStorage = new TokenStorage();
-        TokenRecord tokenRecord = new TokenRecord(new TokenId(generate()), token, new UserId(generate()),
+        LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
+        LoggedInUser loggedInUser = new LoggedInUser(token, new UserId(generate()),
                 prepareExpirationDate());
-        tokenStorage.put(tokenRecord);
+        loggedInUserStorage.put(loggedInUser);
 
         assertWithMessage("The TokenStorage provided incorrect token record " +
                 "by token " + token.toString())
-                .that(tokenStorage.get(token))
-                .isEqualTo(tokenRecord);
+                .that(loggedInUserStorage.get(token))
+                .isEqualTo(loggedInUser);
     }
 }

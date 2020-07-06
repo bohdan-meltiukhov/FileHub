@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.Token;
+import io.javaclasses.filehub.storage.Token;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

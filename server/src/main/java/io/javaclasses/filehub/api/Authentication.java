@@ -1,8 +1,9 @@
 package io.javaclasses.filehub.api;
 
-import io.javaclasses.filehub.storage.TokenId;
-import io.javaclasses.filehub.storage.TokenRecord;
-import io.javaclasses.filehub.storage.TokenStorage;
+import io.javaclasses.filehub.storage.LoggedInUser;
+import io.javaclasses.filehub.storage.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.Token;
+import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
@@ -28,18 +29,18 @@ public class Authentication implements ApplicationProcess<AuthenticateUser, Toke
     /**
      * A storage with all authentication tokens.
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage loggedInUserStorage;
 
     /**
      * Creates an instance of the Authentication process with set user and token storage.
      *
      * @param userStorage  The storage with all registered users.
-     * @param tokenStorage The storage with all authentication tokens.
+     * @param loggedInUserStorage The storage with all authentication tokens.
      */
-    public Authentication(UserStorage userStorage, TokenStorage tokenStorage) {
+    public Authentication(UserStorage userStorage, LoggedInUserStorage loggedInUserStorage) {
 
         this.userStorage = checkNotNull(userStorage);
-        this.tokenStorage = checkNotNull(tokenStorage);
+        this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
     }
 
     /**
@@ -74,17 +75,37 @@ public class Authentication implements ApplicationProcess<AuthenticateUser, Toke
             logger.debug("Found a user {}.", userRecord);
         }
 
-        LocalDateTime expirationDate = LocalDateTime.now(ZoneId.systemDefault()).plusDays(30);
+        LoggedInUser loggedInUser = createLoggedInUser(userRecord.id());
 
-        TokenRecord tokenRecord = new TokenRecord(new TokenId(generate()), new Token(generate()), userRecord.id(),
-                expirationDate);
-
-        tokenStorage.put(tokenRecord);
+        loggedInUserStorage.put(loggedInUser);
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Created and saved a token record: {}.", tokenRecord);
+            logger.debug("Created and saved a token record: {}.", loggedInUser);
         }
 
-        return tokenRecord.token();
+        return loggedInUser.id();
+    }
+
+    /**
+     * Creates the token expiration time.
+     *
+     * @return The time when a token expires.
+     */
+    private LocalDateTime createExpirationTime() {
+
+        return LocalDateTime.now(ZoneId.systemDefault()).plusDays(30);
+    }
+
+    /**
+     * Creates a record about a logged in user.
+     *
+     * @param userId An identifier of the user.
+     * @return The created {@link LoggedInUser}.
+     */
+    private LoggedInUser createLoggedInUser(UserId userId) {
+
+        LocalDateTime expirationDate = createExpirationTime();
+
+        return new LoggedInUser(new Token(generate()), userId, expirationDate);
     }
 }

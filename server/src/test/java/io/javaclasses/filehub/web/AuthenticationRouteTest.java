@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.TokenStorage;
+import io.javaclasses.filehub.storage.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,6 +29,6 @@ class AuthenticationRouteTest {
         NullPointerTester tester = prepareTester();
 
         tester.testAllPublicConstructors(AuthenticationRoute.class);
-        tester.testAllPublicInstanceMethods(new AuthenticationRoute(new UserStorage(), new TokenStorage()));
+        tester.testAllPublicInstanceMethods(new AuthenticationRoute(new UserStorage(), new LoggedInUserStorage()));
     }
 }

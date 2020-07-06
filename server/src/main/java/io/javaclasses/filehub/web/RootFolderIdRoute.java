@@ -17,7 +17,11 @@ import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * A {@link Route} that provides the identifier of the root folder.
+ * A {@link Route} that handles the get-root-folder-id request.
+ *
+ * <p>Provides the identifier of the root folder of the current user.
+ *
+ * <p>The root folder is the "highest" directory in the hierarchy.
  */
 public class RootFolderIdRoute implements Route {
 

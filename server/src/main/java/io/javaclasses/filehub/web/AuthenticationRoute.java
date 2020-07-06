@@ -1,7 +1,15 @@
 package io.javaclasses.filehub.web;
 
-import com.google.gson.*;
-import io.javaclasses.filehub.api.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParseException;
+import io.javaclasses.filehub.api.AuthenticateUser;
+import io.javaclasses.filehub.api.Authentication;
+import io.javaclasses.filehub.api.PasswordIsNotValidException;
+import io.javaclasses.filehub.api.Token;
+import io.javaclasses.filehub.api.UnauthorizedException;
+import io.javaclasses.filehub.api.UsernameIsNotValidException;
 import io.javaclasses.filehub.storage.TokenStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
@@ -10,7 +18,10 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.http.HttpStatus.*;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
+import static org.apache.http.HttpStatus.SC_UNPROCESSABLE_ENTITY;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**

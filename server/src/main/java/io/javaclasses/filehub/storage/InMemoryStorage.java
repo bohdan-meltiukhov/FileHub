@@ -1,10 +1,13 @@
 package io.javaclasses.filehub.storage;
 
-import com.google.errorprone.annotations.Immutable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -13,8 +16,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * <p>This storage implementation uses a {@link HashMap} to store values.
  *
- * @param <I> The type of a {@link Record} identifier.
- * @param <R> The type of a {@link Record}.
+ * @param <I> The type of a {@link StorageRecord} identifier.
+ * @param <R> The type of a {@link StorageRecord}.
  */
 public abstract class InMemoryStorage<I extends RecordId, R extends StorageRecord<I>> implements Storage<I, R> {
 

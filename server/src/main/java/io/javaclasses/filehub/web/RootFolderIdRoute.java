@@ -1,9 +1,7 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.CurrentUser;
 import io.javaclasses.filehub.api.GetRootFolderId;
 import io.javaclasses.filehub.api.RootFolderIdView;
-import io.javaclasses.filehub.api.Token;
 import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.storage.FolderId;
 import org.slf4j.Logger;

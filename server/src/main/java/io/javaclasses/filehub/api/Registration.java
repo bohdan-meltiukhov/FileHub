@@ -1,6 +1,11 @@
 package io.javaclasses.filehub.api;
 
-import io.javaclasses.filehub.storage.*;
+import io.javaclasses.filehub.storage.FolderId;
+import io.javaclasses.filehub.storage.FolderMetadataRecord;
+import io.javaclasses.filehub.storage.FolderMetadataStorage;
+import io.javaclasses.filehub.storage.UserId;
+import io.javaclasses.filehub.storage.UserRecord;
+import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;

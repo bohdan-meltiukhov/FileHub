@@ -71,15 +71,13 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
         }
 
         UserId userId = new UserId(generate());
-        String hashedPassword = hash(command.password());
 
         FolderMetadataRecord folder = createNewFolder(userId);
-
         folderMetadataStorage.put(folder);
 
         UserRecord userRecord = createNewUserRecord(userId, command, folder.id());
-
         userStorage.put(userRecord);
+
         if (logger.isDebugEnabled()) {
             logger.debug("New user is added successfully: {}.", userRecord);
         }

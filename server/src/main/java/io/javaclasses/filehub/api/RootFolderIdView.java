@@ -11,12 +11,12 @@ public class RootFolderIdView implements View<GetRootFolderId, FolderId> {
     /**
      * Finds the identifier of the root folder of a user.
      *
-     * @param command The command with required data.
+     * @param view The view with required data.
      * @return The required identifier.
      */
     @Override
-    public FolderId process(GetRootFolderId command) {
+    public FolderId process(GetRootFolderId view) {
 
-        return command.currentUser().rootFolderId();
+        return view.currentUser().rootFolderId();
     }
 }

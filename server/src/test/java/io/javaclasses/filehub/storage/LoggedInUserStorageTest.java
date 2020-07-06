@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import static com.google.common.truth.Truth.assertWithMessage;
+import static io.javaclasses.filehub.api.ApplicationTimezone.getTimeZone;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
 
 @DisplayName("The TokenStorage should")
@@ -14,7 +15,7 @@ class LoggedInUserStorageTest {
 
     private LocalDateTime prepareExpirationDate() {
 
-        return LocalDateTime.now(ZoneId.systemDefault()).plusDays(30);
+        return LocalDateTime.now(getTimeZone()).plusDays(30);
     }
 
     @Test

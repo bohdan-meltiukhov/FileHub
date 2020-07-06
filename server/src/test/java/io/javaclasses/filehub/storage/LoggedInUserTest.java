@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import static io.javaclasses.filehub.api.ApplicationTimezone.getTimeZone;
 import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
 import static nl.jqno.equalsverifier.Warning.NULL_FIELDS;
 
@@ -31,6 +32,6 @@ class LoggedInUserTest {
 
         tester.testAllPublicConstructors(LoggedInUser.class);
         tester.testAllPublicInstanceMethods(new LoggedInUser(new Token(""),
-                new UserId(""), LocalDateTime.now(ZoneId.systemDefault())));
+                new UserId(""), LocalDateTime.now(getTimeZone())));
     }
 }

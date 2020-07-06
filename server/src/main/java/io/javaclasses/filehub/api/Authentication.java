@@ -8,10 +8,11 @@ import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.javaclasses.filehub.api.ApplicationTimezone.getTimeZone;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
 import static io.javaclasses.filehub.api.PasswordHasher.hash;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -20,6 +21,11 @@ import static org.slf4j.LoggerFactory.getLogger;
  * The process that authenticates a user in the FileHub web application.
  */
 public class Authentication implements ApplicationProcess<AuthenticateUser, Token> {
+
+    /**
+     * A {@link Duration} after which a token is considered as expired.
+     */
+    private static final Duration tokenLifeTime = Duration.ofDays(30);
 
     /**
      * A storage with all registered users.
@@ -93,7 +99,7 @@ public class Authentication implements ApplicationProcess<AuthenticateUser, Toke
      */
     private LocalDateTime createExpirationTime() {
 
-        return LocalDateTime.now(ZoneId.systemDefault()).plusDays(30);
+        return LocalDateTime.now(getTimeZone()).plus(tokenLifeTime);
     }
 
     /**

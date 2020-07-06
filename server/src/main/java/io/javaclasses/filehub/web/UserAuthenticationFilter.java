@@ -65,7 +65,6 @@ public class UserAuthenticationFilter implements Filter {
         checkNotNull(request);
         checkNotNull(response);
 
-
         try {
 
             Token token = new Token(request.headers("Authentication"));
@@ -76,8 +75,11 @@ public class UserAuthenticationFilter implements Filter {
 
             TokenRecord tokenRecord = tokenStorage.get(token);
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("The corresponding token record exists: {}.", tokenRecord);
+            if (tokenRecord != null) {
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug("The corresponding token record exists: {}.", tokenRecord);
+                }
             }
 
             if (tokenRecord.expirationDate().isBefore(LocalDateTime.now(ZoneId.systemDefault()))) {

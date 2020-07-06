@@ -18,7 +18,7 @@ public class LogRequestDataFilter implements Filter {
     private static final Logger logger = getLogger(LogRequestDataFilter.class);
 
     /**
-     * Logs the request path, body and authorization header.
+     * Logs the request path, body and authentication header.
      *
      * @param request The request from the client.
      * @param response The object for creating the response.
@@ -26,10 +26,9 @@ public class LogRequestDataFilter implements Filter {
     @Override
     public void handle(Request request, Response response) {
 
-        System.out.println("Inside LogRequestDataFilter");
         if (logger.isInfoEnabled()) {
-            logger.info("Request to {} with body {} and Authorization header {}", request.matchedPath(),
-                    request.body(), request.headers("Authorization"));
+            logger.info("Received a request to '{}' with body '{}' and Authentication header '{}'", request.pathInfo(),
+                    request.body(), request.headers("Authentication"));
         }
     }
 }

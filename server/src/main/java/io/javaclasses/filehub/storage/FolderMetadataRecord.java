@@ -51,6 +51,21 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     }
 
     /**
+     * Provides a string representation of a folder metadata record.
+     *
+     * @return A string representation of a folder metadata record.
+     */
+    @Override
+    public String toString() {
+        return "FolderMetadataRecord{" +
+                "folderId=" + folderId +
+                ", parentFolderId=" + parentFolderId +
+                ", userId=" + userId +
+                ", folderName='" + folderName + '\'' +
+                '}';
+    }
+
+    /**
      * Indicates whether the provided object is a folder metadata record with the same fields.
      *
      * @param o The object to compare with.

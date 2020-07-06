@@ -66,7 +66,7 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
         String hashedPassword = hash(command.password());
 
         FolderMetadataRecord folder = new FolderMetadataRecord(new FolderId(generate()), null,
-                userId, "New Folder", 0);
+                userId, "New Folder");
 
         folderMetadataStorage.put(folder);
 

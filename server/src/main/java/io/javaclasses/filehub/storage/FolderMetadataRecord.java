@@ -34,27 +34,20 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     private final String folderName;
 
     /**
-     * The number of nested files or folders this folder contains.
-     */
-    private final int itemsNumber;
-
-    /**
      * Creates an instance of the folder metadata record with set properties.
      *
      * @param folderId       The identifier of the folder.
      * @param parentFolderId The identifier of the parent folder.
      * @param userId         The identifier of the folder owner.
      * @param folderName     The name of the folder.
-     * @param itemsNumber    The number of nested elements.
      */
-    public FolderMetadataRecord(FolderId folderId, @Nullable FolderId parentFolderId, UserId userId, String folderName,
-                                int itemsNumber) {
+    public FolderMetadataRecord(FolderId folderId, @Nullable FolderId parentFolderId, UserId userId,
+                                String folderName) {
 
         this.folderId = checkNotNull(folderId);
         this.parentFolderId = parentFolderId;
         this.userId = checkNotNull(userId);
         this.folderName = checkNotNull(folderName);
-        this.itemsNumber = itemsNumber;
     }
 
     /**
@@ -69,8 +62,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
         if (this == o) return true;
         if (!(o instanceof FolderMetadataRecord)) return false;
         FolderMetadataRecord that = (FolderMetadataRecord) o;
-        return itemsNumber == that.itemsNumber &&
-                folderId.equals(that.folderId) &&
+        return folderId.equals(that.folderId) &&
                 parentFolderId.equals(that.parentFolderId) &&
                 userId.equals(that.userId) &&
                 folderName.equals(that.folderName);
@@ -84,7 +76,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     @Override
     public int hashCode() {
 
-        return Objects.hash(folderId, parentFolderId, userId, folderName, itemsNumber);
+        return Objects.hash(folderId, parentFolderId, userId, folderName);
     }
 
     /**
@@ -126,15 +118,5 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     public String folderName() {
 
         return folderName;
-    }
-
-    /**
-     * Provides the number of nested items.
-     *
-     * @return The number of nested items.
-     */
-    public int itemsNumber() {
-
-        return itemsNumber;
     }
 }

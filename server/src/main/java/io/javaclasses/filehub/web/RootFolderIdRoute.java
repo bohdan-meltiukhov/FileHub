@@ -43,13 +43,13 @@ public class RootFolderIdRoute implements Route {
 
         try {
 
-            GetRootFolderId command = new GetRootFolderId();
+            GetRootFolderId command = createCommand();
 
             if (logger.isDebugEnabled()) {
                 logger.debug("Created a command {}.", command);
             }
 
-            RootFolderIdView view = new RootFolderIdView();
+            RootFolderIdView view = createView();
             FolderId folderId = view.process(command);
 
             if (logger.isDebugEnabled()) {
@@ -68,5 +68,25 @@ public class RootFolderIdRoute implements Route {
             response.status(SC_UNAUTHORIZED);
             return exception.getMessage();
         }
+    }
+
+    /**
+     * Creates a GetRootFolderId command.
+     *
+     * @return The created command.
+     */
+    private GetRootFolderId createCommand() {
+
+        return new GetRootFolderId();
+    }
+
+    /**
+     * Creates a RootFolderIdView.
+     *
+     * @return The created view.
+     */
+    private RootFolderIdView createView() {
+
+        return new RootFolderIdView();
     }
 }

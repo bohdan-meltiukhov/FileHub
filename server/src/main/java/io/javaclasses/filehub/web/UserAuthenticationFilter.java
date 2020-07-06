@@ -5,6 +5,7 @@ import io.javaclasses.filehub.api.Token;
 import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.storage.TokenRecord;
 import io.javaclasses.filehub.storage.TokenStorage;
+import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
@@ -48,8 +49,8 @@ public class UserAuthenticationFilter implements Filter {
      */
     public UserAuthenticationFilter(TokenStorage tokenStorage, UserStorage userStorage) {
 
-        this.tokenStorage = tokenStorage;
-        this.userStorage = userStorage;
+        this.tokenStorage = checkNotNull(tokenStorage);
+        this.userStorage = checkNotNull(userStorage);
     }
 
     /**
@@ -62,51 +63,74 @@ public class UserAuthenticationFilter implements Filter {
     @Override
     public void handle(Request request, Response response) {
 
-        checkNotNull(request);
-        checkNotNull(response);
-
         try {
 
-            Token token = new Token(request.headers("Authentication"));
-
+            Token token = readToken(request);
             if (logger.isDebugEnabled()) {
                 logger.debug("The request contains a token: {}.", token);
             }
 
             TokenRecord tokenRecord = tokenStorage.get(token);
+            if (tokenRecord == null) {
 
-            if (tokenRecord != null) {
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug("The corresponding token record exists: {}.", tokenRecord);
-                }
+                throw new NullPointerException();
             }
 
-            if (tokenRecord.expirationDate().isBefore(LocalDateTime.now(ZoneId.systemDefault()))) {
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug("The token expired: {}.", tokenRecord);
-                }
-
-                tokenStorage.remove(tokenRecord.id());
-                halt(SC_UNAUTHORIZED, "Your session expired. Please log in.");
-            }
+            checkExpirationDate(tokenRecord);
 
             if (logger.isDebugEnabled()) {
                 logger.debug("The token didn't expire: {}.", tokenRecord);
             }
 
             UserRecord userRecord = userStorage.get(tokenRecord.userId());
-
             if (logger.isDebugEnabled()) {
                 logger.debug("Found a token owner: {}.", userRecord);
             }
 
-            CurrentUser.set(userRecord);
+            saveUserRecord(userRecord);
 
         } catch (NullPointerException exception) {
 
             halt(SC_UNAUTHORIZED, "Authentication required. Please log in.");
         }
+    }
+
+    /**
+     * Reads the authentication token from the request.
+     *
+     * @param request The request from the client.
+     * @return The provided token.
+     */
+    private Token readToken(Request request) {
+
+        return new Token(request.headers("Authentication"));
+    }
+
+    /**
+     * Halts the request in case the token is expired.
+     *
+     * @param tokenRecord The {@link TokenRecord} to check.
+     */
+    private void checkExpirationDate(TokenRecord tokenRecord) {
+
+        if (tokenRecord.expirationDate().isBefore(LocalDateTime.now(ZoneId.systemDefault()))) {
+
+            if (logger.isDebugEnabled()) {
+                logger.debug("The token expired: {}.", tokenRecord);
+            }
+
+            tokenStorage.remove(tokenRecord.id());
+            halt(SC_UNAUTHORIZED, "Your session expired. Please log in.");
+        }
+    }
+
+    /**
+     * Saves the provided {@link UserRecord} as the current user.
+     *
+     * @param userRecord The {@link UserRecord} to save.
+     */
+    private void saveUserRecord(UserRecord userRecord) {
+
+        CurrentUser.set(userRecord);
     }
 }

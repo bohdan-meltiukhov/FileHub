@@ -30,7 +30,7 @@ class RegistrationTest {
 
     @Test
     @DisplayName("add a user to an empty storage.")
-    void testAddUser() {
+    void testRegister() {
 
         UserStorage userStorage = new UserStorage();
         FolderMetadataStorage folderStorage = new FolderMetadataStorage();
@@ -61,7 +61,7 @@ class RegistrationTest {
 
     @Test
     @DisplayName("not accept a username that is already taken.")
-    void testUserExists() {
+    void testWithExistentUser() {
 
         Username username = new Username("administrator");
         FolderMetadataStorage folderStorage = new FolderMetadataStorage();

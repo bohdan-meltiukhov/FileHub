@@ -14,7 +14,7 @@ import static spark.Spark.post;
 import static spark.Spark.staticFileLocation;
 
 /**
- * The server that handles different HTTP requests.
+ * The FileHub web application. Initializes {@link io.javaclasses.filehub.storage.Storage} and starts the server.
  */
 public class WebApplication {
 

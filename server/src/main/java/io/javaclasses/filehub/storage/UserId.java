@@ -11,10 +11,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class UserId extends RecordId {
 
     /**
-     * Creates an instance of the user ID.
+     * Creates an instance of the user identifier.
      */
     public UserId(String value) {
 
         super(checkNotNull(value));
+    }
+
+    /**
+     * Provides a string representation of the user identifier.
+     *
+     * @return A string representation of the user identifier.
+     */
+    @Override
+    public String toString() {
+        return super.toString();
     }
 }

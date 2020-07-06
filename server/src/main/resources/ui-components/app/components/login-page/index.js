@@ -7,7 +7,7 @@ import GeneralServerError from '../../models/errors/general-server-error/index.j
 import ServerValidationError from '../../models/errors/server-validation-error/index.js';
 import TitleService from '../../services/title-service/index.js';
 import {FILE_LIST_ROUTE} from '../../router/routes/index.js';
-import {ROOT_FOLDER_ID} from '../../models/root-folder/index.js';
+import MessageService from '../../services/message-service/index.js';
 
 /**
  * The component for the login page.
@@ -52,8 +52,9 @@ export default class LoginPage extends Component {
   sendCredentials(userCredentials) {
     const apiService = ApiService.getInstance();
     apiService.logIn(userCredentials)
-      .then(() => {
-        window.location.hash = FILE_LIST_ROUTE.replace(':folderId', ROOT_FOLDER_ID);
+      .then(async (promise) => {
+        await promise;
+        window.location.hash = FILE_LIST_ROUTE.replace(':folderId', 'root');
       })
       .catch((error) => {
         this._handleError(error);
@@ -74,14 +75,16 @@ export default class LoginPage extends Component {
    * @private
    */
   _handleError(error) {
+    const messageService = new MessageService();
+
     if (error instanceof ServerValidationError) {
       this.loginForm.showValidationErrors(error.errorCases);
     } else if (error instanceof AuthorizationError) {
-      alert(`Authorization error: ${error.message}`);
+      messageService.showError(`Authorization error: ${error.message}`);
     } else if (error instanceof GeneralServerError) {
-      alert(`Internal server error: ${error.message}`);
+      messageService.showError(`Internal server error: ${error.message}`);
     } else {
-      alert('Unknown error. See the console for more details.');
+      messageService.showError('Unknown error. See the console for more details.');
       console.log(error);
     }
   }

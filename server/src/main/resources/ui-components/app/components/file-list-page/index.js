@@ -14,18 +14,23 @@ import UploadFileAction from '../../state/actions/upload-file-action/index.js';
 import GetFolderAction from '../../state/actions/get-folder-action/index.js';
 import CreateFolderAction from '../../state/actions/create-folder-action/index.js';
 import UrlProperties from '../../models/url-properties/index.js';
-import {ROOT_FOLDER_ID} from '../../models/root-folder/index.js';
 import NotFoundError from '../../models/errors/not-found-error/index.js';
 import AuthorizationError from '../../models/errors/authorization-error/index.js';
 import GeneralServerError from '../../models/errors/general-server-error/index.js';
 import GetUserAction from '../../state/actions/get-user-action/index.js';
 import DownloadFileService from '../../services/download-file-service/index.js';
 import MessageService from '../../services/message-service/index.js';
+import GetRootFolderIdAction from '../../state/actions/get-root-folder-id-action/index.js';
 
 /**
  * The component for the File List Page.
  */
 export default class FileListPage extends StateAwareComponent {
+  /**
+   * An identifier of the root folder.
+   */
+  ROOT_FOLDER_ID;
+
   /**
    * Creates an instance of the File List page with set container.
    *
@@ -36,19 +41,31 @@ export default class FileListPage extends StateAwareComponent {
    */
   constructor(container, stateManager, messageService, properties) {
     super(container, stateManager);
-    this._messageService = messageService;
 
-    this.render();
-    stateManager.dispatch(new GetFolderAction(properties.folderId));
-    stateManager.dispatch(new GetFilesAction(properties.folderId));
-    stateManager.dispatch(new GetUserAction());
+    if (!this.ROOT_FOLDER_ID) {
+      stateManager.dispatch(new GetRootFolderIdAction())
+        .then((rootFolderId) => {
+          this.ROOT_FOLDER_ID = rootFolderId;
+
+          if (properties.folderId === 'root') {
+            window.location.hash = FILE_LIST_ROUTE.replace(':folderId', rootFolderId);
+          }
+
+          this._messageService = messageService;
+
+          this.render();
+          stateManager.dispatch(new GetFolderAction(properties.folderId));
+          stateManager.dispatch(new GetFilesAction(properties.folderId));
+          stateManager.dispatch(new GetUserAction());
+        });
+    }
   }
 
   /**
    * @inheritdoc
    */
   markup() {
-    const rootFolderPath = FILE_LIST_ROUTE.replace(':folderId', ROOT_FOLDER_ID);
+    const rootFolderPath = FILE_LIST_ROUTE.replace(':folderId', this.ROOT_FOLDER_ID);
     return `
         <div class="application-box" data-test="file-list-page">
             <img src="app/images/logo.png" class="logo" alt="logo">

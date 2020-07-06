@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.api;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.storage.FolderId;
 import io.javaclasses.filehub.storage.TokenStorage;
 import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
@@ -19,7 +20,7 @@ class AuthenticationTest {
     private UserStorage prepareUserStorage(Username username, Password password) {
 
         UserStorage userStorage = new UserStorage();
-        userStorage.put(new UserRecord(new UserId(generate()), username, hash(password)));
+        userStorage.put(new UserRecord(new UserId(generate()), username, hash(password), new FolderId("")));
         return userStorage;
     }
 

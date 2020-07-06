@@ -67,7 +67,7 @@ public abstract class RecordId {
      * @return A string representation of the record ID.
      */
     @Override
-    public final String toString() {
+    public String toString() {
         return "Record ID:" + value;
     }
 }

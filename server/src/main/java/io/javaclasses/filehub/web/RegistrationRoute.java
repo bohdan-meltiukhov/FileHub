@@ -1,7 +1,16 @@
 package io.javaclasses.filehub.web;
 
-import com.google.gson.*;
-import io.javaclasses.filehub.api.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import io.javaclasses.filehub.api.PasswordIsNotValidException;
+import io.javaclasses.filehub.api.RegisterUser;
+import io.javaclasses.filehub.api.Registration;
+import io.javaclasses.filehub.api.UsernameAlreadyTakenException;
+import io.javaclasses.filehub.api.UsernameIsNotValidException;
+import io.javaclasses.filehub.storage.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +19,9 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.http.HttpStatus.*;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.SC_UNPROCESSABLE_ENTITY;
 
 /**
  * The {@link Route} for handling requests on the registration path.
@@ -18,9 +29,19 @@ import static org.apache.http.HttpStatus.*;
 public class RegistrationRoute implements Route {
 
     /**
+     * An slf4j logger.
+     */
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
+
+    /**
      * The storage with all registered users.
      */
     private final UserStorage userStorage;
+
+    /**
+     * A storage with all folders.
+     */
+    private final FolderMetadataStorage folderStorage;
 
     /**
      * A utility for serializing and deserializing Java objects into JSON elements.
@@ -30,11 +51,13 @@ public class RegistrationRoute implements Route {
     /**
      * Creates an instance of the registration route with set user storage.
      *
-     * @param userStorage The storage with registered users.
+     * @param userStorage   The storage with registered users.
+     * @param folderStorage The storage with all folders.
      */
-    public RegistrationRoute(UserStorage userStorage) {
+    public RegistrationRoute(UserStorage userStorage, FolderMetadataStorage folderStorage) {
 
         this.userStorage = checkNotNull(userStorage);
+        this.folderStorage = checkNotNull(folderStorage);
 
         gson = createGson();
     }
@@ -67,11 +90,6 @@ public class RegistrationRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
 
-        Logger logger = LoggerFactory.getLogger(RegistrationRoute.class);
-        if (logger.isInfoEnabled()) {
-            logger.info("Received an '/api/register' request with body: {}", request.body());
-        }
-
         checkNotNull(request);
         checkNotNull(response);
 
@@ -84,7 +102,7 @@ public class RegistrationRoute implements Route {
             if (logger.isDebugEnabled()) {
                 logger.debug("RegisterUser command is parsed from request body.");
             }
-            Registration process = new Registration(userStorage);
+            Registration process = new Registration(userStorage, folderStorage);
 
             process.handle(command);
             if (logger.isDebugEnabled()) {

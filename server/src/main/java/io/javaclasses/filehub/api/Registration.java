@@ -1,5 +1,8 @@
 package io.javaclasses.filehub.api;
 
+import io.javaclasses.filehub.storage.FolderId;
+import io.javaclasses.filehub.storage.FolderMetadataRecord;
+import io.javaclasses.filehub.storage.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.UserId;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
@@ -16,18 +19,30 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class Registration implements ApplicationProcess<RegisterUser, Void> {
 
     /**
+     * An slf4j logger.
+     */
+    private static final Logger logger = getLogger(Registration.class);
+
+    /**
      * The storage for user records.
      */
-    private final UserStorage storage;
+    private final UserStorage userStorage;
+
+    /**
+     * A storage with all folders.
+     */
+    private final FolderMetadataStorage folderMetadataStorage;
 
     /**
      * Creates an instance of the registration process with set storage.
      *
-     * @param storage The storage for user records.
+     * @param userStorage           The storage for user records.
+     * @param folderMetadataStorage The storage with all folders.
      */
-    public Registration(UserStorage storage) {
+    public Registration(UserStorage userStorage, FolderMetadataStorage folderMetadataStorage) {
 
-        this.storage = checkNotNull(storage);
+        this.userStorage = checkNotNull(userStorage);
+        this.folderMetadataStorage = checkNotNull(folderMetadataStorage);
     }
 
     /**
@@ -40,15 +55,13 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
     @Override
     public Void handle(RegisterUser command) throws UsernameIsNotValidException {
 
-        Logger logger = getLogger(Registration.class);
-
         if (logger.isDebugEnabled()) {
             logger.debug("Starting the registration process.");
         }
 
         checkNotNull(command);
 
-        if (storage.contains(command.username())) {
+        if (userStorage.contains(command.username())) {
 
             throw new UsernameAlreadyTakenException(
                     String.format("The username '%s' is already taken.", command.username().value()));
@@ -58,14 +71,42 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
         }
 
         UserId userId = new UserId(generate());
-        String hashedPassword = hash(command.password());
 
-        UserRecord userRecord = new UserRecord(userId, command.username(), hashedPassword);
+        FolderMetadataRecord folder = createNewFolder(userId);
+        folderMetadataStorage.put(folder);
 
-        storage.put(userRecord);
+        UserRecord userRecord = createNewUserRecord(userId, command, folder.id());
+        userStorage.put(userRecord);
+
         if (logger.isDebugEnabled()) {
             logger.debug("New user is added successfully: {}.", userRecord);
         }
         return null;
+    }
+
+    /**
+     * Creates a new {@link FolderMetadataRecord}.
+     *
+     * @param userId An identifier of teh current user.
+     * @return The created folder.
+     */
+    private FolderMetadataRecord createNewFolder(UserId userId) {
+
+        return new FolderMetadataRecord(new FolderId(generate()), userId, "New Folder");
+    }
+
+    /**
+     * Creates a new {@link UserRecord}.
+     *
+     * @param userId   an identifier of the current user.
+     * @param command  The command for the registration process.
+     * @param folderId The identifier of the user's root folder.
+     * @return The created {@link UserRecord}.
+     */
+    private UserRecord createNewUserRecord(UserId userId, RegisterUser command, FolderId folderId) {
+
+        String hashedPassword = hash(command.password());
+
+        return new UserRecord(userId, command.username(), hashedPassword, folderId);
     }
 }

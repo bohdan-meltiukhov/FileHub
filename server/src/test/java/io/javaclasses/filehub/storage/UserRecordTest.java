@@ -3,11 +3,11 @@ package io.javaclasses.filehub.storage;
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.IdGenerator;
 import io.javaclasses.filehub.api.Password;
-import io.javaclasses.filehub.api.PasswordHasher;
 import io.javaclasses.filehub.api.Username;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static io.javaclasses.filehub.api.PasswordHasher.hash;
 import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
 import static nl.jqno.equalsverifier.Warning.NULL_FIELDS;
 
@@ -16,8 +16,8 @@ public class UserRecordTest {
 
     private UserRecord prepareUserRecord() {
 
-        return new UserRecord(new UserId(IdGenerator.generate()), new Username("administrator"), PasswordHasher.hash(
-                new Password("Qazxsw123")));
+        return new UserRecord(new UserId(IdGenerator.generate()), new Username("administrator"),
+                hash(new Password("Qazxsw123")), new FolderId(""));
     }
 
     @Test
@@ -28,6 +28,7 @@ public class UserRecordTest {
         UserRecord userRecord = prepareUserRecord();
         tester.setDefault(Username.class, userRecord.username());
         tester.setDefault(UserId.class, new UserId(IdGenerator.generate()));
+        tester.setDefault(FolderId.class, new FolderId(""));
 
         tester.testAllPublicConstructors(UserRecord.class);
         tester.testAllPublicInstanceMethods(userRecord);

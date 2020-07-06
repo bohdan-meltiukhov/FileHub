@@ -6,6 +6,7 @@ import ServerValidationError from '../../models/errors/server-validation-error/i
 import GeneralServerError from '../../models/errors/general-server-error/index.js';
 import TitleService from '../../services/title-service/index.js';
 import {AUTHENTICATION_ROUTE} from '../../router/routes/index.js';
+import MessageService from '../../services/message-service/index.js';
 
 /**
  * The component for teh registration page.
@@ -68,12 +69,14 @@ export default class RegistrationPage extends Component {
    * @private
    */
   _handleError(error) {
+    const messageService = new MessageService();
+
     if (error instanceof ServerValidationError) {
       this.registrationForm.showValidationErrors(error.errorCases);
     } else if (error instanceof GeneralServerError) {
-      alert(`Internal server error: ${error.message}`);
+      messageService.showError(`Internal server error: ${error.message}`);
     } else {
-      alert('Unknown error. See the console for more details.');
+      messageService.showError('Unknown error. See the console for more details.');
       console.log(error);
     }
   }

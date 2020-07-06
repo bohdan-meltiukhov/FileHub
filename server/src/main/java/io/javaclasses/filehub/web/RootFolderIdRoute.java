@@ -9,7 +9,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -68,7 +67,7 @@ public class RootFolderIdRoute implements Route {
     }
 
     /**
-     * Creates a GetRootFolderId command.
+     * Creates a command to get the identifier of the root folder
      *
      * @return The created command.
      */
@@ -78,7 +77,7 @@ public class RootFolderIdRoute implements Route {
     }
 
     /**
-     * Creates a RootFolderIdView.
+     * Creates a view to get the identifier of the root folder.
      *
      * @return The created view.
      */

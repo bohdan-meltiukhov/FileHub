@@ -26,11 +26,10 @@ class RootFolderIdViewTest {
     }
 
     @Test
-    @DisplayName("provide correct folder ID when the token is valid.")
+    @DisplayName("provide correct folder ID.")
     void testHandle() {
 
         FolderId folderId = new FolderId(generate());
-
         RootFolderIdView view = prepareView(folderId);
 
         assertWithMessage("The RootFolderIdGetting view provided incorrect folder ID.")

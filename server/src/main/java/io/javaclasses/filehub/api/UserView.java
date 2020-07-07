@@ -5,7 +5,7 @@ import io.javaclasses.filehub.storage.UserRecord;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * An {@link ApplicationProcess} that handles the {@link GetUser} query.
+ * A {@link View} that processes the {@link GetUser} query.
  */
 public class UserView implements View<GetUser, UserRecord> {
 

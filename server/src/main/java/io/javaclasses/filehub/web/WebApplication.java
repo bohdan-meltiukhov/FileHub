@@ -47,7 +47,7 @@ public class WebApplication {
             get("/root-folder", new RootFolderIdRoute());
 
             before("/user", filter);
-            get("/user", new GetUserRoute(tokenStorage, userStorage));
+//            get("/user", new GetUserRoute(tokenStorage, userStorage));
 
             after((request, response) -> CurrentUser.clear());
         });

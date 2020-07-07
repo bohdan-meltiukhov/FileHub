@@ -36,6 +36,11 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
     private final FileSize fileSize;
 
     /**
+     * An identifier of the file owner.
+     */
+    private final UserId userId;
+
+    /**
      * An identifier of the parent {@link FolderMetadataRecord}.
      */
     private final FolderId parentFolderId;
@@ -47,15 +52,17 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
      * @param filename       The name of the file.
      * @param mimeType       The {@link MimeType} of the file.
      * @param fileSize       The size of the file in bytes.
+     * @param userId         An identifier of the file owner.
      * @param parentFolderId An identifier of the parent {@link FolderMetadataRecord}.
      */
     public FileMetadataRecord(FileId fileId, Filename filename, MimeType mimeType, FileSize fileSize,
-                              FolderId parentFolderId) {
+                              UserId userId, FolderId parentFolderId) {
 
         this.fileId = checkNotNull(fileId);
         this.filename = checkNotNull(filename);
         this.mimeType = checkNotNull(mimeType);
         this.fileSize = checkNotNull(fileSize);
+        this.userId = checkNotNull(userId);
         this.parentFolderId = checkNotNull(parentFolderId);
     }
 
@@ -75,6 +82,7 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
                 filename.equals(that.filename) &&
                 mimeType == that.mimeType &&
                 fileSize.equals(that.fileSize) &&
+                userId.equals(that.userId) &&
                 parentFolderId.equals(that.parentFolderId);
     }
 
@@ -86,7 +94,7 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
     @Override
     public int hashCode() {
 
-        return Objects.hash(fileId, filename, mimeType, fileSize, parentFolderId);
+        return Objects.hash(fileId, filename, mimeType, fileSize, userId, parentFolderId);
     }
 
     /**
@@ -117,6 +125,16 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
     public FileSize fileSize() {
 
         return fileSize;
+    }
+
+    /**
+     * Provides an identifier of the file owner.
+     *
+     * @return An identifier of the file owner.
+     */
+    public UserId getUserId() {
+
+        return userId;
     }
 
     /**

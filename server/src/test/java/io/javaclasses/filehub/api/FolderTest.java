@@ -28,7 +28,6 @@ class FolderTest {
 
         return new NullPointerTester()
                 .setDefault(FolderId.class, folder.folderId())
-                .setDefault(UserId.class, folder.userId())
                 .setDefault(FolderName.class, folder.folderName())
                 .setDefault(NestedItems.class, folder.nestedItems())
                 .setDefault(FolderMetadataRecord.class, prepareFolderMetadataRecord());

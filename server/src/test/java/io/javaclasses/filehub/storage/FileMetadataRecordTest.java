@@ -28,7 +28,7 @@ class FileMetadataRecordTest {
     private FileMetadataRecord prepareFile() {
 
         return new FileMetadataRecord(new FileId(generate()), new Filename("new_file.png"), IMAGE,
-                new FileSize(285), new FolderId(generate()));
+                new FileSize(285), new UserId(generate()), new FolderId(generate()));
     }
 
     @Test

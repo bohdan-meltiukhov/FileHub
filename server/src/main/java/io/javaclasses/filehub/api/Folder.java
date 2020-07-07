@@ -28,11 +28,6 @@ public final class Folder {
     private final FolderId parentFolderId;
 
     /**
-     * An identifier of the folder owner.
-     */
-    private final UserId userId;
-
-    /**
      * The name of the folder.
      */
     private final FolderName folderName;
@@ -46,17 +41,15 @@ public final class Folder {
      * Creates a {@link Folder} instance.
      *
      * @param folderId       The identifier of the folder.
-     * @param userId         The identifier of the folder owner.
      * @param folderName     The name of the folder.
      * @param nestedItems    The number of nested files and folder.
      * @param parentFolderId The identifier of the parent folder.
      */
-    public Folder(FolderId folderId, UserId userId, FolderName folderName, NestedItems nestedItems,
+    public Folder(FolderId folderId, FolderName folderName, NestedItems nestedItems,
                   @Nullable FolderId parentFolderId) {
 
         this.folderId = checkNotNull(folderId);
         this.parentFolderId = parentFolderId;
-        this.userId = checkNotNull(userId);
         this.folderName = checkNotNull(folderName);
         this.nestedItems = checkNotNull(nestedItems);
     }
@@ -67,13 +60,12 @@ public final class Folder {
      * <p>This constructor should be used to create parent folders.
      *
      * @param folderId    The identifier of the folder.
-     * @param userId      An identifier of the folder owner.
      * @param folderName  The name of the folder.
      * @param nestedItems The number of nested files and folder.
      */
     public Folder(FolderId folderId, UserId userId, FolderName folderName, NestedItems nestedItems) {
 
-        this(folderId, userId, folderName, nestedItems, null);
+        this(folderId, folderName, nestedItems, null);
     }
 
     /**
@@ -87,7 +79,7 @@ public final class Folder {
 
         checkNotNull(record);
         checkNotNull(nestedItems);
-        return new Folder(record.id(), record.userId(), record.folderName(), nestedItems, record.parentFolderId());
+        return new Folder(record.id(), record.folderName(), nestedItems, record.parentFolderId());
     }
 
     /**
@@ -100,7 +92,6 @@ public final class Folder {
         return "Folder{" +
                 "folderId=" + folderId +
                 ", parentFolderId=" + parentFolderId +
-                ", userId=" + userId +
                 ", folderName='" + folderName + '\'' +
                 '}';
     }
@@ -123,16 +114,6 @@ public final class Folder {
     public FolderId parentFolderId() {
 
         return parentFolderId;
-    }
-
-    /**
-     * Provides the user identifier.
-     *
-     * @return The identifier of the folder owner.
-     */
-    public UserId userId() {
-
-        return userId;
     }
 
     /**

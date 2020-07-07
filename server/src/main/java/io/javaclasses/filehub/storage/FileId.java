@@ -13,7 +13,7 @@ public final class FileId extends RecordId {
      *
      * @param value The file identifier value.
      */
-    protected FileId(String value) {
+    public FileId(String value) {
 
         super(value);
     }

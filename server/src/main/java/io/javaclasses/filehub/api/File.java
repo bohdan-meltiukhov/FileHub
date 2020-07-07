@@ -1,19 +1,20 @@
-package io.javaclasses.filehub.storage;
+package io.javaclasses.filehub.api;
 
 import com.google.errorprone.annotations.Immutable;
-import io.javaclasses.filehub.api.FileSize;
-import io.javaclasses.filehub.api.Filename;
-import io.javaclasses.filehub.api.MimeType;
-
-import java.util.Objects;
+import io.javaclasses.filehub.storage.FileId;
+import io.javaclasses.filehub.storage.FileMetadataRecord;
+import io.javaclasses.filehub.storage.FolderId;
+import io.javaclasses.filehub.storage.FolderMetadataRecord;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A {@link StorageRecord} about a File in the FileHub application.
+ * A data transfer object for a {@link FileMetadataRecord}.
+ *
+ * @see <a href="https://martinfowler.com/eaaCatalog/dataTransferObject.html">Data Transfer Object</a>
  */
 @Immutable
-public final class FileMetadataRecord implements StorageRecord<FileId> {
+public final class File {
 
     /**
      * An identifier of the file.
@@ -41,7 +42,7 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
     private final FolderId parentFolderId;
 
     /**
-     * Creates an instance of the FileMetadataRecord.
+     * Creates an instance of the {@link File}.
      *
      * @param fileId         An identifier of the file.
      * @param filename       The name of the file.
@@ -49,8 +50,8 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
      * @param fileSize       The size of the file in bytes.
      * @param parentFolderId An identifier of the parent {@link FolderMetadataRecord}.
      */
-    public FileMetadataRecord(FileId fileId, Filename filename, MimeType mimeType, FileSize fileSize,
-                              FolderId parentFolderId) {
+    public File(FileId fileId, Filename filename, MimeType mimeType, FileSize fileSize,
+                FolderId parentFolderId) {
 
         this.fileId = checkNotNull(fileId);
         this.filename = checkNotNull(filename);
@@ -60,33 +61,14 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
     }
 
     /**
-     * Indicates whether the provided object if a {@link FileMetadataRecord} with the same fields.
+     * Creates an instance of a {@link File} from a {@link FileMetadataRecord}.
      *
-     * @param o The object to compare with.
-     * @return True in case files are equal.
+     * @param record A {@link FileMetadataRecord} to create from.
+     * @return The created file.
      */
-    @Override
-    public boolean equals(Object o) {
+    public static File fromFileMetadataRecord(FileMetadataRecord record) {
 
-        if (this == o) return true;
-        if (!(o instanceof FileMetadataRecord)) return false;
-        FileMetadataRecord that = (FileMetadataRecord) o;
-        return fileId.equals(that.fileId) &&
-                filename.equals(that.filename) &&
-                mimeType == that.mimeType &&
-                fileSize.equals(that.fileSize) &&
-                parentFolderId.equals(that.parentFolderId);
-    }
-
-    /**
-     * Provides a hash code value of a {@link FileMetadataRecord}.
-     *
-     * @return The hash code that considers all {@link FileMetadataRecord} fields.
-     */
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(fileId, filename, mimeType, fileSize, parentFolderId);
+        return new File(record.id(), record.filename(), record.mimeType(), record.fileSize(), record.parentFolderId());
     }
 
     /**
@@ -134,8 +116,7 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
      *
      * @return The file identifier.
      */
-    @Override
-    public FileId id() {
+    public FileId fileId() {
 
         return fileId;
     }

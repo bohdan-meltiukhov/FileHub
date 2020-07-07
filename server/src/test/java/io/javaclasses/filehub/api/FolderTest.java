@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 import static io.javaclasses.filehub.api.Folder.fromFolderMetadataRecord;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
+import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
+import static nl.jqno.equalsverifier.Warning.NULL_FIELDS;
 
 @DisplayName("The Folder should")
 class FolderTest {
@@ -43,5 +45,14 @@ class FolderTest {
         tester.testAllPublicConstructors(Folder.class);
         tester.testAllPublicStaticMethods(Folder.class);
         tester.testAllPublicInstanceMethods(folder);
+    }
+
+    @Test
+    @DisplayName("fulfill the equals() and hashCode() contract.")
+    void testEqualsContract() {
+
+        forClass(Folder.class)
+                .suppress(NULL_FIELDS)
+                .verify();
     }
 }

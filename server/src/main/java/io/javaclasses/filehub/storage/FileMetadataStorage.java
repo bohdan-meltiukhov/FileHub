@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * A {@link Storage} with {@link FileMetadataRecord}s.
  */
@@ -17,8 +19,10 @@ public class FileMetadataStorage extends InMemoryStorage<FileId, FileMetadataRec
      */
     public List<FileMetadataRecord> getChildFiles(FolderId folderId) {
 
+        checkNotNull(folderId);
+
         return getAll().stream()
-                .filter(file -> file.parentFolderId().equals(folderId))
+                .filter(file -> file.parentFolderId() != null && file.parentFolderId().equals(folderId))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 }

@@ -6,6 +6,8 @@ import io.javaclasses.filehub.storage.FileMetadataRecord;
 import io.javaclasses.filehub.storage.FolderId;
 import io.javaclasses.filehub.storage.FolderMetadataRecord;
 
+import java.util.Objects;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -69,6 +71,34 @@ public final class File {
     public static File fromFileMetadataRecord(FileMetadataRecord record) {
 
         return new File(record.id(), record.filename(), record.mimeType(), record.fileSize(), record.parentFolderId());
+    }
+
+    /**
+     * Indicates whether the provided object is a {@link File} with the same fields.
+     *
+     * @param o The object to compare with.
+     * @return True in case both objects are files with equal fields.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof File)) return false;
+        File file = (File) o;
+        return fileId.equals(file.fileId) &&
+                filename.equals(file.filename) &&
+                mimeType == file.mimeType &&
+                fileSize.equals(file.fileSize) &&
+                parentFolderId.equals(file.parentFolderId);
+    }
+
+    /**
+     * Provides a hash code value of a {@link File}.
+     *
+     * @return A hash code value that considers all {@link File} fields.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(fileId, filename, mimeType, fileSize, parentFolderId);
     }
 
     /**

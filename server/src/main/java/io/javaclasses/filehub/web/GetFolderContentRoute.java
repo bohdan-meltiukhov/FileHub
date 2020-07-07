@@ -1,5 +1,8 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.api.FolderContentView;
+import io.javaclasses.filehub.api.GetFolderContent;
+import io.javaclasses.filehub.storage.FolderId;
 import io.javaclasses.filehub.storage.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.FileMetadataRecord;

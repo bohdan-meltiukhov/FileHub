@@ -7,6 +7,8 @@ import io.javaclasses.filehub.storage.UserId;
 
 import javax.annotation.Nullable;
 
+import java.util.Objects;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -63,7 +65,7 @@ public final class Folder {
      * @param folderName  The name of the folder.
      * @param nestedItems The number of nested files and folder.
      */
-    public Folder(FolderId folderId, UserId userId, FolderName folderName, NestedItems nestedItems) {
+    public Folder(FolderId folderId, FolderName folderName, NestedItems nestedItems) {
 
         this(folderId, folderName, nestedItems, null);
     }
@@ -83,6 +85,33 @@ public final class Folder {
     }
 
     /**
+     * Indicates whether the provided object is a {@link Folder} with the same fields.
+     *
+     * @param o The object to compare with.
+     * @return True in case both objects are folder with equal fields.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Folder)) return false;
+        Folder folder = (Folder) o;
+        return folderId.equals(folder.folderId) &&
+                Objects.equals(parentFolderId, folder.parentFolderId) &&
+                folderName.equals(folder.folderName) &&
+                nestedItems.equals(folder.nestedItems);
+    }
+
+    /**
+     * Provides a hash code value of a {@link Folder}.
+     *
+     * @return A hash code value that considers all folder fields.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(folderId, parentFolderId, folderName, nestedItems);
+    }
+
+    /**
      * Provides a string representation of a folder metadata record.
      *
      * @return A string representation of a folder metadata record.
@@ -92,7 +121,8 @@ public final class Folder {
         return "Folder{" +
                 "folderId=" + folderId +
                 ", parentFolderId=" + parentFolderId +
-                ", folderName='" + folderName + '\'' +
+                ", folderName=" + folderName +
+                ", nestedItems=" + nestedItems +
                 '}';
     }
 

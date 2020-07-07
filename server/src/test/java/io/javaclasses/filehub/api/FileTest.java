@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import static io.javaclasses.filehub.api.IdGenerator.generate;
 import static io.javaclasses.filehub.api.MimeType.IMAGE;
+import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
+import static nl.jqno.equalsverifier.Warning.NULL_FIELDS;
 
 @DisplayName("The File should")
 class FileTest {
@@ -37,5 +39,14 @@ class FileTest {
         tester.testAllPublicConstructors(File.class);
         tester.testAllPublicStaticMethods(File.class);
         tester.testAllPublicInstanceMethods(file);
+    }
+
+    @Test
+    @DisplayName("fulfill the equals() and hashCode() contract.")
+    void testEqualsContract() {
+
+        forClass(File.class)
+                .suppress(NULL_FIELDS)
+                .verify();
     }
 }

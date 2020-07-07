@@ -70,7 +70,7 @@ public final class UserRecord implements StorageRecord<UserId> {
     /**
      * Provides the hash code value of the user record.
      *
-     * @return The hash code value that considers the user ID, username and password hash.
+     * @return The hash code value that considers the user identifier, username and password hash.
      */
     @Override
     public int hashCode() {

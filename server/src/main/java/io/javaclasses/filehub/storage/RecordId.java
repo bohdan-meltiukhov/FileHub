@@ -16,7 +16,7 @@ public abstract class RecordId {
     private final String value;
 
     /**
-     * Creates an instance of the Record ID class with set value.
+     * Creates an instance of the Record identifier class with set value.
      *
      * @param value The record identifier value.
      */
@@ -26,7 +26,7 @@ public abstract class RecordId {
     }
 
     /**
-     * Indicates whether the provided object is a record ID and has the same value.
+     * Indicates whether the provided object is a record identifier and has the same value.
      *
      * @param o The object with which to compare.
      * @return True if the record identifiers are equal.

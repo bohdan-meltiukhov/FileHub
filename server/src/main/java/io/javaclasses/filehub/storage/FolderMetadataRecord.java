@@ -34,27 +34,48 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     private final String folderName;
 
     /**
-     * The number of nested files or folders this folder contains.
-     */
-    private final int itemsNumber;
-
-    /**
      * Creates an instance of the folder metadata record with set properties.
      *
      * @param folderId       The identifier of the folder.
-     * @param parentFolderId The identifier of the parent folder.
      * @param userId         The identifier of the folder owner.
      * @param folderName     The name of the folder.
-     * @param itemsNumber    The number of nested elements.
+     * @param parentFolderId The identifier of the parent folder.
      */
-    public FolderMetadataRecord(FolderId folderId, @Nullable FolderId parentFolderId, UserId userId, String folderName,
-                                int itemsNumber) {
+    public FolderMetadataRecord(FolderId folderId, UserId userId, String folderName, @Nullable FolderId parentFolderId) {
 
         this.folderId = checkNotNull(folderId);
         this.parentFolderId = parentFolderId;
         this.userId = checkNotNull(userId);
         this.folderName = checkNotNull(folderName);
-        this.itemsNumber = itemsNumber;
+    }
+
+    /**
+     * Creates an instance of the folder metadata record with null parent.
+     *
+     * <p>This constructor should be user to create parent folders.
+     *
+     * @param folderId   The identifier of the folder.
+     * @param userId     An identifier of the folder owner.
+     * @param folderName The name of the folder.
+     */
+    public FolderMetadataRecord(FolderId folderId, UserId userId, String folderName) {
+
+        this(folderId, userId, folderName, null);
+    }
+
+    /**
+     * Provides a string representation of a folder metadata record.
+     *
+     * @return A string representation of a folder metadata record.
+     */
+    @Override
+    public String toString() {
+        return "FolderMetadataRecord{" +
+                "folderId=" + folderId +
+                ", parentFolderId=" + parentFolderId +
+                ", userId=" + userId +
+                ", folderName='" + folderName + '\'' +
+                '}';
     }
 
     /**
@@ -69,8 +90,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
         if (this == o) return true;
         if (!(o instanceof FolderMetadataRecord)) return false;
         FolderMetadataRecord that = (FolderMetadataRecord) o;
-        return itemsNumber == that.itemsNumber &&
-                folderId.equals(that.folderId) &&
+        return folderId.equals(that.folderId) &&
                 parentFolderId.equals(that.parentFolderId) &&
                 userId.equals(that.userId) &&
                 folderName.equals(that.folderName);
@@ -84,7 +104,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     @Override
     public int hashCode() {
 
-        return Objects.hash(folderId, parentFolderId, userId, folderName, itemsNumber);
+        return Objects.hash(folderId, parentFolderId, userId, folderName);
     }
 
     /**
@@ -99,7 +119,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     }
 
     /**
-     * The getter for the parent folder ID.
+     * The getter for the parent folder identifier.
      *
      * @return The identifier of the parent folder.
      */
@@ -126,15 +146,5 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     public String folderName() {
 
         return folderName;
-    }
-
-    /**
-     * Provides the number of nested items.
-     *
-     * @return The number of nested items.
-     */
-    public int itemsNumber() {
-
-        return itemsNumber;
     }
 }

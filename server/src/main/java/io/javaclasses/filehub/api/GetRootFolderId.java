@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.api;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import io.javaclasses.filehub.storage.UserRecord;
 
 /**
  * A {@link Query} that represents intention of a client to get the identifier of the root folder.
@@ -8,40 +8,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class GetRootFolderId implements Query {
 
     /**
-     * The provided authentication token.
-     */
-    private final Token token;
-
-    /**
-     * Creates an instance of the GetRootFolderId query with set token.
+     * Provides the current user.
      *
-     * @param token The authentication token from the client.
+     * @return The current user.
      */
-    public GetRootFolderId(Token token) {
+    public UserRecord currentUser() {
 
-        this.token = checkNotNull(token);
-    }
-
-    /**
-     * Provides a string representation of the command.
-     *
-     * @return A string representation of the command.
-     */
-    @Override
-    public String toString() {
-
-        return "GetRootFolderId{" +
-                "token=" + token +
-                '}';
-    }
-
-    /**
-     * Provides the command token.
-     *
-     * @return The stored authentication token.
-     */
-    public Token token() {
-
-        return token;
+        return CurrentUser.get();
     }
 }

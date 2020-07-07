@@ -1,7 +1,5 @@
 package io.javaclasses.filehub.storage;
 
-import io.javaclasses.filehub.api.Token;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,15 +8,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A {@link StorageRecord} for saving {@link Token}.
  */
-public final class TokenRecord implements StorageRecord<TokenId> {
+public final class LoggedInUser implements StorageRecord<Token> {
 
     /**
-     * An identifier of the token.
-     */
-    private final TokenId tokenId;
-
-    /**
-     * The authentication token itself.
+     * The authentication token.
      */
     private final Token token;
 
@@ -35,14 +28,12 @@ public final class TokenRecord implements StorageRecord<TokenId> {
     /**
      * Creates an instance of the token record with set properties.
      *
-     * @param tokenId        An identifier of the token.
      * @param token          The authentication token itself.
      * @param userId         An identifier of the user of the token.
      * @param expirationDate The date when the token expires.
      */
-    public TokenRecord(TokenId tokenId, Token token, UserId userId, LocalDateTime expirationDate) {
+    public LoggedInUser(Token token, UserId userId, LocalDateTime expirationDate) {
 
-        this.tokenId = checkNotNull(tokenId);
         this.token = checkNotNull(token);
         this.userId = checkNotNull(userId);
         this.expirationDate = checkNotNull(expirationDate);
@@ -58,10 +49,9 @@ public final class TokenRecord implements StorageRecord<TokenId> {
     public boolean equals(Object o) {
 
         if (this == o) return true;
-        if (!(o instanceof TokenRecord)) return false;
-        TokenRecord that = (TokenRecord) o;
-        return tokenId.equals(that.tokenId) &&
-                token.equals(that.token) &&
+        if (!(o instanceof LoggedInUser)) return false;
+        LoggedInUser that = (LoggedInUser) o;
+        return token.equals(that.token) &&
                 userId.equals(that.userId) &&
                 expirationDate.equals(that.expirationDate);
     }
@@ -74,7 +64,7 @@ public final class TokenRecord implements StorageRecord<TokenId> {
     @Override
     public int hashCode() {
 
-        return Objects.hash(tokenId, token, userId, expirationDate);
+        return Objects.hash(token, userId, expirationDate);
     }
 
     /**
@@ -86,22 +76,10 @@ public final class TokenRecord implements StorageRecord<TokenId> {
     public String toString() {
 
         return "TokenRecord{" +
-                "tokenId=" + tokenId +
-                ", token=" + token +
+                "token=" + token +
                 ", userId=" + userId +
                 ", expirationDate=" + expirationDate +
                 '}';
-    }
-
-    /**
-     * The getter for the token identifier.
-     *
-     * @return The stored token identifier.
-     */
-    @Override
-    public TokenId id() {
-
-        return tokenId;
     }
 
     /**
@@ -109,7 +87,7 @@ public final class TokenRecord implements StorageRecord<TokenId> {
      *
      * @return The stored authentication token.
      */
-    public Token token() {
+    public Token id() {
 
         return token;
     }

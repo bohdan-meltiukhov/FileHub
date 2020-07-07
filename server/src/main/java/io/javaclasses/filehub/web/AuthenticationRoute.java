@@ -4,8 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
-import io.javaclasses.filehub.api.*;
-import io.javaclasses.filehub.storage.TokenStorage;
+import io.javaclasses.filehub.api.AuthenticateUser;
+import io.javaclasses.filehub.api.Authentication;
+import io.javaclasses.filehub.api.PasswordIsNotValidException;
+import io.javaclasses.filehub.api.UnauthorizedException;
+import io.javaclasses.filehub.api.UsernameIsNotValidException;
+import io.javaclasses.filehub.storage.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.Token;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 import spark.Request;
@@ -13,13 +18,21 @@ import spark.Response;
 import spark.Route;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static org.apache.http.HttpStatus.*;
+import static org.apache.http.HttpStatus.SC_BAD_REQUEST;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
+import static org.apache.http.HttpStatus.SC_UNPROCESSABLE_ENTITY;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * A {@link Route} that handles the authentication request.
  */
 public class AuthenticationRoute implements Route {
+
+    /**
+     * An slf4j logger.
+     */
+    private static final Logger logger = getLogger(AuthenticationRoute.class);
 
     /**
      * A storage with all registered users.
@@ -29,7 +42,7 @@ public class AuthenticationRoute implements Route {
     /**
      * A storage with all created authentication tokens.
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage loggedInUserStorage;
 
     /**
      * A utility to serialize and deserialize Java objects into JSON elements.
@@ -40,12 +53,12 @@ public class AuthenticationRoute implements Route {
      * Creates an instance of the Authentication route with set user and token storage.
      *
      * @param userStorage  A storage with all application users.
-     * @param tokenStorage A storage with all authentication tokens.
+     * @param loggedInUserStorage A storage with all authentication tokens.
      */
-    public AuthenticationRoute(UserStorage userStorage, TokenStorage tokenStorage) {
+    public AuthenticationRoute(UserStorage userStorage, LoggedInUserStorage loggedInUserStorage) {
 
         this.userStorage = checkNotNull(userStorage);
-        this.tokenStorage = checkNotNull(tokenStorage);
+        this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
 
@@ -70,14 +83,9 @@ public class AuthenticationRoute implements Route {
         checkNotNull(request);
         checkNotNull(response);
 
-        Logger logger = getLogger(AuthenticationRoute.class);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Received a '{}' request with body: {}", request.matchedPath(), request.body());
-        }
-
         response.type("application/json");
 
-        Authentication process = new Authentication(userStorage, tokenStorage);
+        Authentication process = new Authentication(userStorage, loggedInUserStorage);
 
         try {
 

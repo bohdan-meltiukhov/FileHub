@@ -1,14 +1,20 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.api.CurrentUser;
 import io.javaclasses.filehub.storage.FolderMetadataStorage;
-import io.javaclasses.filehub.storage.TokenStorage;
+import io.javaclasses.filehub.storage.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 import spark.Filter;
 
-import static spark.Spark.*;
+import static spark.Spark.after;
+import static spark.Spark.before;
+import static spark.Spark.get;
+import static spark.Spark.path;
+import static spark.Spark.post;
+import static spark.Spark.staticFileLocation;
 
 /**
- * The server that handles different HTTP requests.
+ * The FileHub web application. Initializes {@link io.javaclasses.filehub.storage.Storage} and starts the server.
  */
 public class WebApplication {
 
@@ -24,21 +30,26 @@ public class WebApplication {
         staticFileLocation("/ui-components");
 
         UserStorage userStorage = new UserStorage();
-        TokenStorage tokenStorage = new TokenStorage();
+        LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
         FolderMetadataStorage folderStorage = new FolderMetadataStorage();
 
-        Filter filter = new AuthenticationFilter(tokenStorage);
+        Filter filter = new UserAuthenticationFilter(loggedInUserStorage, userStorage);
+        Filter logRequestDataFilter = new LogRequestDataFilter();
+
+        before("/api/*", logRequestDataFilter);
 
         path("/api", () -> {
 
             post("/register", new RegistrationRoute(userStorage, folderStorage));
-            post("/login", new AuthenticationRoute(userStorage, tokenStorage));
+            post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
 
             before("/root-folder", filter);
-            get("/root-folder", new RootFolderIdRoute(tokenStorage, userStorage));
+            get("/root-folder", new RootFolderIdRoute());
 
             before("/user", filter);
             get("/user", new GetUserRoute(tokenStorage, userStorage));
+
+            after((request, response) -> CurrentUser.clear());
         });
     }
 

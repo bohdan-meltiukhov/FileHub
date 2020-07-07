@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public final class FolderId extends RecordId {
 
     /**
-     * Creates an instance of the folder ID with set value.
+     * Creates an instance of the folder identifier with set value.
      *
      * @param value The folder identifier value.
      */

@@ -1,7 +1,12 @@
 package io.javaclasses.filehub.api;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.storage.*;
+import io.javaclasses.filehub.storage.FolderId;
+import io.javaclasses.filehub.storage.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.Token;
+import io.javaclasses.filehub.storage.UserId;
+import io.javaclasses.filehub.storage.UserRecord;
+import io.javaclasses.filehub.storage.UserStorage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -28,9 +33,9 @@ class AuthenticationTest {
         Password password = new Password("secure-password");
 
         UserStorage userStorage = prepareUserStorage(username, password);
-        TokenStorage tokenStorage = new TokenStorage();
+        LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
 
-        Authentication process = new Authentication(userStorage, tokenStorage);
+        Authentication process = new Authentication(userStorage, loggedInUserStorage);
         Token token = process.handle(new AuthenticateUser(username, password));
 
         assertWithMessage("The Authentication process did not create a token.")
@@ -39,7 +44,7 @@ class AuthenticationTest {
 
         assertWithMessage("The Authentication process didn't add the created token to the token " +
                 "storage")
-                .that(tokenStorage.getAll().get(0).token())
+                .that(loggedInUserStorage.getAll().get(0).id())
                 .isEqualTo(token);
     }
 
@@ -51,9 +56,9 @@ class AuthenticationTest {
         Password password = new Password("secure-password");
 
         UserStorage userStorage = prepareUserStorage(username, password);
-        TokenStorage tokenStorage = new TokenStorage();
+        LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
 
-        Authentication process = new Authentication(userStorage, tokenStorage);
+        Authentication process = new Authentication(userStorage, loggedInUserStorage);
 
         AuthenticateUser command = new AuthenticateUser(new Username("hackerman"),
                 new Password("wrong-password"));
@@ -69,6 +74,6 @@ class AuthenticationTest {
         NullPointerTester tester = new NullPointerTester();
 
         tester.testAllPublicConstructors(Authentication.class);
-        tester.testAllPublicInstanceMethods(new Authentication(new UserStorage(), new TokenStorage()));
+        tester.testAllPublicInstanceMethods(new Authentication(new UserStorage(), new LoggedInUserStorage()));
     }
 }

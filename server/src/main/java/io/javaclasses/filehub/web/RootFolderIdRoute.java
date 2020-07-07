@@ -2,71 +2,50 @@ package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.GetRootFolderId;
 import io.javaclasses.filehub.api.RootFolderIdView;
-import io.javaclasses.filehub.api.Token;
 import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.storage.FolderId;
-import io.javaclasses.filehub.storage.TokenStorage;
-import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * A {@link Route} that provides the identifier of the root folder.
+ * A {@link Route} that handles the get-root-folder-id {@link Request}.
+ *
+ * <p>Provides the identifier of the root folder of the current user.
+ *
+ * <p>The root folder is the "highest" directory in the hierarchy.
  */
 public class RootFolderIdRoute implements Route {
 
     /**
-     * A storage with all tokens.
+     * An slf4j logger.
      */
-    private final TokenStorage tokenStorage;
+    private static final Logger logger = getLogger(RootFolderIdRoute.class);
 
     /**
-     * A storage with all registered users.
-     */
-    private final UserStorage userStorage;
-
-    /**
-     * Creates an instance of the RootFolderIdRoute with set token and user storage.
+     * Handles the get root folder identifier {@link Request}.
      *
-     * @param tokenStorage A storage with all tokens.
-     * @param userStorage  A storage with all users.
+     * @param request  The request from the client.
+     * @param response The object for creating the response.
+     * @return The response content.
      */
-    public RootFolderIdRoute(TokenStorage tokenStorage, UserStorage userStorage) {
-
-        this.tokenStorage = checkNotNull(tokenStorage);
-        this.userStorage = checkNotNull(userStorage);
-    }
-
     @Override
     public Object handle(Request request, Response response) {
 
-        checkNotNull(request);
-        checkNotNull(response);
-
-        Logger logger = getLogger(RootFolderIdRoute.class);
-
-
         try {
 
-            Token token = new Token(request.headers("Authentication"));
-            if (logger.isDebugEnabled()) {
-                logger.debug("Received a '{}' request with token {}.", request.matchedPath(), token);
-            }
-
-            GetRootFolderId command = new GetRootFolderId(token);
+            GetRootFolderId command = createCommand();
 
             if (logger.isDebugEnabled()) {
                 logger.debug("Created a command {}.", command);
             }
 
-            RootFolderIdView view = new RootFolderIdView(tokenStorage, userStorage);
+            RootFolderIdView view = createView();
             FolderId folderId = view.process(command);
 
             if (logger.isDebugEnabled()) {
@@ -85,5 +64,25 @@ public class RootFolderIdRoute implements Route {
             response.status(SC_UNAUTHORIZED);
             return exception.getMessage();
         }
+    }
+
+    /**
+     * Creates a command to get the identifier of the root folder
+     *
+     * @return The created command.
+     */
+    private GetRootFolderId createCommand() {
+
+        return new GetRootFolderId();
+    }
+
+    /**
+     * Creates a view to get the identifier of the root folder.
+     *
+     * @return The created view.
+     */
+    private RootFolderIdView createView() {
+
+        return new RootFolderIdView();
     }
 }

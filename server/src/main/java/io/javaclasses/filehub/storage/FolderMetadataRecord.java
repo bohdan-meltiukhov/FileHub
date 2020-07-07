@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 import com.google.errorprone.annotations.Immutable;
+import io.javaclasses.filehub.api.FolderName;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -31,7 +32,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     /**
      * The name of the folder.
      */
-    private final String folderName;
+    private final FolderName folderName;
 
     /**
      * Creates an instance of the folder metadata record with set properties.
@@ -41,7 +42,8 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
      * @param folderName     The name of the folder.
      * @param parentFolderId The identifier of the parent folder.
      */
-    public FolderMetadataRecord(FolderId folderId, UserId userId, String folderName, @Nullable FolderId parentFolderId) {
+    public FolderMetadataRecord(FolderId folderId, UserId userId, FolderName folderName,
+                                @Nullable FolderId parentFolderId) {
 
         this.folderId = checkNotNull(folderId);
         this.parentFolderId = parentFolderId;
@@ -52,13 +54,13 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     /**
      * Creates an instance of the folder metadata record with null parent.
      *
-     * <p>This constructor should be user to create parent folders.
+     * <p>This constructor should be used to create parent folders.
      *
      * @param folderId   The identifier of the folder.
      * @param userId     An identifier of the folder owner.
      * @param folderName The name of the folder.
      */
-    public FolderMetadataRecord(FolderId folderId, UserId userId, String folderName) {
+    public FolderMetadataRecord(FolderId folderId, UserId userId, FolderName folderName) {
 
         this(folderId, userId, folderName, null);
     }
@@ -143,7 +145,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
      *
      * @return The name of the folder.
      */
-    public String folderName() {
+    public FolderName folderName() {
 
         return folderName;
     }

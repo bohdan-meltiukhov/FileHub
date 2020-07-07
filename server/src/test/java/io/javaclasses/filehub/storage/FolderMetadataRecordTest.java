@@ -1,25 +1,40 @@
 package io.javaclasses.filehub.storage;
 
 import com.google.common.testing.NullPointerTester;
+import io.javaclasses.filehub.api.FolderName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static io.javaclasses.filehub.api.IdGenerator.generate;
 import static nl.jqno.equalsverifier.EqualsVerifier.forClass;
 import static nl.jqno.equalsverifier.Warning.NULL_FIELDS;
 
 @DisplayName("The FolderMetadataRecord should")
 class FolderMetadataRecordTest {
 
+    private FolderMetadataRecord prepareFolder() {
+
+        return new FolderMetadataRecord(new FolderId(generate()), new UserId(generate()),
+                new FolderName("New folder"), new FolderId(generate()));
+    }
+
+    private NullPointerTester prepareTester(FolderMetadataRecord folder) {
+
+        return new NullPointerTester()
+                .setDefault(FolderId.class, folder.id())
+                .setDefault(UserId.class, folder.userId())
+                .setDefault(FolderName.class, folder.folderName());
+    }
+
     @Test
     @DisplayName("not accept null values.")
     void testNullPointers() {
-        NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(FolderId.class, new FolderId(""));
-        tester.setDefault(UserId.class, new UserId(""));
+
+        FolderMetadataRecord folder = prepareFolder();
+        NullPointerTester tester = prepareTester(folder);
 
         tester.testAllPublicConstructors(FolderMetadataRecord.class);
-        tester.testAllPublicInstanceMethods(new FolderMetadataRecord(new FolderId(""), new UserId(""), "", new FolderId("")
-        ));
+        tester.testAllPublicInstanceMethods(folder);
     }
 
     @Test

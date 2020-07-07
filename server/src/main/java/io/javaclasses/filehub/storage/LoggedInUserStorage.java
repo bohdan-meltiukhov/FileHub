@@ -1,13 +1,11 @@
 package io.javaclasses.filehub.storage;
 
-import io.javaclasses.filehub.api.Token;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * An in-memory storage for saving {@link TokenRecord}.
+ * An in-memory storage for saving {@link LoggedInUser}.
  */
-public class TokenStorage extends InMemoryStorage<TokenId, TokenRecord> {
+public class LoggedInUserStorage extends InMemoryStorage<Token, LoggedInUser> {
 
     /**
      * Provides a token record with the specified token. Returns null in case such record does not exist.
@@ -15,12 +13,12 @@ public class TokenStorage extends InMemoryStorage<TokenId, TokenRecord> {
      * @param token The required authentication token.
      * @return The required token record.
      */
-    public TokenRecord get(Token token) {
+    public LoggedInUser get(Token token) {
 
         checkNotNull(token);
 
         return getAll().stream()
-                .filter(tokenRecord -> tokenRecord.token().equals(token))
+                .filter(tokenRecord -> tokenRecord.id().equals(token))
                 .findFirst()
                 .orElse(null);
     }

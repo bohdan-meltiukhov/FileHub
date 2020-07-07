@@ -1,11 +1,10 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.CurrentUser;
-import io.javaclasses.filehub.api.Token;
 import io.javaclasses.filehub.api.UnauthorizedException;
-import io.javaclasses.filehub.storage.TokenRecord;
-import io.javaclasses.filehub.storage.TokenStorage;
-import io.javaclasses.filehub.storage.UserId;
+import io.javaclasses.filehub.storage.LoggedInUser;
+import io.javaclasses.filehub.storage.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.Token;
 import io.javaclasses.filehub.storage.UserRecord;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
@@ -34,7 +33,7 @@ public class UserAuthenticationFilter implements Filter {
     /**
      * A storage with all tokens.
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage loggedInUserStorage;
 
     /**
      * A storage with all registered users.
@@ -44,12 +43,12 @@ public class UserAuthenticationFilter implements Filter {
     /**
      * Creates an instance of the UserAuthenticationFilter with set token and user storage.
      *
-     * @param tokenStorage The storage with all authentication tokens.
+     * @param loggedInUserStorage The storage with all authentication tokens.
      * @param userStorage  The storage with all users.
      */
-    public UserAuthenticationFilter(TokenStorage tokenStorage, UserStorage userStorage) {
+    public UserAuthenticationFilter(LoggedInUserStorage loggedInUserStorage, UserStorage userStorage) {
 
-        this.tokenStorage = checkNotNull(tokenStorage);
+        this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
         this.userStorage = checkNotNull(userStorage);
     }
 
@@ -70,19 +69,19 @@ public class UserAuthenticationFilter implements Filter {
                 logger.debug("The request contains a token: {}.", token);
             }
 
-            TokenRecord tokenRecord = tokenStorage.get(token);
-            if (tokenRecord == null) {
+            LoggedInUser loggedInUser = loggedInUserStorage.get(token);
+            if (loggedInUser == null) {
 
                 throw new NullPointerException();
             }
 
-            checkExpirationDate(tokenRecord);
+            checkExpirationDate(loggedInUser);
 
             if (logger.isDebugEnabled()) {
-                logger.debug("The token didn't expire: {}.", tokenRecord);
+                logger.debug("The token didn't expire: {}.", loggedInUser);
             }
 
-            UserRecord userRecord = userStorage.get(tokenRecord.userId());
+            UserRecord userRecord = userStorage.get(loggedInUser.userId());
             if (logger.isDebugEnabled()) {
                 logger.debug("Found a token owner: {}.", userRecord);
             }
@@ -109,17 +108,17 @@ public class UserAuthenticationFilter implements Filter {
     /**
      * Halts the request in case the token is expired.
      *
-     * @param tokenRecord The {@link TokenRecord} to check.
+     * @param loggedInUser The {@link LoggedInUser} to check.
      */
-    private void checkExpirationDate(TokenRecord tokenRecord) {
+    private void checkExpirationDate(LoggedInUser loggedInUser) {
 
-        if (tokenRecord.expirationDate().isBefore(LocalDateTime.now(ZoneId.systemDefault()))) {
+        if (loggedInUser.expirationDate().isBefore(LocalDateTime.now(ZoneId.systemDefault()))) {
 
             if (logger.isDebugEnabled()) {
-                logger.debug("The token expired: {}.", tokenRecord);
+                logger.debug("The token expired: {}.", loggedInUser);
             }
 
-            tokenStorage.remove(tokenRecord.id());
+            loggedInUserStorage.remove(loggedInUser.id());
             halt(SC_UNAUTHORIZED, "Your session expired. Please log in.");
         }
     }

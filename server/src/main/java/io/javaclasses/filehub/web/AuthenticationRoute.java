@@ -7,10 +7,10 @@ import com.google.gson.JsonParseException;
 import io.javaclasses.filehub.api.AuthenticateUser;
 import io.javaclasses.filehub.api.Authentication;
 import io.javaclasses.filehub.api.PasswordIsNotValidException;
-import io.javaclasses.filehub.api.Token;
 import io.javaclasses.filehub.api.UnauthorizedException;
 import io.javaclasses.filehub.api.UsernameIsNotValidException;
-import io.javaclasses.filehub.storage.TokenStorage;
+import io.javaclasses.filehub.storage.LoggedInUserStorage;
+import io.javaclasses.filehub.storage.Token;
 import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 import spark.Request;
@@ -42,7 +42,7 @@ public class AuthenticationRoute implements Route {
     /**
      * A storage with all created authentication tokens.
      */
-    private final TokenStorage tokenStorage;
+    private final LoggedInUserStorage loggedInUserStorage;
 
     /**
      * A utility to serialize and deserialize Java objects into JSON elements.
@@ -53,12 +53,12 @@ public class AuthenticationRoute implements Route {
      * Creates an instance of the Authentication route with set user and token storage.
      *
      * @param userStorage  A storage with all application users.
-     * @param tokenStorage A storage with all authentication tokens.
+     * @param loggedInUserStorage A storage with all authentication tokens.
      */
-    public AuthenticationRoute(UserStorage userStorage, TokenStorage tokenStorage) {
+    public AuthenticationRoute(UserStorage userStorage, LoggedInUserStorage loggedInUserStorage) {
 
         this.userStorage = checkNotNull(userStorage);
-        this.tokenStorage = checkNotNull(tokenStorage);
+        this.loggedInUserStorage = checkNotNull(loggedInUserStorage);
 
         GsonBuilder gsonBuilder = new GsonBuilder();
 
@@ -85,7 +85,7 @@ public class AuthenticationRoute implements Route {
 
         response.type("application/json");
 
-        Authentication process = new Authentication(userStorage, tokenStorage);
+        Authentication process = new Authentication(userStorage, loggedInUserStorage);
 
         try {
 

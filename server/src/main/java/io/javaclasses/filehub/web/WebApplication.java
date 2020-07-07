@@ -2,7 +2,7 @@ package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.CurrentUser;
 import io.javaclasses.filehub.storage.FolderMetadataStorage;
-import io.javaclasses.filehub.storage.TokenStorage;
+import io.javaclasses.filehub.storage.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.UserStorage;
 import spark.Filter;
 
@@ -30,10 +30,10 @@ public class WebApplication {
         staticFileLocation("/ui-components");
 
         UserStorage userStorage = new UserStorage();
-        TokenStorage tokenStorage = new TokenStorage();
+        LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
         FolderMetadataStorage folderStorage = new FolderMetadataStorage();
 
-        Filter filter = new UserAuthenticationFilter(tokenStorage, userStorage);
+        Filter filter = new UserAuthenticationFilter(loggedInUserStorage, userStorage);
         Filter logRequestDataFilter = new LogRequestDataFilter();
 
         before("/api/*", logRequestDataFilter);
@@ -41,7 +41,7 @@ public class WebApplication {
         path("/api", () -> {
 
             post("/register", new RegistrationRoute(userStorage, folderStorage));
-            post("/login", new AuthenticationRoute(userStorage, tokenStorage));
+            post("/login", new AuthenticationRoute(userStorage, loggedInUserStorage));
 
             before("/root-folder", filter);
             get("/root-folder", new RootFolderIdRoute());

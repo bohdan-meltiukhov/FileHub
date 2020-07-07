@@ -4,6 +4,8 @@ import com.google.errorprone.annotations.Immutable;
 
 import java.util.Objects;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * An identifier for a {@link StorageRecord}.
  */
@@ -22,7 +24,7 @@ public abstract class RecordId {
      */
     protected RecordId(String value) {
 
-        this.value = value;
+        this.value = checkNotNull(value);
     }
 
     /**

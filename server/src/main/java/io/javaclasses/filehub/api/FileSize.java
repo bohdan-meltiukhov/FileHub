@@ -1,12 +1,14 @@
 package io.javaclasses.filehub.api;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.InvalidFileSizeException;
 import io.javaclasses.filehub.storage.FileMetadataRecord;
 
 /**
  * A value object for the size of a {@link FileMetadataRecord} in bytes.
  */
-public class FileSize {
+@Immutable
+public final class FileSize {
 
     /**
      * The size of a file in bytes.

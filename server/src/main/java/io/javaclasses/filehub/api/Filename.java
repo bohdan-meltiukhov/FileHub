@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.FileMetadataRecord;
 
 import java.util.Objects;
@@ -9,7 +10,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A value object for a name of a {@link FileMetadataRecord}
  */
-public class Filename {
+@Immutable
+public final class Filename {
 
     /**
      * The filename value.

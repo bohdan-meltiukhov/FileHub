@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.storage;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.FileSize;
 import io.javaclasses.filehub.api.Filename;
 import io.javaclasses.filehub.api.MimeType;
@@ -11,7 +12,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A {@link StorageRecord} about a File in the FileHub application.
  */
-public class FileMetadataRecord implements StorageRecord<FileId> {
+@Immutable
+public final class FileMetadataRecord implements StorageRecord<FileId> {
 
     /**
      * An identifier of the file.
@@ -92,7 +94,7 @@ public class FileMetadataRecord implements StorageRecord<FileId> {
      *
      * @return The file name.
      */
-    public Filename getFilename() {
+    public Filename filename() {
 
         return filename;
     }
@@ -102,7 +104,7 @@ public class FileMetadataRecord implements StorageRecord<FileId> {
      *
      * @return The type of the file.
      */
-    public MimeType getMimeType() {
+    public MimeType mimeType() {
 
         return mimeType;
     }
@@ -112,7 +114,7 @@ public class FileMetadataRecord implements StorageRecord<FileId> {
      *
      * @return The file size.
      */
-    public FileSize getFileSize() {
+    public FileSize fileSize() {
 
         return fileSize;
     }
@@ -122,7 +124,7 @@ public class FileMetadataRecord implements StorageRecord<FileId> {
      *
      * @return The parent folder identifier.
      */
-    public FolderId getParentFolderId() {
+    public FolderId parentFolderId() {
 
         return parentFolderId;
     }

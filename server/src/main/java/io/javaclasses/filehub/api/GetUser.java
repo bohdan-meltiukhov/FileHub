@@ -1,37 +1,21 @@
 package io.javaclasses.filehub.api;
 
 import com.google.errorprone.annotations.Immutable;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import io.javaclasses.filehub.storage.UserRecord;
 
 /**
- * A {@link Command} that represents intention of a client to get the current user.
+ * A {@link Query} that represents intention of a client to get the current user.
  */
 @Immutable
-public class GetUser implements Command {
+public class GetUser implements Query {
 
     /**
-     * The provided authentication token.
-     */
-    private final Token token;
-
-    /**
-     * Creates an instance of the GetUser command.
+     * Provides the current user.
      *
-     * @param token The authentication token from the client.
+     * @return The current FileHub user.
      */
-    public GetUser(Token token) {
+    public UserRecord currentUser() {
 
-        this.token = checkNotNull(token);
-    }
-
-    /**
-     * Provides the command token.
-     *
-     * @return The stored authentication token.
-     */
-    public Token token() {
-
-        return token;
+        return CurrentUser.get();
     }
 }

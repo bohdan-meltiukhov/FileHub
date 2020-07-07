@@ -3,16 +3,15 @@ package io.javaclasses.filehub.web;
 import com.google.common.testing.NullPointerTester;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import io.javaclasses.filehub.api.Token;
+import io.javaclasses.filehub.api.CurrentUser;
 import io.javaclasses.filehub.api.Username;
-import io.javaclasses.filehub.storage.*;
+import io.javaclasses.filehub.storage.FolderId;
+import io.javaclasses.filehub.storage.UserId;
+import io.javaclasses.filehub.storage.UserRecord;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import spark.Request;
 import spark.Response;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 import static com.google.common.truth.Truth.assertWithMessage;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
@@ -20,19 +19,9 @@ import static io.javaclasses.filehub.api.IdGenerator.generate;
 @DisplayName("The GetUserRoute should")
 class GetUserRouteTest {
 
-    private Request mockRequest(Token token) {
+    private Request mockRequest() {
 
         return new Request() {
-
-            @Override
-            public String headers(String header) {
-                return token.value();
-            }
-
-            @Override
-            public String matchedPath() {
-                return "/api/user";
-            }
         };
     }
 
@@ -40,52 +29,48 @@ class GetUserRouteTest {
 
         return new Response() {
 
+            private int status;
+
             @Override
             public void status(int code) {
+
+                status = code;
+            }
+
+            @Override
+            public int status() {
+
+                return status;
             }
         };
     }
 
-    private GetUserRoute prepareRoute(Username username, Token token) {
+    private void saveUserRecord(Username username) {
 
-        UserId userId = new UserId(generate());
-        LocalDateTime dateTime = LocalDateTime.now(ZoneId.systemDefault()).plusDays(30);
-
-        TokenStorage tokenStorage = new TokenStorage();
-        tokenStorage.put(new TokenRecord(new TokenId(generate()), token, userId, dateTime));
-
-        UserStorage userStorage = new UserStorage();
-        userStorage.put(new UserRecord(userId, username, "", new FolderId(generate())));
-
-        return new GetUserRoute(tokenStorage, userStorage);
+        UserRecord userRecord = new UserRecord(new UserId(generate()), username,
+                "", new FolderId(""));
+        CurrentUser.set(userRecord);
     }
 
     @Test
     @DisplayName("handle a valid request correctly.")
     void testValidRequest() {
 
-        Username username = new Username("administrator");
-        Token token = new Token(generate());
+        Username username = new Username("Benedict");
+        saveUserRecord(username);
 
-        GetUserRoute route = prepareRoute(username, token);
+        GetUserRoute route = new GetUserRoute();
 
-        String responseContent = (String) route.handle(mockRequest(token), mockResponse());
+        JsonObject jsonObject = parseResponse(route.handle(mockRequest(), mockResponse()));
 
-        JsonObject jsonObject = new Gson().fromJson(responseContent, JsonObject.class);
-
-        assertWithMessage("The GetUserRoute return a user with incorrect username.")
+        assertWithMessage("The GetUserRoute returned a user with incorrect username.")
                 .that(jsonObject.get("name").getAsString())
                 .isEqualTo(username.value());
     }
 
-    @Test
-    @DisplayName("not accept null values.")
-    void testNullPointers() {
-        NullPointerTester tester = new NullPointerTester();
-        tester.setDefault(Request.class, mockRequest(new Token("")));
-        tester.setDefault(Response.class, mockResponse());
+    private JsonObject parseResponse(Object response) {
 
-        tester.testAllPublicConstructors(GetUserRoute.class);
-        tester.testAllPublicInstanceMethods(new GetUserRoute(new TokenStorage(), new UserStorage()));
+        String responseContent = (String) response;
+        return new Gson().fromJson(responseContent, JsonObject.class);
     }
 }

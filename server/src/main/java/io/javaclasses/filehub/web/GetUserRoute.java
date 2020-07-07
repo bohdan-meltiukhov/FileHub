@@ -3,20 +3,14 @@ package io.javaclasses.filehub.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.javaclasses.filehub.api.GetUser;
-import io.javaclasses.filehub.api.GettingUser;
-import io.javaclasses.filehub.api.Token;
-import io.javaclasses.filehub.api.UnauthorizedException;
-import io.javaclasses.filehub.storage.TokenStorage;
+import io.javaclasses.filehub.api.UserView;
 import io.javaclasses.filehub.storage.UserRecord;
-import io.javaclasses.filehub.storage.UserStorage;
 import org.slf4j.Logger;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import static com.google.common.base.Preconditions.checkNotNull;
 import static org.apache.http.HttpStatus.SC_OK;
-import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -25,14 +19,9 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class GetUserRoute implements Route {
 
     /**
-     * A storage with all tokens.
+     * An slf4j logger.
      */
-    private final TokenStorage tokenStorage;
-
-    /**
-     * A storage with all registered users.
-     */
-    private final UserStorage userStorage;
+    private static final Logger logger = getLogger(RootFolderIdRoute.class);
 
     /**
      * A utility for serializing and deserializing Java objects into JSON.
@@ -40,19 +29,18 @@ public class GetUserRoute implements Route {
     private final Gson gson;
 
     /**
-     * Creates an instance of the RootFolderIdRoute with set token and user storage.
-     *
-     * @param tokenStorage A storage with all tokens.
-     * @param userStorage  A storage with all users.
+     * Creates an instance of the RootFolderIdRoute.
      */
-    public GetUserRoute(TokenStorage tokenStorage, UserStorage userStorage) {
-
-        this.tokenStorage = checkNotNull(tokenStorage);
-        this.userStorage = checkNotNull(userStorage);
+    public GetUserRoute() {
 
         gson = createGson();
     }
 
+    /**
+     * Creates a Gson object with registered type adapters.
+     *
+     * @return The created Gson object.
+     */
     private Gson createGson() {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -61,52 +49,45 @@ public class GetUserRoute implements Route {
     }
 
     /**
-     * Provides the current user.
+     * Handles the get-user request.
      *
-     * @param request The request from the client.
+     * @param request  The request from the client.
      * @param response The object for modifying the response
      * @return The content to be set in the response
      */
     @Override
     public Object handle(Request request, Response response) {
 
-        checkNotNull(request);
-        checkNotNull(response);
+        GetUser query = createQuery();
+        UserView view = createView();
 
-        Logger logger = getLogger(RootFolderIdRoute.class);
+        UserRecord userRecord = view.process(query);
 
-        try {
-
-            Token token = new Token(request.headers("Authentication"));
-            if (logger.isDebugEnabled()) {
-                logger.debug("Received a '{}' request with token {}.", request.matchedPath(), token);
-            }
-
-            GetUser command = new GetUser(token);
-
-            if (logger.isDebugEnabled()) {
-                logger.debug("Created a command {}.", command);
-            }
-
-            GettingUser process = new GettingUser(tokenStorage, userStorage);
-            UserRecord userRecord = process.handle(command);
-
-            if (logger.isDebugEnabled()) {
-                logger.debug("The process handled the command successfully. User record: {}", userRecord);
-            }
-
-            response.status(SC_OK);
-            return gson.toJson(userRecord, UserRecord.class);
-
-        } catch (UnauthorizedException exception) {
-
-            if (logger.isDebugEnabled()) {
-                logger.debug("An {} exception occurred: {}", exception.getClass().getSimpleName(),
-                        exception.getMessage());
-            }
-
-            response.status(SC_UNAUTHORIZED);
-            return exception.getMessage();
+        if (logger.isDebugEnabled()) {
+            logger.debug("The process handled the command successfully. User record: {}", userRecord);
         }
+
+        response.status(SC_OK);
+        return gson.toJson(userRecord, UserRecord.class);
+    }
+
+    /**
+     * Creates a new {@link GetUser} query.
+     *
+     * @return The created query.
+     */
+    private GetUser createQuery() {
+
+        return new GetUser();
+    }
+
+    /**
+     * Creates a new {@link UserView}.
+     *
+     * @return The created view.
+     */
+    private UserView createView() {
+
+        return new UserView();
     }
 }

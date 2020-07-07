@@ -1,6 +1,7 @@
 package io.javaclasses.filehub.web;
 
 import io.javaclasses.filehub.api.CurrentUser;
+import io.javaclasses.filehub.storage.FileMetadataStorage;
 import io.javaclasses.filehub.storage.FolderMetadataStorage;
 import io.javaclasses.filehub.storage.LoggedInUserStorage;
 import io.javaclasses.filehub.storage.UserStorage;
@@ -32,6 +33,7 @@ public class WebApplication {
         UserStorage userStorage = new UserStorage();
         LoggedInUserStorage loggedInUserStorage = new LoggedInUserStorage();
         FolderMetadataStorage folderStorage = new FolderMetadataStorage();
+        FileMetadataStorage fileMetadataStorage = new FileMetadataStorage();
 
         Filter filter = new UserAuthenticationFilter(loggedInUserStorage, userStorage);
         Filter logRequestDataFilter = new LogRequestDataFilter();
@@ -48,6 +50,9 @@ public class WebApplication {
 
             before("/user", filter);
             get("/user", new GetUserRoute());
+
+            before("/folder/*", filter);
+            get("/folder/:folderId/content", new GetFolderContentRoute(fileMetadataStorage, folderStorage));
 
             after((request, response) -> CurrentUser.clear());
         });

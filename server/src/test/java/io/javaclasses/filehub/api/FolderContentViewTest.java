@@ -87,7 +87,7 @@ class FolderContentViewTest {
 
         assertWithMessage("The FolderContentView provided incorrect nested folders.")
                 .that(folderContent.folders())
-                .containsExactly(fromFolderMetadataRecord(folder, new NestedItems(0)));
+                .containsExactly(fromFolderMetadataRecord(folder));
 
         assertWithMessage("The FolderContentView provided incorrect nested files.")
                 .that(folderContent.files())

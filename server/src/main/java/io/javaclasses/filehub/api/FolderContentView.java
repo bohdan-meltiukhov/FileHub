@@ -135,22 +135,8 @@ public class FolderContentView implements View<GetFolderContent, FolderContent> 
 
         return folderMetadataStorage.getChildFolders(folderId)
                 .stream()
-                .map(folder -> Folder.fromFolderMetadataRecord(folder, countNestedItems(folder.id())))
+                .map(Folder::fromFolderMetadataRecord)
                 .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    /**
-     * Calculates the number of nested elements a {@link Folder} contains.
-     *
-     * @param folderId An identifier of the needed {@link Folder}.
-     * @return A number of {@link File}s and {@link Folder}s the required folder contains.
-     */
-    private NestedItems countNestedItems(FolderId folderId) {
-
-        int nestedFoldersCount = folderMetadataStorage.getChildFolders(folderId).size();
-        int nestedFilesCount = fileMetadataStorage.getChildFiles(folderId).size();
-
-        return new NestedItems(nestedFoldersCount + nestedFilesCount);
     }
 
     /**

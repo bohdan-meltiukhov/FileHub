@@ -23,7 +23,7 @@ class FolderTest {
 
     private Folder prepareFolder() {
 
-        return fromFolderMetadataRecord(prepareFolderMetadataRecord(), new NestedItems(0));
+        return fromFolderMetadataRecord(prepareFolderMetadataRecord());
     }
 
     private NullPointerTester prepareTester(Folder folder) {
@@ -31,7 +31,6 @@ class FolderTest {
         return new NullPointerTester()
                 .setDefault(FolderId.class, folder.folderId())
                 .setDefault(FolderName.class, folder.folderName())
-                .setDefault(NestedItems.class, folder.nestedItems())
                 .setDefault(FolderMetadataRecord.class, prepareFolderMetadataRecord());
     }
 

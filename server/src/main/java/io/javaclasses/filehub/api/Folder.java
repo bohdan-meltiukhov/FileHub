@@ -33,53 +33,29 @@ public final class Folder {
     private final FolderName folderName;
 
     /**
-     * The number of nested files and folders in the current {@link Folder}.
-     */
-    private final NestedItems nestedItems;
-
-    /**
      * Creates a {@link Folder} instance.
      *
      * @param folderId       The identifier of the folder.
      * @param folderName     The name of the folder.
-     * @param nestedItems    The number of nested files and folder.
      * @param parentFolderId The identifier of the parent folder.
      */
-    public Folder(FolderId folderId, FolderName folderName, NestedItems nestedItems,
-                  @Nullable FolderId parentFolderId) {
+    public Folder(FolderId folderId, FolderName folderName, @Nullable FolderId parentFolderId) {
 
         this.folderId = checkNotNull(folderId);
         this.parentFolderId = parentFolderId;
         this.folderName = checkNotNull(folderName);
-        this.nestedItems = checkNotNull(nestedItems);
-    }
-
-    /**
-     * Creates a {@link Folder} instance with null parent.
-     *
-     * <p>This constructor should be used to create parent folders.
-     *
-     * @param folderId    The identifier of the folder.
-     * @param folderName  The name of the folder.
-     * @param nestedItems The number of nested files and folder.
-     */
-    public Folder(FolderId folderId, FolderName folderName, NestedItems nestedItems) {
-
-        this(folderId, folderName, nestedItems, null);
     }
 
     /**
      * Creates a {@link Folder} instance from a {@link FolderMetadataRecord}.
      *
      * @param record      The {@link FolderMetadataRecord} to create from.
-     * @param nestedItems The number of nested files and folder.
      * @return The created {@link Folder}.
      */
-    public static Folder fromFolderMetadataRecord(FolderMetadataRecord record, NestedItems nestedItems) {
+    public static Folder fromFolderMetadataRecord(FolderMetadataRecord record) {
 
         checkNotNull(record);
-        checkNotNull(nestedItems);
-        return new Folder(record.id(), record.folderName(), nestedItems, record.parentFolderId());
+        return new Folder(record.id(), record.folderName(), record.parentFolderId());
     }
 
     /**
@@ -95,8 +71,7 @@ public final class Folder {
         Folder folder = (Folder) o;
         return folderId.equals(folder.folderId) &&
                 Objects.equals(parentFolderId, folder.parentFolderId) &&
-                folderName.equals(folder.folderName) &&
-                nestedItems.equals(folder.nestedItems);
+                folderName.equals(folder.folderName);
     }
 
     /**
@@ -106,7 +81,7 @@ public final class Folder {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(folderId, parentFolderId, folderName, nestedItems);
+        return Objects.hash(folderId, parentFolderId, folderName);
     }
 
     /**
@@ -120,7 +95,6 @@ public final class Folder {
                 "folderId=" + folderId +
                 ", parentFolderId=" + parentFolderId +
                 ", folderName=" + folderName +
-                ", nestedItems=" + nestedItems +
                 '}';
     }
 
@@ -152,15 +126,5 @@ public final class Folder {
     public FolderName folderName() {
 
         return folderName;
-    }
-
-    /**
-     * Provides the number of nested files and folders the current folder contains.
-     *
-     * @return The number of nested elements.
-     */
-    public NestedItems nestedItems() {
-
-        return nestedItems;
     }
 }

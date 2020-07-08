@@ -2,7 +2,8 @@ import Action from '../action/index.js';
 import IsFileListLoadingMutator from '../../mutators/is-file-list-loading-mutator/index.js';
 import FileListMutator from '../../mutators/file-list-mutator/index.js';
 import FileListLoadingErrorMutator from '../../mutators/file-list-loading-error-mutator/index.js';
-import FileSystemObjectFactory from '../../../models/file-system-objects/file-system-object-factory/index.js';
+import FolderItem from '../../../models/file-system-objects/folder-item/index.js';
+import FileItem from '../../../models/file-system-objects/file-item/index.js';
 
 /**
  * The actions that gets files from the server.
@@ -23,8 +24,12 @@ export default class GetFilesAction extends Action {
   async apply(stateManager, apiService) {
     stateManager.mutate(new IsFileListLoadingMutator(true));
     try {
-      const files = await apiService.getFiles(this._folderId);
-      const items = files.files.map((item) => FileSystemObjectFactory.createItem(item));
+      const response = await apiService.getFiles(this._folderId);
+
+      const folders = response.folders.map((folder) => new FolderItem(folder));
+      const files = response.files.map((file) => new FileItem(file));
+      const items = folders.concat(files);
+
       stateManager.mutate(new FileListMutator(items));
     } catch (e) {
       stateManager.mutate(new FileListLoadingErrorMutator(e));

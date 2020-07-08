@@ -28,5 +28,6 @@ export default class FileItem {
    */
   constructor(properties) {
     Object.assign(this, properties);
+    this.type = 'file';
   }
 }

@@ -28,7 +28,6 @@ public class FolderSerializer implements JsonSerializer<Folder> {
         jsonFolder.addProperty("id", src.folderId().value());
         jsonFolder.addProperty("parentId", src.parentFolderId().value());
         jsonFolder.addProperty("name", src.folderName().value());
-        jsonFolder.addProperty("type", "folder");
 
         return jsonFolder;
     }

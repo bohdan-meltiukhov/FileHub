@@ -31,7 +31,6 @@ public class FileSerializer implements JsonSerializer<File> {
         jsonFile.addProperty("name", src.filename().value());
         jsonFile.addProperty("mimeType", src.mimeType().name().toLowerCase());
         jsonFile.addProperty("size", src.fileSize().value());
-        jsonFile.addProperty("type", "file");
 
         return jsonFile;
     }

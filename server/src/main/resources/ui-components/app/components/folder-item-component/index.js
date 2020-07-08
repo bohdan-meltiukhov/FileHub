@@ -18,9 +18,6 @@ export default class FolderItemComponent extends ListItem {
     const folderPath = FILE_LIST_ROUTE.replace(':folderId', this._parameters.id);
     this._filename.innerHTML = `<a href="#${folderPath}" title="${this._parameters.name}">${this._parameters.name}</a>`;
 
-    const cellCount = this.rootElement.querySelector('[data-test="cell-count"]');
-    cellCount.innerText = `${this._parameters.itemsNumber} items`;
-
     const actionButtons = this.rootElement.querySelector('[data-test="action-buttons"]');
     const uploadButton = document.createElement('span');
     uploadButton.classList.add('glyphicon');

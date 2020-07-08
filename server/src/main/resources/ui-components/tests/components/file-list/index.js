@@ -11,7 +11,6 @@ const files = [
     id: 'uExvhDL4YwkxnBVa',
     parentId: '4Goz0J0Tz8xfDfsJ',
     name: 'Documents',
-    itemsNumber: 20,
     type: 'folder',
   }),
   new FileItem({

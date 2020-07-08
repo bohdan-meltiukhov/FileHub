@@ -87,12 +87,12 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
     /**
      * Creates a new {@link FolderMetadataRecord}.
      *
-     * @param userId An identifier of teh current user.
+     * @param userId An identifier of the current user.
      * @return The created folder.
      */
     private FolderMetadataRecord createNewFolder(UserId userId) {
 
-        return new FolderMetadataRecord(new FolderId(generate()), userId, new FolderName("New Folder"));
+        return new FolderMetadataRecord(new FolderId(generate()), userId, new FolderName("Root"));
     }
 
     /**

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import io.javaclasses.filehub.api.File;
@@ -11,6 +12,7 @@ import io.javaclasses.filehub.api.Folder;
 import io.javaclasses.filehub.api.FolderContent;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * A {@link JsonSerializer} for {@link FolderContent}.
@@ -20,7 +22,7 @@ public class FolderContentSerializer implements JsonSerializer<FolderContent> {
     /**
      * A utility for turning Java {@link Object}s into {@link JsonElement}s.
      */
-    Gson gson = createGson();
+    private final Gson gson = createGson();
 
     /**
      * Turns a {@link FolderContent} object into a {@link JsonElement}.
@@ -32,10 +34,16 @@ public class FolderContentSerializer implements JsonSerializer<FolderContent> {
     @Override
     public JsonElement serialize(FolderContent src, Type typeOfSrc, JsonSerializationContext context) {
 
-        Gson gson = createGson();
-        JsonArray jsonFolderContent = new JsonArray();
-        src.folders().forEach(folder -> jsonFolderContent.add(gson.toJsonTree(folder, Folder.class)));
-        src.folders().forEach(file -> jsonFolderContent.add(gson.toJsonTree(file, Folder.class)));
+        JsonArray jsonFolders = new JsonArray();
+        src.folders().forEach(folder -> jsonFolders.add(gson.toJsonTree(folder, Folder.class)));
+
+        JsonArray jsonFiles = new JsonArray();
+        src.files().forEach(file -> jsonFiles.add(gson.toJsonTree(file, File.class)));
+
+        JsonObject jsonFolderContent = new JsonObject();
+
+        jsonFolderContent.add("folders", jsonFolders);
+        jsonFolderContent.add("files", jsonFiles);
 
         return jsonFolderContent;
     }

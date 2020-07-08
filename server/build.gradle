@@ -1,13 +1,13 @@
 plugins {
     id 'java'
-
-    id("net.ltgt.errorprone") version "1.1.0"
+    id("net.ltgt.errorprone") version "${errorPronePluginVersion}"
+    id 'jacoco'
 }
 
 group 'io.javaclasses'
-version '1.0-SNAPSHOT'
+version "${applicationVersion}"
 
-sourceCompatibility = 1.8
+sourceCompatibility = "${javaVersion}"
 
 repositories {
     mavenCentral()
@@ -16,30 +16,31 @@ repositories {
 dependencies {
 
     implementation "com.google.guava:guava:${guavaVersion}"
+    testCompile group: 'com.google.guava', name: 'guava-testlib', version: "${guavaVersion}"
 
-    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: "${logbackVersion}"
 
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-    testImplementation "com.google.truth:truth:1.0.1"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testCompile("org.junit.jupiter:junit-jupiter-params:${junitVersion}")
 
-    testCompile("org.junit.jupiter:junit-jupiter-params:5.4.2")
+    testImplementation "com.google.truth:truth:${googleTruthVersion}"
 
-    testCompile group: 'com.google.guava', name: 'guava-testlib', version: '28.2-jre'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    compile "com.sparkjava:spark-core:${sparkVersion}"
 
-    compile 'com.sparkjava:spark-core:2.8.0'
+    implementation "com.google.code.gson:gson:${gsonVersion}"
 
-    implementation 'com.google.code.gson:gson:2.8.6'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: "${httpclientVersion}"
 
-    compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
+    errorprone "com.google.errorprone:error_prone_core:${errorproneVersion}"
+    errorproneJavac "com.google.errorprone:error_prone_core:${errorproneVersion}"
 
-    errorprone "com.google.errorprone:error_prone_core:2.4.0"
-    errorproneJavac "com.google.errorprone:error_prone_core:2.4.0"
-
-    testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: '3.4.1'
+    testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: "${equalsverifierVersion}"
 }
 
 test {
-
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
+
+check.dependsOn jacocoTestCoverageVerification

@@ -2,6 +2,7 @@ package io.javaclasses.filehub.web;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import io.javaclasses.filehub.api.CurrentUserNotSetException;
 import io.javaclasses.filehub.api.GetUser;
 import io.javaclasses.filehub.api.UserView;
 import io.javaclasses.filehub.storage.UserRecord;
@@ -10,6 +11,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -61,14 +63,24 @@ public class GetUserRoute implements Route {
         GetUser query = createQuery();
         UserView view = createView();
 
-        UserRecord userRecord = view.process(query);
+        try {
+            UserRecord userRecord = view.process(query);
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("The process handled the command successfully. User record: {}", userRecord);
+            if (logger.isDebugEnabled()) {
+                logger.debug("The process handled the command successfully. User record: {}", userRecord);
+            }
+
+            response.status(SC_OK);
+            return gson.toJson(userRecord, UserRecord.class);
+
+        } catch (CurrentUserNotSetException exception) {
+
+            if (logger.isWarnEnabled()) {
+                logger.warn(exception.toString());
+            }
+
+            return SC_INTERNAL_SERVER_ERROR;
         }
-
-        response.status(SC_OK);
-        return gson.toJson(userRecord, UserRecord.class);
     }
 
     /**

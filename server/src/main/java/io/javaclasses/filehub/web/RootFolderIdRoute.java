@@ -69,7 +69,7 @@ public class RootFolderIdRoute implements Route {
         } catch (CurrentUserNotSetException exception) {
 
             if (logger.isWarnEnabled()) {
-                logger.warn(exception.getMessage());
+                logger.warn(exception.toString());
             }
 
             return SC_INTERNAL_SERVER_ERROR;

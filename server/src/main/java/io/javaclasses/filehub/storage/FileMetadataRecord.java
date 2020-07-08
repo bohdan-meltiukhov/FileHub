@@ -2,7 +2,7 @@ package io.javaclasses.filehub.storage;
 
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.api.FileSize;
-import io.javaclasses.filehub.api.Filename;
+import io.javaclasses.filehub.api.FileSystemItemName;
 import io.javaclasses.filehub.api.MimeType;
 
 import java.util.Objects;
@@ -23,7 +23,7 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
     /**
      * The name of the file.
      */
-    private final Filename filename;
+    private final FileSystemItemName fileName;
 
     /**
      * The {@link MimeType} of the file.
@@ -49,17 +49,17 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
      * Creates an instance of the FileMetadataRecord.
      *
      * @param fileId         An identifier of the file.
-     * @param filename       The name of the file.
+     * @param fileName       The name of the file.
      * @param mimeType       The {@link MimeType} of the file.
      * @param fileSize       The size of the file in bytes.
      * @param userId         An identifier of the file owner.
      * @param parentFolderId An identifier of the parent {@link FolderMetadataRecord}.
      */
-    public FileMetadataRecord(FileId fileId, Filename filename, MimeType mimeType, FileSize fileSize,
+    public FileMetadataRecord(FileId fileId, FileSystemItemName fileName, MimeType mimeType, FileSize fileSize,
                               UserId userId, FolderId parentFolderId) {
 
         this.fileId = checkNotNull(fileId);
-        this.filename = checkNotNull(filename);
+        this.fileName = checkNotNull(fileName);
         this.mimeType = checkNotNull(mimeType);
         this.fileSize = checkNotNull(fileSize);
         this.userId = checkNotNull(userId);
@@ -79,7 +79,7 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
         if (!(o instanceof FileMetadataRecord)) return false;
         FileMetadataRecord that = (FileMetadataRecord) o;
         return fileId.equals(that.fileId) &&
-                filename.equals(that.filename) &&
+                fileName.equals(that.fileName) &&
                 mimeType == that.mimeType &&
                 fileSize.equals(that.fileSize) &&
                 userId.equals(that.userId) &&
@@ -94,7 +94,7 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
     @Override
     public int hashCode() {
 
-        return Objects.hash(fileId, filename, mimeType, fileSize, userId, parentFolderId);
+        return Objects.hash(fileId, fileName, mimeType, fileSize, userId, parentFolderId);
     }
 
     /**
@@ -102,9 +102,9 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
      *
      * @return The file name.
      */
-    public Filename filename() {
+    public FileSystemItemName filename() {
 
-        return filename;
+        return fileName;
     }
 
     /**

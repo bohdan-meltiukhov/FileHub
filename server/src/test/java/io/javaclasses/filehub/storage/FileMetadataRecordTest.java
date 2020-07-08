@@ -2,7 +2,7 @@ package io.javaclasses.filehub.storage;
 
 import com.google.common.testing.NullPointerTester;
 import io.javaclasses.filehub.api.FileSize;
-import io.javaclasses.filehub.api.Filename;
+import io.javaclasses.filehub.api.FileSystemItemName;
 import io.javaclasses.filehub.api.MimeType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class FileMetadataRecordTest {
 
         return new NullPointerTester()
                 .setDefault(FileId.class, file.id())
-                .setDefault(Filename.class, file.filename())
+                .setDefault(FileSystemItemName.class, file.filename())
                 .setDefault(MimeType.class, file.mimeType())
                 .setDefault(FileSize.class, file.fileSize())
                 .setDefault(FolderId.class, file.parentFolderId());
@@ -27,7 +27,7 @@ class FileMetadataRecordTest {
 
     private FileMetadataRecord prepareFile() {
 
-        return new FileMetadataRecord(new FileId(generate()), new Filename("new_file.png"), IMAGE,
+        return new FileMetadataRecord(new FileId(generate()), new FileSystemItemName("new_file.png"), IMAGE,
                 new FileSize(285), new UserId(generate()), new FolderId(generate()));
     }
 

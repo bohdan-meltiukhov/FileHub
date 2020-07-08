@@ -18,7 +18,7 @@ class FolderTest {
     private FolderMetadataRecord prepareFolderMetadataRecord() {
 
         return new FolderMetadataRecord(new FolderId(generate()), new UserId(generate()),
-                new FolderName("New folder"), new FolderId(generate()));
+                new FileSystemItemName("New folder"), new FolderId(generate()));
     }
 
     private Folder prepareFolder() {
@@ -30,7 +30,7 @@ class FolderTest {
 
         return new NullPointerTester()
                 .setDefault(FolderId.class, folder.folderId())
-                .setDefault(FolderName.class, folder.folderName())
+                .setDefault(FileSystemItemName.class, folder.folderName())
                 .setDefault(FolderMetadataRecord.class, prepareFolderMetadataRecord());
     }
 

@@ -92,7 +92,7 @@ public class Registration implements ApplicationProcess<RegisterUser, Void> {
      */
     private FolderMetadataRecord createNewFolder(UserId userId) {
 
-        return new FolderMetadataRecord(new FolderId(generate()), userId, new FolderName("Root"));
+        return new FolderMetadataRecord(new FolderId(generate()), userId, new FileSystemItemName("Root"));
     }
 
     /**

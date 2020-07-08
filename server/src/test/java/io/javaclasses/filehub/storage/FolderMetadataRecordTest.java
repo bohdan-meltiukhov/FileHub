@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 import com.google.common.testing.NullPointerTester;
-import io.javaclasses.filehub.api.FolderName;
+import io.javaclasses.filehub.api.FileSystemItemName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ class FolderMetadataRecordTest {
     private FolderMetadataRecord prepareFolder() {
 
         return new FolderMetadataRecord(new FolderId(generate()), new UserId(generate()),
-                new FolderName("New folder"), new FolderId(generate()));
+                new FileSystemItemName("New folder"), new FolderId(generate()));
     }
 
     private NullPointerTester prepareTester(FolderMetadataRecord folder) {
@@ -23,7 +23,7 @@ class FolderMetadataRecordTest {
         return new NullPointerTester()
                 .setDefault(FolderId.class, folder.id())
                 .setDefault(UserId.class, folder.userId())
-                .setDefault(FolderName.class, folder.folderName());
+                .setDefault(FileSystemItemName.class, folder.folderName());
     }
 
     @Test

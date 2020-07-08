@@ -26,7 +26,7 @@ public final class File {
     /**
      * The name of the file.
      */
-    private final Filename filename;
+    private final FileSystemItemName fileName;
 
     /**
      * The {@link MimeType} of the file.
@@ -47,16 +47,16 @@ public final class File {
      * Creates an instance of the {@link File}.
      *
      * @param fileId         An identifier of the file.
-     * @param filename       The name of the file.
+     * @param fileName       The name of the file.
      * @param mimeType       The {@link MimeType} of the file.
      * @param fileSize       The size of the file in bytes.
      * @param parentFolderId An identifier of the parent {@link FolderMetadataRecord}.
      */
-    public File(FileId fileId, Filename filename, MimeType mimeType, FileSize fileSize,
+    public File(FileId fileId, FileSystemItemName fileName, MimeType mimeType, FileSize fileSize,
                 FolderId parentFolderId) {
 
         this.fileId = checkNotNull(fileId);
-        this.filename = checkNotNull(filename);
+        this.fileName = checkNotNull(fileName);
         this.mimeType = checkNotNull(mimeType);
         this.fileSize = checkNotNull(fileSize);
         this.parentFolderId = checkNotNull(parentFolderId);
@@ -85,7 +85,7 @@ public final class File {
         if (!(o instanceof File)) return false;
         File file = (File) o;
         return fileId.equals(file.fileId) &&
-                filename.equals(file.filename) &&
+                fileName.equals(file.fileName) &&
                 mimeType == file.mimeType &&
                 fileSize.equals(file.fileSize) &&
                 parentFolderId.equals(file.parentFolderId);
@@ -98,7 +98,7 @@ public final class File {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(fileId, filename, mimeType, fileSize, parentFolderId);
+        return Objects.hash(fileId, fileName, mimeType, fileSize, parentFolderId);
     }
 
     /**
@@ -106,9 +106,9 @@ public final class File {
      *
      * @return The file name.
      */
-    public Filename filename() {
+    public FileSystemItemName filename() {
 
-        return filename;
+        return fileName;
     }
 
     /**

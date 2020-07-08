@@ -22,13 +22,13 @@ class FolderContentViewTest {
 
     private FolderMetadataRecord createFolder(FolderId parentFolderId, UserId userId) {
 
-        return new FolderMetadataRecord(new FolderId(generate()), userId, new FolderName("New Folder"),
+        return new FolderMetadataRecord(new FolderId(generate()), userId, new FileSystemItemName("New Folder"),
                 parentFolderId);
     }
 
     private FileMetadataRecord createFile(FolderId parentFolderId, UserId userId) {
 
-        return new FileMetadataRecord(new FileId(generate()), new Filename("photo.png"), MimeType.IMAGE,
+        return new FileMetadataRecord(new FileId(generate()), new FileSystemItemName("photo.png"), MimeType.IMAGE,
                 new FileSize(6737), userId, parentFolderId);
     }
 
@@ -37,7 +37,7 @@ class FolderContentViewTest {
         FolderMetadataStorage folderStorage = new FolderMetadataStorage();
         folderStorage.put(folder);
         folderStorage.put(new FolderMetadataRecord(folder.parentFolderId(), folder.userId(),
-                new FolderName("Root")));
+                new FileSystemItemName("Root")));
 
         FileMetadataStorage fileStorage = new FileMetadataStorage();
         fileStorage.put(file);
@@ -48,7 +48,7 @@ class FolderContentViewTest {
     private FolderContentView prepareView(FolderId folderId, UserId userId) {
 
         FolderMetadataStorage folderStorage = new FolderMetadataStorage();
-        folderStorage.put(new FolderMetadataRecord(folderId, userId, new FolderName("Root")));
+        folderStorage.put(new FolderMetadataRecord(folderId, userId, new FileSystemItemName("Root")));
 
         FileMetadataStorage fileStorage = new FileMetadataStorage();
 

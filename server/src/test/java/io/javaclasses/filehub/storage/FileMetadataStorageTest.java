@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 import io.javaclasses.filehub.api.FileSize;
-import io.javaclasses.filehub.api.Filename;
+import io.javaclasses.filehub.api.FileSystemItemName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ class FileMetadataStorageTest {
 
     private FileMetadataRecord prepareFile(FolderId parentFolderId) {
 
-        return new FileMetadataRecord(new FileId(generate()), new Filename("photo.png"), IMAGE,
+        return new FileMetadataRecord(new FileId(generate()), new FileSystemItemName("photo.png"), IMAGE,
                 new FileSize(538), new UserId(generate()), parentFolderId);
     }
 

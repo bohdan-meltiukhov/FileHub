@@ -11,27 +11,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * A value object for a name of a {@link FileMetadataRecord}
  */
 @Immutable
-public final class Filename {
+public final class FileSystemItemName {
 
     /**
-     * The filename value.
+     * The file system item name value.
      */
     private final String value;
 
     /**
-     * Creates a Filename instance.
+     * Creates a FileSystemItemName instance.
      *
-     * @param value The filename value.
+     * @param value The name value.
      */
-    public Filename(String value) {
+    public FileSystemItemName(String value) {
 
         this.value = checkNotNull(value);
     }
 
     /**
-     * Provides a string representation of a file name.
+     * Provides a string representation of a FileSystemItemName.
      *
-     * @return A string representation of a file name.
+     * @return A string representation of a FileSystemItemName.
      */
     @Override
     public String toString() {
@@ -41,24 +41,24 @@ public final class Filename {
     }
 
     /**
-     * Indicates whether the provided object is a filename with the same value.
+     * Indicates whether the provided object is a FileSystemItemName with the same value.
      *
      * @param o The object to compare with.
-     * @return True in case both file names are equal.
+     * @return True in case both names are equal.
      */
     @Override
     public boolean equals(Object o) {
 
         if (this == o) return true;
-        if (!(o instanceof Filename)) return false;
-        Filename filename = (Filename) o;
-        return value.equals(filename.value);
+        if (!(o instanceof FileSystemItemName)) return false;
+        FileSystemItemName name = (FileSystemItemName) o;
+        return value.equals(name.value);
     }
 
     /**
-     * Provides a hash code value of a file name.
+     * Provides a hash code value of a FileSystemItemName.
      *
-     * @return The hash code that considers the filename value.
+     * @return The hash code that considers the name value.
      */
     @Override
     public int hashCode() {
@@ -67,9 +67,9 @@ public final class Filename {
     }
 
     /**
-     * Provides the file name value.
+     * Provides the FileSystemItemName value.
      *
-     * @return The file name value.
+     * @return The FileSystemItemName value.
      */
     public String value() {
 

@@ -1,7 +1,7 @@
 package io.javaclasses.filehub.storage;
 
 import com.google.errorprone.annotations.Immutable;
-import io.javaclasses.filehub.api.FolderName;
+import io.javaclasses.filehub.api.FileSystemItemName;
 
 import javax.annotation.Nullable;
 import java.util.Objects;
@@ -32,7 +32,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
     /**
      * The name of the folder.
      */
-    private final FolderName folderName;
+    private final FileSystemItemName folderName;
 
     /**
      * Creates an instance of the folder metadata record with set properties.
@@ -42,7 +42,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
      * @param folderName     The name of the folder.
      * @param parentFolderId The identifier of the parent folder.
      */
-    public FolderMetadataRecord(FolderId folderId, UserId userId, FolderName folderName,
+    public FolderMetadataRecord(FolderId folderId, UserId userId, FileSystemItemName folderName,
                                 @Nullable FolderId parentFolderId) {
 
         this.folderId = checkNotNull(folderId);
@@ -60,7 +60,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
      * @param userId     An identifier of the folder owner.
      * @param folderName The name of the folder.
      */
-    public FolderMetadataRecord(FolderId folderId, UserId userId, FolderName folderName) {
+    public FolderMetadataRecord(FolderId folderId, UserId userId, FileSystemItemName folderName) {
 
         this(folderId, userId, folderName, null);
     }
@@ -145,7 +145,7 @@ public final class FolderMetadataRecord implements StorageRecord<FolderId> {
      *
      * @return The name of the folder.
      */
-    public FolderName folderName() {
+    public FileSystemItemName folderName() {
 
         return folderName;
     }

@@ -30,7 +30,7 @@ public final class Folder {
     /**
      * The name of the folder.
      */
-    private final FolderName folderName;
+    private final FileSystemItemName folderName;
 
     /**
      * Creates a {@link Folder} instance.
@@ -39,7 +39,7 @@ public final class Folder {
      * @param folderName     The name of the folder.
      * @param parentFolderId The identifier of the parent folder.
      */
-    public Folder(FolderId folderId, FolderName folderName, @Nullable FolderId parentFolderId) {
+    public Folder(FolderId folderId, FileSystemItemName folderName, @Nullable FolderId parentFolderId) {
 
         this.folderId = checkNotNull(folderId);
         this.parentFolderId = parentFolderId;
@@ -123,7 +123,7 @@ public final class Folder {
      *
      * @return The name of the folder.
      */
-    public FolderName folderName() {
+    public FileSystemItemName folderName() {
 
         return folderName;
     }

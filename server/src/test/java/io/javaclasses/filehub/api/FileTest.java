@@ -18,7 +18,7 @@ class FileTest {
 
         return new NullPointerTester()
                 .setDefault(FileId.class, file.fileId())
-                .setDefault(Filename.class, file.filename())
+                .setDefault(FileSystemItemName.class, file.filename())
                 .setDefault(MimeType.class, file.mimeType())
                 .setDefault(FileSize.class, file.fileSize())
                 .setDefault(FolderId.class, file.parentFolderId());
@@ -26,7 +26,7 @@ class FileTest {
 
     private File prepareFile() {
 
-        return new File(new FileId(generate()), new Filename("new_file.png"), IMAGE,
+        return new File(new FileId(generate()), new FileSystemItemName("new_file.png"), IMAGE,
                 new FileSize(285), new FolderId(generate()));
     }
 

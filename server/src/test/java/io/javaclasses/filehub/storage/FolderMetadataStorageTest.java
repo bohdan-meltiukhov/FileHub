@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.storage;
 
-import io.javaclasses.filehub.api.FolderName;
+import io.javaclasses.filehub.api.FileSystemItemName;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ class FolderMetadataStorageTest {
     private FolderMetadataRecord prepareFolder(FolderId parentFolderId) {
 
         return new FolderMetadataRecord(new FolderId(generate()), new UserId(generate()),
-                new FolderName("New Folder"), parentFolderId);
+                new FileSystemItemName("New Folder"), parentFolderId);
     }
 
     private FolderMetadataStorage prepareStorage(FolderMetadataRecord folder) {

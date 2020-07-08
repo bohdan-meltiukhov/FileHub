@@ -3,10 +3,8 @@ package io.javaclasses.filehub.api;
 import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.FolderId;
 import io.javaclasses.filehub.storage.FolderMetadataRecord;
-import io.javaclasses.filehub.storage.UserId;
 
 import javax.annotation.Nullable;
-
 import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkNotNull;

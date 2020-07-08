@@ -1,7 +1,6 @@
 package io.javaclasses.filehub.api;
 
 import com.google.errorprone.annotations.Immutable;
-import io.javaclasses.filehub.api.InvalidFileSizeException;
 import io.javaclasses.filehub.storage.FileMetadataRecord;
 
 /**

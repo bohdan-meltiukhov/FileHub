@@ -26,6 +26,19 @@ public class GetFolderContent extends Query {
     }
 
     /**
+     * Provides a {@link GetFolderContent} query string representation.
+     *
+     * @return A {@link GetFolderContent} query string representation.
+     */
+    @Override
+    public String toString() {
+
+        return "GetFolderContent{" +
+                "folderId=" + folderId +
+                '}';
+    }
+
+    /**
      * Provides the identifier of the required folder.
      *
      * @return The folder identifier.

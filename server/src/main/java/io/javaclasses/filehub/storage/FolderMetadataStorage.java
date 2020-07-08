@@ -1,7 +1,5 @@
 package io.javaclasses.filehub.storage;
 
-import io.javaclasses.filehub.api.NestedItems;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;

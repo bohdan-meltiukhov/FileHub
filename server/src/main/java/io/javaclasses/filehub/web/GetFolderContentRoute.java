@@ -51,7 +51,7 @@ public class GetFolderContentRoute implements Route {
     private final Gson gson;
 
     /**
-     * Creates an instance of the {@link GetFolderContentRoute} with set storage.
+     * Creates an instance of the {@link GetFolderContentRoute} with set storages.
      *
      * @param folderMetadataStorage A storage with folders.
      * @param fileMetadataStorage   A storage with files.

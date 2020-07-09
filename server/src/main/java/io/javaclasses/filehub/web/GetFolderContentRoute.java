@@ -3,8 +3,6 @@ package io.javaclasses.filehub.web;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.javaclasses.filehub.api.AccessForbiddenException;
-import io.javaclasses.filehub.api.File;
-import io.javaclasses.filehub.api.Folder;
 import io.javaclasses.filehub.api.FolderContent;
 import io.javaclasses.filehub.api.FolderContentView;
 import io.javaclasses.filehub.api.GetFolderContent;
@@ -72,11 +70,7 @@ public class GetFolderContentRoute implements Route {
     private Gson createGson() {
 
         GsonBuilder gsonBuilder = new GsonBuilder();
-
         gsonBuilder.registerTypeAdapter(FolderContent.class, new FolderContentSerializer());
-        gsonBuilder.registerTypeAdapter(Folder.class, new FolderSerializer());
-        gsonBuilder.registerTypeAdapter(File.class, new FileSerializer());
-
         return gsonBuilder.create();
     }
 

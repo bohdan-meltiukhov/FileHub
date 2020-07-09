@@ -12,12 +12,16 @@ import io.javaclasses.filehub.api.Folder;
 import io.javaclasses.filehub.api.FolderContent;
 
 import java.lang.reflect.Type;
-import java.util.List;
 
 /**
  * A {@link JsonSerializer} for {@link FolderContent}.
  */
 public class FolderContentSerializer implements JsonSerializer<FolderContent> {
+
+    /**
+     * A utility for turning Java {@link Object}s into {@link JsonElement}s.
+     */
+    private final Gson gson = createGson();
 
     /**
      * Turns a {@link FolderContent} object into a {@link JsonElement}.
@@ -30,10 +34,10 @@ public class FolderContentSerializer implements JsonSerializer<FolderContent> {
     public JsonElement serialize(FolderContent src, Type typeOfSrc, JsonSerializationContext context) {
 
         JsonArray jsonFolders = new JsonArray();
-        src.folders().forEach(folder -> jsonFolders.add(context.serialize(folder, Folder.class)));
+        src.folders().forEach(folder -> jsonFolders.add(gson.toJsonTree(folder, Folder.class)));
 
         JsonArray jsonFiles = new JsonArray();
-        src.files().forEach(file -> jsonFiles.add(context.serialize(file, File.class)));
+        src.files().forEach(file -> jsonFiles.add(gson.toJsonTree(file, File.class)));
 
         JsonObject jsonFolderContent = new JsonObject();
 
@@ -41,5 +45,20 @@ public class FolderContentSerializer implements JsonSerializer<FolderContent> {
         jsonFolderContent.add("files", jsonFiles);
 
         return jsonFolderContent;
+    }
+
+    /**
+     * Creates a Gson object with registered type adapters.
+     *
+     * @return The created Gson object.
+     */
+    private Gson createGson() {
+
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        gsonBuilder.registerTypeAdapter(Folder.class, new FolderSerializer());
+        gsonBuilder.registerTypeAdapter(File.class, new FileSerializer());
+
+        return gsonBuilder.create();
     }
 }

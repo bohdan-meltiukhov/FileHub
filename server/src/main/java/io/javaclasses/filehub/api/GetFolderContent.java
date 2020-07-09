@@ -8,7 +8,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A {@link Query} that represents intention of a client to get the content of a {@link FolderMetadataRecord}.
  */
-public class GetFolderContent extends Query {
+public class GetFolderContent extends AuthenticatedQuery {
 
     /**
      * An identifier of the required folder.

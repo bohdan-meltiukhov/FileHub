@@ -23,7 +23,7 @@ class FileMetadataRecordTest {
                 .setDefault(MimeType.class, file.mimeType())
                 .setDefault(FileSize.class, file.fileSize())
                 .setDefault(FolderId.class, file.parentFolderId())
-                .setDefault(UserId.class, file.getUserId());
+                .setDefault(UserId.class, file.userId());
     }
 
     private FileMetadataRecord prepareFile() {

@@ -13,10 +13,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A data transfer object for a {@link FileMetadataRecord}.
  *
+ * <p>Note: this class has a natural ordering that is inconsistent with equals.
+ *
  * @see <a href="https://martinfowler.com/eaaCatalog/dataTransferObject.html">Data Transfer Object</a>
  */
 @Immutable
-public final class File {
+public final class File implements Comparable<File> {
 
     /**
      * An identifier of the file.
@@ -149,5 +151,19 @@ public final class File {
     public FileId fileId() {
 
         return fileId;
+    }
+
+    /**
+     * Compares this file's name with the specified file's name. Returns a negative integer, zero, or a positive
+     * integer as this file name is less than, equal to, or greater than the specified name.
+     *
+     * @param o The file to be compared.
+     * @return a negative integer, zero, or a positive integer as this file name is less than, equal to,
+     * or greater than the specified name.
+     */
+    @Override
+    public int compareTo(File o) {
+
+        return fileName.compareTo(o.fileName);
     }
 }

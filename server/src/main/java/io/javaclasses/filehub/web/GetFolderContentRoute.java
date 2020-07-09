@@ -34,14 +34,14 @@ public class GetFolderContentRoute implements Route {
     private static final Logger logger = getLogger(GetFolderContentRoute.class);
 
     /**
-     * A storage with {@link FileMetadataRecord}s.
-     */
-    private final FileMetadataStorage fileMetadataStorage;
-
-    /**
      * A storage with {@link FolderMetadataRecord}s.
      */
     private final FolderMetadataStorage folderMetadataStorage;
+
+    /**
+     * A storage with {@link FileMetadataRecord}s.
+     */
+    private final FileMetadataStorage fileMetadataStorage;
 
     /**
      * A utility for serializing Java {@link Object}s into {@link com.google.gson.JsonElement}s.
@@ -51,10 +51,10 @@ public class GetFolderContentRoute implements Route {
     /**
      * Creates an instance of the {@link GetFolderContentRoute} with set storage.
      *
-     * @param fileMetadataStorage   A storage with files.
      * @param folderMetadataStorage A storage with folders.
+     * @param fileMetadataStorage   A storage with files.
      */
-    public GetFolderContentRoute(FileMetadataStorage fileMetadataStorage, FolderMetadataStorage folderMetadataStorage) {
+    public GetFolderContentRoute(FolderMetadataStorage folderMetadataStorage, FileMetadataStorage fileMetadataStorage) {
 
         this.fileMetadataStorage = checkNotNull(fileMetadataStorage);
         this.folderMetadataStorage = checkNotNull(folderMetadataStorage);

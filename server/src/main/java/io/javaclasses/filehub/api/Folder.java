@@ -12,10 +12,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A data transfer object for a {@link FolderMetadataRecord}.
  *
+ * <p>Note: this class has a natural ordering that is inconsistent with equals.
+ *
  * @see <a href="https://martinfowler.com/eaaCatalog/dataTransferObject.html">Data Transfer Object</a>
  */
 @Immutable
-public final class Folder {
+public final class Folder implements Comparable<Folder> {
 
     /**
      * An identifier of the folder.
@@ -126,5 +128,19 @@ public final class Folder {
     public FileSystemItemName folderName() {
 
         return folderName;
+    }
+
+    /**
+     * Compares this folder's name with the specified folder's name. Returns a negative integer, zero, or a positive
+     * integer as this folder name is less than, equal to, or greater than the specified name.
+     *
+     * @param o The folder to be compared.
+     * @return a negative integer, zero, or a positive integer as this folder name is less than, equal to,
+     * or greater than the specified name.
+     */
+    @Override
+    public int compareTo(Folder o) {
+
+        return folderName.compareTo(o.folderName);
     }
 }

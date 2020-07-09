@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * A value object for a name of a {@link FileMetadataRecord}
  */
 @Immutable
-public final class FileSystemItemName {
+public final class FileSystemItemName implements Comparable<FileSystemItemName> {
 
     /**
      * The file system item name value.
@@ -74,5 +74,19 @@ public final class FileSystemItemName {
     public String value() {
 
         return value;
+    }
+
+    /**
+     * Compares this name with the specified name. Returns a negative integer, zero, or a positive integer as this
+     * file system item name is less than, equal to, or greater than the specified name.
+     *
+     * @param o The file system item to be compared.
+     * @return a negative integer, zero, or a positive integer as this file system item name is less than, equal to,
+     * or greater than the specified name.
+     */
+    @Override
+    public int compareTo(FileSystemItemName o) {
+
+        return value.compareTo(o.value);
     }
 }

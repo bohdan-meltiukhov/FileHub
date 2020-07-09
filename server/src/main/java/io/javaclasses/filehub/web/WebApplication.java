@@ -52,7 +52,7 @@ public class WebApplication {
             get("/user", new GetUserRoute());
 
             before("/folder/*", filter);
-            get("/folder/:folderId/content", new GetFolderContentRoute(fileMetadataStorage, folderStorage));
+            get("/folder/:folderId/content", new GetFolderContentRoute(folderStorage, fileMetadataStorage));
 
             after((request, response) -> CurrentUser.clear());
         });

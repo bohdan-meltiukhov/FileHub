@@ -136,6 +136,7 @@ public class FolderContentView implements View<GetFolderContent, FolderContent> 
         return folderMetadataStorage.getChildFolders(folderId)
                 .stream()
                 .map(Folder::fromFolderMetadataRecord)
+                .sorted()
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -150,6 +151,7 @@ public class FolderContentView implements View<GetFolderContent, FolderContent> 
         return fileMetadataStorage.getChildFiles(folderId)
                 .stream()
                 .map(File::fromFileMetadataRecord)
+                .sorted()
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 }

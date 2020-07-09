@@ -26,9 +26,9 @@ public class GetFolderContent extends Query {
     }
 
     /**
-     * Provides a {@link GetFolderContent} query string representation.
+     * Provides a string representation of the {@link GetFolderContent} query.
      *
-     * @return A {@link GetFolderContent} query string representation.
+     * @return A string representation of the {@link GetFolderContent} query.
      */
     @Override
     public String toString() {

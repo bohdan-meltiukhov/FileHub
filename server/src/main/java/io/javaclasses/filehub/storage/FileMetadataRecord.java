@@ -132,7 +132,7 @@ public final class FileMetadataRecord implements StorageRecord<FileId> {
      *
      * @return An identifier of the file owner.
      */
-    public UserId getUserId() {
+    public UserId userId() {
 
         return userId;
     }

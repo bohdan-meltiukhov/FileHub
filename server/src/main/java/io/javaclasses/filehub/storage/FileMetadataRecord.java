@@ -10,7 +10,7 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A {@link StorageRecord} about a File in the FileHub application.
+ * A {@link StorageRecord} about metadata of a file in the FileHub application.
  */
 @Immutable
 public final class FileMetadataRecord implements StorageRecord<FileId> {

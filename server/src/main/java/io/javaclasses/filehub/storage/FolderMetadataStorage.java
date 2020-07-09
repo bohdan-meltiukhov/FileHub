@@ -14,7 +14,7 @@ public class FolderMetadataStorage extends InMemoryStorage<FolderId, FolderMetad
     /**
      * Provides all children folders for the specified folder.
      *
-     * @param folderId The identifier of the required folder.
+     * @param folderId The folder identifier.
      * @return A list of child folders.
      */
     public List<FolderMetadataRecord> getChildFolders(FolderId folderId) {

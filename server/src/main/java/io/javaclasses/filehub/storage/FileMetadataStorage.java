@@ -14,7 +14,7 @@ public class FileMetadataStorage extends InMemoryStorage<FileId, FileMetadataRec
     /**
      * Provides all children files for the specified folder.
      *
-     * @param folderId The identifier of the required folder.
+     * @param folderId The folder identifier.
      * @return A list of child files.
      */
     public List<FileMetadataRecord> getChildFiles(FolderId folderId) {

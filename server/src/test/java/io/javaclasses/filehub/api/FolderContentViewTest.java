@@ -95,7 +95,7 @@ class FolderContentViewTest {
     }
 
     @Test
-    @DisplayName("throw an exception in case the desired folder does not exist.")
+    @DisplayName("throw an exception in case the desired folder is not found.")
     void testWithNonexistentFolder() {
 
         GetFolderContent query = new GetFolderContent(new FolderId("wrong-folder"));

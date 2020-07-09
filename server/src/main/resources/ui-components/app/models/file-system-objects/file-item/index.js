@@ -27,7 +27,6 @@ export default class FileItem {
    * @param {FileItemProperties} properties - The properties of the current file item.
    */
   constructor(properties) {
-    Object.assign(this, properties);
-    this.type = 'file';
+    Object.assign(this, properties, {type: 'file'});
   }
 }

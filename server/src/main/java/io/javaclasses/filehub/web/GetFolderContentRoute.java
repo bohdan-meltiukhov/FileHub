@@ -102,7 +102,6 @@ public class GetFolderContentRoute implements Route {
         try {
 
             FolderContent folderContent = view.process(query);
-            gson.toJson(folderContent, FolderContent.class);
 
             response.status(SC_OK);
             return generateResponse(folderContent);

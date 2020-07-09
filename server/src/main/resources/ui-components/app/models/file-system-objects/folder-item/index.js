@@ -23,7 +23,6 @@ export default class FolderItem {
    * @param {FolderItemProperties} properties - The properties of the current folder item.
    */
   constructor(properties) {
-    Object.assign(this, properties);
-    this.type = 'folder';
+    Object.assign(this, properties, {type: 'folder'});
   }
 }

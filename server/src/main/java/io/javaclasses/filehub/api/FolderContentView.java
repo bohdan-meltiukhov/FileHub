@@ -96,7 +96,7 @@ public class FolderContentView implements View<GetFolderContent, FolderContent> 
     /**
      * Checks whether the provided {@link FolderMetadataRecord} belongs to the provided {@link UserRecord}.
      *
-     * @param folder     The {@link FolderMetadataRecord} to access.
+     * @param folder     The {@link FolderMetadataRecord} to check.
      * @param userRecord The {@link UserRecord} that wants to access the folder.
      * @throws AccessForbiddenException In case the provided user is not allowed to access the folder.
      */
@@ -114,7 +114,7 @@ public class FolderContentView implements View<GetFolderContent, FolderContent> 
     /**
      * Provides the {@link FolderContent} of a folder with the provided {@link FolderId} identifier.
      *
-     * @param folderId An identifier of teh required folder.
+     * @param folderId An identifier of the required folder.
      * @return The content of the needed folder.
      */
     private FolderContent getFolderContent(FolderId folderId) {

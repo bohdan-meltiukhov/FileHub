@@ -169,8 +169,7 @@ class GetFolderContentRouteTest {
 
         route.handle(mockRequest, mockResponse);
 
-        assertWithMessage("The GetFolderContentRoute set incorrect status code when the desired " +
-                "folder didn't exist.")
+        assertWithMessage("The route responded with incorrect status code.")
                 .that(mockResponse.status())
                 .isEqualTo(SC_NOT_FOUND);
     }
@@ -189,8 +188,7 @@ class GetFolderContentRouteTest {
 
         route.handle(mockRequest, mockResponse);
 
-        assertWithMessage("The GetFolderContentRoute set incorrect status code when the user was not " +
-                "a folder owner.")
+        assertWithMessage("The route responded with incorrect status code.")
                 .that(mockResponse.status())
                 .isEqualTo(SC_FORBIDDEN);
     }

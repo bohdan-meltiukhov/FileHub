@@ -54,6 +54,7 @@ public class WebApplication {
             before("/folder/*", filter);
             get("/folder/:folderId/content", new GetFolderContentRoute(folderStorage, fileMetadataStorage));
             get("/folder/:folderId", new GetFolderRoute(folderStorage));
+            post("/folder/:folderId/folder", new CreateFolderRoute(folderStorage));
 
             after((request, response) -> CurrentUser.clear());
         });

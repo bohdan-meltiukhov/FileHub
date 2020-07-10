@@ -46,6 +46,9 @@ public class WebApplication {
             before("/root-folder", filter);
             get("/root-folder", new RootFolderIdRoute());
 
+            before("/user", filter);
+            get("/user", new GetUserRoute());
+
             after((request, response) -> CurrentUser.clear());
         });
     }

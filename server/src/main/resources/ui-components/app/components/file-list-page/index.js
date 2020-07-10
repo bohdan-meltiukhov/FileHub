@@ -42,6 +42,8 @@ export default class FileListPage extends StateAwareComponent {
   constructor(container, stateManager, messageService, properties) {
     super(container, stateManager);
 
+    let folderId = properties.folderId;
+
     if (!this.ROOT_FOLDER_ID) {
       stateManager.dispatch(new GetRootFolderIdAction())
         .then((rootFolderId) => {
@@ -49,13 +51,14 @@ export default class FileListPage extends StateAwareComponent {
 
           if (properties.folderId === 'root') {
             window.location.hash = FILE_LIST_ROUTE.replace(':folderId', rootFolderId);
+            folderId = rootFolderId;
           }
 
           this._messageService = messageService;
 
           this.render();
-          stateManager.dispatch(new GetFolderAction(properties.folderId));
-          stateManager.dispatch(new GetFilesAction(properties.folderId));
+          stateManager.dispatch(new GetFolderAction(folderId));
+          stateManager.dispatch(new GetFilesAction(folderId));
           stateManager.dispatch(new GetUserAction());
         });
     }

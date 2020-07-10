@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.web;
 
+import io.javaclasses.filehub.api.CurrentUserNotSetException;
 import io.javaclasses.filehub.api.GetRootFolderId;
 import io.javaclasses.filehub.api.RootFolderIdView;
 import io.javaclasses.filehub.api.UnauthorizedException;
@@ -9,6 +10,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import static org.apache.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -63,6 +65,14 @@ public class RootFolderIdRoute implements Route {
 
             response.status(SC_UNAUTHORIZED);
             return exception.getMessage();
+
+        } catch (CurrentUserNotSetException exception) {
+
+            if (logger.isWarnEnabled()) {
+                logger.warn(exception.toString());
+            }
+
+            return SC_INTERNAL_SERVER_ERROR;
         }
     }
 

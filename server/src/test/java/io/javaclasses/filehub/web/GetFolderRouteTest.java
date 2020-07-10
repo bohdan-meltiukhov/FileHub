@@ -124,7 +124,7 @@ class GetFolderRouteTest {
     }
 
     @Test
-    @DisplayName("should send a 'Not Found' status code when the desired folder does not exist.")
+    @DisplayName("send a 'Not Found' status code when the desired folder does not exist.")
     void testRouteWhenFolderNotFound() {
 
         FolderId folderId = new FolderId(generate());
@@ -144,7 +144,7 @@ class GetFolderRouteTest {
     }
 
     @Test
-    @DisplayName("should send a 'Forbidden' status code when the user is not a folder owner.")
+    @DisplayName("send a 'Forbidden' status code when the user is not a folder owner.")
     void testRouteWhenUserIsIncorrect() {
 
         FolderId folderId = new FolderId(generate());

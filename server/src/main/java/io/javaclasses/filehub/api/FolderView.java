@@ -79,8 +79,8 @@ public class FolderView implements View<GetFolder, Folder> {
     /**
      * Checks whether the provided {@link FolderMetadataRecord} belongs to the provided {@link UserRecord}.
      *
-     * @param folder     The {@link FolderMetadataRecord} to check.
-     * @param userRecord The {@link UserRecord} that wants to access the folder.
+     * @param folder     The folder record to check.
+     * @param userRecord The user that wants to access the folder.
      * @throws AccessForbiddenException In case the provided user is not allowed to access the folder.
      */
     private void checkFolderOwner(FolderMetadataRecord folder, UserRecord userRecord) {

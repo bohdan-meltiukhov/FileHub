@@ -45,7 +45,7 @@ public class GetFolderRoute implements Route {
     /**
      * Creates an instance of the GetFolder route.
      *
-     * @param folderStorage A storage with {@link FolderMetadataRecord}s.
+     * @param folderStorage A storage with folder metadata records.
      */
     public GetFolderRoute(FolderMetadataStorage folderStorage) {
 
@@ -57,7 +57,7 @@ public class GetFolderRoute implements Route {
     /**
      * Creates a {@link Gson} object with registered type adapters.
      *
-     * @return The created {@link Gson} object.
+     * @return The created Gson object.
      */
     private Gson createGson() {
 
@@ -117,7 +117,7 @@ public class GetFolderRoute implements Route {
      * Reads a {@link GetFolder} query from a {@link Request}.
      *
      * @param request The request from the client.
-     * @return The created {@link GetFolder} query.
+     * @return The created GetFolder query.
      */
     private GetFolder readQuery(Request request) {
 

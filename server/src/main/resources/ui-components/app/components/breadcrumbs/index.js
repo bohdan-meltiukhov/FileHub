@@ -49,7 +49,7 @@ export default class Breadcrumbs extends Component {
    * @param {FolderItem} folder - The new folder.
    */
   set folder(folder) {
-    if (folder.parentId === 'none') {
+    if (folder.parentId === 'null') {
       this._folderIcon.innerHTML = '<span class="glyphicon glyphicon-folder-open"></span>';
     } else {
       this._folderIcon.innerHTML = `

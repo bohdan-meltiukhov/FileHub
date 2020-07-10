@@ -53,6 +53,7 @@ public class WebApplication {
 
             before("/folder/*", filter);
             get("/folder/:folderId/content", new GetFolderContentRoute(folderStorage, fileMetadataStorage));
+            get("/folder/:folderId", new GetFolderRoute(folderStorage));
 
             after((request, response) -> CurrentUser.clear());
         });

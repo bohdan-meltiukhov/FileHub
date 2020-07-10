@@ -5,7 +5,6 @@ export default class FolderItem {
   id;
   parentId;
   name;
-  itemsNumber;
   type;
 
   /**
@@ -15,7 +14,6 @@ export default class FolderItem {
    * @property {string} id - The identifier of the folder.
    * @property {string} parentId - The id of the parent folder.
    * @property {string} name - The name of the folder.
-   * @property {number} itemsNumber - The number of items inside.
    * @property {'folder'} type - Shows that this item is a folder.
    */
 
@@ -25,6 +23,6 @@ export default class FolderItem {
    * @param {FolderItemProperties} properties - The properties of the current folder item.
    */
   constructor(properties) {
-    Object.assign(this, properties);
+    Object.assign(this, properties, {type: 'folder'});
   }
 }

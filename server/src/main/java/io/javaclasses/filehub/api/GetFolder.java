@@ -25,6 +25,18 @@ public class GetFolder extends AuthenticatedQuery {
     }
 
     /**
+     * Provides a string representation of the {@link GetFolder} query.
+     *
+     * @return A string representation of the {@link GetFolder} query.
+     */
+    @Override
+    public String toString() {
+        return "GetFolder{" +
+                "folderId=" + folderId +
+                '}';
+    }
+
+    /**
      * Provides an identifier of the required folder.
      *
      * @return The folder identifier.

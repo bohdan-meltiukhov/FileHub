@@ -46,7 +46,7 @@ class FolderViewTest {
     }
 
     @Test
-    @DisplayName("should provide the correct folder.")
+    @DisplayName("provide the correct folder.")
     void testGetFolder() {
 
         FolderId folderId = new FolderId(generate());

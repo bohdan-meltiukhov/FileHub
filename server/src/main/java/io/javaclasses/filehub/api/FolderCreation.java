@@ -65,7 +65,7 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
     }
 
     /**
-     * Find a folder in the {@link FolderMetadataStorage}.
+     * Finds a folder in the {@link FolderMetadataStorage}.
      *
      * @param folderId An identifier of the required folder.
      * @return The found folder.
@@ -120,11 +120,12 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
     }
 
     /**
-     * Creates a "New folder" name.
+     * Creates a name for a new folder.
      *
-     * <p>Adds a number in case such name already exists (e.g. "New folder (2)").
+     * <p>The default name is "New name". In case such name already exists, adds a number in brackets
+     * (e.g. "New folder (2)").
      *
-     * @param parentFolderId An identifier of the pare nt folder.
+     * @param parentFolderId An identifier of the parent folder.
      * @return The new folder name.
      */
     private FileSystemItemName createFolderName(FolderId parentFolderId) {

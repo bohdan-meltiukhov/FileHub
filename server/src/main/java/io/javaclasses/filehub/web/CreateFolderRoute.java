@@ -112,7 +112,7 @@ public class CreateFolderRoute implements Route {
      * Parses a {@link CreateFolder} command from the provided {@link Request}.
      *
      * @param request The request from the client.
-     * @return The create folder command.
+     * @return The created command.
      */
     private CreateFolder readCommand(Request request) {
 
@@ -134,7 +134,7 @@ public class CreateFolderRoute implements Route {
      * Sets a successful response status and generates the response content.
      *
      * @param response The object for modifying the response.
-     * @param folder   The folder to serialize;
+     * @param folder   The folder to send in response.
      * @return The response content.
      */
     private String setSuccessfulResponse(Response response, Folder folder) {

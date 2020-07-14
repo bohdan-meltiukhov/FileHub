@@ -54,7 +54,7 @@ class AuthenticatedCommandTest {
         AuthenticatedCommand command = new AuthenticatedCommand() {
         };
 
-        assertThrows(CurrentUserNotSetException.class,
+        assertThrows(CurrentUserUnknownException.class,
                 command::currentUser,
                 "The AuthenticatedCommand didn't throw an exception when no current user existed.");
     }

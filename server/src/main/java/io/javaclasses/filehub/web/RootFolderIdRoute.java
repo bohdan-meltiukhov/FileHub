@@ -1,6 +1,6 @@
 package io.javaclasses.filehub.web;
 
-import io.javaclasses.filehub.api.CurrentUserNotSetException;
+import io.javaclasses.filehub.api.CurrentUserUnknownException;
 import io.javaclasses.filehub.api.GetRootFolderId;
 import io.javaclasses.filehub.api.RootFolderIdView;
 import io.javaclasses.filehub.api.UnauthorizedException;
@@ -66,7 +66,7 @@ public class RootFolderIdRoute implements Route {
             response.status(SC_UNAUTHORIZED);
             return exception.getMessage();
 
-        } catch (CurrentUserNotSetException exception) {
+        } catch (CurrentUserUnknownException exception) {
 
             if (logger.isWarnEnabled()) {
                 logger.warn(exception.toString());

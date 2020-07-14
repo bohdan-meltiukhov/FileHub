@@ -2,7 +2,7 @@ package io.javaclasses.filehub.web;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.javaclasses.filehub.api.CurrentUserNotSetException;
+import io.javaclasses.filehub.api.CurrentUserUnknownException;
 import io.javaclasses.filehub.api.GetUser;
 import io.javaclasses.filehub.api.UserView;
 import io.javaclasses.filehub.storage.UserRecord;
@@ -73,7 +73,7 @@ public class GetUserRoute implements Route {
             response.status(SC_OK);
             return gson.toJson(userRecord, UserRecord.class);
 
-        } catch (CurrentUserNotSetException exception) {
+        } catch (CurrentUserUnknownException exception) {
 
             if (logger.isWarnEnabled()) {
                 logger.warn(exception.toString());

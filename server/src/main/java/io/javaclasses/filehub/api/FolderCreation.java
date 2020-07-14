@@ -86,7 +86,7 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
     }
 
     /**
-     * Checks whether the provided {@link FolderMetadataRecord} belongs to the provided {@link UserRecord}.
+     * Checks whether the provided {@link FolderMetadataRecord} belongs to the given {@link UserRecord}.
      *
      * @param folder     The {@link FolderMetadataRecord} to check.
      * @param userRecord The {@link UserRecord} that wants to access the folder.

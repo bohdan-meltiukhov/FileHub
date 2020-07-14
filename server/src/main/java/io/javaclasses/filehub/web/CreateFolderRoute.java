@@ -88,7 +88,7 @@ public class CreateFolderRoute implements Route {
         try {
 
             Folder folder = process.handle(command);
-            return setSuccessfulResponse(response, folder);
+            return makeSuccessfulResponse(response, folder);
 
         } catch (FolderNotFoundException exception) {
 
@@ -137,7 +137,7 @@ public class CreateFolderRoute implements Route {
      * @param folder   The folder to send in response.
      * @return The response content.
      */
-    private String setSuccessfulResponse(Response response, Folder folder) {
+    private String makeSuccessfulResponse(Response response, Folder folder) {
 
         response.status(SC_OK);
         return gson.toJson(folder, Folder.class);

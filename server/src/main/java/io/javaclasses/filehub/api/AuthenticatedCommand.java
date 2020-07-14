@@ -4,6 +4,8 @@ import io.javaclasses.filehub.storage.UserRecord;
 
 /**
  * A {@link Command} that contains information about an authenticated {@link UserRecord}.
+ *
+ * <p>This command should be extended in case the information about the current user is required.
  */
 public abstract class AuthenticatedCommand implements Command {
 

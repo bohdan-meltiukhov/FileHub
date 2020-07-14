@@ -18,6 +18,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
 import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
+import static org.apache.http.HttpStatus.SC_OK;
 
 @DisplayName("The CreateFolderRoute should")
 class CreateFolderRouteTest {
@@ -96,6 +97,10 @@ class CreateFolderRouteTest {
         assertWithMessage("The CreateFolderRoute didn't add a new folder to the storage.")
                 .that(folderStorage.getChildFolders(parentFolderId))
                 .isNotEmpty();
+
+        assertWithMessage("The CreateFolderRoute set incorrect status code.")
+                .that(response.status())
+                .isEqualTo(SC_OK);
     }
 
     @Test

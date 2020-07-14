@@ -52,7 +52,7 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
 
         checkNotNull(command);
         if (logger.isDebugEnabled()) {
-            logger.debug("Staring the FolderCreation process.");
+            logger.debug("Starting the FolderCreation process.");
         }
 
         FolderMetadataRecord parentFolder = findParentFolder(command.parentFolderId());

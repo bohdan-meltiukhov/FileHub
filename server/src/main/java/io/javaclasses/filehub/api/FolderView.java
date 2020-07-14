@@ -64,14 +64,14 @@ public class FolderView implements View<GetFolder, Folder> {
      *
      * @param folderId An identifier of the required folder.
      * @return The found folder.
-     * @throws NotFoundException in case the necessary folder is not found.
+     * @throws FolderNotFoundException in case the necessary folder is not found.
      */
     private FolderMetadataRecord findFolderMetadataRecord(FolderId folderId) {
 
         FolderMetadataRecord folder = folderStorage.get(folderId);
         if (folder == null) {
 
-            throw new NotFoundException("The folder is not found.");
+            throw new FolderNotFoundException("The folder is not found.");
         }
         return folder;
     }

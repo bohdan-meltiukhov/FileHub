@@ -83,7 +83,7 @@ class FolderCreationTest {
         CreateFolder command = new CreateFolder(new FolderId("wrong-folder"));
         FolderCreation process = prepareProcessWithEmptyStorage();
 
-        assertThrows(NotFoundException.class, () -> process.handle(command), "The FolderCreation process " +
+        assertThrows(FolderNotFoundException.class, () -> process.handle(command), "The FolderCreation process " +
                 "didn't throw an exception for a nonexistent folder, though it should have.");
     }
 

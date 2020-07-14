@@ -7,7 +7,7 @@ import io.javaclasses.filehub.api.AccessForbiddenException;
 import io.javaclasses.filehub.api.CreateFolder;
 import io.javaclasses.filehub.api.Folder;
 import io.javaclasses.filehub.api.FolderCreation;
-import io.javaclasses.filehub.api.NotFoundException;
+import io.javaclasses.filehub.api.FolderNotFoundException;
 import io.javaclasses.filehub.storage.FolderId;
 import io.javaclasses.filehub.storage.FolderMetadataStorage;
 import org.slf4j.Logger;
@@ -90,7 +90,7 @@ public class CreateFolderRoute implements Route {
             Folder folder = process.handle(command);
             return setSuccessfulResponse(response, folder);
 
-        } catch (NotFoundException exception) {
+        } catch (FolderNotFoundException exception) {
 
             if (logger.isDebugEnabled()) {
                 logger.debug("A {} exception occurred: {}", exception.getClass().getSimpleName(), exception);

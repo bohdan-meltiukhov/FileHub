@@ -69,7 +69,7 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
      *
      * @param folderId An identifier of the required folder.
      * @return The found folder.
-     * @throws NotFoundException in case the folder is not found.
+     * @throws FolderNotFoundException in case the folder is not found.
      */
     private FolderMetadataRecord findParentFolder(FolderId folderId) {
 
@@ -79,7 +79,7 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
             if (logger.isDebugEnabled()) {
                 logger.debug("The folder with identifier {} is not found.", folderId.value());
             }
-            throw new NotFoundException("Folder not found.");
+            throw new FolderNotFoundException("Folder not found.");
         }
 
         return folder;

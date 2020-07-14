@@ -101,7 +101,7 @@ class FolderContentViewTest {
         GetFolderContent query = new GetFolderContent(new FolderId("wrong-folder"));
         FolderContentView view = prepareViewWithEmptyStorage();
 
-        assertThrows(NotFoundException.class, () -> view.process(query), "The FolderContentView didn't " +
+        assertThrows(FolderNotFoundException.class, () -> view.process(query), "The FolderContentView didn't " +
                 "throw an exception for a nonexistent folder, though it should have.");
     }
 

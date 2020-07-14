@@ -7,7 +7,7 @@ import io.javaclasses.filehub.api.AccessForbiddenException;
 import io.javaclasses.filehub.api.Folder;
 import io.javaclasses.filehub.api.FolderView;
 import io.javaclasses.filehub.api.GetFolder;
-import io.javaclasses.filehub.api.NotFoundException;
+import io.javaclasses.filehub.api.FolderNotFoundException;
 import io.javaclasses.filehub.storage.FolderId;
 import io.javaclasses.filehub.storage.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.FolderMetadataStorage;
@@ -95,7 +95,7 @@ public class GetFolderRoute implements Route {
 
             return sendSuccessfulResponse(response, folder);
 
-        } catch (NotFoundException exception) {
+        } catch (FolderNotFoundException exception) {
 
             if (logger.isDebugEnabled()) {
                 logger.debug("A {} exception occurred: {}", exception.getClass().getSimpleName(), exception);

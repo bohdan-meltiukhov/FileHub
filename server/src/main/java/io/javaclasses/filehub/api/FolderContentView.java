@@ -76,7 +76,7 @@ public class FolderContentView implements View<GetFolderContent, FolderContent> 
      *
      * @param folderId An identifier of the required folder.
      * @return The corresponding {@link FolderMetadataRecord}.
-     * @throws NotFoundException in case the desired folder does not exist.
+     * @throws FolderNotFoundException in case the desired folder does not exist.
      */
     private FolderMetadataRecord findFolderMetadataRecord(FolderId folderId) {
 
@@ -87,7 +87,7 @@ public class FolderContentView implements View<GetFolderContent, FolderContent> 
                 logger.debug("The folder with identifier {} was not found.", folderId);
             }
 
-            throw new NotFoundException("This folder does not exist.");
+            throw new FolderNotFoundException("This folder does not exist.");
         }
 
         return folder;

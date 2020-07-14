@@ -125,7 +125,7 @@ class CreateFolderRouteTest {
 
     @Test
     @DisplayName("send a 'Forbidden' status code when the user is not a folder owner.")
-    void testRouteWhenUserIsIncorrect() {
+    void testRouteWhenUserIsNotTheFolderOwner() {
 
         FolderId folderId = new FolderId(generate());
         UserId userId = new UserId(generate());

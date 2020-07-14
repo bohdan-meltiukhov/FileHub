@@ -115,7 +115,7 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
 
         FolderId folderId = new FolderId(generate());
         UserId userId = parentFolder.userId();
-        FileSystemItemName folderName = createFolderName(parentFolder.id());
+        FileSystemItemName folderName = generateNewFolderName(parentFolder.id());
         FolderId parentFolderId = parentFolder.id();
 
         return new FolderMetadataRecord(folderId, userId, folderName, parentFolderId);
@@ -130,7 +130,7 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
      * @param parentFolderId An identifier of the parent folder.
      * @return The new folder name.
      */
-    private FileSystemItemName createFolderName(FolderId parentFolderId) {
+    private FileSystemItemName generateNewFolderName(FolderId parentFolderId) {
 
         List<FileSystemItemName> childFolderNames = folderStorage.getChildFolders(parentFolderId).stream()
                 .map(FolderMetadataRecord::folderName)

@@ -88,7 +88,7 @@ class FolderCreationTest {
     }
 
     @Test
-    @DisplayName("throw an exception when a wrong user tries to access the parent folder.")
+    @DisplayName("throw an exception when a not owner tries to access the parent folder.")
     void testProcessWithAnotherUser() {
 
         FolderId folderId = new FolderId(generate());

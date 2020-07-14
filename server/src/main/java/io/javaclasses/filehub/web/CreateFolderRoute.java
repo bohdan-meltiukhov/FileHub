@@ -42,7 +42,7 @@ public class CreateFolderRoute implements Route {
     private final Gson gson;
 
     /**
-     * Creates an instance of the CreateFolderRoute.
+     * Creates an instance of the CreateFolderRoute with given {@link FolderMetadataStorage}.
      *
      * @param folderMetadataStorage The storage with folders.
      */

@@ -56,7 +56,7 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
         }
 
         FolderMetadataRecord parentFolder = findParentFolder(command.parentFolderId());
-        checkFolderOwner(parentFolder, command.currentUser());
+        verifyFolderOwnership(parentFolder, command.currentUser());
 
         FolderMetadataRecord newFolder = createFolder(parentFolder);
         saveFolder(newFolder);
@@ -92,11 +92,12 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
      * @param userRecord The {@link UserRecord} that wants to access the folder.
      * @throws AccessForbiddenException In case the provided user is not allowed to access the folder.
      */
-    private void checkFolderOwner(FolderMetadataRecord folder, UserRecord userRecord) {
+    private void verifyFolderOwnership(FolderMetadataRecord folder, UserRecord userRecord) {
 
         if (!folder.userId().equals(userRecord.id())) {
 
-            throw new AccessForbiddenException("Unfortunately, you are not allowed to access this folder.");
+            throw new AccessForbiddenException(format("User with identifier %s is not the owner of the folder %s.",
+                    userRecord.id(), folder.id()));
         }
         if (logger.isDebugEnabled()) {
             logger.debug("The user {} can access the folder.", userRecord.username());

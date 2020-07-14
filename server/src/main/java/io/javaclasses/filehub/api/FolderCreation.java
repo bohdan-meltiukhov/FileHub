@@ -100,7 +100,8 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
                     userRecord.id(), folder.id()));
         }
         if (logger.isDebugEnabled()) {
-            logger.debug("The user {} can access the folder.", userRecord.username());
+            logger.debug("The user {} is the owner of the folder with identifier {}.", userRecord.username(),
+                    folder.id());
         }
     }
 

@@ -104,7 +104,7 @@ class CreateFolderRouteTest {
     }
 
     @Test
-    @DisplayName("send a 'Not Found' status code when the desired folder does not exist.")
+    @DisplayName("send a 'Not Found' status code when the requested folder does not exist.")
     void testRouteWhenFolderNotFound() {
 
         FolderId folderId = new FolderId(generate());

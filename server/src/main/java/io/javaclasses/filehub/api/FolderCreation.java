@@ -125,7 +125,7 @@ public class FolderCreation implements ApplicationProcess<CreateFolder, Folder> 
      * Creates a name for a new folder.
      *
      * <p>The default name is "New name". In case such name already exists, adds a number in brackets
-     * (e.g. "New folder (2)").
+     * (e.g. "New folder (2)", "New folder (3)", and so on).
      *
      * @param parentFolderId An identifier of the parent folder.
      * @return The new folder name.

@@ -4,12 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import io.javaclasses.filehub.api.AccessForbiddenException;
+import io.javaclasses.filehub.api.CreateFolder;
 import io.javaclasses.filehub.api.Folder;
-import io.javaclasses.filehub.api.FolderView;
-import io.javaclasses.filehub.api.GetFolder;
+import io.javaclasses.filehub.api.FolderCreation;
 import io.javaclasses.filehub.api.FolderNotFoundException;
 import io.javaclasses.filehub.storage.FolderId;
-import io.javaclasses.filehub.storage.FolderMetadataRecord;
 import io.javaclasses.filehub.storage.FolderMetadataStorage;
 import org.slf4j.Logger;
 import spark.Request;
@@ -23,33 +22,33 @@ import static org.apache.http.HttpStatus.SC_OK;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
- * A {@link Route} that handles a get folder request.
+ * A {@link Route} that handles a crete folder request.
  */
-public class GetFolderRoute implements Route {
+public class CreateFolderRoute implements Route {
 
     /**
      * An slf4j logger.
      */
-    private static final Logger logger = getLogger(GetFolderRoute.class);
+    private static final Logger logger = getLogger(CreateFolderRoute.class);
 
     /**
-     * A storage with {@link FolderMetadataRecord}s.
+     * A storage with folders.
      */
-    private final FolderMetadataStorage folderStorage;
+    private final FolderMetadataStorage folderMetadataStorage;
 
     /**
-     * A utility for turning Java objects into {@link JsonElement}s.
+     * A utility for turning Java {@link Object}s into {@link JsonElement}s.
      */
     private final Gson gson;
 
     /**
-     * Creates an instance of the GetFolder route.
+     * Creates an instance of the CreateFolderRoute with given {@link FolderMetadataStorage}.
      *
-     * @param folderStorage A storage with folder metadata records.
+     * @param folderMetadataStorage The storage with folders.
      */
-    public GetFolderRoute(FolderMetadataStorage folderStorage) {
+    public CreateFolderRoute(FolderMetadataStorage folderMetadataStorage) {
 
-        this.folderStorage = checkNotNull(folderStorage);
+        this.folderMetadataStorage = checkNotNull(folderMetadataStorage);
 
         gson = createGson();
     }
@@ -67,7 +66,7 @@ public class GetFolderRoute implements Route {
     }
 
     /**
-     * Handles a get folder request and returns the required folder.
+     * Handles a create folder request and returns the created folder.
      *
      * @param request  The request from the client.
      * @param response The object for modifying the response.
@@ -76,24 +75,20 @@ public class GetFolderRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
 
-        GetFolder query = readQuery(request);
+        CreateFolder command = readCommand(request);
         if (logger.isDebugEnabled()) {
-            logger.debug("Created a query: {}", query);
+            logger.debug("Read a CreateFolder command: {}", command);
         }
 
-        FolderView view = createView();
+        FolderCreation process = createProcess();
         if (logger.isDebugEnabled()) {
-            logger.debug("Created a FolderView");
+            logger.debug("Created a FolderCreation process.");
         }
 
         try {
 
-            Folder folder = view.process(query);
-            if (logger.isDebugEnabled()) {
-                logger.debug("The FolderView returned a Folder: {}", folder);
-            }
-
-            return sendSuccessfulResponse(response, folder);
+            Folder folder = process.handle(command);
+            return makeSuccessfulResponse(response, folder);
 
         } catch (FolderNotFoundException exception) {
 
@@ -114,35 +109,35 @@ public class GetFolderRoute implements Route {
     }
 
     /**
-     * Reads a {@link GetFolder} query from a {@link Request}.
+     * Parses a {@link CreateFolder} command from the provided {@link Request}.
      *
      * @param request The request from the client.
-     * @return The created GetFolder query.
+     * @return The created command.
      */
-    private GetFolder readQuery(Request request) {
+    private CreateFolder readCommand(Request request) {
 
-        FolderId folderId = new FolderId(request.params(":folderId"));
-        return new GetFolder(folderId);
+        FolderId parentFolderId = new FolderId(request.params(":folderId"));
+        return new CreateFolder(parentFolderId);
     }
 
     /**
-     * Creates a {@link FolderView} instance.
+     * Creates an instance of the {@link FolderCreation} process.
      *
-     * @return The created view.
+     * @return The created process.
      */
-    private FolderView createView() {
+    private FolderCreation createProcess() {
 
-        return new FolderView(folderStorage);
+        return new FolderCreation(folderMetadataStorage);
     }
 
     /**
-     * Sets a successful response status and provides the response body.
+     * Sets a successful response status and generates the response content.
      *
      * @param response The object for modifying the response.
-     * @param folder   The folder to send in the response.
-     * @return The response body.
+     * @param folder   The folder to send in response.
+     * @return The response content.
      */
-    private String sendSuccessfulResponse(Response response, Folder folder) {
+    private String makeSuccessfulResponse(Response response, Folder folder) {
 
         response.status(SC_OK);
         return gson.toJson(folder, Folder.class);

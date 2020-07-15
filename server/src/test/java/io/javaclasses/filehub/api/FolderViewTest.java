@@ -80,7 +80,7 @@ class FolderViewTest {
         GetFolder query = new GetFolder(new FolderId("wrong-folder"));
         FolderView view = prepareView(new FolderId(generate()), userId);
 
-        assertThrows(NotFoundException.class, () -> view.process(query), "The FolderView didn't " +
+        assertThrows(FolderNotFoundException.class, () -> view.process(query), "The FolderView didn't " +
                 "throw an exception for a nonexistent folder, though it should have.");
     }
 

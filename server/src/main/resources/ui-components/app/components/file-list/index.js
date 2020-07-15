@@ -84,6 +84,7 @@ export default class FileList extends Component {
         item.isSelected = true;
         item.isEditing = true;
         this._selectedItem = item;
+        this._renameFolderId = '';
       }
 
       if (item instanceof FileItemComponent) {

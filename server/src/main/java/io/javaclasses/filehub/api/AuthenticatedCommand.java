@@ -3,9 +3,11 @@ package io.javaclasses.filehub.api;
 import io.javaclasses.filehub.storage.UserRecord;
 
 /**
- * An {@link Query} that contains information about an authenticated {@link UserRecord}.
+ * A {@link Command} that contains information about an authenticated {@link UserRecord}.
+ *
+ * <p>This command should be extended in case the information about the current user is required.
  */
-public abstract class AuthenticatedQuery implements Query {
+public abstract class AuthenticatedCommand implements Command {
 
     /**
      * Provides the current user of the FileHub application.
@@ -18,7 +20,7 @@ public abstract class AuthenticatedQuery implements Query {
         UserRecord currentUser = CurrentUser.get();
         if (currentUser == null) {
 
-            throw new CurrentUserUnknownException("The current user was not set by the Authentication Filter.");
+            throw new CurrentUserUnknownException("The current user is unknown.");
         }
 
         return currentUser;

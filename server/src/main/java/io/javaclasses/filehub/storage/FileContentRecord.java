@@ -19,11 +19,6 @@ public final class FileContentRecord implements StorageRecord<FileId> {
     private final FileId identifier;
 
     /**
-     * An identifier of the parent folder.
-     */
-    private final FolderId parentFolderId;
-
-    /**
      * A content of the file.
      */
     private final byte[] content;
@@ -31,14 +26,12 @@ public final class FileContentRecord implements StorageRecord<FileId> {
     /**
      * Creates a FileContentRecord instance with set fields.
      *
-     * @param identifier     An identifier of the file.
-     * @param parentFolderId An identifier of the parent folder.
-     * @param content        A content of the file.
+     * @param identifier An identifier of the file.
+     * @param content A content of the file.
      */
-    public FileContentRecord(FileId identifier, FolderId parentFolderId, byte[] content) {
+    public FileContentRecord(FileId identifier, byte[] content) {
 
         this.identifier = checkNotNull(identifier);
-        this.parentFolderId = checkNotNull(parentFolderId);
         this.content = checkNotNull(content);
     }
 
@@ -49,19 +42,16 @@ public final class FileContentRecord implements StorageRecord<FileId> {
      */
     @Override
     public String toString() {
-
         return "FileContentRecord{" +
                 "identifier=" + identifier +
-                ", parentFolderId=" + parentFolderId +
                 '}';
     }
 
     /**
-     * Indicates whether the provided object is a file content record with the same identifier, parent folder,
-     * and content.
+     * Indicates whether the provided object is a file content record with the same identifier and content.
      *
      * @param o The object to compare with.
-     * @return True if both objects are file content records with equal identifier, parent folder, and content.
+     * @return True if both objects are file content records with equal identifier and content.
      */
     @Override
     public boolean equals(Object o) {
@@ -70,19 +60,17 @@ public final class FileContentRecord implements StorageRecord<FileId> {
         if (!(o instanceof FileContentRecord)) return false;
         FileContentRecord that = (FileContentRecord) o;
         return identifier.equals(that.identifier) &&
-                parentFolderId.equals(that.parentFolderId) &&
                 Arrays.equals(content, that.content);
     }
 
     /**
      * Provides a hash code value for the file content record.
      *
-     * @return A hash code value that considers the file identifier, parent folder, and content.
+     * @return A hash code value that considers the file identifier and content.
      */
     @Override
     public int hashCode() {
-
-        int result = Objects.hash(identifier, parentFolderId);
+        int result = Objects.hash(identifier);
         result = 31 * result + Arrays.hashCode(content);
         return result;
     }

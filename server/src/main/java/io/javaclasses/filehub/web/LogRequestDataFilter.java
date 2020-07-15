@@ -5,6 +5,8 @@ import spark.Filter;
 import spark.Request;
 import spark.Response;
 
+import javax.servlet.MultipartConfigElement;
+
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -26,9 +28,12 @@ public class LogRequestDataFilter implements Filter {
     @Override
     public void handle(Request request, Response response) {
 
+        request.raw().setAttribute("org.eclipse.jetty.multipartConfig",
+                new MultipartConfigElement(System.getProperty("java.io.tmpdir")));
+
         if (logger.isInfoEnabled()) {
-            logger.info("Received a request to '{}' with body '{}' and Authentication header '{}'", request.pathInfo(),
-                    request.body(), request.headers("Authentication"));
+            logger.info("Received a request to '{}' with Authentication header '{}'", request.pathInfo(),
+                    request.headers("Authentication"));
         }
     }
 }

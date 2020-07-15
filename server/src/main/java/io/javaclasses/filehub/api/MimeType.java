@@ -11,6 +11,5 @@ public enum MimeType {
     BOOK,
     VIDEO,
     AUDIO,
-    STYLESHEET,
     OTHER
 }

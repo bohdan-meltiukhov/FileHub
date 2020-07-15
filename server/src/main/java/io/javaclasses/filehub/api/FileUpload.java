@@ -14,6 +14,7 @@ import io.javaclasses.filehub.storage.UserRecord;
 import org.slf4j.Logger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static io.javaclasses.filehub.api.File.fromFileMetadataRecord;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
 import static java.lang.String.format;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -91,7 +92,7 @@ public class FileUpload implements ApplicationProcess<UploadFile, File> {
             logger.info("Successfully finished the FileUpload process.");
         }
 
-        return command.file();
+        return fromFileMetadataRecord(fileMetadataRecord);
     }
 
     /**
@@ -148,7 +149,7 @@ public class FileUpload implements ApplicationProcess<UploadFile, File> {
      */
     private static FileMetadataRecord createFileMetadataRecord(File file, UserId ownerId) {
 
-        FileId identifier = new FileId(generate());
+        FileId identifier = file.fileId();
         FileSystemItemName name = file.filename();
         MimeType mimeType = file.mimeType();
         FileSize size = file.fileSize();

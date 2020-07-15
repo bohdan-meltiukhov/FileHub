@@ -65,6 +65,22 @@ public final class File implements Comparable<File> {
     }
 
     /**
+     * Provides a string representation of a file.
+     *
+     * @return A string representation of a file.
+     */
+    @Override
+    public String toString() {
+        return "File{" +
+                "fileId=" + fileId +
+                ", fileName=" + fileName +
+                ", mimeType=" + mimeType +
+                ", fileSize=" + fileSize +
+                ", parentFolderId=" + parentFolderId +
+                '}';
+    }
+
+    /**
      * Creates an instance of a {@link File} from a {@link FileMetadataRecord}.
      *
      * @param record A {@link FileMetadataRecord} to create from.

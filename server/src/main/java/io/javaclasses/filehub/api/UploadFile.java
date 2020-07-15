@@ -55,7 +55,7 @@ public class UploadFile extends AuthenticatedCommand {
      *
      * @return A file data transfer object.
      */
-    public File fileMetadata() {
+    public File file() {
 
         return file;
     }

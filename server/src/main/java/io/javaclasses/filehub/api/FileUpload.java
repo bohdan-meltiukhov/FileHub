@@ -1,5 +1,6 @@
 package io.javaclasses.filehub.api;
 
+import com.google.errorprone.annotations.Immutable;
 import io.javaclasses.filehub.storage.FileContentRecord;
 import io.javaclasses.filehub.storage.FileContentStorage;
 import io.javaclasses.filehub.storage.FileId;
@@ -20,6 +21,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * An {@link ApplicationProcess} that handles the {@link UploadFile} command.
  */
+@Immutable
 public class FileUpload implements ApplicationProcess<UploadFile, File> {
 
     /**
@@ -124,7 +126,7 @@ public class FileUpload implements ApplicationProcess<UploadFile, File> {
      * @param userRecord The {@link UserRecord} that wants to access the folder.
      * @throws AccessForbiddenException In case the provided user is not allowed to access the folder.
      */
-    private void verifyFolderOwnership(FolderMetadataRecord folder, UserRecord userRecord) {
+    private static void verifyFolderOwnership(FolderMetadataRecord folder, UserRecord userRecord) {
 
         if (!folder.userId().equals(userRecord.id())) {
 
@@ -144,7 +146,7 @@ public class FileUpload implements ApplicationProcess<UploadFile, File> {
      * @param ownerId An identifier of the file owner.
      * @return The created {@link FileMetadataRecord}.
      */
-    private FileMetadataRecord createFileMetadataRecord(File file, UserId ownerId) {
+    private static FileMetadataRecord createFileMetadataRecord(File file, UserId ownerId) {
 
         FileId identifier = new FileId(generate());
         FileSystemItemName name = file.filename();
@@ -172,7 +174,7 @@ public class FileUpload implements ApplicationProcess<UploadFile, File> {
      * @param fileContent A content of the file.
      * @return The created {@link FileContentRecord}.
      */
-    private FileContentRecord createFileContentRecord(FileId fileId, byte[] fileContent) {
+    private static FileContentRecord createFileContentRecord(FileId fileId, byte[] fileContent) {
 
         return new FileContentRecord(fileId, fileContent);
     }

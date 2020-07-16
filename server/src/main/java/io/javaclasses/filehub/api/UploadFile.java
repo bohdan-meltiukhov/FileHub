@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * A {@link Command} that represents intention of a client to upload a file to the FileHub application.
  */
 @Immutable
-public class UploadFile extends AuthenticatedCommand {
+public final class UploadFile extends AuthenticatedCommand {
 
     /**
      * An identifier of the parent folder.

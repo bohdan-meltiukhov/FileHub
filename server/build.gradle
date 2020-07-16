@@ -11,6 +11,7 @@ sourceCompatibility = "${javaVersion}"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -36,6 +37,8 @@ dependencies {
     errorproneJavac "com.google.errorprone:error_prone_core:${errorproneVersion}"
 
     testCompile group: 'nl.jqno.equalsverifier', name: 'equalsverifier', version: "${equalsverifierVersion}"
+
+    testCompile "org.mockito:mockito-core:${mockitoVersion}"
 }
 
 test {

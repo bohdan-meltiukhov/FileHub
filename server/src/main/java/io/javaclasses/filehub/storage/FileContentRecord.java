@@ -24,7 +24,7 @@ public final class FileContentRecord implements StorageRecord<FileId> {
     private final byte[] content;
 
     /**
-     * Creates a FileContentRecord instance with set fields.
+     * Creates a FileContentRecord instance with set identifier and content.
      *
      * @param identifier An identifier of the file.
      * @param content A content of the file.

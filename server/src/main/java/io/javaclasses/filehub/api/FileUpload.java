@@ -22,7 +22,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * An {@link ApplicationProcess} that handles the {@link UploadFile} command.
  */
-@Immutable
 public class FileUpload implements ApplicationProcess<UploadFile, File> {
 
     /**
@@ -125,7 +124,7 @@ public class FileUpload implements ApplicationProcess<UploadFile, File> {
      *
      * @param folder     The {@link FolderMetadataRecord} to check.
      * @param userRecord The {@link UserRecord} that wants to access the folder.
-     * @throws AccessForbiddenException In case the provided user is not allowed to access the folder.
+     * @throws AccessForbiddenException In case the given user is not the folder owner.
      */
     private static void verifyFolderOwnership(FolderMetadataRecord folder, UserRecord userRecord) {
 

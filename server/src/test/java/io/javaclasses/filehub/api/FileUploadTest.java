@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DisplayName("The FileUpload process should")
 class FileUploadTest {
 
-    private File createFileDto(FolderId folderId) {
+    private static File createFileDto(FolderId folderId) {
 
         return new File(new FileId(generate()), new FileSystemItemName("photo.png"), IMAGE,
                 new FileSize(3846), folderId);
@@ -32,7 +32,7 @@ class FileUploadTest {
         return new UploadFile(file.parentFolderId(), file, content);
     }
 
-    private FileUpload prepareProcess(FolderId folderId, UserId userId, FileMetadataStorage fileMetadataStorage,
+    private static FileUpload prepareProcess(FolderId folderId, UserId userId, FileMetadataStorage fileMetadataStorage,
                                       FileContentStorage fileContentStorage) {
 
         FolderMetadataStorage folderStorage = new FolderMetadataStorage();
@@ -43,7 +43,7 @@ class FileUploadTest {
         return new FileUpload(folderStorage, fileMetadataStorage, fileContentStorage);
     }
 
-    private void saveCurrentUser(UserId userId, FolderId folderId) {
+    private static void saveCurrentUser(UserId userId, FolderId folderId) {
 
         UserRecord userRecord = new UserRecord(userId, new Username("Benedict"), "", folderId);
         CurrentUser.set(userRecord);

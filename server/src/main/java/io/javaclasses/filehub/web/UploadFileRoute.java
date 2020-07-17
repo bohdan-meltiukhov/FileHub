@@ -27,11 +27,7 @@ import java.io.IOException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
-import static io.javaclasses.filehub.api.MimeType.AUDIO;
-import static io.javaclasses.filehub.api.MimeType.BOOK;
-import static io.javaclasses.filehub.api.MimeType.IMAGE;
-import static io.javaclasses.filehub.api.MimeType.OTHER;
-import static io.javaclasses.filehub.api.MimeType.VIDEO;
+import static io.javaclasses.filehub.api.MimeType.fromContentType;
 import static org.apache.http.HttpStatus.SC_FORBIDDEN;
 import static org.apache.http.HttpStatus.SC_NOT_FOUND;
 import static org.apache.http.HttpStatus.SC_OK;
@@ -154,7 +150,7 @@ public class UploadFileRoute implements Route {
 
         FileId identifier = new FileId(generate());
         FileSystemItemName name = new FileSystemItemName(uploadedFile.getSubmittedFileName());
-        MimeType mimeType = getMimeType(uploadedFile.getContentType());
+        MimeType mimeType = fromContentType(uploadedFile.getContentType());
         FileSize size = new FileSize(Math.toIntExact(uploadedFile.getSize()));
         FolderId parentFolderId = new FolderId(request.params("folderId"));
 
@@ -163,33 +159,6 @@ public class UploadFileRoute implements Route {
         byte[] fileContent = uploadedFile.getInputStream().readAllBytes();
 
         return new UploadFile(parentFolderId, fileDto, fileContent);
-    }
-
-    /**
-     * Provides a mime type that corresponds to the given content type.
-     *
-     * @param contentType The content type of a file.
-     * @return The matching mime type.
-     */
-    private static MimeType getMimeType(String contentType) {
-
-        if (contentType.equals("application/pdf") || contentType.equals("image/vnd.djvu")) {
-
-            return BOOK;
-        }
-        if (contentType.startsWith("image")) {
-
-            return IMAGE;
-        }
-        if (contentType.startsWith("video")) {
-
-            return VIDEO;
-        }
-        if (contentType.startsWith("audio")) {
-
-            return AUDIO;
-        }
-        return OTHER;
     }
 
     /**

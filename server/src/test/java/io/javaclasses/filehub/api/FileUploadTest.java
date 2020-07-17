@@ -109,7 +109,7 @@ class FileUploadTest {
 
     @Test
     @DisplayName("throw an exception when not a folder owner tries to upload a file.")
-    void testProcessWithNotAFolderOwner() {
+    void testProcessWithAnotherUser() {
 
         FolderId folderId = new FolderId(generate());
         File fileDto = createFileDto(folderId);

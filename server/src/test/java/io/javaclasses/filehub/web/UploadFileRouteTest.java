@@ -191,7 +191,7 @@ class UploadFileRouteTest {
 
     @Test
     @DisplayName("set a 'Forbidden' response status code when not a folder owner tries to upload a file.")
-    void testRouteWithNotAFolderOwner() throws IOException, ServletException {
+    void testRouteWithAnotherUser() throws IOException, ServletException {
 
         FolderId folderId = new FolderId(generate());
         File fileDto = createFileDto(folderId);

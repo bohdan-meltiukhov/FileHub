@@ -10,8 +10,8 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import static io.javaclasses.filehub.api.IdGenerator.generate;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DisplayName("The AuthenticatedCommand should")
-class AuthenticatedCommandTest {
+@DisplayName("The AuthenticatedUserCommandTest should")
+class AuthenticatedUserCommandTest {
 
     private UserRecord createUser() {
 
@@ -36,10 +36,10 @@ class AuthenticatedCommandTest {
         UserRecord user = createUser();
         saveCurrentUser(user);
 
-        AuthenticatedCommand command = new AuthenticatedCommand() {
+        AuthenticatedUserCommand command = new AuthenticatedUserCommand() {
         };
 
-        assertWithMessage("The AuthenticatedCommand provided incorrect user.")
+        assertWithMessage("The AuthenticatedUserCommandTest provided incorrect user.")
                 .that(command.currentUser())
                 .isEqualTo(user);
     }
@@ -51,11 +51,11 @@ class AuthenticatedCommandTest {
         UserRecord user = createUser();
         clearCurrentUser();
 
-        AuthenticatedCommand command = new AuthenticatedCommand() {
+        AuthenticatedUserCommand command = new AuthenticatedUserCommand() {
         };
 
         assertThrows(CurrentUserUnknownException.class,
                 command::currentUser,
-                "The AuthenticatedCommand didn't throw an exception when no current user existed.");
+                "The AuthenticatedUserCommandTest didn't throw an exception when no current user existed.");
     }
 }

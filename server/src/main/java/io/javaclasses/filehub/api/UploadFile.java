@@ -6,10 +6,11 @@ import io.javaclasses.filehub.storage.FolderId;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * A {@link Command} that represents intention of a client to upload a file to the FileHub application.
+ * An {@link AuthenticatedUserCommand} implementation that represents intention of a client to upload a file to the
+ * FileHub application.
  */
 @Immutable
-public final class UploadFile extends AuthenticatedCommand {
+public final class UploadFile extends AuthenticatedUserCommand {
 
     /**
      * An identifier of the parent folder.

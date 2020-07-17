@@ -7,7 +7,7 @@ import io.javaclasses.filehub.storage.UserRecord;
  *
  * <p>This command should be extended in case the information about the current user is required.
  */
-public abstract class AuthenticatedCommand implements Command {
+public abstract class AuthenticatedUserCommand implements Command {
 
     /**
      * Provides the current user of the FileHub application.

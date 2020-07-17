@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * application.
  */
 @Immutable
-public final class CreateFolder extends AuthenticatedCommand {
+public final class CreateFolder extends AuthenticatedUserCommand {
 
     /**
      * An identifier of the parent folder.

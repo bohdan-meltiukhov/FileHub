@@ -45,8 +45,9 @@ public class FileUpload implements ApplicationProcess<UploadFile, File> {
     private final FileContentStorage fileContentStorage;
 
     /**
-     * Creates an instance of the FileUpload process with set storage.
+     * Creates an instance of the FileUpload process with set folder and file storages.
      *
+     * @param folderStorage       A storage with folders.
      * @param fileMetadataStorage A storage with metadata information of files.
      * @param fileContentStorage  A storage with content of files.
      */
